@@ -1,15 +1,15 @@
 erDiagram
-    Enrollments ||--o{ Classes : "One to Many"
     Programs ||--o{ CourseContents : "One to Many"
-    CourseContents ||--o{  Courses : "One to Many"
-    Instructors }o--o{ CourseContents : "Many to Many"
-    Instructors }o--o{ Periods : "Many to Many"
-    Instructors }o--o{ Hours : "Many to Many"
+    Enrollments ||--o{ Classes : "One to Many"
     Programs ||--o{ Classes : "One to Many"
     Classes ||--o{ Courses : "One to Many"
     Courses }o--o{ DaysOfTheWeek : "Many to Many"
     Courses }o--|| Classrooms : "Many to One"
     Courses }o--|| Instructors : "Many to One"
+    CourseContents ||--o{  Courses : "One to Many"
+    Instructors }o--o{ CourseContents : "Many to Many"
+    Instructors }o--o{ Periods : "Many to Many"
+    Instructors }o--o{ Hours : "Many to Many"
   
   
     Instructors }o--o{ DaysOfTheWeek : "Many to Many"
