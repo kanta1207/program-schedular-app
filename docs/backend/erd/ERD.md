@@ -1,7 +1,202 @@
 # ERD
 
-[Link to ERD(Excaildraw)](https://excalidraw.com/#json=qmhnC9yewSRj1JUh_p9YQ,9HtJNZLuilM9Xc_nhYiJIA)
-![ERD Image](erd.svg)
+```mermaid
+erDiagram
+    Enrollments ||--o{ Cohorts : "One to Many"
+    Programs ||--o{ Cohorts : "One to Many"
+    Cohorts ||--|| Schedules : "One to One"
+    Schedules ||--o{ Slots : "One to Many"
+    Slots ||--o{ Classes : "One to Many"
+    Programs ||--o{ Courses : "One to Many"
+    Classes }o--|| Classrooms : "Many to One"
+    Classes }o--|| Instructors : "One to Many"
+    Courses ||--o{  Classes : "One to Many"
+    PeriodOfDay ||--o{ InstructorPeriodOfDay : "One to Many"
+    PeriodOfDay ||--o{ CohortPeriodOfDay : "One to Many"
+    Instructors ||--o{ InstructorPeriodOfDay : "One to Many"
+    Courses ||--o{ CourseInstructor : "One to Many"
+    Cohorts ||--o{ CohortPeriodOfDay : "One to Many"
+    Instructors ||--o{ CourseInstructor : "One to Many"
+    Instructors ||--o{ InstructorHour : "One to Many"
+    Instructors ||--o{ InstructorWeekday : "One to Many"
+    Hours ||--o{ InstructorHour : "One to Many"
+    Weekdays ||--o{ InstructorWeekday : "One to Many"
+    Days ||--o{ DaysWeekdays : "One to Many"
+    Days ||--o{ DaysClasses : "One to Many"
+    Classes ||--o{ DaysClasses : "One to Many"
+    Weekdays ||--o{ DaysWeekdays : "One to Many"
+
+
+
+    Users {
+        id string PK
+        email string
+        password string
+        first_name string
+        last_name string
+        created_at Date
+        updated_at Date
+    }
+
+    Enrollments {
+        id string PK
+        created_at Date
+        updated_at Date
+        start_date Date
+        end_date Date
+    }
+
+    Programs {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+    }
+
+    Courses {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        required_hours number
+        program_id string FK
+    }
+
+    Cohorts {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        period_of_day_id string FK
+        program_id string FK
+        schedule_id string FK
+    }
+
+    Schedules {
+        id string PK
+        created_at Date
+        updated_at Date
+        cohort_id string FK
+    }
+
+    Slots {
+        id string PK
+        created_at Date
+        updated_at Date
+        start_at Date
+        end_at Date
+        slot_type_id string FK
+        schedule_id string FK
+    }
+
+     Classes {
+        id string PK
+        start_date Date
+        end_date Date
+        created_at Date
+        updated_at Date
+        days_id string FK
+        slot_id string FK
+        course_id string FK
+        classroom_id string FK
+        instructor_id string FK
+    }
+
+    PeriodOfDay {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Days {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Classrooms {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Instructors {
+        id string PK
+        name string
+        is_active boolean
+        created_at Date
+        updated_at Date
+    }
+
+    Weekdays {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Hours {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+      InstructorPeriodOfDay {
+        created_at Date
+        updated_at Date
+        instructor_id string FK
+        period_of_day_id string FK
+    }
+
+
+    CohortPeriodOfDay {
+        created_at Date
+        updated_at Date
+        cohort_id string FK
+        period_of_day_id string FK
+    }
+
+
+    InstructorWeekday {
+        created_at Date
+        updated_at Date
+        instructor_id string FK
+        weekdays_id string FK
+    }
+
+    InstructorHour {
+        created_at Date
+        updated_at Date
+        instructor_id string FK
+        hour_id string FK
+    }
+
+    CourseInstructor {
+        created_at Date
+        updated_at Date
+        course_id string FK
+        instructor_id string FK
+    }
+
+    DaysClasses {
+         created_at Date
+        updated_at Date
+        days_id string
+        classes_id string
+    }
+
+    DaysWeekdays {
+        created_at Date
+        updated_at Date
+        days_id string　FK
+        weekdays_id string FK
+    }
+
+```
 
 ## Users
 
@@ -10,9 +205,17 @@
 
 #### Schema
 
-id : **string**
-email : **string**
-password : **string**
+```ts
+{
+  id: string;
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  created_at: Date;
+  updated_at: Date;
+}
+```
 
 ## Enrollments
 
@@ -81,11 +284,11 @@ password : **string**
 
 - id : **string**
 - name : **string**
-- period_id : **string** (FK for Periods)
+- period_id : **string** (FK for PeriodOfDay)
 - program_id : **string** (FK for program)
 - courses : **Course** (One to Many)
 
-## Periods
+## PeriodOfDay
 
 - Concept of the time of day.
 - There are only three values.(Morning, Afternoon, Evening)
@@ -139,7 +342,7 @@ password : **string**
 - name : **string**
 - is_Active : **boolean**
 - hours : **string**
-- periods : **Periods** (One to Many)
+- periods : **PeriodOfDay** (One to Many)
 - days_of_the_week : **DaysOfTheWeek** (One to Many)
 - course_content : **CourseContent** (One to Many)
 - remaining_hours : **number**
