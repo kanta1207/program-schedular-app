@@ -1,0 +1,190 @@
+erDiagram
+    Enrollments ||--o{ Cohorts : "One to Many"
+    Programs ||--o{ Cohorts : "One to Many"
+    Cohorts ||--|| Schedules : "One to One"
+    Schedules ||--o{ Slots : "One to Many"
+    Slots ||--o{ Classes : "One to Many"
+    Programs ||--o{ Courses : "One to Many"
+    Classrooms ||--o{ Classes : "One to Many"
+    Classes }o--|| Instructors : "One to Many"
+    Courses ||--o{  Classes : "One to Many"
+    Courses ||--o{ Courses_Instructors : "One to Many"
+    Cohorts ||--o{ Cohorts_PeriodOfDays : "One to Many"
+    PeriodOfDay ||--o{ Cohorts_PeriodOfDays : "One to Many"
+    PeriodOfDay ||--o{ Instructors_PeriodOfDays : "One to Many"
+    Instructors ||--o{ Instructors_PeriodOfDays : "One to Many"
+    Instructors ||--o{ Courses_Instructors : "One to Many"
+    Instructors ||--o{ Instructors_Weekdays : "One to Many"
+    Contracts ||--o{ Instructors : "One to Many"
+    Weekdays ||--o{ Instructors_Weekdays : "One to Many"
+    Days ||--o{ Days_Weekdays : "One to Many"
+    Days ||--o{ Days_Classes : "One to Many"
+    Classes ||--o{ Days_Classes : "One to Many"
+    Weekdays ||--o{ Days_Weekdays : "One to Many"
+
+
+
+    Users {
+        id string PK
+        email string
+        password string
+        first_name string
+        last_name string
+        created_at Date
+        updated_at Date
+    }
+
+    Enrollments {
+        id string PK
+        created_at Date
+        updated_at Date
+        start_date Date
+        end_date Date
+    }
+
+    Programs {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+    }
+
+    Courses {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        required_hours number
+        program_id string FK
+    }
+
+    Cohorts {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        period_of_days_id string FK
+        program_id string FK
+        schedule_id string FK
+    }
+
+    Schedules {
+        id string PK
+        created_at Date
+        updated_at Date
+        cohort_id string FK
+    }
+
+    Slots {
+        id string PK
+        created_at Date
+        updated_at Date
+        start_at Date
+        end_at Date
+        schedule_id string FK
+        class_id string FK
+    }
+
+     Classes {
+        id string PK
+        start_date Date
+        end_date Date
+        created_at Date
+        updated_at Date
+        days_id string FK
+        slot_id string FK
+        course_id string FK
+        classroom_id string FK
+        instructors_id string FK
+    }
+
+    PeriodOfDay {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Days {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Classrooms {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Instructors {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        is_active boolean
+        desired_working_hour number
+        contract_id string FK
+    }
+
+    Weekdays {
+        id string PK
+        name string
+        created_at Date
+        updated_at Date
+    }
+
+    Contracts {
+        id string PK
+        created_at Date
+        updated_at Date
+        name string
+        max_hours number
+        min_hours number
+    }
+
+    Instructors_PeriodOfDays {
+        created_at Date
+        updated_at Date
+        instructors_id string FK
+        period_of_days_id string FK
+    }
+
+
+    Cohorts_PeriodOfDays {
+        created_at Date
+        updated_at Date
+        cohort_id string FK
+        period_of_days_id string FK
+    }
+
+
+    Instructors_Weekdays {
+        created_at Date
+        updated_at Date
+        instructors_id string FK
+        weekdays_id string FK
+    }
+
+    Courses_Instructors {
+        created_at Date
+        updated_at Date
+        courses_id string FK
+        instructors_id string FK
+    }
+
+    Days_Classes {
+         created_at Date
+        updated_at Date
+        days_id string
+        classes_id string
+    }
+
+    Days_Weekdays {
+        created_at Date
+        updated_at Date
+        days_id string FK
+        weekdays_id string FK
+    }
