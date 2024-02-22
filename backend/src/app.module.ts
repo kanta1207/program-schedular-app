@@ -12,7 +12,7 @@ import { AppService } from './app.service';
       host: process.env.PG_HOST,
       port: parseInt(process.env.PG_PORT),
       username: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
+      password: process.env.POSTGRES_PASSWORD,
       database: process.env.PG_DB,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.NODE_ENV === 'development',
