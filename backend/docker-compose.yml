@@ -1,0 +1,38 @@
+services:
+  program-scheduler-db:
+    platform: linux/amd64
+    env_file: .env
+    container_name: program-scheduler-db
+    image: postgres:16
+    restart: always
+    ports:
+      - '${POSTGRES_PORT_OUTSIDE}:${POSTGRES_PORT}'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - program-scheduler-backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  program-scheduler-api:
+    env_file: .env
+    container_name: program-scheduler-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    depends_on:
+      - program-scheduler-db
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+    networks:
+      - program-scheduler-backend
+
+networks:
+  program-scheduler-backend:
+
