@@ -25,11 +25,11 @@ Before you begin, ensure you have the following installed on your machine:
    ```
    
 3. Open the `.env` file in your editor and update the environment variables to match your local setup. The most important variables to update are:
-   - `PG_USER` - The PostgreSQL username.
+   - `POSTGRES_USER` - The PostgreSQL username.
    - `POSTGRES_PASSWORD` - The password for the PostgreSQL user.
-   - `PG_DB` - The PostgreSQL database name.
-   - `PG_PORT` - The port on which PostgreSQL will run inside the container.
-   - `PG_PORT_OUTSIDE` - The port on your host machine that will be mapped to `PG_PORT`.
+   - `POSTGRES_DB` - The PostgreSQL database name.
+   - `POSTGRES_PORT` - The port on which PostgreSQL will run inside the container.
+   - `POSTGRES_PORT_OUTSIDE` - The port on your host machine that will be mapped to `POSTGRES_PORT`.
    - `APP_PORT` - The port on which the application will be accessible from your host machine.
 
 ### Building and Running the Project
