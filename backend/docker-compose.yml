@@ -1,0 +1,26 @@
+services:
+  program-scheduler-db:
+    platform: linux/amd64
+    env_file: .env
+    container_name: program-scheduler-db
+    image: postgres
+    restart: always
+    ports:
+      - '${PG_PORT_OUTSIDE}:${PG_PORT}'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  program-scheduler-app:
+    env_file: .env
+    container_name: program-scheduler-backend
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '${APP_PORT}:3000'
+    depends_on:
+      - program-scheduler-db
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+
