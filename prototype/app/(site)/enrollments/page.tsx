@@ -1,30 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Link from 'next/link'
-
-const enrollments = [
-  {
-    name: 'DMS-24-Jan',
-    startDate: '2024-01-24',
-    morningClass: [],
-    afternoonClass: ['A1-0124'],
-    eveningClass: ['E1-0124', 'E2-0124'],
-  },
-  {
-    name: 'DMS-23-Sep',
-    startDate: '2023-10-23',
-    morningClass: ['M-1023'],
-    afternoonClass: ['A-1023'],
-    eveningClass: ['E1-1023', 'E2-1023'],
-  },
-  {
-    name: 'DMS-23-Aug',
-    startDate: '2024-09-23',
-    morningClass: [],
-    afternoonClass: [],
-    eveningClass: ['E1-0923'],
-  },
-]
+import { enrollments } from '@/mock/_index'
 
 const page = () => {
   return (
@@ -45,13 +21,28 @@ const page = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {enrollments.map((instructor, i) => (
+          {enrollments.map((enrollment, i) => (
             <TableRow key={i}>
-              <TableCell>{instructor.name}</TableCell>
-              <TableCell>{instructor.startDate}</TableCell>
-              <TableCell>{instructor.morningClass.join(', ')}</TableCell>
-              <TableCell>{instructor.afternoonClass.join(', ')}</TableCell>
-              <TableCell>{instructor.eveningClass.join(', ')}</TableCell>
+              <TableCell>{enrollment.name}</TableCell>
+              <TableCell>{enrollment.startDate.toUTCString()}</TableCell>
+              <TableCell>
+                {enrollment.cohorts
+                  .filter((cohort) => cohort.periodOfDayId === 1)
+                  .map((cohort) => cohort.name)
+                  .join(', ')}
+              </TableCell>
+              <TableCell>
+                {enrollment.cohorts
+                  .filter((cohort) => cohort.periodOfDayId === 2)
+                  .map((cohort) => cohort.name)
+                  .join(', ')}
+              </TableCell>
+              <TableCell>
+                {enrollment.cohorts
+                  .filter((cohort) => cohort.periodOfDayId === 3)
+                  .map((cohort) => cohort.name)
+                  .join(', ')}
+              </TableCell>
               <TableCell className="flex gap-2">
                 <Button variant={'outline'}>Edit</Button>
                 <Button variant={'destructive'}>Delete</Button>

@@ -27,7 +27,6 @@ const navigation = [
 
 const Header = () => {
   const path = usePathname()
-  console.log(path)
   return (
     <header className="h-[60px] w-full flex items-center justify-between bg-primary px-4">
       <div className="flex items-center gap-6">
