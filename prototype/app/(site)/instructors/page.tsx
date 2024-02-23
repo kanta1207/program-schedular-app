@@ -1,39 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { instructors } from '@/mock/instructor'
 import Link from 'next/link'
-
-export const instructors = [
-  {
-    id: 1,
-    name: 'Ana Couto',
-    contract: 'Employee (part-time)',
-    desiredWorkingHours: 20,
-    period: ['Morning', 'Afternoon'],
-    availableDaysOfWeek: 'Monday-Friday',
-    isActive: true,
-    course: ['SEO', 'Analytics'],
-  },
-  {
-    id: 2,
-    name: 'Brian',
-    contract: 'Employee (full-time)',
-    desiredWorkingHours: 40,
-    period: ['Evening'],
-    availableDaysOfWeek: 'Monday-Friday',
-    isActive: true,
-    course: ['SEO', 'Analytics'],
-  },
-  {
-    id: 3,
-    name: 'Caio Franco',
-    contract: 'contractor',
-    desiredWorkingHours: 20,
-    period: ['Evening'],
-    availableDaysOfWeek: 'Monday-Wednesday',
-    isActive: true,
-    course: ['SEO', 'Analytics'],
-  },
-]
 
 const page = () => {
   return (
@@ -60,11 +28,11 @@ const page = () => {
           {instructors.map((instructor, i) => (
             <TableRow key={i}>
               <TableCell>{instructor.name}</TableCell>
-              <TableCell>{instructor.contract}</TableCell>
+              <TableCell>{instructor.contractType.name}</TableCell>
               <TableCell>{instructor.desiredWorkingHours}</TableCell>
-              <TableCell>{instructor.period.join(', ')}</TableCell>
-              <TableCell>{instructor.availableDaysOfWeek}</TableCell>
-              <TableCell>{instructor.availableDaysOfWeek ? 'Active' : 'Inactive'}</TableCell>
+              <TableCell>{instructor.periodOfDays.map((period) => period.name).join(', ')}</TableCell>
+              <TableCell>{instructor.weekdaysRange.name}</TableCell>
+              <TableCell>{instructor.isActive ? 'Active' : 'Inactive'}</TableCell>
               <TableCell className="flex gap-2">
                 <Button variant={'outline'} asChild>
                   <Link href={`/instructors/${instructor.id}`}>Edit</Link>
