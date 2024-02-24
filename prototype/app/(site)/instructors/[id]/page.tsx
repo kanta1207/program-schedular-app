@@ -1,13 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-import { instructors } from '../page'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Switch } from '@/components/ui/switch'
-import { useRouter } from 'next/navigation'
+import { courses, instructors } from '@/mock/_index'
+import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index'
 
 const InstructorDetail = ({ params: { id } }: any) => {
   const [isEditable, setIsEditable] = useState(false)
@@ -24,76 +25,59 @@ const InstructorDetail = ({ params: { id } }: any) => {
 
       <div className="flex gap-6">
         <p>Contract:</p>
-        <RadioGroup defaultValue={instructor.contract} className="flex gap-x-4" disabled={!isEditable}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Employee (full-time)" id="full-time" />
-            <Label htmlFor="full-time">Employee (full-time)</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Employee (part-time)" id="part-time" />
-            <Label htmlFor="part-time">Employee (part-time)</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Contractor" id="contractor" />
-            <Label htmlFor="contractor">Contractor</Label>
-          </div>
+        <RadioGroup
+          defaultValue={instructor.contractType.id.toString()}
+          className="flex gap-x-4"
+          disabled={!isEditable}
+        >
+          {CONTRACT_TYPES.map((contractType) => (
+            <div key={contractType.id} className="flex items-center space-x-2">
+              <RadioGroupItem value={contractType.id.toString()} id={contractType.name} />
+              <Label htmlFor={contractType.name}>{contractType.name}</Label>
+            </div>
+          ))}
         </RadioGroup>
       </div>
 
       <div className="flex gap-6">
         <p>Desired working hours:</p>
         <RadioGroup defaultValue={instructor.desiredWorkingHours + ''} className="flex gap-x-4" disabled={!isEditable}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="40" id="40" />
-            <Label htmlFor="40">40</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="30" id="30" />
-            <Label htmlFor="30">30</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="20" id="20" />
-            <Label htmlFor="20">20</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="10" id="10" />
-            <Label htmlFor="10">10</Label>
-          </div>
+          {DESIRED_WORKING_HOURS.map((hours) => (
+            <div key={hours} className="flex items-center space-x-2">
+              <RadioGroupItem value={hours.toString()} id={hours.toString()} />
+              <Label htmlFor={hours.toString()}>{hours}</Label>
+            </div>
+          ))}
         </RadioGroup>
       </div>
 
       <div className="flex gap-6">
         <p>Days:</p>
-        <RadioGroup defaultValue={instructor.availableDaysOfWeek} className="flex gap-x-4" disabled={!isEditable}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Monday-Friday" id="Monday-Friday" />
-            <Label htmlFor="Monday-Friday">Monday-Friday</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Monday-Wednesday" id="Monday-Wednesday" />
-            <Label htmlFor="Monday-Wednesday">Monday-Wednesday</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Wednesday-Friday" id="Wednesday-Friday" />
-            <Label htmlFor="Wednesday-Friday">Wednesday-Friday</Label>
-          </div>
+        <RadioGroup
+          defaultValue={instructor.weekdaysRange.id.toString()}
+          className="flex gap-x-4"
+          disabled={!isEditable}
+        >
+          {WEEKDAYS_RANGES.map((range) => (
+            <div key={range.id} className="flex items-center space-x-2">
+              <RadioGroupItem value={range.id.toString()} id={range.name} />
+              <Label htmlFor={range.name}>{range.name}</Label>
+            </div>
+          ))}
         </RadioGroup>
       </div>
 
       <div className="flex gap-6">
         <p>Period:</p>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.period.includes('Morning')} disabled={!isEditable} />
-          <Label>Morning</Label>
-        </div>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.period.includes('Afternoon')} disabled={!isEditable} />
-          <Label>Afternoon</Label>
-        </div>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.period.includes('Evening')} disabled={!isEditable} />
-          <Label>Evening</Label>
-        </div>
+        {PERIOD_OF_DAYS.map((period) => (
+          <div key={period.id} className="items-top flex space-x-2">
+            <Checkbox
+              defaultChecked={instructor.periodOfDays.findIndex(({ id }) => period.id === id) !== -1}
+              disabled={!isEditable}
+            />
+            <Label>{period.name}</Label>
+          </div>
+        ))}
       </div>
 
       <div className="flex gap-6">
@@ -101,20 +85,36 @@ const InstructorDetail = ({ params: { id } }: any) => {
         <Switch defaultChecked={instructor.isActive} disabled={!isEditable} />
       </div>
 
-      <div className="flex gap-6">
-        <p>Course:</p>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.course.includes('SEO')} disabled={!isEditable} />
-          <Label>SEO</Label>
-        </div>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.course.includes('Analytics')} disabled={!isEditable} />
-          <Label>Analytics</Label>
-        </div>
-        <div className="items-top flex space-x-2">
-          <Checkbox defaultChecked={instructor.course.includes('WordPress')} disabled={!isEditable} />
-          <Label>WordPress</Label>
-        </div>
+      <p>Course:</p>
+      <p>DMS:</p>
+      <div className="flex flex-wrap gap-6">
+        {courses.map(
+          (course) =>
+            course.program.name === 'DMS' && (
+              <div key={course.id} className="items-top flex space-x-2">
+                <Checkbox
+                  defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
+                  disabled={!isEditable}
+                />
+                <Label>{course.name}</Label>
+              </div>
+            )
+        )}
+      </div>
+      <p>DMA:</p>
+      <div className="flex flex-wrap gap-6">
+        {courses.map(
+          (course) =>
+            course.program.name === 'DMA' && (
+              <div key={course.id} className="items-top flex space-x-2">
+                <Checkbox
+                  defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
+                  disabled={!isEditable}
+                />
+                <Label>{course.name}</Label>
+              </div>
+            )
+        )}
       </div>
 
       <div className="flex justify-end">

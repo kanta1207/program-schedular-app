@@ -1,6 +1,6 @@
-import { Cohort } from './cohort'
+import { Cohort } from './_index'
 
-export interface Enrollment {
+export interface Intake {
   id: number
   startDate: Date
   name: string

@@ -1,28 +1,11 @@
 'use client'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useState } from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-
-const courses = [
-  {
-    name: 'SEO',
-    program: 'DMS',
-    requiredHours: 40,
-  },
-  {
-    name: 'Analytics',
-    program: 'DMS',
-    requiredHours: 40,
-  },
-  {
-    name: 'E-Commerce',
-    program: 'DMA',
-    requiredHours: 80,
-  },
-]
+import { courses } from '@/mock/_index'
 
 const CourseList = () => {
   const [isCreating, setIsCreating] = useState(false)
@@ -53,7 +36,7 @@ const CourseList = () => {
           </div>
           <div>
             <Label>Required hours</Label>
-            <Input className="w-80" />
+            <Input placeholder="60" className="w-80" />
           </div>
 
           <div className="flex gap-x-2">
@@ -78,7 +61,7 @@ const CourseList = () => {
           {courses.map((course, i) => (
             <TableRow key={i}>
               <TableCell>{course.name}</TableCell>
-              <TableCell>{course.program}</TableCell>
+              <TableCell>{course.program.name}</TableCell>
               <TableCell>{course.requiredHours}</TableCell>
               <TableCell className="flex gap-2">
                 <Button variant={'outline'}>Edit</Button>

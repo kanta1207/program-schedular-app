@@ -12,8 +12,8 @@ const navigation = [
     path: '/instructors',
   },
   {
-    name: 'Enrollments',
-    path: '/enrollments',
+    name: 'Intakes',
+    path: '/intakes',
   },
   {
     name: 'Cohorts',
@@ -28,7 +28,7 @@ const navigation = [
 const Header = () => {
   const path = usePathname()
   return (
-    <header className="h-[60px] w-full flex items-center justify-between bg-primary px-4">
+    <header className="fixed z-50 h-[60px] w-full flex items-center justify-between bg-primary px-4">
       <div className="flex items-center gap-6">
         {/* Logo */}
         <div>

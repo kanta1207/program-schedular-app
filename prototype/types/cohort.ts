@@ -1,10 +1,11 @@
+import { Intake, PeriodOfDay, Program } from './_index'
+
 export interface Cohort {
   id: number
   name: string
-  enrollmentId: number
-  periodOfDayId: number
-  programId: number
-  scheduleId: number
+  intake: Intake
+  periodOfDay: PeriodOfDay
+  program: Program
   createdAt?: Date
   updatedAt?: Date
 }

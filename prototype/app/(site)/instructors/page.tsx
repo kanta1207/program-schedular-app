@@ -1,9 +1,9 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { instructors } from '@/mock/instructor'
-import Link from 'next/link'
+import { instructors } from '@/mock/_index'
 
-const page = () => {
+const InstructorList = () => {
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
@@ -15,7 +15,7 @@ const page = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Instructor name</TableHead>
-            <TableHead>Contract</TableHead>
+            <TableHead>Contract type</TableHead>
             <TableHead>Desired working hours</TableHead>
             <TableHead>period</TableHead>
             <TableHead>Available days of week</TableHead>
@@ -47,4 +47,4 @@ const page = () => {
   )
 }
 
-export default page
+export default InstructorList

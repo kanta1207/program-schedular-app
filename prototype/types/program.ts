@@ -1,6 +1,8 @@
 export interface Program {
   id: number
-  name: string
+  name: programName
   createdAt?: Date
   updatedAt?: Date
 }
+
+export type programName = 'DMS' | 'DMA'

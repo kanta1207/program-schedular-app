@@ -1,6 +1,6 @@
 import { ContractType } from '@/types/_index'
 
-export const CONTRACTS: ContractType[] = [
+export const CONTRACT_TYPES: ContractType[] = [
   {
     id: 1,
     name: 'Full time',

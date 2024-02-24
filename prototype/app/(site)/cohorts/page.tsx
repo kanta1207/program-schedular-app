@@ -1,59 +1,79 @@
 'use client'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useState } from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cohorts, intakes } from '@/mock/_index'
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index'
 
-const courses = [
-  {
-    name: 'SEO',
-    program: 'DMS',
-    requiredHours: 40,
-  },
-  {
-    name: 'Analytics',
-    program: 'DMS',
-    requiredHours: 40,
-  },
-  {
-    name: 'E-Commerce',
-    program: 'DMA',
-    requiredHours: 80,
-  },
-]
-
-const CourseList = () => {
+const CohortList = () => {
   const [isCreating, setIsCreating] = useState(false)
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
-        <Button onClick={() => setIsCreating(!isCreating)}>New course</Button>
+        <Button onClick={() => setIsCreating(!isCreating)}>New cohort</Button>
       </div>
       {isCreating && (
         <div className="flex gap-4 items-end p-4 border my-4">
           <div>
-            <Label>Course name</Label>
-            <Input className="w-80" />
-          </div>
-          <div>
-            <Label>Program</Label>
+            <Label>Intake</Label>
             <Select>
-              <SelectTrigger className="w-80">
-                <SelectValue placeholder="Select a program" />
+              <SelectTrigger className="w-60">
+                <SelectValue placeholder="Select an intake" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="DMS">DMS</SelectItem>
-                  <SelectItem value="DMA">DMA</SelectItem>
+                  {intakes.map((intake) => (
+                    <SelectItem key={intake.id} value={intake.id.toString()}>
+                      {intake.name}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label>Required hours</Label>
-            <Input className="w-80" />
+
+          <div className="w-60">
+            <Label>Cohort name</Label>
+            <Input />
+          </div>
+
+          <div className="w-60">
+            <Label>Program</Label>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a program" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {PROGRAMS.map((program) => (
+                    <SelectItem key={program.id} value={program.name}>
+                      {program.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="w-60">
+            <Label>Period</Label>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a program" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {PERIOD_OF_DAYS.map((period) => (
+                    <SelectItem key={period.id} value={period.name}>
+                      {period.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex gap-x-2">
@@ -67,19 +87,21 @@ const CourseList = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Course name</TableHead>
+            <TableHead>Intake name</TableHead>
+            <TableHead>Cohort name</TableHead>
             <TableHead>Program</TableHead>
-            <TableHead>Required hours</TableHead>
+            <TableHead>Period</TableHead>
             {/* empty head for edit and delete */}
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {courses.map((course, i) => (
+          {cohorts.map((cohort, i) => (
             <TableRow key={i}>
-              <TableCell>{course.name}</TableCell>
-              <TableCell>{course.program}</TableCell>
-              <TableCell>{course.requiredHours}</TableCell>
+              <TableCell>{cohort.intake.name}</TableCell>
+              <TableCell>{cohort.name}</TableCell>
+              <TableCell>{cohort.program.name}</TableCell>
+              <TableCell>{cohort.periodOfDay.name}</TableCell>
               <TableCell className="flex gap-2">
                 <Button variant={'outline'}>Edit</Button>
                 <Button variant={'destructive'}>Delete</Button>
@@ -92,4 +114,4 @@ const CourseList = () => {
   )
 }
 
-export default CourseList
+export default CohortList
