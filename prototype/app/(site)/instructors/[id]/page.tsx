@@ -32,7 +32,15 @@ import {
 } from "@/constants/_index";
 import { classes } from "@/mock/class";
 
-const InstructorDetail = ({ params: { id } }: any) => {
+interface InstructorDetailProps {
+  params: {
+    id: string;
+  };
+}
+
+const InstructorDetail: React.FC<InstructorDetailProps> = ({
+  params: { id },
+}) => {
   const [isEditable, setIsEditable] = useState(false);
   const instructor = instructors.find((instructor) => instructor.id === +id);
   if (!instructor) return;

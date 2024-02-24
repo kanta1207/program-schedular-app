@@ -23,6 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const IntakeList = () => {
   const [isCreating, setIsCreating] = useState(false);
@@ -30,6 +31,7 @@ const IntakeList = () => {
     from: dayjs().toDate(),
     to: dayjs().add(5, "month").toDate(),
   });
+  const router = useRouter();
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
@@ -100,7 +102,8 @@ const IntakeList = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Intake name</TableHead>
-            <TableHead>Start from</TableHead>
+            <TableHead>Start date</TableHead>
+            <TableHead>End date</TableHead>
             <TableHead>Morning cohorts</TableHead>
             <TableHead>Afternoon cohorts</TableHead>
             <TableHead>Evening cohorts</TableHead>
@@ -113,7 +116,10 @@ const IntakeList = () => {
             <TableRow key={i}>
               <TableCell>{intake.name}</TableCell>
               <TableCell>
-                {dayjs(intake.startDate).format("YYYY-MM-DD (ddd)")}
+                {dayjs(intake.startAt).format("YYYY-MM-DD (ddd)")}
+              </TableCell>
+              <TableCell>
+                {dayjs(intake.endAt).format("YYYY-MM-DD (ddd)")}
               </TableCell>
               <TableCell>
                 {intake.cohorts
@@ -134,7 +140,12 @@ const IntakeList = () => {
                   .join(", ")}
               </TableCell>
               <TableCell className="flex gap-2">
-                <Button variant={"outline"}>Edit</Button>
+                <Button
+                  variant={"outline"}
+                  onClick={() => router.push(`/intakes/${intake.id}`)}
+                >
+                  Edit
+                </Button>
                 <Button variant={"destructive"}>Delete</Button>
               </TableCell>
             </TableRow>
