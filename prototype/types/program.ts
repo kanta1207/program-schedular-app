@@ -1,8 +1,8 @@
 export interface Program {
-  id: number
-  name: programName
-  createdAt?: Date
-  updatedAt?: Date
+  id: number;
+  name: programName;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export type programName = 'DMS' | 'DMA'
+export type programName = "DMS" | "DMA";

@@ -1,20 +1,25 @@
-'use client'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Switch } from '@/components/ui/switch'
-import { courses, instructors } from '@/mock/_index'
-import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index'
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { courses, instructors } from "@/mock/_index";
+import {
+  CONTRACT_TYPES,
+  DESIRED_WORKING_HOURS,
+  PERIOD_OF_DAYS,
+  WEEKDAYS_RANGES,
+} from "@/constants/_index";
 
 const InstructorDetail = ({ params: { id } }: any) => {
-  const [isEditable, setIsEditable] = useState(false)
-  const router = useRouter()
-  const instructor = instructors.find((instructor) => instructor.id === +id)
-  if (!instructor) return
+  const [isEditable, setIsEditable] = useState(false);
+  const router = useRouter();
+  const instructor = instructors.find((instructor) => instructor.id === +id);
+  if (!instructor) return;
 
   return (
     <div className="p-20 space-y-8">
@@ -32,7 +37,10 @@ const InstructorDetail = ({ params: { id } }: any) => {
         >
           {CONTRACT_TYPES.map((contractType) => (
             <div key={contractType.id} className="flex items-center space-x-2">
-              <RadioGroupItem value={contractType.id.toString()} id={contractType.name} />
+              <RadioGroupItem
+                value={contractType.id.toString()}
+                id={contractType.name}
+              />
               <Label htmlFor={contractType.name}>{contractType.name}</Label>
             </div>
           ))}
@@ -41,7 +49,11 @@ const InstructorDetail = ({ params: { id } }: any) => {
 
       <div className="flex gap-6">
         <p>Desired working hours:</p>
-        <RadioGroup defaultValue={instructor.desiredWorkingHours + ''} className="flex gap-x-4" disabled={!isEditable}>
+        <RadioGroup
+          defaultValue={instructor.desiredWorkingHours + ""}
+          className="flex gap-x-4"
+          disabled={!isEditable}
+        >
           {DESIRED_WORKING_HOURS.map((hours) => (
             <div key={hours} className="flex items-center space-x-2">
               <RadioGroupItem value={hours.toString()} id={hours.toString()} />
@@ -72,7 +84,11 @@ const InstructorDetail = ({ params: { id } }: any) => {
         {PERIOD_OF_DAYS.map((period) => (
           <div key={period.id} className="items-top flex space-x-2">
             <Checkbox
-              defaultChecked={instructor.periodOfDays.findIndex(({ id }) => period.id === id) !== -1}
+              defaultChecked={
+                instructor.periodOfDays.findIndex(
+                  ({ id }) => period.id === id
+                ) !== -1
+              }
               disabled={!isEditable}
             />
             <Label>{period.name}</Label>
@@ -90,10 +106,14 @@ const InstructorDetail = ({ params: { id } }: any) => {
       <div className="flex flex-wrap gap-6">
         {courses.map(
           (course) =>
-            course.program.name === 'DMS' && (
+            course.program.name === "DMS" && (
               <div key={course.id} className="items-top flex space-x-2">
                 <Checkbox
-                  defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
+                  defaultChecked={
+                    instructor.courses.findIndex(
+                      ({ id }) => course.id === id
+                    ) !== -1
+                  }
                   disabled={!isEditable}
                 />
                 <Label>{course.name}</Label>
@@ -105,10 +125,14 @@ const InstructorDetail = ({ params: { id } }: any) => {
       <div className="flex flex-wrap gap-6">
         {courses.map(
           (course) =>
-            course.program.name === 'DMA' && (
+            course.program.name === "DMA" && (
               <div key={course.id} className="items-top flex space-x-2">
                 <Checkbox
-                  defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
+                  defaultChecked={
+                    instructor.courses.findIndex(
+                      ({ id }) => course.id === id
+                    ) !== -1
+                  }
                   disabled={!isEditable}
                 />
                 <Label>{course.name}</Label>
@@ -120,24 +144,30 @@ const InstructorDetail = ({ params: { id } }: any) => {
       <div className="flex justify-end">
         {isEditable ? (
           <div className="flex gap-2">
-            <Button variant={'outline'} onClick={() => router.back()}>
+            <Button variant={"outline"} onClick={() => router.back()}>
               Cancel
             </Button>
             <Button>Save changes</Button>
           </div>
         ) : (
           <div className="flex gap-2">
-            <Button variant={'outline'} onClick={() => setIsEditable(!isEditable)}>
+            <Button
+              variant={"outline"}
+              onClick={() => setIsEditable(!isEditable)}
+            >
               Edit
             </Button>
-            <Button variant={'destructive'} onClick={() => confirm('Are you sure to delete?')}>
+            <Button
+              variant={"destructive"}
+              onClick={() => confirm("Are you sure to delete?")}
+            >
               Delete
             </Button>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InstructorDetail
+export default InstructorDetail;

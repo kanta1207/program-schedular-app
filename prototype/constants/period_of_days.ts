@@ -1,16 +1,16 @@
-import { PeriodOfDay } from '@/types/_index'
+import { PeriodOfDay } from "@/types/_index";
 
 export const PERIOD_OF_DAYS: PeriodOfDay[] = [
   {
     id: 1,
-    name: 'Morning',
+    name: "Morning",
   },
   {
     id: 2,
-    name: 'Afternoon',
+    name: "Afternoon",
   },
   {
     id: 3,
-    name: 'Evening',
+    name: "Evening",
   },
-] as const
+] as const;

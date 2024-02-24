@@ -1,14 +1,28 @@
-'use client'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { courses } from '@/mock/_index'
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { courses } from "@/mock/_index";
 
 const CourseList = () => {
-  const [isCreating, setIsCreating] = useState(false)
+  const [isCreating, setIsCreating] = useState(false);
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
@@ -40,7 +54,10 @@ const CourseList = () => {
           </div>
 
           <div className="flex gap-x-2">
-            <Button variant={'outline'} onClick={() => setIsCreating(!isCreating)}>
+            <Button
+              variant={"outline"}
+              onClick={() => setIsCreating(!isCreating)}
+            >
               Cancel
             </Button>
             <Button>Create course</Button>
@@ -64,15 +81,15 @@ const CourseList = () => {
               <TableCell>{course.program.name}</TableCell>
               <TableCell>{course.requiredHours}</TableCell>
               <TableCell className="flex gap-2">
-                <Button variant={'outline'}>Edit</Button>
-                <Button variant={'destructive'}>Delete</Button>
+                <Button variant={"outline"}>Edit</Button>
+                <Button variant={"destructive"}>Delete</Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default CourseList
+export default CourseList;

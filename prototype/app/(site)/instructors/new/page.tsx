@@ -1,14 +1,14 @@
-'use client'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Checkbox } from '@/components/ui/checkbox'
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const NewInstructorPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className="w-full p-20">
       <div className="p-20 space-y-8">
@@ -19,7 +19,10 @@ const NewInstructorPage = () => {
 
         <div className="flex gap-6">
           <p>Contract:</p>
-          <RadioGroup defaultValue="Employee (full-time)" className="flex gap-x-4">
+          <RadioGroup
+            defaultValue="Employee (full-time)"
+            className="flex gap-x-4"
+          >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Employee (full-time)" id="full-time" />
               <Label htmlFor="full-time">Employee (full-time)</Label>
@@ -109,7 +112,7 @@ const NewInstructorPage = () => {
 
         <div className="flex justify-end">
           <div className="flex gap-2">
-            <Button variant={'outline'} onClick={() => router.back()}>
+            <Button variant={"outline"} onClick={() => router.back()}>
               Cancel
             </Button>
             <Button onClick={() => router.back()}>Create</Button>
@@ -117,7 +120,7 @@ const NewInstructorPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewInstructorPage
+export default NewInstructorPage;

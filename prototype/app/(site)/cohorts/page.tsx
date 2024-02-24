@@ -1,15 +1,29 @@
-'use client'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { cohorts, intakes } from '@/mock/_index'
-import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index'
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cohorts, intakes } from "@/mock/_index";
+import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
 
 const CohortList = () => {
-  const [isCreating, setIsCreating] = useState(false)
+  const [isCreating, setIsCreating] = useState(false);
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
@@ -77,7 +91,10 @@ const CohortList = () => {
           </div>
 
           <div className="flex gap-x-2">
-            <Button variant={'outline'} onClick={() => setIsCreating(!isCreating)}>
+            <Button
+              variant={"outline"}
+              onClick={() => setIsCreating(!isCreating)}
+            >
               Cancel
             </Button>
             <Button>Create course</Button>
@@ -103,15 +120,15 @@ const CohortList = () => {
               <TableCell>{cohort.program.name}</TableCell>
               <TableCell>{cohort.periodOfDay.name}</TableCell>
               <TableCell className="flex gap-2">
-                <Button variant={'outline'}>Edit</Button>
-                <Button variant={'destructive'}>Delete</Button>
+                <Button variant={"outline"}>Edit</Button>
+                <Button variant={"destructive"}>Delete</Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default CohortList
+export default CohortList;

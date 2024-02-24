@@ -1,16 +1,16 @@
-import { WeekdaysRange } from '@/types/_index'
+import { WeekdaysRange } from "@/types/_index";
 
 export const WEEKDAYS_RANGES: WeekdaysRange[] = [
   {
     id: 1,
-    name: 'Monday - Friday',
+    name: "Monday - Friday",
   },
   {
     id: 2,
-    name: 'Monday - Wednesday',
+    name: "Monday - Wednesday",
   },
   {
     id: 3,
-    name: 'Wednesday - Friday',
+    name: "Wednesday - Friday",
   },
-] as const
+] as const;
