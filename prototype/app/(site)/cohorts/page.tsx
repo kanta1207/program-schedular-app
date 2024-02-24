@@ -16,9 +16,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { cohorts, intakes } from "@/mock/_index";
 import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
+import { useRouter } from "next/navigation";
 
 const CohortList = () => {
   const [isCreating, setIsCreating] = useState(false);
+  const router = useRouter();
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
@@ -146,7 +148,12 @@ const CohortList = () => {
                 <TableCell>{cohort.periodOfDay.name}</TableCell>
                 <TableCell>
                   <div className="flex gap-x-2">
-                    <Button variant="outlined">Edit</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => router.push(`/cohorts/${cohort.id}`)}
+                    >
+                      Edit
+                    </Button>
                     <Button variant="contained" color="error">
                       Delete
                     </Button>

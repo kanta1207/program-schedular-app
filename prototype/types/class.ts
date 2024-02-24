@@ -1,9 +1,14 @@
+import { Classroom, Cohort, Course, Instructor, WeekdaysRange } from "./_index";
+
 export interface Class {
   id: number;
-  rangeId: number;
-  slotId: number;
-  courseId: number;
-  instructorId: number | null;
+  cohortId: number;
+  weekdaysRange: WeekdaysRange;
+  course: Course;
+  startAt: Date;
+  endAt: Date;
+  instructor: Instructor | null;
+  classroom: Classroom;
   createdAt?: Date;
   updatedAt?: Date;
 }
