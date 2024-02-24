@@ -1,24 +1,19 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import { Select } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { cohorts, intakes } from "@/mock/_index";
 import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
 
@@ -27,106 +22,141 @@ const CohortList = () => {
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
-        <Button onClick={() => setIsCreating(!isCreating)}>New cohort</Button>
+        <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
+          New cohort
+        </Button>
       </div>
       {isCreating && (
-        <div className="flex gap-4 items-end p-4 border my-4">
-          <div>
-            <Label>Intake</Label>
-            <Select>
-              <SelectTrigger className="w-60">
-                <SelectValue placeholder="Select an intake" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
+        <Box
+          display="flex"
+          alignItems="end"
+          justifyContent="space-between"
+          p={2}
+          marginY={2}
+        >
+          <div className="flex gap-x-4 items-end">
+            <Box sx={{ minWidth: 240 }}>
+              <FormControl fullWidth>
+                <InputLabel id="intake-label">Intake</InputLabel>
+                <Select
+                  labelId="intake-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Intake"
+                  // onChange={handleChange}
+                >
                   {intakes.map((intake) => (
-                    <SelectItem key={intake.id} value={intake.id.toString()}>
+                    <MenuItem key={intake.id} value={intake.name}>
                       {intake.name}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+                </Select>
+              </FormControl>
+            </Box>
 
-          <div className="w-60">
-            <Label>Cohort name</Label>
-            <Input />
-          </div>
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-basic"
+                label="Cohort name"
+                variant="outlined"
+              />
+            </Box>
 
-          <div className="w-60">
-            <Label>Program</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a program" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
+            <Box sx={{ minWidth: 160 }}>
+              <FormControl fullWidth>
+                <InputLabel id="intake-label">Program</InputLabel>
+                <Select
+                  labelId="intake-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Intake"
+                  // onChange={handleChange}
+                >
                   {PROGRAMS.map((program) => (
-                    <SelectItem key={program.id} value={program.name}>
+                    <MenuItem key={program.id} value={program.name}>
                       {program.name}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+                </Select>
+              </FormControl>
+            </Box>
 
-          <div className="w-60">
-            <Label>Period</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a program" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
+            <Box sx={{ minWidth: 160 }}>
+              <FormControl fullWidth>
+                <InputLabel id="intake-label">Period</InputLabel>
+                <Select
+                  labelId="intake-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Intake"
+                  // onChange={handleChange}
+                >
                   {PERIOD_OF_DAYS.map((period) => (
-                    <SelectItem key={period.id} value={period.name}>
+                    <MenuItem key={period.id} value={period.name}>
                       {period.name}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                </Select>
+              </FormControl>
+            </Box>
           </div>
 
           <div className="flex gap-x-2">
             <Button
-              variant={"outline"}
+              variant="outlined"
               onClick={() => setIsCreating(!isCreating)}
             >
               Cancel
             </Button>
-            <Button>Create course</Button>
+            <Button variant="contained">Create course</Button>
           </div>
-        </div>
+        </Box>
       )}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Intake name</TableHead>
-            <TableHead>Cohort name</TableHead>
-            <TableHead>Program</TableHead>
-            <TableHead>Period</TableHead>
-            {/* empty head for edit and delete */}
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {cohorts.map((cohort, i) => (
-            <TableRow key={i}>
-              <TableCell>{cohort.intake.name}</TableCell>
-              <TableCell>{cohort.name}</TableCell>
-              <TableCell>{cohort.program.name}</TableCell>
-              <TableCell>{cohort.periodOfDay.name}</TableCell>
-              <TableCell className="flex gap-2">
-                <Button variant={"outline"}>Edit</Button>
-                <Button variant={"destructive"}>Delete</Button>
-              </TableCell>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Intake name</TableCell>
+              <TableCell>Cohort name</TableCell>
+              <TableCell>Program</TableCell>
+              <TableCell>Period</TableCell>
+              {/* empty head for edit and delete */}
+              <TableCell></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {cohorts.map((cohort) => (
+              <TableRow
+                key={cohort.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {cohort.intake.name}
+                </TableCell>
+                <TableCell>{cohort.name}</TableCell>
+                <TableCell>{cohort.program.name}</TableCell>
+                <TableCell>{cohort.periodOfDay.name}</TableCell>
+                <TableCell>
+                  <div className="flex gap-x-2">
+                    <Button variant="outlined">Edit</Button>
+                    <Button variant="contained" color="error">
+                      Delete
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
