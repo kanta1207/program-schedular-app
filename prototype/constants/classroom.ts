@@ -3,32 +3,42 @@ import { Classroom } from '@/types/_index'
 export const CLASSROOMS: Classroom[] = [
   {
     id: 1,
-    name: 'Youtube',
-    floor: '2nd floor',
+    name: 'Google',
+    floor: '2nd',
   },
   {
     id: 2,
-    name: 'Facebook',
-    floor: '3rd floor',
+    name: 'Youtube',
+    floor: '2nd',
   },
   {
     id: 3,
-    name: 'Amazon',
-    floor: '3rd floor',
+    name: 'Uber',
+    floor: '2nd',
   },
   {
     id: 4,
-    name: 'Apple',
-    floor: '4th floor',
+    name: 'Amazon',
+    floor: '3rd',
   },
   {
     id: 5,
-    name: 'Hootsuite',
-    floor: '4th floor',
+    name: 'Facebook',
+    floor: '3rd',
   },
   {
     id: 6,
+    name: 'Apple',
+    floor: '4th',
+  },
+  {
+    id: 7,
+    name: 'Hootsuite',
+    floor: '4th',
+  },
+  {
+    id: 8,
     name: 'Microsoft',
-    floor: '4th floor',
+    floor: '4th',
   },
 ] as const
