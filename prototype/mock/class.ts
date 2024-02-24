@@ -13,7 +13,7 @@ export const classes: Class[] = [
   // M-1023
   {
     id: 1,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-10-13").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -25,7 +25,7 @@ export const classes: Class[] = [
   },
   {
     id: 2,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2023-10-16").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -37,7 +37,7 @@ export const classes: Class[] = [
   },
   {
     id: 3,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-11-24").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -49,7 +49,7 @@ export const classes: Class[] = [
   },
   {
     id: 4,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-11-24").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -61,7 +61,7 @@ export const classes: Class[] = [
   },
   {
     id: 5,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2023-11-27").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -73,7 +73,7 @@ export const classes: Class[] = [
   },
   {
     id: 6,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -85,7 +85,7 @@ export const classes: Class[] = [
   },
   {
     id: 7,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -97,7 +97,7 @@ export const classes: Class[] = [
   },
   {
     id: 8,
-    cohortId: cohorts.find(({ name }) => name === "M-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "M-1023")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -110,7 +110,7 @@ export const classes: Class[] = [
   // A-1023
   {
     id: 9,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -122,7 +122,7 @@ export const classes: Class[] = [
   },
   {
     id: 10,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-10-03").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -134,7 +134,7 @@ export const classes: Class[] = [
   },
   {
     id: 11,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2023-10-16").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -146,7 +146,7 @@ export const classes: Class[] = [
   },
   {
     id: 12,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-11-24").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -158,7 +158,7 @@ export const classes: Class[] = [
   },
   {
     id: 13,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2023-11-27").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -170,7 +170,7 @@ export const classes: Class[] = [
   },
   {
     id: 14,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -182,7 +182,7 @@ export const classes: Class[] = [
   },
   {
     id: 15,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -194,7 +194,7 @@ export const classes: Class[] = [
   },
   {
     id: 16,
-    cohortId: cohorts.find(({ name }) => name === "A-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A-1023")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -207,7 +207,7 @@ export const classes: Class[] = [
   // E1-1023
   {
     id: 17,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -219,7 +219,7 @@ export const classes: Class[] = [
   },
   {
     id: 18,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-10-13").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -231,7 +231,7 @@ export const classes: Class[] = [
   },
   {
     id: 19,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2023-10-16").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -243,7 +243,7 @@ export const classes: Class[] = [
   },
   {
     id: 20,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -255,7 +255,7 @@ export const classes: Class[] = [
   },
   {
     id: 21,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -267,7 +267,7 @@ export const classes: Class[] = [
   },
   {
     id: 22,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -279,7 +279,7 @@ export const classes: Class[] = [
   },
   {
     id: 23,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -291,7 +291,7 @@ export const classes: Class[] = [
   },
   {
     id: 24,
-    cohortId: cohorts.find(({ name }) => name === "E1-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-1023")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -304,7 +304,7 @@ export const classes: Class[] = [
   // E2-1023
   {
     id: 25,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -316,7 +316,7 @@ export const classes: Class[] = [
   },
   {
     id: 26,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2023-09-25").toDate(),
     endAt: dayjs("2023-10-13").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -328,7 +328,7 @@ export const classes: Class[] = [
   },
   {
     id: 27,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2023-10-16").toDate(),
     endAt: dayjs("2023-11-03").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -340,7 +340,7 @@ export const classes: Class[] = [
   },
   {
     id: 28,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -352,7 +352,7 @@ export const classes: Class[] = [
   },
   {
     id: 29,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2023-11-06").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -364,7 +364,7 @@ export const classes: Class[] = [
   },
   {
     id: 30,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -376,7 +376,7 @@ export const classes: Class[] = [
   },
   {
     id: 31,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -388,7 +388,7 @@ export const classes: Class[] = [
   },
   {
     id: 32,
-    cohortId: cohorts.find(({ name }) => name === "E2-1023")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-1023")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -402,7 +402,7 @@ export const classes: Class[] = [
   // A1-0124
   {
     id: 33,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -414,7 +414,7 @@ export const classes: Class[] = [
   },
   {
     id: 34,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -426,7 +426,7 @@ export const classes: Class[] = [
   },
   {
     id: 35,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -438,7 +438,7 @@ export const classes: Class[] = [
   },
   {
     id: 36,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -450,7 +450,7 @@ export const classes: Class[] = [
   },
   {
     id: 37,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -462,7 +462,7 @@ export const classes: Class[] = [
   },
   {
     id: 38,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -474,7 +474,7 @@ export const classes: Class[] = [
   },
   {
     id: 39,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -486,7 +486,7 @@ export const classes: Class[] = [
   },
   {
     id: 40,
-    cohortId: cohorts.find(({ name }) => name === "A1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "A1-0124")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -499,7 +499,7 @@ export const classes: Class[] = [
   // E1--0124
   {
     id: 41,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -511,7 +511,7 @@ export const classes: Class[] = [
   },
   {
     id: 42,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -523,7 +523,7 @@ export const classes: Class[] = [
   },
   {
     id: 43,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -535,7 +535,7 @@ export const classes: Class[] = [
   },
   {
     id: 44,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -547,7 +547,7 @@ export const classes: Class[] = [
   },
   {
     id: 45,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -559,7 +559,7 @@ export const classes: Class[] = [
   },
   {
     id: 46,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -571,7 +571,7 @@ export const classes: Class[] = [
   },
   {
     id: 47,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -583,7 +583,7 @@ export const classes: Class[] = [
   },
   {
     id: 47,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -595,7 +595,7 @@ export const classes: Class[] = [
   },
   {
     id: 48,
-    cohortId: cohorts.find(({ name }) => name === "E1-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -608,7 +608,7 @@ export const classes: Class[] = [
   // E2--0124
   {
     id: 49,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "Design")!,
@@ -620,7 +620,7 @@ export const classes: Class[] = [
   },
   {
     id: 50,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -632,7 +632,7 @@ export const classes: Class[] = [
   },
   {
     id: 51,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 1")!,
@@ -644,7 +644,7 @@ export const classes: Class[] = [
   },
   {
     id: 52,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "WordPress")!,
@@ -656,7 +656,7 @@ export const classes: Class[] = [
   },
   {
     id: 53,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Digital Marketing 2")!,
@@ -668,7 +668,7 @@ export const classes: Class[] = [
   },
   {
     id: 54,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "SEO")!,
@@ -680,7 +680,7 @@ export const classes: Class[] = [
   },
   {
     id: 55,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Social Media")!,
@@ -692,7 +692,7 @@ export const classes: Class[] = [
   },
   {
     id: 56,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Analytics")!,
@@ -704,7 +704,7 @@ export const classes: Class[] = [
   },
   {
     id: 57,
-    cohortId: cohorts.find(({ name }) => name === "E2-0124")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
     course: courses.find(({ name }) => name === "Campaign Management")!,
@@ -721,7 +721,7 @@ export const classes: Class[] = [
   // E-0923
   {
     id: 58,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-08-28").toDate(),
     endAt: dayjs("2023-10-20").toDate(),
     course: courses.find(({ name }) => name === "E-commerce")!,
@@ -733,7 +733,7 @@ export const classes: Class[] = [
   },
   {
     id: 59,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-08-28").toDate(),
     endAt: dayjs("2023-10-20").toDate(),
     course: courses.find(({ name }) => name === "Content Creation")!,
@@ -745,7 +745,7 @@ export const classes: Class[] = [
   },
   {
     id: 60,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-10-23").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
     course: courses.find(({ name }) => name === "Digital Ads")!,
@@ -757,7 +757,7 @@ export const classes: Class[] = [
   },
   {
     id: 61,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-10-23").toDate(),
     endAt: dayjs("2023-12-01").toDate(),
     course: courses.find(({ name }) => name === "Growth Marketing")!,
@@ -769,7 +769,7 @@ export const classes: Class[] = [
   },
   {
     id: 62,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-12-04").toDate(),
     endAt: dayjs("2023-01-26").toDate(),
     course: courses.find(({ name }) => name === "Advanced Digital Strategies")!,
@@ -781,7 +781,7 @@ export const classes: Class[] = [
   },
   {
     id: 63,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Advanced SEO")!,
@@ -793,7 +793,7 @@ export const classes: Class[] = [
   },
   {
     id: 64,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,
@@ -805,7 +805,7 @@ export const classes: Class[] = [
   },
   {
     id: 65,
-    cohortId: cohorts.find(({ name }) => name === "E-0923")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-02-23").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,
@@ -819,7 +819,7 @@ export const classes: Class[] = [
   // E-1223
   {
     id: 66,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2023-11-20").toDate(),
     endAt: dayjs("2024-01-26").toDate(),
     course: courses.find(({ name }) => name === "Content Creation")!,
@@ -831,7 +831,7 @@ export const classes: Class[] = [
   },
   {
     id: 67,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2023-11-20").toDate(),
     endAt: dayjs("2024-01-26").toDate(),
     course: courses.find(({ name }) => name === "E-commerce")!,
@@ -843,7 +843,7 @@ export const classes: Class[] = [
   },
   {
     id: 68,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-03-08").toDate(),
     course: courses.find(({ name }) => name === "Growth Marketing")!,
@@ -855,7 +855,7 @@ export const classes: Class[] = [
   },
   {
     id: 69,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
     course: courses.find(({ name }) => name === "Digital Ads")!,
@@ -867,7 +867,7 @@ export const classes: Class[] = [
   },
   {
     id: 70,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-03-11").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
     course: courses.find(({ name }) => name === "Advanced Digital Strategies")!,
@@ -879,7 +879,7 @@ export const classes: Class[] = [
   },
   {
     id: 71,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Advanced SEO")!,
@@ -891,7 +891,7 @@ export const classes: Class[] = [
   },
   {
     id: 72,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,
@@ -903,7 +903,7 @@ export const classes: Class[] = [
   },
   {
     id: 73,
-    cohortId: cohorts.find(({ name }) => name === "E-1223")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-05-24").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,
@@ -917,7 +917,7 @@ export const classes: Class[] = [
   // E-0324
   {
     id: 74,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-02-26").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
     course: courses.find(({ name }) => name === "Content Creation")!,
@@ -929,7 +929,7 @@ export const classes: Class[] = [
   },
   {
     id: 75,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-02-26").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
     course: courses.find(({ name }) => name === "E-commerce")!,
@@ -941,7 +941,7 @@ export const classes: Class[] = [
   },
   {
     id: 76,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-06-07").toDate(),
     course: courses.find(({ name }) => name === "Advanced Digital Strategies")!,
@@ -953,7 +953,7 @@ export const classes: Class[] = [
   },
   {
     id: 77,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
     course: courses.find(({ name }) => name === "Digital Ads")!,
@@ -965,7 +965,7 @@ export const classes: Class[] = [
   },
   {
     id: 78,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-06-10").toDate(),
     endAt: dayjs("2024-07-26").toDate(),
     course: courses.find(({ name }) => name === "Growth Marketing")!,
@@ -977,7 +977,7 @@ export const classes: Class[] = [
   },
   {
     id: 79,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-07-02").toDate(),
     endAt: dayjs("2024-08-09").toDate(),
     course: courses.find(({ name }) => name === "Advanced SEO")!,
@@ -989,7 +989,7 @@ export const classes: Class[] = [
   },
   {
     id: 80,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-07-29").toDate(),
     endAt: dayjs("2024-08-09").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,
@@ -1001,7 +1001,7 @@ export const classes: Class[] = [
   },
   {
     id: 81,
-    cohortId: cohorts.find(({ name }) => name === "E-0324")?.id!,
+    cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-08-12").toDate(),
     endAt: dayjs("2024-08-23").toDate(),
     course: courses.find(({ name }) => name === "Automation")!,

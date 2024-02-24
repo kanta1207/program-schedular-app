@@ -33,7 +33,7 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
   const cohort = cohorts.find((cohort) => cohort.id === +id);
   if (!cohort) return;
   const belongingClasses = classes.filter(
-    (classItem) => classItem.cohortId === +id
+    (classItem) => classItem.cohort.id === +id
   );
 
   return (
