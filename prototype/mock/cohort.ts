@@ -9,7 +9,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 2,
       name: "2023 September DMS",
-      startDate: dayjs("2023-09-25").toDate(),
+      startAt: dayjs("2023-09-25").toDate(),
+      endAt: dayjs("2024-03-22").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Morning")!,
@@ -21,7 +22,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 2,
       name: "2023 September DMS",
-      startDate: dayjs("2023-09-25").toDate(),
+      startAt: dayjs("2023-09-25").toDate(),
+      endAt: dayjs("2024-03-22").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Afternoon")!,
@@ -33,7 +35,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 2,
       name: "2023 September DMS",
-      startDate: dayjs("2023-09-25").toDate(),
+      startAt: dayjs("2023-09-25").toDate(),
+      endAt: dayjs("2024-03-22").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -45,7 +48,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 2,
       name: "2023 September DMS",
-      startDate: dayjs("2023-09-25").toDate(),
+      startAt: dayjs("2023-09-25").toDate(),
+      endAt: dayjs("2024-03-22").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -57,7 +61,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 4,
       name: "2024 January DMS",
-      startDate: dayjs("2024-01-02").toDate(),
+      startAt: dayjs("2024-01-02").toDate(),
+      endAt: dayjs("2023-06-21").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Afternoon")!,
@@ -69,7 +74,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 4,
       name: "2024 January DMS",
-      startDate: dayjs("2024-01-02").toDate(),
+      startAt: dayjs("2024-01-02").toDate(),
+      endAt: dayjs("2023-06-21").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -81,7 +87,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 4,
       name: "2024 January DMS",
-      startDate: dayjs("2024-01-02").toDate(),
+      startAt: dayjs("2024-01-02").toDate(),
+      endAt: dayjs("2023-06-21").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -93,7 +100,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 1,
       name: "2023 August DMA",
-      startDate: dayjs("2023-08-28").toDate(),
+      startAt: dayjs("2023-08-28").toDate(),
+      endAt: dayjs("2024-02-23").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -105,7 +113,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 3,
       name: "2023 November DMA",
-      startDate: dayjs("2023-11-20").toDate(),
+      startAt: dayjs("2023-11-20").toDate(),
+      endAt: dayjs("2024-05-24").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
@@ -117,7 +126,8 @@ export const cohorts: Cohort[] = [
     intake: {
       id: 5,
       name: "2023 March DMA",
-      startDate: dayjs("2024-02-26").toDate(),
+      startAt: dayjs("2024-02-26").toDate(),
+      endAt: dayjs("2024-08-23").toDate(),
       cohorts: [],
     },
     periodOfDay: PERIOD_OF_DAYS.find(({ name }) => name === "Evening")!,
