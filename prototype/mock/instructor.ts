@@ -1,6 +1,7 @@
 import {
   CONTRACT_TYPES,
   PERIOD_OF_DAYS,
+  PROGRAMS,
   WEEKDAYS_RANGES,
 } from "@/constants/_index";
 import { Instructor } from "@/types/_index";
@@ -17,7 +18,44 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 5, 6, 8, 9, 15].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 9,
+        name: "Advanced Digital Strategies",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 2,
@@ -29,7 +67,62 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [1, 5, 7, 8, 10, 12].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 10,
+        name: "E-commerce",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 12,
+        name: "Digital Ads",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 13,
+        name: "Advanced SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 14,
+        name: "Automation",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 3,
@@ -41,7 +134,26 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [1, 5, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 4,
@@ -53,7 +165,14 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [2].includes(id)),
+    courses: [
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 5,
@@ -65,7 +184,44 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [1, 4, 5, 6, 7, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 6,
@@ -77,7 +233,26 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [4, 13, 14].includes(id)),
+    courses: [
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 13,
+        name: "Advanced SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 14,
+        name: "Automation",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 7,
@@ -89,7 +264,26 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [6, 8, 15].includes(id)),
+    courses: [
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 8,
@@ -101,7 +295,44 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Wednesday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name !== "Morning"),
-    courses: courses.filter(({ id }) => [1, 6, 7, 8, 9, 11].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 9,
+        name: "Advanced Digital Strategies",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 11,
+        name: "Growth Marketing",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 9,
@@ -113,7 +344,50 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 2, 3, 5, 6, 8, 15].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 3,
+        name: "Design",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 10,
@@ -125,7 +399,38 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 4, 5, 7, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 11,
@@ -137,7 +442,44 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 2, 3, 5, 6, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 3,
+        name: "Design",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 12,
@@ -149,7 +491,32 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [1, 5, 11, 14].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 11,
+        name: "Growth Marketing",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 14,
+        name: "Automation",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 13,
@@ -161,7 +528,20 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [7, 13].includes(id)),
+    courses: [
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 13,
+        name: "Advanced SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 14,
@@ -173,9 +553,74 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) =>
-      [1, 2, 3, 4, 5, 6, 7, 8, 12, 14, 15].includes(id)
-    ),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 3,
+        name: "Design",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 7,
+        name: "SEO",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 12,
+        name: "Digital Ads",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 14,
+        name: "Automation",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 15,
@@ -187,7 +632,14 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [3].includes(id)),
+    courses: [
+      {
+        id: 3,
+        name: "Design",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 16,
@@ -199,7 +651,32 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 5, 6, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 17,
@@ -211,7 +688,38 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Wednesday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 4, 5, 6, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 18,
@@ -223,7 +731,38 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Wednesday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 5, 6, 8, 15].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 15,
+        name: "Content Creation",
+        requiredHours: 80,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 19,
@@ -235,7 +774,20 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Wednesday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [2, 4].includes(id)),
+    courses: [
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 4,
+        name: "Analytics",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 20,
@@ -247,7 +799,20 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Morning"),
-    courses: courses.filter(({ id }) => [2, 3].includes(id)),
+    courses: [
+      {
+        id: 2,
+        name: "WordPress",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 3,
+        name: "Design",
+        requiredHours: 30,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
   {
     id: 21,
@@ -259,7 +824,44 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Wednesday"
     )!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
-    courses: courses.filter(({ id }) => [1, 5, 6, 8, 9, 11].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 9,
+        name: "Advanced Digital Strategies",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+      {
+        id: 11,
+        name: "Growth Marketing",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMA")!,
+      },
+    ],
   },
   {
     id: 22,
@@ -271,6 +873,31 @@ export const instructors: Instructor[] = [
       ({ name }) => name === "Monday - Friday"
     )!,
     periodOfDays: PERIOD_OF_DAYS,
-    courses: courses.filter(({ id }) => [1, 5, 6, 8].includes(id)),
+    courses: [
+      {
+        id: 1,
+        name: "Digital Marketing 1",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 5,
+        name: "Digital Marketing 2",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 6,
+        name: "Social Media",
+        requiredHours: 60,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+      {
+        id: 8,
+        name: "Campaign Management",
+        requiredHours: 120,
+        program: PROGRAMS.find(({ name }) => name === "DMS")!,
+      },
+    ],
   },
 ];

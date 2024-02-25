@@ -582,7 +582,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Caio Franco")!, // Nathalia was not in the list
   },
   {
-    id: 47,
+    id: 48,
     cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
@@ -594,7 +594,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Gaurav")!,
   },
   {
-    id: 48,
+    id: 49,
     cohort: cohorts.find(({ name }) => name === "E1-0124")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
@@ -607,7 +607,7 @@ export const classes: Class[] = [
   },
   // E2--0124
   {
-    id: 49,
+    id: 50,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
@@ -619,7 +619,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Mariam")!,
   },
   {
-    id: 50,
+    id: 51,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-01-19").toDate(),
@@ -631,7 +631,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Caio Franco")!,
   },
   {
-    id: 51,
+    id: 52,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
@@ -643,7 +643,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Caio Franco")!,
   },
   {
-    id: 52,
+    id: 53,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-01-22").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
@@ -655,7 +655,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Diogo")!,
   },
   {
-    id: 53,
+    id: 54,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
@@ -667,7 +667,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Caio Franco")!,
   },
   {
-    id: 54,
+    id: 55,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
@@ -679,7 +679,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Gaurav")!,
   },
   {
-    id: 55,
+    id: 56,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
@@ -691,7 +691,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Gaurav")!,
   },
   {
-    id: 56,
+    id: 57,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
@@ -703,7 +703,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Rafael")!,
   },
   {
-    id: 57,
+    id: 58,
     cohort: cohorts.find(({ name }) => name === "E2-0124")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
@@ -720,7 +720,7 @@ export const classes: Class[] = [
   //// 2023-August-intake
   // E-0923
   {
-    id: 58,
+    id: 59,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-08-28").toDate(),
     endAt: dayjs("2023-10-20").toDate(),
@@ -732,7 +732,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 59,
+    id: 60,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-08-28").toDate(),
     endAt: dayjs("2023-10-20").toDate(),
@@ -744,7 +744,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Mariam")!,
   },
   {
-    id: 60,
+    id: 61,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-10-23").toDate(),
     endAt: dayjs("2023-12-15").toDate(),
@@ -756,7 +756,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 61,
+    id: 62,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-10-23").toDate(),
     endAt: dayjs("2023-12-01").toDate(),
@@ -768,7 +768,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Vedant")!,
   },
   {
-    id: 62,
+    id: 63,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2023-12-04").toDate(),
     endAt: dayjs("2023-01-26").toDate(),
@@ -780,7 +780,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Iman")!,
   },
   {
-    id: 63,
+    id: 64,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-01-02").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
@@ -792,7 +792,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 64,
+    id: 65,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-02-09").toDate(),
@@ -804,7 +804,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Iman")!,
   },
   {
-    id: 65,
+    id: 66,
     cohort: cohorts.find(({ name }) => name === "E-0923")!,
     startAt: dayjs("2024-02-12").toDate(),
     endAt: dayjs("2024-02-23").toDate(),
@@ -818,7 +818,7 @@ export const classes: Class[] = [
   //// 2023-November-intake
   // E-1223
   {
-    id: 66,
+    id: 67,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2023-11-20").toDate(),
     endAt: dayjs("2024-01-26").toDate(),
@@ -830,7 +830,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Mariam")!,
   },
   {
-    id: 67,
+    id: 68,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2023-11-20").toDate(),
     endAt: dayjs("2024-01-26").toDate(),
@@ -842,7 +842,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 68,
+    id: 69,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-03-08").toDate(),
@@ -854,7 +854,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Kwame")!,
   },
   {
-    id: 69,
+    id: 70,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-01-29").toDate(),
     endAt: dayjs("2024-03-22").toDate(),
@@ -866,7 +866,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 70,
+    id: 71,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-03-11").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
@@ -878,7 +878,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Iman")!,
   },
   {
-    id: 71,
+    id: 72,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-04-02").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
@@ -890,7 +890,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 72,
+    id: 73,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-05-10").toDate(),
@@ -902,7 +902,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Vedant")!,
   },
   {
-    id: 73,
+    id: 74,
     cohort: cohorts.find(({ name }) => name === "E-1223")!,
     startAt: dayjs("2024-05-13").toDate(),
     endAt: dayjs("2024-05-24").toDate(),
@@ -916,7 +916,7 @@ export const classes: Class[] = [
   //// 2024-March-intake
   // E-0324
   {
-    id: 74,
+    id: 75,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-02-26").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
@@ -928,7 +928,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Mariam")!,
   },
   {
-    id: 75,
+    id: 76,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-02-26").toDate(),
     endAt: dayjs("2024-04-26").toDate(),
@@ -940,7 +940,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 76,
+    id: 77,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-06-07").toDate(),
@@ -952,7 +952,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Mariam")!,
   },
   {
-    id: 77,
+    id: 78,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-04-29").toDate(),
     endAt: dayjs("2024-06-21").toDate(),
@@ -964,7 +964,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Brian")!,
   },
   {
-    id: 78,
+    id: 79,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-06-10").toDate(),
     endAt: dayjs("2024-07-26").toDate(),
@@ -976,7 +976,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Vedant")!,
   },
   {
-    id: 79,
+    id: 80,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-07-02").toDate(),
     endAt: dayjs("2024-08-09").toDate(),
@@ -988,7 +988,7 @@ export const classes: Class[] = [
     instructor: instructors.find(({ name }) => name === "Iman")!,
   },
   {
-    id: 80,
+    id: 81,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-07-29").toDate(),
     endAt: dayjs("2024-08-09").toDate(),
@@ -1000,7 +1000,7 @@ export const classes: Class[] = [
     instructor: null,
   },
   {
-    id: 81,
+    id: 82,
     cohort: cohorts.find(({ name }) => name === "E-0324")!,
     startAt: dayjs("2024-08-12").toDate(),
     endAt: dayjs("2024-08-23").toDate(),

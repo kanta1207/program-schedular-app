@@ -7,13 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import {
   Input,
-  Select,
   Button,
-  Box,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -30,14 +24,7 @@ import {
   WEEKDAYS_RANGES,
 } from "@/constants/_index";
 import { classes } from "@/mock/class";
-import {
-  Gantt,
-  Task,
-  EventOption,
-  StylingOption,
-  ViewMode,
-  DisplayOption,
-} from "gantt-task-react";
+import { Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import { convertClassesToGanttItems } from "@/helpers/convertClassesToGanttItems";
 

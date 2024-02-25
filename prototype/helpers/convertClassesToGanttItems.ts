@@ -3,7 +3,10 @@ import { Class } from "@/types/class";
 import dayjs from "dayjs";
 import { Task } from "gantt-task-react";
 
-export const convertClassesToGanttItems = (classes: Class[]): Task[] => {
+export const convertClassesToGanttItems = (
+  classes: Class[],
+  withInstructorName: boolean = false
+): Task[] => {
   const ganttItems: Task[] = [];
 
   for (const classItem of classes) {
@@ -38,14 +41,18 @@ export const convertClassesToGanttItems = (classes: Class[]): Task[] => {
     const ganttItem: Task = {
       start: dayjs(classItem.startAt).toDate(),
       end: dayjs(classItem.endAt).toDate(),
-      name: `${classItem.course.name} (${classItem.cohort.name} at ${classItem.classroom.name}) | ${classItem.cohort.periodOfDay.time} | ${classItem.weekdaysRange.name}`,
+      name: `${classItem.course.name} (${classItem.cohort.name} at ${
+        classItem.classroom.name
+      }) | ${classItem.cohort.periodOfDay.time} | ${
+        classItem.weekdaysRange.name
+      }${withInstructorName ? ` | ${classItem.instructor?.name}` : ""}`,
       id: classItem.id.toString(),
       type: "task",
       progress: getProgress(classItem.startAt, classItem.endAt),
       isDisabled: true,
       project: classItem.cohort.intake.name,
       styles: {
-        progressColor: theme.palette.primary.main,
+        progressColor: "#2A3776",
         progressSelectedColor: "#ffbb54",
       },
     };
