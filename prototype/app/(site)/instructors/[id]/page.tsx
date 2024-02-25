@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,6 +30,16 @@ import {
   WEEKDAYS_RANGES,
 } from "@/constants/_index";
 import { classes } from "@/mock/class";
+import {
+  Gantt,
+  Task,
+  EventOption,
+  StylingOption,
+  ViewMode,
+  DisplayOption,
+} from "gantt-task-react";
+import "gantt-task-react/dist/index.css";
+import { convertClassesToGanttItems } from "@/helpers/convertClassesToGanttItems";
 
 interface InstructorDetailProps {
   params: {
@@ -47,6 +56,8 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
   const belongingClasses = classes.filter(
     (classItem) => classItem.instructor?.id === +id
   );
+
+  const ganttItems = convertClassesToGanttItems(belongingClasses);
 
   return (
     <div className="w-full">
@@ -201,6 +212,18 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
         </div>
       </div>
 
+      {belongingClasses.length > 0 && (
+        <Gantt
+          tasks={ganttItems}
+          viewMode={ViewMode.Week}
+          viewDate={dayjs().subtract(2, "week").toDate()}
+          columnWidth={80}
+          fontSize="12"
+          onClick={() =>
+            alert("We can show drawer or something to update this schedule")
+          }
+        />
+      )}
       {/* Belonging classes */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
