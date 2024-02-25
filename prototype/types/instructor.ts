@@ -1,4 +1,4 @@
-import { ContractType, Course, PeriodOfDay, WeekdaysRange } from "./_index";
+import { ContractType, Course, PeriodOfDay, WeekdaysRange } from './_index';
 
 export interface Instructor {
   id: number;

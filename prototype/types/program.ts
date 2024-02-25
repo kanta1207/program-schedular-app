@@ -5,4 +5,4 @@ export interface Program {
   updatedAt?: Date;
 }
 
-export type programName = "DMS" | "DMA";
+export type programName = 'DMS' | 'DMA';

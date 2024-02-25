@@ -1,5 +1,5 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 import {
   Select,
   Button,
@@ -15,10 +15,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from "@mui/material";
-import { cohorts, intakes } from "@/mock/_index";
-import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
-import { useRouter } from "next/navigation";
+} from '@mui/material';
+import { cohorts, intakes } from '@/mock/_index';
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
+import { useRouter } from 'next/navigation';
 
 const CohortList = () => {
   const [isCreating, setIsCreating] = useState(false);
@@ -55,7 +55,7 @@ const CohortList = () => {
             <Box
               component="form"
               sx={{
-                "& > :not(style)": { width: "25ch" },
+                '& > :not(style)': { width: '25ch' },
               }}
               noValidate
               autoComplete="off"
@@ -125,7 +125,7 @@ const CohortList = () => {
           </TableHead>
           <TableBody>
             {cohorts.map((cohort) => (
-              <TableRow key={cohort.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableRow key={cohort.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {cohort.intake.name}
                 </TableCell>

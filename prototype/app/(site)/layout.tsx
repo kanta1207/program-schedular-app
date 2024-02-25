@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import { FC, ReactNode } from "react";
+import Header from '@/components/Header';
+import { FC, ReactNode } from 'react';
 
 interface SiteLayoutProps {
   children: ReactNode;

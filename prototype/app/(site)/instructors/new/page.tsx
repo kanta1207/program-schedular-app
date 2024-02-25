@@ -1,11 +1,11 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const NewInstructorPage = () => {
   const router = useRouter();
@@ -109,7 +109,7 @@ const NewInstructorPage = () => {
 
         <div className="flex justify-end">
           <div className="flex gap-2">
-            <Button variant={"outline"} onClick={() => router.back()}>
+            <Button variant={'outline'} onClick={() => router.back()}>
               Cancel
             </Button>
             <Button onClick={() => router.back()}>Create</Button>

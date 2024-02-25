@@ -1,7 +1,7 @@
-import theme from "@/app/theme";
-import { Class } from "@/types/class";
-import dayjs from "dayjs";
-import { Task } from "gantt-task-react";
+import theme from '@/app/theme';
+import { Class } from '@/types/class';
+import dayjs from 'dayjs';
+import { Task } from 'gantt-task-react';
 
 export const convertClassesToGanttItems = (classes: Class[], withInstructorName: boolean = false): Task[] => {
   const ganttItems: Task[] = [];
@@ -37,15 +37,15 @@ export const convertClassesToGanttItems = (classes: Class[], withInstructorName:
         classItem.classroom.name
       }) | ${classItem.cohort.periodOfDay.time} | ${
         classItem.weekdaysRange.name
-      }${withInstructorName ? ` | ${classItem.instructor?.name}` : ""}`,
+      }${withInstructorName ? ` | ${classItem.instructor?.name}` : ''}`,
       id: classItem.id.toString(),
-      type: "task",
+      type: 'task',
       progress: getProgress(classItem.startAt, classItem.endAt),
       isDisabled: true,
       project: classItem.cohort.intake.name,
       styles: {
-        progressColor: "#2A3776",
-        progressSelectedColor: "#ffbb54",
+        progressColor: '#2A3776',
+        progressSelectedColor: '#ffbb54',
       },
     };
 

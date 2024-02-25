@@ -1,5 +1,5 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 import {
   Input,
   Select,
@@ -16,11 +16,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from "@mui/material";
-import { cohorts, intakes } from "@/mock/_index";
-import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
-import { classes } from "@/mock/class";
-import dayjs from "dayjs";
+} from '@mui/material';
+import { cohorts, intakes } from '@/mock/_index';
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
+import { classes } from '@/mock/class';
+import dayjs from 'dayjs';
 
 interface CohortDetailProps {
   params: {
@@ -87,7 +87,7 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
               <Box
                 component="form"
                 sx={{
-                  "& > :not(style)": { width: "25ch" },
+                  '& > :not(style)': { width: '25ch' },
                 }}
                 noValidate
                 autoComplete="off"
@@ -159,11 +159,11 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
             </TableHead>
             <TableBody>
               {belongingClasses.map((classItem) => (
-                <TableRow key={classItem.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={classItem.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
-                    {dayjs(classItem.startAt).format("YYYY-MM-DD (ddd)")}
+                    {dayjs(classItem.startAt).format('YYYY-MM-DD (ddd)')}
                   </TableCell>
-                  <TableCell>{dayjs(classItem.endAt).format("YYYY-MM-DD (ddd)")}</TableCell>
+                  <TableCell>{dayjs(classItem.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                   <TableCell>{classItem.course.name}</TableCell>
                   <TableCell>{classItem.weekdaysRange.name}</TableCell>
                   <TableCell>/ {classItem.course.requiredHours}</TableCell>

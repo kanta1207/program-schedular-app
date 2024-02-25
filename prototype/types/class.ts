@@ -1,4 +1,4 @@
-import { Classroom, Cohort, Course, Instructor, WeekdaysRange } from "./_index";
+import { Classroom, Cohort, Course, Instructor, WeekdaysRange } from './_index';
 
 export interface Class {
   id: number;

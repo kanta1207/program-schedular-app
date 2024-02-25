@@ -6,9 +6,9 @@ export interface Classroom {
   updatedAt?: Date;
 }
 
-export type classroomName = "Google" | "Youtube" | "Uber" | "Amazon" | "Facebook" | "Apple" | "Hootsuite" | "Microsoft";
+export type classroomName = 'Google' | 'Youtube' | 'Uber' | 'Amazon' | 'Facebook' | 'Apple' | 'Hootsuite' | 'Microsoft';
 
-export type floorName = "2nd" | "3rd" | "4th";
+export type floorName = '2nd' | '3rd' | '4th';
 
 export interface PeriodOfDay {
   id: number;
@@ -18,9 +18,9 @@ export interface PeriodOfDay {
   updatedAt?: Date;
 }
 
-export type PeriodOfDayName = "Morning" | "Afternoon" | "Evening";
+export type PeriodOfDayName = 'Morning' | 'Afternoon' | 'Evening';
 
-export type TimeName = "8:30 - 12:30" | "1:00 - 5:00" | "5:30 - 9:30";
+export type TimeName = '8:30 - 12:30' | '1:00 - 5:00' | '5:30 - 9:30';
 
 export interface ContractType {
   id: number;
@@ -31,7 +31,7 @@ export interface ContractType {
   updatedAt?: Date;
 }
 
-export type ContractName = "Full time" | "Part time" | "Contract";
+export type ContractName = 'Full time' | 'Part time' | 'Contract';
 
 export interface WeekdaysRange {
   id: number;
@@ -40,4 +40,4 @@ export interface WeekdaysRange {
   updatedAt?: Date;
 }
 
-export type WeekdaysRangeName = "Monday - Friday" | "Monday - Wednesday" | "Wednesday - Friday";
+export type WeekdaysRangeName = 'Monday - Friday' | 'Monday - Wednesday' | 'Wednesday - Friday';

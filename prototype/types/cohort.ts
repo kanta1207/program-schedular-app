@@ -1,4 +1,4 @@
-import { Intake, PeriodOfDay, Program } from "./_index";
+import { Intake, PeriodOfDay, Program } from './_index';
 
 export interface Cohort {
   id: number;

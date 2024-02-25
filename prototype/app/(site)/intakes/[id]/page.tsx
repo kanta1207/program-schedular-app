@@ -1,6 +1,6 @@
-"use client";
-import React, { useState } from "react";
-import dayjs from "dayjs";
+'use client';
+import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import {
   Input,
   Select,
@@ -17,10 +17,10 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from "@mui/material";
-import { intakes } from "@/mock/_index";
-import { PERIOD_OF_DAYS, PROGRAMS } from "@/constants/_index";
-import { cohorts } from "@/mock/_index";
+} from '@mui/material';
+import { intakes } from '@/mock/_index';
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
+import { cohorts } from '@/mock/_index';
 
 interface IntakeDetailProps {
   params: {
@@ -45,12 +45,12 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
 
         <div className="flex items-center gap-6">
           <p>Start date:</p>
-          <Input defaultValue={dayjs(intake.startAt).format("YYYY-MM-DD (ddd)")} disabled={!isEditable} />
+          <Input defaultValue={dayjs(intake.startAt).format('YYYY-MM-DD (ddd)')} disabled={!isEditable} />
         </div>
 
         <div className="flex items-center gap-6">
           <p>End date:</p>
-          <Input defaultValue={dayjs(intake.endAt).format("YYYY-MM-DD (ddd)")} disabled={!isEditable} />
+          <Input defaultValue={dayjs(intake.endAt).format('YYYY-MM-DD (ddd)')} disabled={!isEditable} />
         </div>
 
         <div className="flex">
@@ -64,7 +64,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
               <Button variant="outlined" onClick={() => setIsEditable(!isEditable)}>
                 Edit
               </Button>
-              <Button variant="contained" color="error" onClick={() => confirm("Are you sure to delete?")}>
+              <Button variant="contained" color="error" onClick={() => confirm('Are you sure to delete?')}>
                 Delete
               </Button>
             </div>
@@ -102,7 +102,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
               <Box
                 component="form"
                 sx={{
-                  "& > :not(style)": { width: "25ch" },
+                  '& > :not(style)': { width: '25ch' },
                 }}
                 noValidate
                 autoComplete="off"
@@ -171,7 +171,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
           </TableHead>
           <TableBody>
             {belongingCohorts.map((cohort) => (
-              <TableRow key={cohort.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableRow key={cohort.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {cohort.name}
                 </TableCell>

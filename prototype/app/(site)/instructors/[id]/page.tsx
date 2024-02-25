@@ -1,17 +1,17 @@
-"use client";
-import React, { useState } from "react";
-import dayjs from "dayjs";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
-import { Input, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-import { courses, instructors } from "@/mock/_index";
-import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from "@/constants/_index";
-import { classes } from "@/mock/class";
-import { Gantt, ViewMode } from "gantt-task-react";
-import "gantt-task-react/dist/index.css";
-import { convertClassesToGanttItems } from "@/helpers/convertClassesToGanttItems";
+'use client';
+import React, { useState } from 'react';
+import dayjs from 'dayjs';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
+import { Input, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { courses, instructors } from '@/mock/_index';
+import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { classes } from '@/mock/class';
+import { Gantt, ViewMode } from 'gantt-task-react';
+import 'gantt-task-react/dist/index.css';
+import { convertClassesToGanttItems } from '@/helpers/convertClassesToGanttItems';
 
 interface InstructorDetailProps {
   params: {
@@ -54,7 +54,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
         <div className="flex gap-6">
           <p>Desired working hours:</p>
           <RadioGroup
-            defaultValue={instructor.desiredWorkingHours + ""}
+            defaultValue={instructor.desiredWorkingHours + ''}
             className="flex gap-x-4"
             disabled={!isEditable}
           >
@@ -106,7 +106,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
         <div className="flex flex-wrap gap-6">
           {courses.map(
             (course) =>
-              course.program.name === "DMS" && (
+              course.program.name === 'DMS' && (
                 <div key={course.id} className="items-top flex space-x-2">
                   <Checkbox
                     defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
@@ -114,14 +114,14 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
                   />
                   <Label>{course.name}</Label>
                 </div>
-              )
+              ),
           )}
         </div>
         <p>DMA:</p>
         <div className="flex flex-wrap gap-6">
           {courses.map(
             (course) =>
-              course.program.name === "DMA" && (
+              course.program.name === 'DMA' && (
                 <div key={course.id} className="items-top flex space-x-2">
                   <Checkbox
                     defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
@@ -129,7 +129,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
                   />
                   <Label>{course.name}</Label>
                 </div>
-              )
+              ),
           )}
         </div>
 
@@ -144,7 +144,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
               <Button variant="outlined" onClick={() => setIsEditable(!isEditable)}>
                 Edit
               </Button>
-              <Button variant="contained" color="error" onClick={() => confirm("Are you sure to delete?")}>
+              <Button variant="contained" color="error" onClick={() => confirm('Are you sure to delete?')}>
                 Delete
               </Button>
             </div>
@@ -156,10 +156,10 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
         <Gantt
           tasks={ganttItems}
           viewMode={ViewMode.Week}
-          viewDate={dayjs().subtract(2, "week").toDate()}
+          viewDate={dayjs().subtract(2, 'week').toDate()}
           columnWidth={80}
           fontSize="12"
-          onClick={() => alert("We can show drawer or something to update this schedule")}
+          onClick={() => alert('We can show drawer or something to update this schedule')}
         />
       )}
       {/* Belonging classes */}
@@ -178,10 +178,10 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
           </TableHead>
           <TableBody>
             {belongingClasses.map((classItem) => (
-              <TableRow key={classItem.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+              <TableRow key={classItem.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {dayjs(classItem.startAt).format("YYYY-MM-DD (ddd)")} -{" "}
-                  {dayjs(classItem.endAt).format("YYYY-MM-DD (ddd)")}
+                  {dayjs(classItem.startAt).format('YYYY-MM-DD (ddd)')} -{' '}
+                  {dayjs(classItem.endAt).format('YYYY-MM-DD (ddd)')}
                 </TableCell>
                 <TableCell>{classItem.course.program.name}</TableCell>
                 <TableCell>{classItem.course.name}</TableCell>

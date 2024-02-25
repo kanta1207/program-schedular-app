@@ -1,4 +1,4 @@
-import { Program } from "./_index";
+import { Program } from './_index';
 
 export interface Course {
   id: number;
