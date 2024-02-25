@@ -3,22 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { courses } from "@/mock/_index";
 
 const CourseList = () => {
@@ -54,10 +40,7 @@ const CourseList = () => {
           </div>
 
           <div className="flex gap-x-2">
-            <Button
-              variant={"outline"}
-              onClick={() => setIsCreating(!isCreating)}
-            >
+            <Button variant={"outline"} onClick={() => setIsCreating(!isCreating)}>
               Cancel
             </Button>
             <Button>Create course</Button>

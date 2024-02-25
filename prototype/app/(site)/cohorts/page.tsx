@@ -31,13 +31,7 @@ const CohortList = () => {
         </Button>
       </div>
       {isCreating && (
-        <Box
-          display="flex"
-          alignItems="end"
-          justifyContent="space-between"
-          p={2}
-          marginY={2}
-        >
+        <Box display="flex" alignItems="end" justifyContent="space-between" p={2} marginY={2}>
           <div className="flex gap-x-4 items-end">
             <Box sx={{ minWidth: 240 }}>
               <FormControl fullWidth>
@@ -66,11 +60,7 @@ const CohortList = () => {
               noValidate
               autoComplete="off"
             >
-              <TextField
-                id="outlined-basic"
-                label="Cohort name"
-                variant="outlined"
-              />
+              <TextField id="outlined-basic" label="Cohort name" variant="outlined" />
             </Box>
 
             <Box sx={{ minWidth: 160 }}>
@@ -113,10 +103,7 @@ const CohortList = () => {
           </div>
 
           <div className="flex gap-x-2">
-            <Button
-              variant="outlined"
-              onClick={() => setIsCreating(!isCreating)}
-            >
+            <Button variant="outlined" onClick={() => setIsCreating(!isCreating)}>
               Cancel
             </Button>
             <Button variant="contained">Create course</Button>
@@ -138,10 +125,7 @@ const CohortList = () => {
           </TableHead>
           <TableBody>
             {cohorts.map((cohort) => (
-              <TableRow
-                key={cohort.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow key={cohort.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {cohort.intake.name}
                 </TableCell>
@@ -150,10 +134,7 @@ const CohortList = () => {
                 <TableCell>{cohort.periodOfDay.name}</TableCell>
                 <TableCell>
                   <div className="flex gap-x-2">
-                    <Button
-                      variant="outlined"
-                      onClick={() => router.push(`/cohorts/${cohort.id}`)}
-                    >
+                    <Button variant="outlined" onClick={() => router.push(`/cohorts/${cohort.id}`)}>
                       Edit
                     </Button>
                     <Button variant="contained" color="error">

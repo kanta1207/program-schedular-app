@@ -32,9 +32,7 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
   const [isCreating, setIsCreating] = useState(false);
   const cohort = cohorts.find((cohort) => cohort.id === +id);
   if (!cohort) return;
-  const belongingClasses = classes.filter(
-    (classItem) => classItem.cohort.id === +id
-  );
+  const belongingClasses = classes.filter((classItem) => classItem.cohort.id === +id);
 
   return (
     <div className="w-full">
@@ -60,21 +58,12 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
       {/* Class list */}
       <div className="w-full p-20">
         <div className="flex justify-end">
-          <Button
-            variant="contained"
-            onClick={() => setIsCreating(!isCreating)}
-          >
+          <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
             New class
           </Button>
         </div>
         {isCreating && (
-          <Box
-            display="flex"
-            alignItems="end"
-            justifyContent="space-between"
-            p={2}
-            marginY={2}
-          >
+          <Box display="flex" alignItems="end" justifyContent="space-between" p={2} marginY={2}>
             <div className="flex gap-x-4 items-end">
               <Box sx={{ minWidth: 240 }}>
                 <FormControl fullWidth>
@@ -103,11 +92,7 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
                 noValidate
                 autoComplete="off"
               >
-                <TextField
-                  id="outlined-basic"
-                  label="Cohort name"
-                  variant="outlined"
-                />
+                <TextField id="outlined-basic" label="Cohort name" variant="outlined" />
               </Box>
 
               <Box sx={{ minWidth: 160 }}>
@@ -150,10 +135,7 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
             </div>
 
             <div className="flex gap-x-2">
-              <Button
-                variant="outlined"
-                onClick={() => setIsCreating(!isCreating)}
-              >
+              <Button variant="outlined" onClick={() => setIsCreating(!isCreating)}>
                 Cancel
               </Button>
               <Button variant="contained">Create class</Button>
@@ -177,16 +159,11 @@ const CohortDetail: React.FC<CohortDetailProps> = ({ params: { id } }) => {
             </TableHead>
             <TableBody>
               {belongingClasses.map((classItem) => (
-                <TableRow
-                  key={classItem.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
+                <TableRow key={classItem.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     {dayjs(classItem.startAt).format("YYYY-MM-DD (ddd)")}
                   </TableCell>
-                  <TableCell>
-                    {dayjs(classItem.endAt).format("YYYY-MM-DD (ddd)")}
-                  </TableCell>
+                  <TableCell>{dayjs(classItem.endAt).format("YYYY-MM-DD (ddd)")}</TableCell>
                   <TableCell>{classItem.course.name}</TableCell>
                   <TableCell>{classItem.weekdaysRange.name}</TableCell>
                   <TableCell>/ {classItem.course.requiredHours}</TableCell>

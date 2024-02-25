@@ -5,24 +5,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import {
-  Input,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { Input, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { courses, instructors } from "@/mock/_index";
-import {
-  CONTRACT_TYPES,
-  DESIRED_WORKING_HOURS,
-  PERIOD_OF_DAYS,
-  WEEKDAYS_RANGES,
-} from "@/constants/_index";
+import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from "@/constants/_index";
 import { classes } from "@/mock/class";
 import { Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
@@ -34,15 +19,11 @@ interface InstructorDetailProps {
   };
 }
 
-const InstructorDetail: React.FC<InstructorDetailProps> = ({
-  params: { id },
-}) => {
+const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) => {
   const [isEditable, setIsEditable] = useState(false);
   const instructor = instructors.find((instructor) => instructor.id === +id);
   if (!instructor) return;
-  const belongingClasses = classes.filter(
-    (classItem) => classItem.instructor?.id === +id
-  );
+  const belongingClasses = classes.filter((classItem) => classItem.instructor?.id === +id);
 
   const ganttItems = convertClassesToGanttItems(belongingClasses);
 
@@ -62,14 +43,8 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
             disabled={!isEditable}
           >
             {CONTRACT_TYPES.map((contractType) => (
-              <div
-                key={contractType.id}
-                className="flex items-center space-x-2"
-              >
-                <RadioGroupItem
-                  value={contractType.id.toString()}
-                  id={contractType.name}
-                />
+              <div key={contractType.id} className="flex items-center space-x-2">
+                <RadioGroupItem value={contractType.id.toString()} id={contractType.name} />
                 <Label htmlFor={contractType.name}>{contractType.name}</Label>
               </div>
             ))}
@@ -85,10 +60,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
           >
             {DESIRED_WORKING_HOURS.map((hours) => (
               <div key={hours} className="flex items-center space-x-2">
-                <RadioGroupItem
-                  value={hours.toString()}
-                  id={hours.toString()}
-                />
+                <RadioGroupItem value={hours.toString()} id={hours.toString()} />
                 <Label htmlFor={hours.toString()}>{hours}</Label>
               </div>
             ))}
@@ -116,11 +88,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
           {PERIOD_OF_DAYS.map((period) => (
             <div key={period.id} className="items-top flex space-x-2">
               <Checkbox
-                defaultChecked={
-                  instructor.periodOfDays.findIndex(
-                    ({ id }) => period.id === id
-                  ) !== -1
-                }
+                defaultChecked={instructor.periodOfDays.findIndex(({ id }) => period.id === id) !== -1}
                 disabled={!isEditable}
               />
               <Label>{period.name}</Label>
@@ -141,11 +109,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
               course.program.name === "DMS" && (
                 <div key={course.id} className="items-top flex space-x-2">
                   <Checkbox
-                    defaultChecked={
-                      instructor.courses.findIndex(
-                        ({ id }) => course.id === id
-                      ) !== -1
-                    }
+                    defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
                     disabled={!isEditable}
                   />
                   <Label>{course.name}</Label>
@@ -160,11 +124,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
               course.program.name === "DMA" && (
                 <div key={course.id} className="items-top flex space-x-2">
                   <Checkbox
-                    defaultChecked={
-                      instructor.courses.findIndex(
-                        ({ id }) => course.id === id
-                      ) !== -1
-                    }
+                    defaultChecked={instructor.courses.findIndex(({ id }) => course.id === id) !== -1}
                     disabled={!isEditable}
                   />
                   <Label>{course.name}</Label>
@@ -181,17 +141,10 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
             </div>
           ) : (
             <div className="flex gap-2">
-              <Button
-                variant="outlined"
-                onClick={() => setIsEditable(!isEditable)}
-              >
+              <Button variant="outlined" onClick={() => setIsEditable(!isEditable)}>
                 Edit
               </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => confirm("Are you sure to delete?")}
-              >
+              <Button variant="contained" color="error" onClick={() => confirm("Are you sure to delete?")}>
                 Delete
               </Button>
             </div>
@@ -206,9 +159,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
           viewDate={dayjs().subtract(2, "week").toDate()}
           columnWidth={80}
           fontSize="12"
-          onClick={() =>
-            alert("We can show drawer or something to update this schedule")
-          }
+          onClick={() => alert("We can show drawer or something to update this schedule")}
         />
       )}
       {/* Belonging classes */}
@@ -227,10 +178,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({
           </TableHead>
           <TableBody>
             {belongingClasses.map((classItem) => (
-              <TableRow
-                key={classItem.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow key={classItem.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {dayjs(classItem.startAt).format("YYYY-MM-DD (ddd)")} -{" "}
                   {dayjs(classItem.endAt).format("YYYY-MM-DD (ddd)")}

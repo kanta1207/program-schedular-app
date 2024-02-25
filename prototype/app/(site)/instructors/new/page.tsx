@@ -19,10 +19,7 @@ const NewInstructorPage = () => {
 
         <div className="flex gap-6">
           <p>Contract:</p>
-          <RadioGroup
-            defaultValue="Employee (full-time)"
-            className="flex gap-x-4"
-          >
+          <RadioGroup defaultValue="Employee (full-time)" className="flex gap-x-4">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Employee (full-time)" id="full-time" />
               <Label htmlFor="full-time">Employee (full-time)</Label>

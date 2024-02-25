@@ -33,9 +33,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
   const [isCreating, setIsCreating] = useState(false);
   const intake = intakes.find((intake) => intake.id === +id);
   if (!intake) return;
-  const belongingCohorts = cohorts.filter(
-    (classItem) => classItem.intake?.id === +id
-  );
+  const belongingCohorts = cohorts.filter((classItem) => classItem.intake?.id === +id);
 
   return (
     <div className="w-full">
@@ -47,18 +45,12 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
 
         <div className="flex items-center gap-6">
           <p>Start date:</p>
-          <Input
-            defaultValue={dayjs(intake.startAt).format("YYYY-MM-DD (ddd)")}
-            disabled={!isEditable}
-          />
+          <Input defaultValue={dayjs(intake.startAt).format("YYYY-MM-DD (ddd)")} disabled={!isEditable} />
         </div>
 
         <div className="flex items-center gap-6">
           <p>End date:</p>
-          <Input
-            defaultValue={dayjs(intake.endAt).format("YYYY-MM-DD (ddd)")}
-            disabled={!isEditable}
-          />
+          <Input defaultValue={dayjs(intake.endAt).format("YYYY-MM-DD (ddd)")} disabled={!isEditable} />
         </div>
 
         <div className="flex">
@@ -69,17 +61,10 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
             </div>
           ) : (
             <div className="flex gap-2">
-              <Button
-                variant="outlined"
-                onClick={() => setIsEditable(!isEditable)}
-              >
+              <Button variant="outlined" onClick={() => setIsEditable(!isEditable)}>
                 Edit
               </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => confirm("Are you sure to delete?")}
-              >
+              <Button variant="contained" color="error" onClick={() => confirm("Are you sure to delete?")}>
                 Delete
               </Button>
             </div>
@@ -88,21 +73,12 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
 
         {/* Create new cohort */}
         <div className="flex justify-end">
-          <Button
-            variant="contained"
-            onClick={() => setIsCreating(!isCreating)}
-          >
+          <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
             New cohort
           </Button>
         </div>
         {isCreating && (
-          <Box
-            display="flex"
-            alignItems="end"
-            justifyContent="space-between"
-            p={2}
-            marginY={2}
-          >
+          <Box display="flex" alignItems="end" justifyContent="space-between" p={2} marginY={2}>
             <div className="flex gap-x-4 items-end">
               <Box sx={{ minWidth: 240 }}>
                 <FormControl fullWidth>
@@ -131,11 +107,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
                 noValidate
                 autoComplete="off"
               >
-                <TextField
-                  id="outlined-basic"
-                  label="Cohort name"
-                  variant="outlined"
-                />
+                <TextField id="outlined-basic" label="Cohort name" variant="outlined" />
               </Box>
 
               <Box sx={{ minWidth: 160 }}>
@@ -178,10 +150,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
             </div>
 
             <div className="flex gap-x-2">
-              <Button
-                variant="outlined"
-                onClick={() => setIsCreating(!isCreating)}
-              >
+              <Button variant="outlined" onClick={() => setIsCreating(!isCreating)}>
                 Cancel
               </Button>
               <Button variant="contained">Create cohort</Button>
@@ -202,10 +171,7 @@ const IntakeDetail: React.FC<IntakeDetailProps> = ({ params: { id } }) => {
           </TableHead>
           <TableBody>
             {belongingCohorts.map((cohort) => (
-              <TableRow
-                key={cohort.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow key={cohort.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {cohort.name}
                 </TableCell>

@@ -1,9 +1,4 @@
-import {
-  CONTRACT_TYPES,
-  PERIOD_OF_DAYS,
-  PROGRAMS,
-  WEEKDAYS_RANGES,
-} from "@/constants/_index";
+import { CONTRACT_TYPES, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from "@/constants/_index";
 import { Instructor } from "@/types/_index";
 import { courses } from "./_index";
 
@@ -14,9 +9,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -63,9 +56,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 40,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -130,9 +121,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -161,9 +150,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Part time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -180,9 +167,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Part time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -229,9 +214,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -260,9 +243,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -291,9 +272,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Wednesday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Wednesday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name !== "Morning"),
     courses: [
       {
@@ -340,9 +319,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 40,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Full time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -395,9 +372,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 40,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -438,9 +413,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -487,9 +460,7 @@ export const instructors: Instructor[] = [
     isActive: true,
     desiredWorkingHours: 20,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Part time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -524,9 +495,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -549,9 +518,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 40,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -628,9 +595,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -647,9 +612,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 30,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Full time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -684,9 +647,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Wednesday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Wednesday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -727,9 +688,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Wednesday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Wednesday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -770,9 +729,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 30,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Wednesday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Wednesday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {
@@ -795,9 +752,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Morning"),
     courses: [
       {
@@ -820,9 +775,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 10,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Contract")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Wednesday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Wednesday")!,
     periodOfDays: PERIOD_OF_DAYS.filter(({ name }) => name === "Evening"),
     courses: [
       {
@@ -869,9 +822,7 @@ export const instructors: Instructor[] = [
     isActive: false,
     desiredWorkingHours: 40,
     contractType: CONTRACT_TYPES.find(({ name }) => name === "Full time")!,
-    weekdaysRange: WEEKDAYS_RANGES.find(
-      ({ name }) => name === "Monday - Friday"
-    )!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === "Monday - Friday")!,
     periodOfDays: PERIOD_OF_DAYS,
     courses: [
       {

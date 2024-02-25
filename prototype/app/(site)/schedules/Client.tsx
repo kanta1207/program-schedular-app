@@ -8,9 +8,7 @@ interface ScheduleListClientProps {
   ganttItems: Task[];
 }
 
-const ScheduleListClient: React.FC<ScheduleListClientProps> = ({
-  ganttItems,
-}) => {
+const ScheduleListClient: React.FC<ScheduleListClientProps> = ({ ganttItems }) => {
   const [tasks, setTasks] = useState<Task[]>(ganttItems);
   return (
     <div className="w-full">
@@ -21,9 +19,7 @@ const ScheduleListClient: React.FC<ScheduleListClientProps> = ({
           viewDate={dayjs().subtract(2, "week").toDate()}
           columnWidth={120}
           fontSize="12"
-          onClick={() =>
-            alert("We can show drawer or something to update this schedule")
-          }
+          onClick={() => alert("We can show drawer or something to update this schedule")}
         />
       )}
     </div>

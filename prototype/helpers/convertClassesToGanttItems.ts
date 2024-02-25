@@ -3,10 +3,7 @@ import { Class } from "@/types/class";
 import dayjs from "dayjs";
 import { Task } from "gantt-task-react";
 
-export const convertClassesToGanttItems = (
-  classes: Class[],
-  withInstructorName: boolean = false
-): Task[] => {
+export const convertClassesToGanttItems = (classes: Class[], withInstructorName: boolean = false): Task[] => {
   const ganttItems: Task[] = [];
 
   for (const classItem of classes) {
@@ -18,18 +15,13 @@ export const convertClassesToGanttItems = (
 
       // case: in the middle of the class term
       if (startAt < now && endAt > now) {
-        const classDuration =
-          classItem.endAt.getTime() - classItem.startAt.getTime();
+        const classDuration = classItem.endAt.getTime() - classItem.startAt.getTime();
         const progressedTime = now.getTime() - classItem.startAt.getTime();
 
         const classDurationDays = Math.ceil(classDuration / (1000 * 3600 * 24));
-        const progressedTimeDays = Math.ceil(
-          progressedTime / (1000 * 3600 * 24)
-        );
+        const progressedTimeDays = Math.ceil(progressedTime / (1000 * 3600 * 24));
 
-        const progress = Math.ceil(
-          (progressedTimeDays / classDurationDays) * 100
-        );
+        const progress = Math.ceil((progressedTimeDays / classDurationDays) * 100);
 
         return progress;
       }

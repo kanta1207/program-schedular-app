@@ -6,15 +6,7 @@ export interface Classroom {
   updatedAt?: Date;
 }
 
-export type classroomName =
-  | "Google"
-  | "Youtube"
-  | "Uber"
-  | "Amazon"
-  | "Facebook"
-  | "Apple"
-  | "Hootsuite"
-  | "Microsoft";
+export type classroomName = "Google" | "Youtube" | "Uber" | "Amazon" | "Facebook" | "Apple" | "Hootsuite" | "Microsoft";
 
 export type floorName = "2nd" | "3rd" | "4th";
 
@@ -48,7 +40,4 @@ export interface WeekdaysRange {
   updatedAt?: Date;
 }
 
-export type WeekdaysRangeName =
-  | "Monday - Friday"
-  | "Monday - Wednesday"
-  | "Wednesday - Friday";
+export type WeekdaysRangeName = "Monday - Friday" | "Monday - Wednesday" | "Wednesday - Friday";
