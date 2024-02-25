@@ -1,4 +1,4 @@
-import { convertClassesToGanttItems } from '@/helpers/convertClassesToGanttItems';
+import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 import { classes } from '@/mock/_index';
 import ScheduleListClient from './Client';
 

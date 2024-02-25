@@ -2,7 +2,7 @@ import { Class } from '@/types/_index';
 import dayjs from 'dayjs';
 import { courses } from './course';
 import { CLASSROOMS } from '@/constants/classroom';
-import { WEEKDAYS_RANGES } from '@/constants/weekdays_range';
+import { WEEKDAYS_RANGES } from '@/constants/weekdays-range';
 import { instructors } from './instructor';
 import { cohorts } from './cohort';
 

@@ -11,7 +11,7 @@ import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES 
 import { classes } from '@/mock/class';
 import { Gantt, ViewMode } from 'gantt-task-react';
 import 'gantt-task-react/dist/index.css';
-import { convertClassesToGanttItems } from '@/helpers/convertClassesToGanttItems';
+import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 
 interface InstructorDetailProps {
   params: {
