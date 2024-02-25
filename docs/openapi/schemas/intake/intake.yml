@@ -1,0 +1,43 @@
+type: object
+required:
+  - id
+  - name
+  - start_at
+  - end_at
+  - periodOfDays
+properties:
+  id:
+    type: integer
+    format: int64
+    example: 10
+  name:
+    type: string
+    example: DMS-24-Sep
+  start_at:
+    type: string
+    example: 2024-09-24
+  end_at:
+    type: string
+    example: 2024-10-10
+  periodOfDays:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Morning
+        cohorts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: M1-0922

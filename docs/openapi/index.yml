@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  title: Project Scheduler API
+  description: |-
+    This is a API documentation for Project Scheduler backend API.
+  version: 0.1.0
+servers:
+  - url: https://example.com
+tags:
+  - name: user
+    description: Operations about user
+  - name: Intake
+paths:
+  /intakes:
+    get:
+      tags:
+        - Intake
+      summary: Get Intakes
+      responses:
+        '200':
+          description: Returns a list of Intake with Cohort grouped by PeriodOfDay
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Intake'
+        '400':
+          description: Invalid request error
+        '500':
+          description: Internal server error
+  /intakes/{intakeId}:
+    get:
+      tags:
+        - Intake
+      summary: Get an Intake by id
+      responses:
+        '200':
+          description: Returns single Intake with Cohorts (name, Program, classroom, PeriodOfDay)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntakeWithCohort'
+
+components:
+  schemas:
+    Intake:
+      $ref: 'schemas/intake/intake.yml'
+    IntakeWithCohort:
+      $ref: 'schemas/intake/withCohort.yml'
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
