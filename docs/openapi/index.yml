@@ -11,64 +11,7 @@ tags:
     description: Operation about intake
 paths:
   /intakes:
-    get:
-      tags:
-        - Intake
-      summary: Get Intakes
-      responses:
-        '200':
-          description: Returns a list of Intake with Cohort grouped by PeriodOfDay
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - code
-                  - message
-                  - data
-                properties:
-                  code:
-                    type: integer
-                    example: 200
-                  message:
-                    type: string
-                    example: OK
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Intake'
-        '400':
-          $ref: '#/components/schemas/400Error'
-        '500':
-          $ref: '#/components/schemas/500Error'
-    post:
-      tags:
-        - 'Intake'
-      summary: Create new Intake
-      responses:
-        '201':
-          description: Returns created Intake
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - code
-                  - message
-                  - data
-                properties:
-                  code:
-                    type: integer
-                    example: 201
-                  message:
-                    type: string
-                    example: Created
-                  data:
-                    type: object
-        '400':
-          $ref: '#/components/schemas/400Error'
-        '500':
-          $ref: '#/components/schemas/500Error'
+    $ref: 'paths/intake/index.yml'
   /intakes/{intakeId}:
     get:
       tags:
