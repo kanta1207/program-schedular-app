@@ -1,35 +1,52 @@
 get:
   tags:
-    - Intake
-  summary: Get the Intake by id
+    - Cohort
+  summary: Get the cohort by id
   parameters:
     - in: path
-      name: intakeId
+      name: cohortId
       schema:
         type: integer
       required: true
-      description: Id of the intake to get
+      description: Id of the cohort to get
   responses:
     '200':
-      description: Returns the Intake with Cohorts (name, Program, classroom, PeriodOfDay)
+      description: Returns the cohort
       content:
         application/json:
           schema:
-            $ref: '../../index.yml#/components/schemas/IntakeWithCohort'
+            type: object
+            required:
+              - code
+              - message
+              - data
+            properties:
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: object
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
 patch:
   tags:
-    - Intake
-  summary: Update the Intake by id
+    - Cohort
+  summary: Update the cohort by id
   parameters:
     - in: path
-      name: intakeId
+      name: cohortId
       schema:
         type: integer
       required: true
-      description: Id of the intake to update
+      description: Id of the cohort to get
   responses:
     '200':
-      description: Returns the updated Intake
+      description: Returns the updated cohort
       content:
         application/json:
           schema:
@@ -53,18 +70,18 @@ patch:
       $ref: '../../index.yml#/components/schemas/500Error'
 delete:
   tags:
-    - Intake
-  summary: Delete the Intake by id
+    - Cohort
+  summary: Delete the cohort by id
   parameters:
     - in: path
-      name: intakeId
+      name: cohortId
       schema:
         type: integer
       required: true
-      description: Id of the intake to delete
+      description: Id of the cohort to get
   responses:
     '204':
-      description: Delete Intake by id
+      description: Delete cohort by id
       content:
         application/json:
           schema:
