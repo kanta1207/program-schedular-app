@@ -11,6 +11,12 @@ tags:
     description: Operation about intake
   - name: Cohort
     description: Operation about cohort
+  - name: Class
+    description: Operation about class
+  - name: Instructor
+    description: Operation about instructor
+  - name: Course
+    description: Operation about course
 paths:
   /intakes:
     $ref: 'paths/intake/index.yml'
