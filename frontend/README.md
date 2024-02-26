@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Scheduler Application
 
-## Getting Started
+## Project Setup Guide
 
-First, run the development server:
+This guide provides instructions on how to set up the project environment locally using Docker and Docker Compose.
+
+### Configuration
+
+1. Copy the sample environment variables file to create your own `.env` file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+$ cd frontend
+$ npm install
+$ npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Developer guide
 
-## Learn More
+### Structure
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+.
+├── actions ## Server actions for api fetch (e.g. getCohortById)
+│   ├── cohorts
+│   └── ...
+├── app
+│   ├── (auth) ## Authentication
+│   ├── (site) ## Application site
+│   ├── layout.tsx
+│   └── theme.ts ## Material UI theme
+├── components
+│   ├── layouts ## Components for site layouts
+│   │   ├── Container.tsx
+│   │   └── Header.tsx
+│   └── pages ## Components used in pages
+│       ├── cohorts
+│       └── ...
+├── constants ## Constant values used in entire application
+│   ├── _index.ts ## Barrel export (Exports all at once)
+│   ├── classroom.ts
+│   └── ...
+├── helpers ## Reusable helper functions
+│   └── calculateXXX.ts
+├── hooks ## Reusable business logic
+│   └── useXXX.ts
+├── mock ## Temporary mock data (to be removed later on)
+│   ├── _index.ts ## Barrel export
+│   ├── class.ts
+│   └── ...
+└── types ## Types for application (some of them will be removed once types generated from api docs got available)
+    ├── _index.ts
+    ├── class.ts
+    └── ...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Naming conventions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Files
+  - UI components -> PascalCase (e.g. Header.tsx)
+  - Functions -> camelCase (e.g. useXXX.ts, getCohorts.ts)
+  - Variables and types -> Kebab Case (e.g. period-of-days.ts, instructor.ts)
+- Variables
+  - Follows js standards.
+  - Constant values used in entire app -> Constants (e.g. CONTRACT_TYPES)
 
-## Deploy on Vercel
+### Coding rule
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Types
+  - Use Interface unless you need Type in such union types.
+- Modules
+  - Import variables and types using \_index barrel (e.g. import { xxx.ts } from './\_index.ts')
+  - Export new files by adding in \_index.ts in an alphanumerical order.
+- Styling
+  - Use space or gap when you need a space between aligned items.
+  - Use styling attributes in components provided by MUI as much as possible.
+- Icons
+  - Use material icons (https://mui.com/material-ui/material-icons/)
