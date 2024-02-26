@@ -11,15 +11,19 @@ tags:
     description: Operation about intake
   - name: Cohort
     description: Operation about cohort
+  - name: Break
+    description: Operation about break
 paths:
   /intakes:
-    $ref: 'paths/intake/index.yml'
+    $ref: 'paths/intakes/index.yml'
   /intakes/{intakeId}:
-    $ref: 'paths/intake/intake-id.yml'
+    $ref: 'paths/intakes/intake-id.yml'
   /cohorts:
     $ref: 'paths/cohorts/index.yml'
   /cohorts/{cohortId}:
     $ref: 'paths/cohorts/cohort-id.yml'
+  /breaks:
+    $ref: 'paths/breaks/index.yml'
 
 components:
   schemas:
@@ -33,13 +37,15 @@ components:
       $ref: 'schemas/errors/500error.yml'
     ApiResponse:
       type: object
+      required:
+        - code
+        - message
+        - data
       properties:
         code:
           type: integer
-          format: int32
-        type:
-          type: string
         message:
           type: string
-      xml:
-        name: '##default'
+        data:
+          type: object
+          nullable: true

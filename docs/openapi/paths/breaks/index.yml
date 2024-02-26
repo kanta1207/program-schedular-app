@@ -1,0 +1,71 @@
+get:
+  tags:
+    - Break
+  summary: Get breaks
+  parameters:
+    - in: query
+      name: startAt
+      schema:
+        type: string
+      required: false
+      description:
+    - in: query
+      name: endAt
+      schema:
+        type: string
+      required: false
+      description:
+  responses:
+    '200':
+      description: Returns a list of break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - data
+            properties:
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: array
+                items:
+                  type: object
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+post:
+  tags:
+    - 'Break'
+  summary: Create new break
+  responses:
+    '201':
+      description: Returns created break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+              - data
+            properties:
+              code:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Created
+              data:
+                type: object
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
