@@ -7,9 +7,8 @@ info:
 servers:
   - url: https://example.com
 tags:
-  - name: user
-    description: Operations about user
   - name: Intake
+    description: Operation about intake
 paths:
   /intakes:
     get:
@@ -22,25 +21,117 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Intake'
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Intake'
         '400':
-          description: Invalid request error
+          $ref: '#/components/schemas/400Error'
         '500':
-          description: Internal server error
+          $ref: '#/components/schemas/500Error'
+    post:
+      tags:
+        - 'Intake'
+      summary: Create new Intake
+      responses:
+        '201':
+          description: Returns created Intake
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: Created
+                  data:
+                    type: object
+        '400':
+          $ref: '#/components/schemas/400Error'
+        '500':
+          $ref: '#/components/schemas/500Error'
   /intakes/{intakeId}:
     get:
       tags:
         - Intake
-      summary: Get an Intake by id
+      summary: Get the Intake by id
       responses:
         '200':
-          description: Returns single Intake with Cohorts (name, Program, classroom, PeriodOfDay)
+          description: Returns the Intake with Cohorts (name, Program, classroom, PeriodOfDay)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/IntakeWithCohort'
+    patch:
+      tags:
+        - Intake
+      summary: Update the Intake by id
+      responses:
+        '200':
+          description: Returns the updated Intake
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                  - data
+                properties:
+                  code:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Updated
+                  data:
+                    type: object
+        '400':
+          $ref: '#/components/schemas/400Error'
+        '500':
+          $ref: '#/components/schemas/500Error'
+    delete:
+      tags:
+        - Intake
+      summary: Delete the Intake by id
+      responses:
+        '204':
+          description: Delete Intake by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 204
+                  message:
+                    type: string
+                    example: No Content
+                  data:
+                    type: string
+                    nullable: true
+                    example: null
+
 
 components:
   schemas:
@@ -48,6 +139,10 @@ components:
       $ref: 'schemas/intake/intake.yml'
     IntakeWithCohort:
       $ref: 'schemas/intake/withCohort.yml'
+    400Error:
+      $ref: 'schemas/errors/400error.yml'
+    500Error:
+      $ref: 'schemas/errors/500error.yml'
     ApiResponse:
       type: object
       properties:
