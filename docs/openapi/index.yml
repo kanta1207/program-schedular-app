@@ -26,6 +26,18 @@ paths:
     $ref: 'paths/cohorts/index.yml'
   /cohorts/{cohortId}:
     $ref: 'paths/cohorts/cohort-id.yml'
+  /classes:
+    $ref: 'paths/classes/index.yml'
+  /classes/{classId}:
+    $ref: 'paths/classes/class-id.yml'
+  /instructors:
+    $ref: 'paths/instructors/index.yml'
+  /instructors/{instructorId}:
+    $ref: 'paths/instructors/instructor-id.yml'
+  /courses:
+    $ref: 'paths/courses/index.yml'
+  /courses/{courseId}:
+    $ref: 'paths/courses/course-id.yml'
 
 components:
   schemas:
