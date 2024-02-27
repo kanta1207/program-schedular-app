@@ -23,11 +23,11 @@ get:
           schema:
             type: object
             required:
-              - code
+              - statusCode
               - message
               - data
             properties:
-              code:
+              statusCode:
                 type: integer
                 example: 200
               message:
@@ -37,6 +37,20 @@ get:
                 type: array
                 items:
                   type: object
+                  required:
+                    - id
+                    - startAt
+                    - endAt
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    startAt:
+                      type: string
+                      example: 2022-07-20
+                    endAt:
+                      type: string
+                      example: 2022-07-31
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -45,6 +59,21 @@ post:
   tags:
     - 'Break'
   summary: Create new break
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+           - startAt
+           - endAt
+          properties:
+            startAt:
+              type: string
+              example: '2022-07-20'
+            endAt:
+              type: string
+              example: '2022-07-31'
   responses:
     '201':
       description: Returns created break
@@ -53,11 +82,11 @@ post:
           schema:
             type: object
             required:
-              - code
+              - statusCode
               - message
               - data
             properties:
-              code:
+              statusCode:
                 type: integer
                 example: 201
               message:
@@ -65,6 +94,20 @@ post:
                 example: Created
               data:
                 type: object
+                required:
+                  - id
+                  - startAt
+                  - endAt
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  startAt:
+                      type: string
+                      example: 2022-07-20
+                  endAt:
+                    type: string
+                    example: 2022-07-31
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
