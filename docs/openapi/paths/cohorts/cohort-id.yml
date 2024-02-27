@@ -68,62 +68,62 @@ get:
                         type: string
                         example: DMS
                   classes:
-                      type: array
-                      items:
-                        type: object
-                        required:
-                          - startAt
-                          - endAt
-                          - weekdaysRange
-                          - course
-                          - instructor
-                        properties:
-                          startAt:
-                            type: string
-                            example: 2022-09-01
-                          endAt:
-                            type: string
-                            example: 2023-08-30
-                          weekdaysRange:
-                            type: object
-                            required:
-                              - id
-                              - name
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              name:
-                                type: string
-                                example: Mon - Fri
-                          course:
-                            type: object
-                            required:
-                              - id
-                              - name
-                              - requiredHours
-                            properties:
-                              id:
-                                type: number
-                                example: 1
-                              name:
-                                type: string
-                                example: Digital Marketing
-                              requiredHours:
-                                type: integer
-                                example: 60
-                          instructor:
-                            type: object
-                            required:
-                              - id
-                              - name
-                            properties:
-                              id:
-                                type: integer
-                                example: 1
-                              name:
-                                type: string
-                                example: Brian
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - startAt
+                        - endAt
+                        - weekdaysRange
+                        - course
+                        - instructor
+                      properties:
+                        startAt:
+                          type: string
+                          example: 2022-09-01
+                        endAt:
+                          type: string
+                          example: 2023-08-30
+                        weekdaysRange:
+                          type: object
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Mon - Fri
+                        course:
+                          type: object
+                          required:
+                            - id
+                            - name
+                            - requiredHours
+                          properties:
+                            id:
+                              type: number
+                              example: 1
+                            name:
+                              type: string
+                              example: Digital Marketing
+                            requiredHours:
+                              type: integer
+                              example: 60
+                        instructor:
+                          type: object
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Brian
                   periodOfDay:
                     type: object
                     required:

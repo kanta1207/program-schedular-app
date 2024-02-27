@@ -49,6 +49,20 @@ components:
       $ref: 'schemas/intake/intake.yml'
     IntakeWithCohort:
       $ref: 'schemas/intake/withCohort.yml'
+    Cohort:
+      $ref: 'schemas/cohort/cohort.yml'
+    Class:
+      allOf:
+        - $ref: 'schemas/class/classStaticProps.yml'
+        - $ref: 'schemas/class/classDynamicProps.yml'
+    Instructor:
+      allOf:
+        - $ref: 'schemas/instructor/instructorStaticProps.yml'
+        - $ref: 'schemas/instructor/instructorDynamicProps.yml'
+    Course:
+      allOf:
+        - $ref: 'schemas/course/courseStaticProps.yml'
+        - $ref: 'schemas/course/courseDynamicProps.yml'
     400Error:
       $ref: 'schemas/errors/400error.yml'
     500Error:

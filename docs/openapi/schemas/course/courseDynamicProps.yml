@@ -1,0 +1,14 @@
+type: object
+required:
+  - name
+  - requiredHours
+  - program
+properties:
+  name:
+    type: string
+    example: SEO
+  requiredHours:
+    type: integer
+    example: 60
+  program:
+    $ref: '../program/program.yml'
