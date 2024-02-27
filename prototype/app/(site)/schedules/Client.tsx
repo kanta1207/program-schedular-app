@@ -45,7 +45,7 @@ const ScheduleListClient: React.FC<ScheduleListClientProps> = ({ ganttItems }) =
             tasks={ganttItems}
             viewMode={ViewMode.Week}
             viewDate={dayjs().subtract(2, 'week').toDate()}
-            columnWidth={60}
+            columnWidth={50}
             fontSize="12"
             onClick={() => alert('We can show drawer or something to update this schedule')}
           />

@@ -1,12 +1,12 @@
-import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 import { classes } from '@/mock/_index';
 import ScheduleListClient from './Client';
+import { sortClasses } from '@/helpers/sortClasses';
+import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 
 const ScheduleList = () => {
-  const ganttItems = convertClassesToGanttItems(classes, true).filter(
-    (classItem) => classItem.progress !== 100, // remove past classes
-  );
-  return <>{ganttItems && <ScheduleListClient ganttItems={ganttItems} />}</>;
+  const sortedClasses = sortClasses(classes);
+  const ganttItems = convertClassesToGanttItems(sortedClasses, true);
+  return <ScheduleListClient ganttItems={ganttItems} />;
 };
 
 export default ScheduleList;
