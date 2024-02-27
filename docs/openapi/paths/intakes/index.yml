@@ -10,11 +10,11 @@ get:
           schema:
             type: object
             required:
-              - code
+              - statusCode
               - message
               - data
             properties:
-              code:
+              statusCode:
                 type: integer
                 example: 200
               message:
@@ -31,7 +31,27 @@ get:
 post:
   tags:
     - 'Intake'
-  summary: Create new Intake
+  summary: Create new intake
+  requestBody:
+    description: Create new intake
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - startAt
+            - endAt
+          properties:
+            name:
+              type: string
+              example: DMS-24-Sep
+            startAt:
+              type: string
+              example: 2024-05-23
+            endAt:
+              type: string
+              example: 2025-04-30
   responses:
     '201':
       description: Returns created Intake
@@ -40,11 +60,11 @@ post:
           schema:
             type: object
             required:
-              - code
+              - statusCode
               - message
               - data
             properties:
-              code:
+              statusCode:
                 type: integer
                 example: 201
               message:
@@ -52,6 +72,16 @@ post:
                 example: Created
               data:
                 type: object
+                properties:
+                  name:
+                    type: string
+                    example: DMS-24-Sep
+                  startAt:
+                    type: string
+                    example: 2024-05-23
+                  endAt:
+                    type: string
+                    example: 2025-04-30
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
