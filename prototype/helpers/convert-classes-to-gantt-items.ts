@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Task } from 'gantt-task-react';
-import { cohorts } from '@/mock/_index';
+import { cohorts, instructors } from '@/mock/_index';
 import { Class } from '@/types/_index';
 
 const getProgress = (startAt: Date, endAt: Date) => {
@@ -26,27 +26,52 @@ const getProgress = (startAt: Date, endAt: Date) => {
   return 0;
 };
 
-export const convertClassesToGanttItems = (classes: Class[], withInstructorName: boolean = false): Task[] => {
+export type GanttGroupBy = 'cohort' | 'instructor';
+interface convertClassesToGanttItemsProps {
+  classes: Class[];
+  groupBy: GanttGroupBy;
+}
+
+export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesToGanttItemsProps): Task[] => {
   const ganttItems: Task[] = [];
 
-  // Add cohorts
-  for (const cohort of cohorts) {
-    const group: Task = {
-      start: dayjs(cohort.intake.startAt).toDate(),
-      end: dayjs(cohort.intake.endAt).toDate(),
-      name: cohort.name,
-      id: cohort.name, // associated with 'project' in classItem
-      progress: getProgress(cohort.intake.startAt, cohort.intake.endAt),
-      type: 'project',
-      project: cohort.name,
-      isDisabled: true,
-      hideChildren: false,
-    };
-    ganttItems.push(group);
+  if (groupBy === 'cohort') {
+    for (const cohort of cohorts) {
+      const group: Task = {
+        start: dayjs(cohort.intake.startAt).toDate(),
+        end: dayjs(cohort.intake.endAt).toDate(),
+        name: cohort.name,
+        id: cohort.name, // associated with 'project' in classItem
+        progress: getProgress(cohort.intake.startAt, cohort.intake.endAt),
+        type: 'project',
+        project: cohort.name,
+        isDisabled: true,
+        hideChildren: false,
+      };
+      ganttItems.push(group);
+    }
+  } else if (groupBy === 'instructor') {
+    for (const instructor of instructors) {
+      const group: Task = {
+        start: dayjs().toDate(),
+        end: dayjs().toDate(),
+        name: instructor.name,
+        id: instructor.name, // associated with 'project' in classItem
+        progress: getProgress(dayjs().toDate(), dayjs().toDate()),
+        type: 'project',
+        project: instructor.name,
+        isDisabled: true,
+        hideChildren: false,
+      };
+      ganttItems.push(group);
+    }
   }
 
   // Add classes
   for (const classItem of classes) {
+    const parentName =
+      groupBy === 'cohort' ? classItem.cohort.name : groupBy === 'instructor' ? classItem.instructor?.name : '';
+
     const classRecord: Task = {
       start: dayjs(classItem.startAt).toDate(),
       end: dayjs(classItem.endAt).toDate(),
@@ -59,12 +84,12 @@ export const convertClassesToGanttItems = (classes: Class[], withInstructorName:
           ? '🌙'
           : ''
       } ${classItem.course.name} (${classItem.cohort.name} at ${classItem.classroom.name})
-      ${withInstructorName ? ` | ${classItem.instructor?.name}` : ''}`,
+      ${groupBy === 'cohort' ? ` | ${classItem.instructor?.name}` : ''}`,
       id: classItem.id.toString(),
       type: 'task',
       progress: getProgress(classItem.startAt, classItem.endAt),
       isDisabled: true,
-      project: classItem.cohort.name, // associated with id in project
+      project: parentName,
       styles: {
         progressColor:
           classItem.weekdaysRange.name === 'Monday - Friday'
@@ -101,7 +126,7 @@ export const convertClassesToGanttItems = (classes: Class[], withInstructorName:
       },
     };
 
-    const parentIndex = ganttItems.findIndex((item) => item.id === classItem.cohort.name);
+    const parentIndex = ganttItems.findIndex((item) => item.id === parentName);
     if (parentIndex !== -1) {
       ganttItems.splice(parentIndex + 1, 0, classRecord);
     }

@@ -5,7 +5,7 @@ import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-i
 
 const ScheduleList = () => {
   const sortedClasses = sortClasses(classes);
-  const ganttItems = convertClassesToGanttItems(sortedClasses, true);
+  const ganttItems = convertClassesToGanttItems({ classes: sortedClasses, groupBy: 'cohort' });
   return <ScheduleListClient ganttItems={ganttItems} />;
 };
 
