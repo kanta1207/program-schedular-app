@@ -1,14 +1,15 @@
 'use client';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
+import ClassIcon from '@mui/icons-material/Class';
+import PersonIcon from '@mui/icons-material/Person';
 import 'gantt-task-react/dist/index.css';
-import { useEffect, useState } from 'react';
 import { GanttGroupBy, convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 import { sortClasses } from '@/helpers/sortClasses';
-import { classes } from '@/mock/class';
+import { classes } from '@/mock/_index';
 
 interface ScheduleListClientProps {
   ganttItems: Task[];
@@ -59,8 +60,14 @@ const ScheduleListClient: React.FC<ScheduleListClientProps> = ({ ganttItems }) =
   return (
     <div className="w-full">
       <ToggleButtonGroup color="primary" value={groupBy} exclusive onChange={handleGroupByChange} aria-label="Group by">
-        <ToggleButton value="cohort">Cohort</ToggleButton>
-        <ToggleButton value="instructor">Instructor</ToggleButton>
+        <ToggleButton value="cohort" disabled={groupBy === 'cohort'}>
+          <ClassIcon />
+          Cohort
+        </ToggleButton>
+        <ToggleButton value="instructor" disabled={groupBy === 'instructor'}>
+          <PersonIcon />
+          Instructor
+        </ToggleButton>
       </ToggleButtonGroup>
       <ScheduleGuide />
       {ganttItems && (

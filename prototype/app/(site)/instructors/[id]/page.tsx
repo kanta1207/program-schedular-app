@@ -26,7 +26,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
   if (!instructor) return;
   const belongingClasses = classes.filter((classItem) => classItem.instructor?.id === +id);
 
-  const ganttItems = convertClassesToGanttItems(belongingClasses);
+  const ganttItems = convertClassesToGanttItems({ classes: belongingClasses, groupBy: 'instructor' });
 
   return (
     <div className="w-full">
