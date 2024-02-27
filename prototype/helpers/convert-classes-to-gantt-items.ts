@@ -53,8 +53,8 @@ export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesT
   } else if (groupBy === 'instructor') {
     for (const instructor of instructors) {
       const group: Task = {
-        start: dayjs().toDate(),
-        end: dayjs().toDate(),
+        start: dayjs().subtract(6, 'month').toDate(),
+        end: dayjs().add(6, 'month').toDate(),
         name: instructor.name,
         id: instructor.name, // associated with 'project' in classItem
         progress: getProgress(dayjs().toDate(), dayjs().toDate()),
