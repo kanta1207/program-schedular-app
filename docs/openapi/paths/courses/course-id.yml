@@ -1,0 +1,114 @@
+patch:
+  tags:
+    - Course
+  summary: Update the course by id
+  parameters:
+    - in: path
+      name: courseId
+      schema:
+        type: integer
+      required: true
+      description: Id of the course to get
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          optional:
+            - name
+            - requiredHours
+            - programId
+          properties:
+            name:
+              type: string
+              example: SEO
+            requiredHours:
+              type: integer
+              example: 60
+            programId:
+              type: integer
+              example: 1
+  responses:
+    '200':
+      description: Returns the updated course
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                type: object
+                required:
+                  - id
+                  - name
+                  - requiredHours
+                  - program
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: SEO
+                  requiredHours:
+                    type: integer
+                    example: 60
+                  program:
+                    type: object
+                    required:
+                      - id
+                      - name
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: DMS
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Course
+  summary: Delete the course by id
+  parameters:
+    - in: path
+      name: courseId
+      schema:
+        type: integer
+      required: true
+      description: Id of the course to get
+  responses:
+    '204':
+      description: Delete course by id
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

@@ -1,23 +1,17 @@
 get:
   tags:
     - Instructor
-  summary: Get instructors
+  summary: Get the instructor by id
   parameters:
-    - in: query
-      name: courseId
+    - in: path
+      name: instructorId
       schema:
         type: integer
-      required: false
-      description: Course id to get the assignable instructors to the specific course.
-    - in: query
-      name: rangeId
-      schema:
-        type: integer
-      required: false
-      description: Range id to get the assignable instructors to the specific range of days.
+      required: true
+      description: Id of the instructor to get
   responses:
     '200':
-      description: Returns Instructors
+      description: Returns the instructor
       content:
         application/json:
           schema:
@@ -34,59 +28,63 @@ get:
                 type: string
                 example: OK
               data:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - isActive
-                    - contractType
-                    - weekdaysRange
-                  properties:
-                    id:
-                      type: integer
-                      example: 1
-                    name:
-                      type: string
-                      example: John Doe
-                    isActive:
-                      type: boolean
-                      example: true
-                    contractType:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Full time
-                    weekdaysRange:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Monday - Friday
+                type: object
+                required:
+                  - id
+                  - name
+                  - isActive
+                  - contractType
+                  - weekdaysRange
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: John Doe
+                  isActive:
+                    type: boolean
+                    example: true
+                  contractType:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Full time
+                      weekdaysRange:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: Monday - Friday
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
       $ref: '../../index.yml#/components/schemas/500Error'
 
-post:
+patch:
   tags:
     - Instructor
-  summary: Create a new instructor
+  summary: Update the instructor by id
+  parameters:
+    - in: path
+      name: instructorId
+      schema:
+        type: integer
+      required: true
+      description: Id of the instructor to update
   requestBody:
-    required: true
     content:
       application/json:
         schema:
           type: object
-          required:
+          optional:
             - name
             - isActive
             - contractTypeId
@@ -106,7 +104,7 @@ post:
               example: 1
   responses:
     '200':
-      description: Returns the created instructor
+      description: Returns the updated instructor
       content:
         application/json:
           schema:
@@ -117,11 +115,11 @@ post:
               - data
             properties:
               statusCode:
-                type: integer
+                type: number
                 example: 200
               message:
                 type: string
-                example: Created
+                example: Updated
               data:
                 type: object
                 required:
@@ -158,6 +156,39 @@ post:
                       name:
                         type: string
                         example: Monday - Friday
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Instructor
+  summary: Delete the instructor by id
+  parameters:
+    - in: path
+      name: instructorId
+      schema:
+        type: integer
+      required: true
+      description: Id of the instructor to get
+  responses:
+    '204':
+      description: Delete instructor by id
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

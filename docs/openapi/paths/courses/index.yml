@@ -1,23 +1,17 @@
 get:
   tags:
-    - Instructor
-  summary: Get instructors
+    - Course
+  summary: Get courses
   parameters:
     - in: query
-      name: courseId
+      name: programId
       schema:
         type: integer
       required: false
-      description: Course id to get the assignable instructors to the specific course.
-    - in: query
-      name: rangeId
-      schema:
-        type: integer
-      required: false
-      description: Range id to get the assignable instructors to the specific range of days.
+      description: Program id to get courses with specific programs.
   responses:
     '200':
-      description: Returns Instructors
+      description: Returns Courses
       content:
         application/json:
           schema:
@@ -40,37 +34,30 @@ get:
                   required:
                     - id
                     - name
-                    - isActive
-                    - contractType
-                    - weekdaysRange
+                    - requiredHours
+                    - program
                   properties:
                     id:
                       type: integer
                       example: 1
                     name:
                       type: string
-                      example: John Doe
-                    isActive:
-                      type: boolean
-                      example: true
-                    contractType:
+                      example: SEO
+                    requiredHours:
+                      type: integer
+                      example: 60
+                    program:
                       type: object
+                      required:
+                        - id
+                        - name
                       properties:
                         id:
                           type: integer
                           example: 1
                         name:
                           type: string
-                          example: Full time
-                    weekdaysRange:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Monday - Friday
+                          example: DMS
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -78,8 +65,8 @@ get:
 
 post:
   tags:
-    - Instructor
-  summary: Create a new instructor
+    - Course
+  summary: Create a new course
   requestBody:
     required: true
     content:
@@ -88,25 +75,21 @@ post:
           type: object
           required:
             - name
-            - isActive
-            - contractTypeId
-            - weekdaysRangeId
+            - requiredHours
+            - programId
           properties:
             name:
               type: string
-              example: John Doe
-            isActive:
-              type: boolean
-              example: true
-            contractTypeId:
+              example: SEO
+            requiredHours:
               type: integer
-              example: 1
-            weekdaysRangeId:
+              example: 60
+            programId:
               type: integer
               example: 1
   responses:
     '200':
-      description: Returns the created instructor
+      description: Returns the created course
       content:
         application/json:
           schema:
@@ -127,37 +110,30 @@ post:
                 required:
                   - id
                   - name
-                  - isActive
-                  - contractTypeId
-                  - weekdaysRangeId
+                  - requiredHours
+                  - program
                 properties:
                   id:
                     type: integer
                     example: 1
                   name:
                     type: string
-                    example: John Doe
-                  isActive:
-                    type: boolean
-                    example: true
-                  contractType:
+                    example: SEO
+                  requiredHours:
+                    type: integer
+                    example: 60
+                  program:
                     type: object
+                    required:
+                      - id
+                      - name
                     properties:
                       id:
                         type: integer
                         example: 1
                       name:
                         type: string
-                        example: Full time
-                  weekdaysRange:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: Monday - Friday
+                        example: DMS
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
