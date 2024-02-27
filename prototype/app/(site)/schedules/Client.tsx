@@ -10,6 +10,8 @@ import 'gantt-task-react/dist/index.css';
 import { GanttGroupBy, convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 import { sortClasses } from '@/helpers/sortClasses';
 import { classes } from '@/mock/_index';
+import theme from '@/app/theme';
+import { fontSize } from '@mui/system';
 
 interface ScheduleListClientProps {
   ganttItems: Task[];
@@ -77,6 +79,10 @@ const ScheduleListClient: React.FC<ScheduleListClientProps> = ({ ganttItems }) =
             viewMode={ViewMode.Week}
             viewDate={dayjs().subtract(2, 'week').toDate()}
             columnWidth={50}
+            projectBackgroundColor={theme.palette.primary.main}
+            projectProgressColor={theme.palette.primary.main}
+            projectProgressSelectedColor={theme.palette.primary.light}
+            projectBackgroundSelectedColor={theme.palette.primary.light}
             fontSize="12"
             onClick={() => alert('We can show drawer or something to update this schedule')}
           />

@@ -13,6 +13,7 @@ import { Gantt, ViewMode } from 'gantt-task-react';
 import 'gantt-task-react/dist/index.css';
 import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
 import { ScheduleGuide } from '../../schedules/Client';
+import theme from '@/app/theme';
 
 interface InstructorDetailProps {
   params: {
@@ -165,6 +166,10 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
               viewMode={ViewMode.Week}
               viewDate={dayjs().subtract(2, 'week').toDate()}
               columnWidth={60}
+              projectBackgroundColor={theme.palette.primary.main}
+              projectProgressColor={theme.palette.primary.main}
+              projectProgressSelectedColor={theme.palette.primary.light}
+              projectBackgroundSelectedColor={theme.palette.primary.light}
               fontSize="12"
               onClick={() => alert('We can show drawer or something to update this schedule')}
             />
