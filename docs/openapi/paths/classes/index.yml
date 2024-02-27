@@ -1,0 +1,101 @@
+post:
+  tags:
+    - Class
+  summary: Create new class
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - cohortId
+            - rangeId
+            - courseId
+            - classroomId
+            - instructorId
+          properties:
+            cohortId:
+              type: integer
+              example: 1
+            rangeId:
+              type: integer
+              example: 1
+            courseId:
+              type: integer
+              example: 1
+            classroomId:
+              type: integer
+              example: 1
+            instructorId:
+              type: integer
+              example: 1
+  responses:
+    '200':
+      description: Returns Classs
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - name
+                    - intake
+                    - program
+                    - periodOfDay
+                  properties:
+                    classRoom:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                        type: string
+                        example: Facebook
+                    course:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - requiredHours
+                        - program
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: SEO
+                        requiredHours:
+                          type: integer
+                          example: 60
+                        program:
+                          type: object
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: DMS
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

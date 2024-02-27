@@ -1,0 +1,75 @@
+patch:
+  tags:
+    - Class
+  summary: Update the class by id
+  parameters:
+    - in: path
+      name: classId
+      schema:
+        type: integer
+      required: true
+      description: Id of the class to get
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+          properties:
+  responses:
+    '200':
+      description: Returns the updated class
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                type: object
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Class
+  summary: Delete the class by id
+  parameters:
+    - in: path
+      name: classId
+      schema:
+        type: integer
+      required: true
+      description: Id of the class to get
+  responses:
+    '204':
+      description: Delete class by id
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
