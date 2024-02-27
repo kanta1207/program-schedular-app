@@ -1,0 +1,114 @@
+get:
+  tags:
+    - Break
+  summary: Get breaks
+  parameters:
+    - in: query
+      name: startAt
+      schema:
+        type: string
+      required: false
+      description:
+    - in: query
+      name: endAt
+      schema:
+        type: string
+      required: false
+      description:
+  responses:
+    '200':
+      description: Returns a list of break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - startAt
+                    - endAt
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    startAt:
+                      type: string
+                      example: 2022-07-20
+                    endAt:
+                      type: string
+                      example: 2022-07-31
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+post:
+  tags:
+    - 'Break'
+  summary: Create new break
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+           - startAt
+           - endAt
+          properties:
+            startAt:
+              type: string
+              example: '2022-07-20'
+            endAt:
+              type: string
+              example: '2022-07-31'
+  responses:
+    '201':
+      description: Returns created break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Created
+              data:
+                type: object
+                required:
+                  - id
+                  - startAt
+                  - endAt
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  startAt:
+                      type: string
+                      example: 2022-07-20
+                  endAt:
+                    type: string
+                    example: 2022-07-31
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

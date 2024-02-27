@@ -8,13 +8,9 @@ content:
         - message
         - data
       properties:
-        code:
+        statusCode:
           type: integer
           example: 500
         message:
           type: string
           example: Internal Server Error
-        data:
-          type: string
-          nullable: true
-          example: null
