@@ -93,3 +93,80 @@ get:
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
       $ref: '../../index.yml#/components/schemas/500Error'
+post:
+  tags:
+    - 'Cohort'
+  summary: Create new cohort
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - intakeId
+            - name
+            - programId
+            - periodOfDayId
+          properties:
+            intakeId:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: A1-0922
+            programId:
+              type: integer
+              example: 1
+              description: DMS or DMA
+            periodOfDayId:
+              type: integer
+              example: 1
+              description: Morning/Afternoon/Evening
+  responses:
+    '201':
+      description: Returns created cohort
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Created
+              data:
+                type: object
+                required:
+                  - id
+                  - intakeId
+                  - name
+                  - programId
+                  - periodOfDayId
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  intakeId:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: A1-0922
+                  programId:
+                    type: integer
+                    example: 1
+                    description: DMS or DMA
+                  periodOfDayId:
+                    type: integer
+                    example: 1
+                    description: Morning/Afternoon/Evening
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
