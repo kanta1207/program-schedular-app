@@ -26,7 +26,10 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
   if (!instructor) return;
   const belongingClasses = classes.filter((classItem) => classItem.instructor?.id === +id);
 
-  const ganttItems = convertClassesToGanttItems({ classes: belongingClasses, groupBy: 'instructor' });
+  const ganttItems = convertClassesToGanttItems({ classes: belongingClasses, groupBy: 'cohort' });
+  const filteredItems = ganttItems.filter(
+    (obj, index, array) => array.findIndex((item) => item.project === obj.project) !== index,
+  );
 
   return (
     <div className="w-full">
@@ -158,7 +161,7 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
           <ScheduleGuide />
           <div className="text-xs">
             <Gantt
-              tasks={ganttItems}
+              tasks={filteredItems}
               viewMode={ViewMode.Week}
               viewDate={dayjs().subtract(2, 'week').toDate()}
               columnWidth={60}
