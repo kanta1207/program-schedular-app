@@ -28,6 +28,7 @@ const theme = createTheme({
       main: '#19B571',
     },
   },
+
   typography: {
     fontFamily: roboto.style.fontFamily,
     button: {
