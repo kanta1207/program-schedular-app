@@ -12,6 +12,7 @@ import { classes } from '@/mock/class';
 import { Gantt, ViewMode } from 'gantt-task-react';
 import 'gantt-task-react/dist/index.css';
 import { convertClassesToGanttItems } from '@/helpers/convert-classes-to-gantt-items';
+import { ScheduleGuide } from '../../schedules/Client';
 
 interface InstructorDetailProps {
   params: {
@@ -153,14 +154,19 @@ const InstructorDetail: React.FC<InstructorDetailProps> = ({ params: { id } }) =
       </div>
 
       {belongingClasses.length > 0 && (
-        <Gantt
-          tasks={ganttItems}
-          viewMode={ViewMode.Week}
-          viewDate={dayjs().subtract(2, 'week').toDate()}
-          columnWidth={80}
-          fontSize="12"
-          onClick={() => alert('We can show drawer or something to update this schedule')}
-        />
+        <>
+          <ScheduleGuide />
+          <div className="text-xs">
+            <Gantt
+              tasks={ganttItems}
+              viewMode={ViewMode.Week}
+              viewDate={dayjs().subtract(2, 'week').toDate()}
+              columnWidth={60}
+              fontSize="12"
+              onClick={() => alert('We can show drawer or something to update this schedule')}
+            />
+          </div>
+        </>
       )}
       {/* Belonging classes */}
       <TableContainer component={Paper}>

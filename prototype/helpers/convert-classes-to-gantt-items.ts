@@ -33,19 +33,54 @@ export const convertClassesToGanttItems = (classes: Class[], withInstructorName:
     const ganttItem: Task = {
       start: dayjs(classItem.startAt).toDate(),
       end: dayjs(classItem.endAt).toDate(),
-      name: `${classItem.course.name} (${classItem.cohort.name} at ${
-        classItem.classroom.name
-      }) | ${classItem.cohort.periodOfDay.time} | ${
-        classItem.weekdaysRange.name
-      }${withInstructorName ? ` | ${classItem.instructor?.name}` : ''}`,
+      name: `${
+        classItem.cohort.periodOfDay.name === 'Morning'
+          ? '🌅'
+          : classItem.cohort.periodOfDay.name === 'Afternoon'
+          ? '☀️'
+          : classItem.cohort.periodOfDay.name === 'Evening'
+          ? '🌙'
+          : ''
+      } ${classItem.course.name} (${classItem.cohort.name} at ${classItem.classroom.name})
+      ${withInstructorName ? ` | ${classItem.instructor?.name}` : ''}`,
       id: classItem.id.toString(),
       type: 'task',
       progress: getProgress(classItem.startAt, classItem.endAt),
       isDisabled: true,
       project: classItem.cohort.intake.name,
       styles: {
-        progressColor: '#2A3776',
-        progressSelectedColor: '#ffbb54',
+        progressColor:
+          classItem.weekdaysRange.name === 'Monday - Friday'
+            ? '#76568f'
+            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            ? '#3866a8'
+            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            ? '#ba4359'
+            : '',
+        progressSelectedColor:
+          classItem.weekdaysRange.name === 'Monday - Friday'
+            ? '#76568f'
+            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            ? '#3866a8'
+            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            ? '#ba4359'
+            : '',
+        backgroundColor:
+          classItem.weekdaysRange.name === 'Monday - Friday'
+            ? '#662d91'
+            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            ? '#0047AB'
+            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            ? '#BA0021'
+            : '',
+        backgroundSelectedColor:
+          classItem.weekdaysRange.name === 'Monday - Friday'
+            ? '#662d91'
+            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            ? '#0047AB'
+            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            ? '#BA0021'
+            : '',
       },
     };
 
