@@ -27,6 +27,22 @@ patch:
         type: integer
       required: true
       description: Id of the intake to update
+  requestBody:
+    description: Create new intake
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: DMS-24-Sep
+            startAt:
+              type: string
+              example: 2024-05-23
+            endAt:
+              type: string
+              example: 2025-04-30
   responses:
     '200':
       description: Returns the updated Intake
@@ -35,11 +51,11 @@ patch:
           schema:
             type: object
             required:
-              - code
+              - statusCode
               - message
               - data
             properties:
-              code:
+              statusCode:
                 type: number
                 example: 200
               message:
@@ -47,6 +63,20 @@ patch:
                 example: Updated
               data:
                 type: object
+                required:
+                  - name
+                  - startAt
+                  - endAt
+                properties:
+                  name:
+                    type: string
+                    example: DMS-24-Sep
+                  startAt:
+                    type: string
+                    example: 2024-05-23
+                  endAt:
+                    type: string
+                    example: 2025-04-30
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -54,7 +84,7 @@ patch:
 delete:
   tags:
     - Intake
-  summary: Delete the Intake by id
+  summary: Delete the intake by id
   parameters:
     - in: path
       name: intakeId
@@ -64,13 +94,17 @@ delete:
       description: Id of the intake to delete
   responses:
     '204':
-      description: Delete Intake by id
+      description: Delete intake by id
       content:
         application/json:
           schema:
             type: object
+            required:
+              - statusCode
+              - message
+              - data
             properties:
-              code:
+              statusCode:
                 type: integer
                 example: 204
               message:
@@ -80,3 +114,7 @@ delete:
                 type: string
                 nullable: true
                 example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
