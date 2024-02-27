@@ -34,6 +34,8 @@ get:
                   required:
                     - name
                     - intake
+                    - program
+                    - periodOfDay
                   properties:
                     name:
                       type: string
