@@ -1,0 +1,109 @@
+patch:
+  tags:
+    - Break
+  summary: Update the break by id
+  parameters:
+    - in: path
+      name: breakId
+      schema:
+        type: integer
+      required: true
+      description: Id of the break to update
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+           - startAt
+           - endAt
+          properties:
+            startAt:
+              type: string
+              example: '2022-07-20'
+            endAt:
+              type: string
+              example: '2022-07-31'
+  responses:
+    '201':
+      description: Returns the updated break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                type: object
+                required:
+                  - id
+                  - startAt
+                  - endAt
+                  - createdAt
+                  - updatedAt
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  startAt:
+                    type: string
+                    example: 2022-07-20
+                  endAt:
+                    type: string
+                    example: 2022-07-31
+                  createdAt:
+                    type: string
+                    example: 2022-07-20
+                  updatedAt:
+                    type: string
+                    example: 2022-07-20
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Break
+  summary: Delete the break by id
+  parameters:
+    - in: path
+      name: breakId
+      schema:
+        type: integer
+      required: true
+      description: Id of the break to update
+  responses:
+    '204':
+      description: Returns the updated break
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: object
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

@@ -1,0 +1,8 @@
+type: object
+required:
+  - programId
+properties:
+  programId:
+    type: integer
+    example: 1
+    description: The ID of the program this course belongs to

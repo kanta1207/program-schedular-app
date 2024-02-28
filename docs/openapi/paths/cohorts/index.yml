@@ -1,0 +1,189 @@
+get:
+  tags:
+    - Cohort
+  summary: Get the Intake by id
+  parameters:
+    - in: query
+      name: cohortId
+      schema:
+        type: array
+        items:
+          type: integer
+      required: false
+      description: Multiple ids of the cohorts to get
+  responses:
+    '200':
+      description: Returns Cohorts
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - createdAt
+                    - updatedAt
+                    - intake
+                    - program
+                    - periodOfDay
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: A1-0922
+                    createdAt:
+                      type: string
+                      example: 2022-09-01
+                    updatedAt:
+                      type: string
+                      example: 2022-09-01
+                    intake:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - startAt
+                        - endAt
+                        - createdAt
+                        - updatedAt
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 2022 September 2022
+                        startAt:
+                          type: string
+                          example: 2022-09-01
+                        endAt:
+                          type: string
+                          example: 2023-08-30
+                        createdAt:
+                          type: string
+                          example: 2022-09-01
+                        updatedAt:
+                          type: string
+                          example: 2022-09-01
+                    program:
+                      type: object
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: DMS
+                    periodOfDay:
+                      type: object
+                      required:
+                        - id
+                        - name
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Afternoon
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+post:
+  tags:
+    - 'Cohort'
+  summary: Create new cohort
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - intakeId
+            - name
+            - programId
+            - periodOfDayId
+          properties:
+            intakeId:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: A1-0922
+            programId:
+              type: integer
+              example: 1
+              description: DMS or DMA
+            periodOfDayId:
+              type: integer
+              example: 1
+              description: Morning/Afternoon/Evening
+  responses:
+    '201':
+      description: Returns created cohort
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Created
+              data:
+                type: object
+                required:
+                  - id
+                  - intakeId
+                  - name
+                  - programId
+                  - periodOfDayId
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  intakeId:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: A1-0922
+                  programId:
+                    type: integer
+                    example: 1
+                    description: DMS or DMA
+                  periodOfDayId:
+                    type: integer
+                    example: 1
+                    description: Morning/Afternoon/Evening
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

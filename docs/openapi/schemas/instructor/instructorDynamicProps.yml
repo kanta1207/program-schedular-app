@@ -1,0 +1,15 @@
+type: object
+required:
+  - name
+  - isActive
+  - desiredWorkingHour
+properties:
+  name:
+    type: string
+    example: John Doe
+  isActive:
+    type: boolean
+    example: true
+  desiredWorkingHour:
+    type: integer
+    example: 40

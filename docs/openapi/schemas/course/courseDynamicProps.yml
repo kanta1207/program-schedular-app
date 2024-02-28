@@ -1,0 +1,11 @@
+type: object
+required:
+  - name
+  - requiredHours
+properties:
+  name:
+    type: string
+    example: SEO
+  requiredHours:
+    type: integer
+    example: 60

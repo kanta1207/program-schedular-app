@@ -1,0 +1,315 @@
+get:
+  tags:
+    - Cohort
+  summary: Get the cohort by id
+  parameters:
+    - in: path
+      name: cohortId
+      schema:
+        type: integer
+      required: true
+      description: Id of the cohort to get
+  responses:
+    '200':
+      description: Returns the cohort
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: object
+                required:
+                  - id
+                  - name
+                  - createdAt
+                  - updatedAt
+                  - intake
+                  - program
+                  - classes
+                  - periodOfDay
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: A1-0922
+                  createdAt:
+                    type: string
+                    example: 2022-09-01
+                  updatedAt:
+                    type: string
+                    example: 2022-09-01
+                  intake:
+                    type: object
+                    required:
+                      - id
+                      - name
+                      - startAt
+                      - endAt
+                      - createdAt
+                      - updatedAt
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 2022 September 2022
+                      startAt:
+                        type: string
+                        example: 2022-09-01
+                      endAt:
+                        type: string
+                        example: 2023-08-30
+                      createdAt:
+                        type: string
+                        example: 2022-09-01
+                      updatedAt:
+                        type: string
+                        example: 2022-09-01
+                  program:
+                    type: object
+                    required:
+                      - id
+                      - name
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: DMS
+                  classes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - startAt
+                        - endAt
+                        - createdAt
+                        - updatedAt
+                        - weekdaysRange
+                        - course
+                        - instructor
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        startAt:
+                          type: string
+                          example: 2022-09-01
+                        endAt:
+                          type: string
+                          example: 2023-08-30
+                        createdAt:
+                          type: string
+                          example: 2022-09-01
+                        updatedAt:
+                          type: string
+                          example: 2022-09-01
+                        weekdaysRange:
+                          type: object
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Mon - Fri
+                        course:
+                          type: object
+                          required:
+                            - id
+                            - name
+                            - requiredHours
+                          properties:
+                            id:
+                              type: number
+                              example: 1
+                            name:
+                              type: string
+                              example: Digital Marketing
+                            requiredHours:
+                              type: integer
+                              example: 60
+                            createdAt:
+                              type: string
+                              example: 2022-09-01
+                            updatedAt:
+                              type: string
+                              example: 2022-09-01
+                        instructor:
+                          type: object
+                          required:
+                            - id
+                            - name
+                            - createdAt
+                            - updatedAt
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: Brian
+                            createdAt:
+                              type: string
+                              example: 2022-09-01
+                            updatedAt:
+                              type: string
+                              example: 2022-09-01
+                  periodOfDay:
+                    type: object
+                    required:
+                      - id
+                      - name
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Afternoon
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+patch:
+  tags:
+    - Cohort
+  summary: Update the cohort by id
+  parameters:
+    - in: path
+      name: cohortId
+      schema:
+        type: integer
+      required: true
+      description: Id of the cohort to get
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - intakeId
+            - name
+            - programId
+            - periodOfDayId
+          properties:
+            intakeId:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: A1-0922
+            programId:
+              type: integer
+              example: 1
+              description: DMS or DMA
+            periodOfDayId:
+              type: integer
+              example: 1
+              description: Morning/Afternoon/Evening
+  responses:
+    '200':
+      description: Returns the updated cohort
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                type: object
+                required:
+                  - id
+                  - intakeId
+                  - name
+                  - programId
+                  - periodOfDayId
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  intakeId:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: A1-0922
+                  programId:
+                    type: integer
+                    example: 1
+                    description: DMS or DMA
+                  periodOfDayId:
+                    type: integer
+                    example: 1
+                    description: Morning/Afternoon/Evening
+                  createdAt:
+                    type: string
+                    example: 2022-09-01
+                  updatedAt:
+                    type: string
+                    example: 2022-09-01
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Cohort
+  summary: Delete the cohort by id
+  parameters:
+    - in: path
+      name: cohortId
+      schema:
+        type: integer
+      required: true
+      description: Id of the cohort to get
+  responses:
+    '204':
+      description: Delete cohort by id
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
