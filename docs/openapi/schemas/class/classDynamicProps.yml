@@ -2,11 +2,6 @@ type: object
 required:
   - start_at
   - end_at
-  - cohort
-  - weekdaysRange
-  - course
-  - classRoom
-  - instructor
 properties:
   start_at:
     type: string
@@ -14,17 +9,3 @@ properties:
   end_at:
     type: string
     example: 2023-08-30T17:00:00.000Z
-  cohort:
-    $ref: '../cohort/cohort.yml'
-  weekdaysRange:
-    $ref: '../weekdaysRange/weekdaysRange.yml'
-  course:
-    allOf:
-      - $ref: '../course/courseStaticProps.yml'
-      - $ref: '../course/courseDynamicProps.yml'
-  classRoom:
-    $ref: '../classRoom/classRoom.yml'
-  instructor:
-    allOf:
-      - $ref: '../instructor/instructorStaticProps.yml'
-      - $ref: '../instructor/instructorDynamicProps.yml'

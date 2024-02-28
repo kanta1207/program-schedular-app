@@ -7,7 +7,9 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/class/classDynamicProps.yml'
+          allOf:
+            - $ref: '../../schemas/class/classDynamicProps.yml'
+            - $ref: '../../schemas/class/classDynamicForeignProps.yml'
   responses:
     '200':
       description: Returns new class
@@ -30,6 +32,7 @@ post:
                 allOf:
                   - $ref: '../../schemas/class/classStaticProps.yml'
                   - $ref: '../../schemas/class/classDynamicProps.yml'
+                  - $ref: '../../schemas/class/classStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

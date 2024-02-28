@@ -55,6 +55,7 @@ components:
       allOf:
         - $ref: 'schemas/class/classStaticProps.yml'
         - $ref: 'schemas/class/classDynamicProps.yml'
+        - $ref: 'schemas/class/classStaticForeignProps.yml'
     Instructor:
       allOf:
         - $ref: 'schemas/instructor/instructorStaticProps.yml'
