@@ -41,6 +41,8 @@ get:
                     - id
                     - startAt
                     - endAt
+                    - createdAt
+                    - updatedAt
                   properties:
                     id:
                       type: integer
@@ -51,6 +53,12 @@ get:
                     endAt:
                       type: string
                       example: 2022-07-31
+                    createdAt:
+                      type: string
+                      example: 2022-07-20
+                    updatedAt:
+                      type: string
+                      example: 2022-07-20
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -98,16 +106,24 @@ post:
                   - id
                   - startAt
                   - endAt
+                  - createdAt
+                  - updatedAt
                 properties:
                   id:
                     type: integer
                     example: 1
                   startAt:
-                      type: string
-                      example: 2022-07-20
+                    type: string
+                    example: 2022-07-20
                   endAt:
                     type: string
                     example: 2022-07-31
+                  createdAt:
+                    type: string
+                    example: 2022-07-20
+                  updatedAt:
+                    type: string
+                    example: 2022-07-20
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
