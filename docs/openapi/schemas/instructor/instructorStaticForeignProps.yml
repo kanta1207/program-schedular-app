@@ -1,8 +1,7 @@
 type: object
 required:
-  - name
-  - isActive
-  - desiredWorkingHour
+  - contractType
+  - weekdaysRange
 properties:
   name:
     type: string
@@ -13,3 +12,7 @@ properties:
   desiredWorkingHour:
     type: integer
     example: 40
+  contractType:
+    $ref: '../contractType/contractType.yml'
+  weekdaysRange:
+    $ref: '../weekdaysRange/weekdaysRange.yml'

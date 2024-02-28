@@ -31,6 +31,7 @@ get:
                 allOf:
                   - $ref: '../../schemas/instructor/instructorStaticProps.yml'
                   - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                  - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -51,7 +52,10 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+          allOf:
+            - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+            - $ref: '../../schemas/instructor/instructorDynamicForeignProps.yml'
+
   responses:
     '200':
       description: Returns the updated instructor
@@ -74,6 +78,7 @@ patch:
                 allOf:
                   - $ref: '../../schemas/instructor/instructorStaticProps.yml'
                   - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                  - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

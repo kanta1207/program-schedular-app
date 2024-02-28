@@ -60,6 +60,7 @@ components:
       allOf:
         - $ref: 'schemas/instructor/instructorStaticProps.yml'
         - $ref: 'schemas/instructor/instructorDynamicProps.yml'
+        - $ref: 'schemas/instructor/instructorStaticForeignProps.yml'
     Course:
       allOf:
         - $ref: 'schemas/course/courseStaticProps.yml'
