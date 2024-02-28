@@ -8,10 +8,13 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { courses } from '@/mock/_index';
+import { PROGRAMS } from '@/constants/_index';
 import CustomizedMenus from './TableMenu';
+import { MenuItem } from '@mui/material';
+
 const CourseTableList = () => {
   const [editCourseId, setEditCourseId] = useState(null);
-
+  const [selectedProgram, setSelectedProgram] = useState('');
   // Function to enter edit mode for a specific row
   const handleEditClick = (index: any) => {
     setEditCourseId(index);
@@ -20,6 +23,18 @@ const CourseTableList = () => {
   // Function to cancel editing and exit edit mode
   const handleCancelClick = () => {
     setEditCourseId(null); // Reset the edit state to exit edit mode
+  };
+  const handleSelectProgram = (event) => {
+    setSelectedProgram(event.target.value);
+  };
+  const [hours, setHours] = useState('');
+
+  const handleHoursChange = (event) => {
+    const value = event.target.value;
+    // Check if the value is a non-negative integer number
+    if (/^\d+$/.test(value) || value === '') {
+      setHours(value);
+    }
   };
   return (
     <div>
@@ -42,10 +57,40 @@ const CourseTableList = () => {
                     <TextField defaultValue={course.name} variant="outlined" size="small" />
                   </TableCell>
                   <TableCell>
-                    <TextField defaultValue={course.program.name} variant="outlined" size="small" />
+                    <TextField
+                      defaultValue={course.program.name}
+                      variant="outlined"
+                      size="small"
+                      id="select-program"
+                      onChange={handleSelectProgram}
+                      select
+                    >
+                      {PROGRAMS.map((program) => (
+                        <MenuItem key={program.id} value={program.name}>
+                          {program.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </TableCell>
                   <TableCell>
-                    <TextField defaultValue={course.requiredHours} variant="outlined" size="small" />
+                    <TextField
+                      defaultValue={course.requiredHours}
+                      variant="outlined"
+                      size="small"
+                      required
+                      id="outlined-required"
+                      type="number"
+                      onChange={handleHoursChange}
+                      inputProps={{
+                        min: 0,
+                        onInput: (e) => {
+                          e.target.value = Math.max(0, parseInt(e.target.value))
+                            .toString()
+                            .slice(0, e.target.maxLength);
+                        },
+                        maxLength: 4,
+                      }}
+                    ></TextField>
                   </TableCell>
                   <TableCell>
                     <Button variant="outlined" onClick={handleCancelClick} sx={{ mr: 1 }}>
