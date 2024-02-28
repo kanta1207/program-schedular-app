@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -36,6 +36,10 @@ const navigation = [
     name: 'Courses',
     path: '/courses',
   },
+  {
+    name: 'Breaks',
+    path: '/breaks',
+  },
 ];
 
 const settings = [
@@ -47,6 +51,7 @@ const settings = [
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -81,6 +86,8 @@ const Header = () => {
                   my: 2,
                   color: 'white',
                   display: 'block',
+                  textDecoration: navItem.path === pathname ? 'underline' : 'none',
+                  textUnderlineOffset: '4px',
                 }}
                 onClick={() => router.push(navItem.path)}
               >
