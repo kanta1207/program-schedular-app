@@ -28,7 +28,7 @@ export const intakes: Intake[] = [
     id: 4,
     name: '2024 January DMS',
     startAt: dayjs('2024-01-02').toDate(),
-    endAt: dayjs('2023-06-21').toDate(),
+    endAt: dayjs('2024-06-21').toDate(),
     cohorts: cohorts.filter(({ intake: { id } }) => id === 4),
   },
   {

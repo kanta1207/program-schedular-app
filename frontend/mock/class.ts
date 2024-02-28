@@ -343,7 +343,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
     instructor: instructors.find(({ name }) => name === 'Brigitte')!,
   },
   {
@@ -647,7 +647,7 @@ export const classes: Class[] = [
     id: 63,
     cohort: cohorts.find(({ name }) => name === 'E-0923')!,
     startAt: dayjs('2023-12-04').toDate(),
-    endAt: dayjs('2023-01-26').toDate(),
+    endAt: dayjs('2024-01-26').toDate(),
     course: courses.find(({ name }) => name === 'Advanced Digital Strategies')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
     weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
