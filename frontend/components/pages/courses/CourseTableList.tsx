@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { courses } from '@/mock/_index';
-
+import CustomizedMenus from './TableMenu';
 const CourseTableList = () => {
   const [editCourseId, setEditCourseId] = useState(null);
 
@@ -62,19 +62,8 @@ const CourseTableList = () => {
                   <TableCell>{course.name}</TableCell>
                   <TableCell>{course.program.name}</TableCell>
                   <TableCell>{course.requiredHours}</TableCell>
-                  <TableCell
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0rem 1rem',
-                    }}
-                  >
-                    <Button variant="outlined" onClick={() => handleEditClick(index)}>
-                      Edit
-                    </Button>
-                    <Button variant="contained" color="error">
-                      Delete
-                    </Button>
+                  <TableCell>
+                    <CustomizedMenus index={index} onEdit={handleEditClick} />
                   </TableCell>
                 </>
               )}

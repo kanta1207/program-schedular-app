@@ -37,7 +37,6 @@ const CreateCourse = () => {
       </div>
       <div className="flex justify-end mb-4 ">
         {' '}
-        {/* // I used mb here */}
         <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
           New course
         </Button>
@@ -61,8 +60,8 @@ const CreateCourse = () => {
             <TextField required id="outlined-required" label="Required Hours" defaultValue=" " className="w-40" />
           </div>
 
-          <div className="flex gap-x-2">
-            <Button color="error" variant={'outlined'} onClick={() => setIsCreating(!isCreating)}>
+          <div className="flex gap-x-2 justify-between">
+            <Button variant={'outlined'} onClick={() => setIsCreating(!isCreating)}>
               Cancel
             </Button>
             <Button variant={'contained'}>Create</Button>
