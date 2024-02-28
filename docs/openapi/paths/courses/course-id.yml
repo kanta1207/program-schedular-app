@@ -13,7 +13,9 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/course/courseDynamicProps.yml'
+          allOf:
+            - $ref: '../../schemas/course/courseDynamicProps.yml'
+            - $ref: '../../schemas/course/courseDynamicForeignProps.yml'
 
   responses:
     '200':
@@ -37,6 +39,7 @@ patch:
                 allOf:
                   - $ref: '../../schemas/course/courseStaticProps.yml'
                   - $ref: '../../schemas/course/courseDynamicProps.yml'
+                  - $ref: '../../schemas/course/courseStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

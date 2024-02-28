@@ -33,6 +33,7 @@ get:
                   allOf:
                     - $ref: '../../schemas/course/courseStaticProps.yml'
                     - $ref: '../../schemas/course/courseDynamicProps.yml'
+                    - $ref: '../../schemas/course/courseStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -47,7 +48,9 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/course/courseDynamicProps.yml'
+          allOf:
+            - $ref: '../../schemas/course/courseDynamicProps.yml'
+            - $ref: '../../schemas/course/courseDynamicForeignProps.yml'
   responses:
     '200':
       description: Returns the created course
@@ -70,6 +73,7 @@ post:
                 allOf:
                   - $ref: '../../schemas/course/courseStaticProps.yml'
                   - $ref: '../../schemas/course/courseDynamicProps.yml'
+                  - $ref: '../../schemas/course/courseStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

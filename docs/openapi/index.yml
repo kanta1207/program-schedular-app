@@ -65,6 +65,7 @@ components:
       allOf:
         - $ref: 'schemas/course/courseStaticProps.yml'
         - $ref: 'schemas/course/courseDynamicProps.yml'
+        - $ref: 'schemas/course/courseStaticForeignProps.yml'
     400Error:
       $ref: 'schemas/errors/400error.yml'
     500Error:
