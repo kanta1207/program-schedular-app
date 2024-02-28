@@ -36,6 +36,8 @@ get:
                   required:
                     - id
                     - name
+                    - createdAt
+                    - updatedAt
                     - intake
                     - program
                     - periodOfDay
@@ -46,6 +48,12 @@ get:
                     name:
                       type: string
                       example: A1-0922
+                    createdAt:
+                      type: string
+                      example: 2022-09-01
+                    updatedAt:
+                      type: string
+                      example: 2022-09-01
                     intake:
                       type: object
                       required:
@@ -53,6 +61,8 @@ get:
                         - name
                         - startAt
                         - endAt
+                        - createdAt
+                        - updatedAt
                       properties:
                         id:
                           type: integer
@@ -66,28 +76,29 @@ get:
                         endAt:
                           type: string
                           example: 2023-08-30
+                        createdAt:
+                          type: string
+                          example: 2022-09-01
+                        updatedAt:
+                          type: string
+                          example: 2022-09-01
                     program:
                       type: object
                       required:
+                        - id
                         - name
                       properties:
+                        id:
+                          type: integer
+                          example: 1
                         name:
                           type: string
                           example: DMS
-                        courses:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              name:
-                                type: string
-                                example: Digital Marketing
-                              requiredHours:
-                                type: integer
-                                example: 60
                     periodOfDay:
                       type: object
                       required:
+                        - id
+                        - name
                       properties:
                         id:
                           type: integer
