@@ -1,8 +1,11 @@
 import CreateCourse from '@/components/pages/courses/CreateCourse';
 import CourseTableList from '@/components/pages/courses/CourseTableList';
+import Headline from '@/components/layouts/Headline';
+
 const CourseList = () => {
   return (
-    <div className="w-full p-20">
+    <div className="w-full">
+      <Headline name="Courses" />
       <CreateCourse />
       <CourseTableList />
     </div>

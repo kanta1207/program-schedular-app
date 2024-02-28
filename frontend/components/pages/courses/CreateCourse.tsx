@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Button, TextField, MenuItem } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import { PROGRAMS } from '@/constants/_index';
+
 const CreateCourse = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -22,22 +22,6 @@ const CreateCourse = () => {
   };
   return (
     <div>
-      <div>
-        <Typography
-          variant="h4"
-          gutterBottom
-          sx={{
-            fontFamily: 'Roboto',
-            fontWeight: '600',
-            fontSize: '34px',
-            letterSpacing: '0.25px',
-            color: 'primary.main',
-            lineHeight: '40px',
-          }}
-        >
-          Courses
-        </Typography>
-      </div>
       <div className="flex justify-end mb-4 ">
         {!isCreating && (
           <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
