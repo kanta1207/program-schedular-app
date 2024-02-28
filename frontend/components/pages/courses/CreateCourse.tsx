@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, TextField, MenuItem } from '@mui/material';
 import { useState } from 'react';
+import { Button, TextField, MenuItem } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { PROGRAMS } from '@/constants/_index';
 const CreateCourse = () => {
@@ -21,7 +21,7 @@ const CreateCourse = () => {
     setSelectedProgram(event.target.value);
   };
   return (
-    <div className="justify-between">
+    <div>
       <div>
         <Typography
           variant="h4"
