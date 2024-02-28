@@ -30,6 +30,8 @@ paths:
     $ref: 'paths/cohorts/cohort-id.yml'
   /breaks:
     $ref: 'paths/breaks/index.yml'
+  /breaks/{breakId}:
+    $ref: 'paths/breaks/break-id.yml'
   /classes:
     $ref: 'paths/classes/index.yml'
   /classes/{classId}:
