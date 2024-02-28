@@ -4,9 +4,11 @@ get:
   summary: Get the Intake by id
   parameters:
     - in: query
-      name: cohortIds
+      name: cohortId
       schema:
-        type: integer
+        type: array
+        items:
+          type: integer
       required: false
       description: Multiple ids of the cohorts to get
   responses:
@@ -32,11 +34,15 @@ get:
                 items:
                   type: object
                   required:
+                    - id
                     - name
                     - intake
                     - program
                     - periodOfDay
                   properties:
+                    id:
+                      type: integer
+                      example: 1
                     name:
                       type: string
                       example: A1-0922

@@ -72,7 +72,17 @@ post:
                 example: Created
               data:
                 type: object
+                required:
+                  - id
+                  - name
+                  - startAt
+                  - endAt
+                  - createdAt
+                  - updatedAt
                 properties:
+                  id:
+                    type: integer
+                    example: 1
                   name:
                     type: string
                     example: DMS-24-Sep
@@ -80,6 +90,12 @@ post:
                     type: string
                     example: 2024-05-23
                   endAt:
+                    type: string
+                    example: 2025-04-30
+                  createdAt:
+                    type: string
+                    example: 2024-05-23
+                  updatedAt:
                     type: string
                     example: 2025-04-30
     '400':
