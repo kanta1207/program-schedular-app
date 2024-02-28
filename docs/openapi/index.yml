@@ -13,6 +13,12 @@ tags:
     description: Operation about cohort
   - name: Break
     description: Operation about break
+  - name: Class
+    description: Operation about class
+  - name: Instructor
+    description: Operation about instructor
+  - name: Course
+    description: Operation about course
 paths:
   /intakes:
     $ref: 'paths/intakes/index.yml'
@@ -24,6 +30,18 @@ paths:
     $ref: 'paths/cohorts/cohort-id.yml'
   /breaks:
     $ref: 'paths/breaks/index.yml'
+  /classes:
+    $ref: 'paths/classes/index.yml'
+  /classes/{classId}:
+    $ref: 'paths/classes/class-id.yml'
+  /instructors:
+    $ref: 'paths/instructors/index.yml'
+  /instructors/{instructorId}:
+    $ref: 'paths/instructors/instructor-id.yml'
+  /courses:
+    $ref: 'paths/courses/index.yml'
+  /courses/{courseId}:
+    $ref: 'paths/courses/course-id.yml'
 
 components:
   schemas:
@@ -31,6 +49,23 @@ components:
       $ref: 'schemas/intake/intake.yml'
     IntakeWithCohort:
       $ref: 'schemas/intake/withCohort.yml'
+    Cohort:
+      $ref: 'schemas/cohort/cohort.yml'
+    Class:
+      allOf:
+        - $ref: 'schemas/class/classStaticProps.yml'
+        - $ref: 'schemas/class/classDynamicProps.yml'
+        - $ref: 'schemas/class/classStaticForeignProps.yml'
+    Instructor:
+      allOf:
+        - $ref: 'schemas/instructor/instructorStaticProps.yml'
+        - $ref: 'schemas/instructor/instructorDynamicProps.yml'
+        - $ref: 'schemas/instructor/instructorStaticForeignProps.yml'
+    Course:
+      allOf:
+        - $ref: 'schemas/course/courseStaticProps.yml'
+        - $ref: 'schemas/course/courseDynamicProps.yml'
+        - $ref: 'schemas/course/courseStaticForeignProps.yml'
     400Error:
       $ref: 'schemas/errors/400error.yml'
     500Error:
@@ -46,6 +81,5 @@ components:
           type: integer
         message:
           type: string
-        data:
-          type: object
-          nullable: true
+      xml:
+        name: '##default'

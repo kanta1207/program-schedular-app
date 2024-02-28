@@ -1,0 +1,22 @@
+type: object
+required:
+  - cohort
+  - weekdaysRange
+  - course
+  - classRoom
+  - instructor
+properties:
+  cohort:
+    $ref: '../cohort/cohort.yml'
+  weekdaysRange:
+    $ref: '../weekdaysRange/weekdaysRange.yml'
+  course:
+    allOf:
+      - $ref: '../course/courseStaticProps.yml'
+      - $ref: '../course/courseDynamicProps.yml'
+  classRoom:
+    $ref: '../classRoom/classRoom.yml'
+  instructor:
+    allOf:
+      - $ref: '../instructor/instructorStaticProps.yml'
+      - $ref: '../instructor/instructorDynamicProps.yml'

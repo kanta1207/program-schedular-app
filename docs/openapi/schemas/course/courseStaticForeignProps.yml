@@ -1,0 +1,6 @@
+type: object
+required:
+  - program
+properties:
+  program:
+    $ref: '../program/program.yml'

@@ -1,0 +1,31 @@
+type: object
+required:
+  - name
+  - intake
+  - program
+properties:
+  name:
+    type: string
+    example: A1-0922
+  intake:
+    type: object
+    required:
+      - id
+      - name
+      - startAt
+      - endAt
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: 2022 September 2022
+      startAt:
+        type: string
+        example: 2022-09-01
+      endAt:
+        type: string
+        example: 2023-08-30
+  program:
+    $ref: '../program/program.yml'

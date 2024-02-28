@@ -1,0 +1,118 @@
+get:
+  tags:
+    - Instructor
+  summary: Get the instructor by id
+  parameters:
+    - in: path
+      name: instructorId
+      schema:
+        type: integer
+      required: true
+      description: Id of the instructor to get
+  responses:
+    '200':
+      description: Returns the instructor
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                allOf:
+                  - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                  - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                  - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+
+patch:
+  tags:
+    - Instructor
+  summary: Update the instructor by id
+  parameters:
+    - in: path
+      name: instructorId
+      schema:
+        type: integer
+      required: true
+      description: Id of the instructor to update
+  requestBody:
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+            - $ref: '../../schemas/instructor/instructorDynamicForeignProps.yml'
+
+  responses:
+    '200':
+      description: Returns the updated instructor
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                allOf:
+                  - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                  - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                  - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Instructor
+  summary: Delete the instructor by id
+  parameters:
+    - in: path
+      name: instructorId
+      schema:
+        type: integer
+      required: true
+      description: Id of the instructor to get
+  responses:
+    '204':
+      description: Delete instructor by id
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

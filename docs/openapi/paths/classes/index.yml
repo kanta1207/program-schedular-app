@@ -1,0 +1,39 @@
+post:
+  tags:
+    - Class
+  summary: Create new class
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '../../schemas/class/classDynamicProps.yml'
+            - $ref: '../../schemas/class/classDynamicForeignProps.yml'
+  responses:
+    '200':
+      description: Returns new class
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                allOf:
+                  - $ref: '../../schemas/class/classStaticProps.yml'
+                  - $ref: '../../schemas/class/classDynamicProps.yml'
+                  - $ref: '../../schemas/class/classStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
