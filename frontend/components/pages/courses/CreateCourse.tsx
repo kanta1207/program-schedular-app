@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Button,
-  TextField,
-  InputLabel,
-  NativeSelect,
-  FormControl,
-  FormHelperText,
-  Input,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import { Button, TextField, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { PROGRAMS } from '@/constants/_index';
