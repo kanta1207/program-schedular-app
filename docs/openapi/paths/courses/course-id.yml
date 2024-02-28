@@ -13,21 +13,8 @@ patch:
     content:
       application/json:
         schema:
-          type: object
-          optional:
-            - name
-            - requiredHours
-            - programId
-          properties:
-            name:
-              type: string
-              example: SEO
-            requiredHours:
-              type: integer
-              example: 60
-            programId:
-              type: integer
-              example: 1
+          $ref: '../../schemas/course/courseDynamicProps.yml'
+
   responses:
     '200':
       description: Returns the updated course
@@ -47,34 +34,9 @@ patch:
                 type: string
                 example: Updated
               data:
-                type: object
-                required:
-                  - id
-                  - name
-                  - requiredHours
-                  - program
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: SEO
-                  requiredHours:
-                    type: integer
-                    example: 60
-                  program:
-                    type: object
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: DMS
+                allOf:
+                  - $ref: '../../schemas/course/courseStaticProps.yml'
+                  - $ref: '../../schemas/course/courseDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

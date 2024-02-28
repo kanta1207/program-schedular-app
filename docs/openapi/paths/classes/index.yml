@@ -7,42 +7,10 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - start_at
-            - end_at
-            - cohortId
-            - rangeId
-            - courseId
-            - classroomId
-            - instructorId
-          properties:
-            start_at:
-              type: string
-              format: date-time
-              example: 2021-01-01T00:00:00Z
-            end_at:
-              type: string
-              format: date-time
-              example: 2021-01-01T00:00:00Z
-            cohortId:
-              type: integer
-              example: 1
-            rangeId:
-              type: integer
-              example: 1
-            courseId:
-              type: integer
-              example: 1
-            classroomId:
-              type: integer
-              example: 1
-            instructorId:
-              type: integer
-              example: 1
+          $ref: '../../schemas/class/classDynamicProps.yml'
   responses:
     '200':
-      description: Returns Classs
+      description: Returns new class
       content:
         application/json:
           schema:
@@ -59,53 +27,10 @@ post:
                 type: string
                 example: OK
               data:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - name
-                    - intake
-                    - program
-                    - periodOfDay
-                  properties:
-                    classRoom:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                        type: string
-                        example: Facebook
-                    course:
-                      type: object
-                      required:
-                        - id
-                        - name
-                        - requiredHours
-                        - program
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: SEO
-                        requiredHours:
-                          type: integer
-                          example: 60
-                        program:
-                          type: object
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            name:
-                              type: string
-                              example: DMS
+                allOf:
+                  - $ref: '../../schemas/class/classStaticProps.yml'
+                  - $ref: '../../schemas/class/classDynamicProps.yml'
+    '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
       $ref: '../../index.yml#/components/schemas/500Error'

@@ -30,34 +30,9 @@ get:
               data:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - requiredHours
-                    - program
-                  properties:
-                    id:
-                      type: integer
-                      example: 1
-                    name:
-                      type: string
-                      example: SEO
-                    requiredHours:
-                      type: integer
-                      example: 60
-                    program:
-                      type: object
-                      required:
-                        - id
-                        - name
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: DMS
+                  allOf:
+                    - $ref: '../../schemas/course/courseStaticProps.yml'
+                    - $ref: '../../schemas/course/courseDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -72,21 +47,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - name
-            - requiredHours
-            - programId
-          properties:
-            name:
-              type: string
-              example: SEO
-            requiredHours:
-              type: integer
-              example: 60
-            programId:
-              type: integer
-              example: 1
+          $ref: '../../schemas/course/courseDynamicProps.yml'
   responses:
     '200':
       description: Returns the created course
@@ -106,34 +67,9 @@ post:
                 type: string
                 example: Created
               data:
-                type: object
-                required:
-                  - id
-                  - name
-                  - requiredHours
-                  - program
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: SEO
-                  requiredHours:
-                    type: integer
-                    example: 60
-                  program:
-                    type: object
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: DMS
+                allOf:
+                  - $ref: '../../schemas/course/courseStaticProps.yml'
+                  - $ref: '../../schemas/course/courseDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

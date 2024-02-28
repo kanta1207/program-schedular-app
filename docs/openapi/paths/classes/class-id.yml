@@ -13,9 +13,7 @@ patch:
     content:
       application/json:
         schema:
-          type: object
-          required:
-          properties:
+          $ref: '../../schemas/class/classDynamicProps.yml'
   responses:
     '200':
       description: Returns the updated class
@@ -29,13 +27,15 @@ patch:
               - data
             properties:
               statusCode:
-                type: number
+                type: integer
                 example: 200
               message:
                 type: string
                 example: Updated
               data:
-                type: object
+                allOf:
+                  - $ref: '../../schemas/class/classStaticProps.yml'
+                  - $ref: '../../schemas/class/classDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

@@ -36,41 +36,9 @@ get:
               data:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - isActive
-                    - contractType
-                    - weekdaysRange
-                  properties:
-                    id:
-                      type: integer
-                      example: 1
-                    name:
-                      type: string
-                      example: John Doe
-                    isActive:
-                      type: boolean
-                      example: true
-                    contractType:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Full time
-                    weekdaysRange:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Monday - Friday
+                  allOf:
+                    - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                    - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -85,25 +53,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - name
-            - isActive
-            - contractTypeId
-            - weekdaysRangeId
-          properties:
-            name:
-              type: string
-              example: John Doe
-            isActive:
-              type: boolean
-              example: true
-            contractTypeId:
-              type: integer
-              example: 1
-            weekdaysRangeId:
-              type: integer
-              example: 1
+          $ref: '../../schemas/instructor/instructorDynamicProps.yml'
   responses:
     '200':
       description: Returns the created instructor
@@ -123,41 +73,9 @@ post:
                 type: string
                 example: Created
               data:
-                type: object
-                required:
-                  - id
-                  - name
-                  - isActive
-                  - contractTypeId
-                  - weekdaysRangeId
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: John Doe
-                  isActive:
-                    type: boolean
-                    example: true
-                  contractType:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: Full time
-                  weekdaysRange:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        example: 1
-                      name:
-                        type: string
-                        example: Monday - Friday
+                allOf:
+                  - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                  - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
