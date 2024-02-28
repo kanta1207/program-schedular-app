@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
-
+import { PROGRAMS } from '@/constants/_index';
 const CreateCourse = () => {
   const [isCreating, setIsCreating] = useState(false);
 
@@ -48,13 +48,13 @@ const CreateCourse = () => {
             <TextField required id="outlined-required" label="Course Name" defaultValue=" " className="w-80" />
           </div>
           <div>
-            <InputLabel id="program-label" className="w-40">
-              Program
-            </InputLabel>
-            <Select labelId="program-label" id="program-select" value=" " label="Program" required className="w-40">
-              <MenuItem value="DMS">DMS</MenuItem>
-              <MenuItem value="DMA">DMA</MenuItem>
-            </Select>
+            <TextField id="select" label="Program *" value="Value" select className="w-40">
+              {PROGRAMS.map((program) => (
+                <MenuItem key={program.id} value={program.name}>
+                  {program.name}
+                </MenuItem>
+              ))}
+            </TextField>
           </div>
           <div>
             <TextField required id="outlined-required" label="Required Hours" defaultValue=" " className="w-40" />

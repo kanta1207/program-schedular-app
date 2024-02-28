@@ -48,7 +48,7 @@ const CourseTableList = () => {
                     <TextField defaultValue={course.requiredHours} variant="outlined" size="small" />
                   </TableCell>
                   <TableCell>
-                    <Button variant="outlined" color="error" onClick={handleCancelClick} sx={{ mr: 1 }}>
+                    <Button variant="outlined" onClick={handleCancelClick} sx={{ mr: 1 }}>
                       Cancel
                     </Button>
                     <Button variant="contained" onClick={() => handleEditClick(index)}>
@@ -62,7 +62,7 @@ const CourseTableList = () => {
                   <TableCell>{course.name}</TableCell>
                   <TableCell>{course.program.name}</TableCell>
                   <TableCell>{course.requiredHours}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <CustomizedMenus index={index} onEdit={handleEditClick} />
                   </TableCell>
                 </>
