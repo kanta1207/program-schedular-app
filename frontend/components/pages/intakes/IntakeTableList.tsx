@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,22 +9,36 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { SelectChangeEvent } from '@mui/material';
-import { intakes } from '@/mock/_index';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TableMenu from '@/components/partials/TableMenu';
-import { Intake } from '@/types/intake';
-import { Dayjs } from 'dayjs';
+import { Intake } from '@/types/_index';
 
-const IntakeTableList = () => {
-  const [hours, setHours] = useState('');
-  const [editCourseId, setEditCourseId] = useState<number | null>(null);
-  const [selectedProgram, setSelectedProgram] = useState('');
+import { updateIntake } from '@/actions/intakes/updateIntakes';
+
+interface IntakeTableListProps {
+  intakes: Intake[];
+}
+
+const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
+  const [editIntakeId, setEditIntakeId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updatingIntake = intakes.find((item) => item.id === editIntakeId);
+
+    if (updatingIntake) {
+      reset({
+        name: updatingIntake.name,
+        startAt: dayjs(updatingIntake.startAt),
+        endAt: dayjs(updatingIntake.endAt),
+      });
+    }
+  }, [editIntakeId]);
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
+      name: null as string | null,
       startAt: null as Dayjs | null,
       endAt: null as Dayjs | null,
     },
@@ -31,37 +46,35 @@ const IntakeTableList = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const payload = {
+        name: data.name,
         startAt: data.startAt,
         endAt: data.endAt,
       };
+      if (!editIntakeId) {
+        throw new Error('Unexpected Error: id is not selected');
+      }
+
+      await updateIntake(editIntakeId, payload);
+
+      reset();
+      setEditIntakeId(null);
     } catch (error) {
       console.error(error);
     }
   };
   const handleEditClick = (id: number) => {
-    setEditCourseId(id);
+    setEditIntakeId(id);
   };
 
   const handleSaveClick = (id: number) => {};
 
   const handleDeleteClick = (id: number) => {};
 
-  // Function to cancel editing and exit edit mode
   const handleCancelClick = () => {
-    setEditCourseId(null); // Reset the edit state to exit edit mode
+    reset();
+    setEditIntakeId(null);
   };
 
-  const handleSelectProgram = (event: SelectChangeEvent) => {
-    setSelectedProgram(event.target.value);
-  };
-
-  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    // Check if the value is a non-negative integer number
-    if (/^\d+$/.test(value) || value === '') {
-      setHours(value);
-    }
-  };
   const getCohortsByPeriod = (intake: Intake, period: string) => {
     return intake.cohorts
       .filter((cohort) => cohort.periodOfDay.name === period)
@@ -84,13 +97,20 @@ const IntakeTableList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {intakes.map((intake) => (
+            {intakes?.map((intake) => (
               <TableRow key={intake.id}>
-                {editCourseId === intake.id ? (
+                {editIntakeId === intake.id ? (
                   // Edit mode
                   <>
                     <TableCell>
-                      <TextField defaultValue={intake.name} variant="outlined" />
+                      <Controller
+                        control={control}
+                        name="name"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return <TextField defaultValue={intake.name} variant="outlined" />;
+                        }}
+                      />
                     </TableCell>
                     <>
                       <TableCell>
@@ -145,8 +165,8 @@ const IntakeTableList = () => {
                     <TableCell component="th" scope="row">
                       {intake.name}
                     </TableCell>
-                    <TableCell>{intake.startAt.toLocaleDateString()}</TableCell>
-                    <TableCell>{intake.endAt.toLocaleDateString()}</TableCell>
+                    <TableCell>{dayjs(intake.startAt).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>{dayjs(intake.endAt).format('YYYY-MM-DD')}</TableCell>
                     <TableCell>{getCohortsByPeriod(intake, 'Morning')}</TableCell>
                     <TableCell>{getCohortsByPeriod(intake, 'Afternoon')}</TableCell>
                     <TableCell>{getCohortsByPeriod(intake, 'Evening')}</TableCell>
