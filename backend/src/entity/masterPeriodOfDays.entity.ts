@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Cohort } from './cohorts.entity';
 
 @Entity('master_periods_of_day')
 export class MasterPeriodOfDay {
@@ -10,4 +11,7 @@ export class MasterPeriodOfDay {
 
   @Column({ type: 'varchar' })
   time: string;
+
+  @OneToMany(() => Cohort, (cohort) => cohort.periodOfDay)
+  cohorts: Cohort[];
 }

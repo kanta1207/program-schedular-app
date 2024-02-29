@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Cohort } from './cohorts.entity';
 
 @Entity('intakes')
 export class Intake {
@@ -28,4 +29,9 @@ export class Intake {
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
+
+  @OneToMany(() => Cohort, (cohort) => cohort.intake, {
+    cascade: true,
+  })
+  cohorts: Cohort[];
 }
