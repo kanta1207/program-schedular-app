@@ -4,12 +4,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Intake } from './intakes.entity';
 import { Program } from './programs.entity';
 import { MasterPeriodOfDay } from './masterPeriodOfDays.entity';
+import { Class } from './classes.entity';
 
 @Entity('cohorts')
 export class Cohort {
@@ -36,4 +38,7 @@ export class Cohort {
   @ManyToOne(() => Program, (program) => program.cohorts)
   @JoinColumn({ name: 'program_id' })
   program: Program;
+
+  @OneToMany(() => Class, (clazz) => clazz.cohort, { cascade: true })
+  classes: Class[];
 }
