@@ -14,7 +14,6 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.POSTGRES_DB,
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
-  migrationsTableName: 'migrations',
 };
 
 const dataSource = new DataSource(dataSourceOptions);
