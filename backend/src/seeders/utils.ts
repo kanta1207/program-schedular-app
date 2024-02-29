@@ -25,3 +25,15 @@ export const truncateTable = async (tableName: string, cascade = false) => {
     await queryRunner.release();
   }
 };
+
+/**
+ *
+ *
+ * @param {string} tableName name of the table to truncate and seed
+ * @param {() => void} func seeding function
+ */
+export const seederWrapper = async (tableName: string, func: () => void) => {
+  await truncateTable(tableName);
+  await func();
+  console.log(`${tableName} seeds inserted`);
+};

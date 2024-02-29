@@ -11,6 +11,10 @@ migration-create:
 	docker exec -it program-scheduler-api sh -c "npm run migration:create"
 migration-generate:
 	docker exec -it program-scheduler-api sh -c "npm run migration:generate"
+# accept name as an argument
+MIGRATION_NAME ?=
+migration-named-generate:
+	docker exec -it program-scheduler-api sh -c "npm run migration:generate -- --name=$(MIGRATION_NAME)"
 migration-run:
 	docker exec -it program-scheduler-api sh -c "npm run migration:run"
 migration-revert:

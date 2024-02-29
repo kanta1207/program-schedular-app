@@ -1,6 +1,6 @@
 import dataSource from '../data-source';
 import { MasterClassroom } from '../entity/masterClassrooms.entity';
-import { truncateTable } from './utils';
+import { seederWrapper } from './utils';
 
 const classrooms = [
   { name: 'Google', floor: '2nd' },
@@ -16,10 +16,8 @@ const classrooms = [
 });
 
 export const masterClassroomSeeder = async () => {
-  await truncateTable('master_classrooms');
-
-  const masterClassroomRepository = dataSource.getRepository(MasterClassroom);
-  classrooms.map((classroom) => masterClassroomRepository.create(classroom));
-  await masterClassroomRepository.save(classrooms);
-  console.log('MasterClassroom seeds inserted');
+  seederWrapper('master_classrooms', async () => {
+    const masterClassroomRepo = dataSource.getRepository(MasterClassroom);
+    await masterClassroomRepo.save(classrooms);
+  });
 };

@@ -1,5 +1,6 @@
 import dataSource from '../data-source';
 import { masterClassroomSeeder } from './masterClassroom.seeder';
+import { masterContractTypeSeeder } from './masterContactType.seeder';
 
 const mainSeeder = async () => {
   try {
@@ -8,6 +9,7 @@ const mainSeeder = async () => {
 
     console.log('Start seeding...');
     await masterClassroomSeeder();
+    await masterContractTypeSeeder();
     // TODO: other seeder
 
     console.log('All seeding completed successfully.');
