@@ -1,5 +1,3 @@
-'use server';
-
 export const deleteBreak = async (id: number): Promise<null> => {
   // Simulate a long-running operation
   console.log(`Deleting ${id}...`);

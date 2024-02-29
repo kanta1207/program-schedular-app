@@ -1,19 +1,20 @@
 'use client';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Break } from '@/types/break';
 import TableMenu from '@/components/partials/TableMenu';
 import { deleteBreak } from '@/actions/breaks/deleteBreak';
+import { updateBreak } from '@/actions/breaks/updateBreak';
+import { Break } from '@/types/_index';
 
 interface BreakListTableProps {
   breaks: Break[];
@@ -21,79 +22,134 @@ interface BreakListTableProps {
 
 const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
   const [editBreakId, setEditBreakId] = useState<number | null>(null);
-  const [startAt, setStartAt] = useState<Dayjs | null>(null);
-  const [endAt, setEndAt] = useState<Dayjs | null>(null);
+
+  // Set default value in updating break
+  useEffect(() => {
+    const updatingBreak = breaks.find((item) => item.id === editBreakId);
+
+    if (updatingBreak) {
+      reset({
+        startAt: dayjs(updatingBreak.startAt),
+        endAt: dayjs(updatingBreak.endAt),
+      });
+    }
+  }, [editBreakId]);
+
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      startAt: null as Dayjs | null,
+      endAt: null as Dayjs | null,
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const payload = {
+        startAt: data.startAt,
+        endAt: data.endAt,
+      };
+
+      if (!editBreakId) {
+        throw new Error('Unexpected Error: id is not selected');
+      }
+
+      await updateBreak(editBreakId, payload);
+
+      reset();
+      setEditBreakId(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleEditClick = (id: number) => {
     setEditBreakId(id);
   };
 
   const handleCancelClick = () => {
+    reset();
     setEditBreakId(null);
   };
 
   return (
-    <>
-      <Table>
-        <TableHead>
-          <TableRow sx={{ bgcolor: 'primary.main' }}>
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '30rem' }}>Start Date</TableCell>
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '30rem' }}>End Date</TableCell>
-            {/* Empty head for edit and delete */}
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }} />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {breaks.map((breakItem) => {
-            const isEditing = editBreakId === breakItem.id;
-            return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: 'primary.main' }}>
+              <TableCell sx={{ border: '1px solid white', color: 'white', width: '30rem' }}>Start Date</TableCell>
+              <TableCell sx={{ border: '1px solid white', color: 'white', width: '30rem' }}>End Date</TableCell>
+              {/* Empty head for edit and delete */}
+              <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }} />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {breaks.map((breakItem) => (
               <TableRow key={breakItem.id}>
-                <TableCell>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']} sx={{ padding: 0 }}>
-                      <DatePicker
-                        defaultValue={dayjs(breakItem.startAt)}
-                        onChange={(newDate) => setStartAt(newDate)}
-                        disabled={!isEditing}
+                {editBreakId === breakItem.id ? (
+                  <>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="startAt"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <DatePicker
+                              label="Start Date"
+                              value={field.value}
+                              inputRef={field.ref}
+                              onChange={(date) => field.onChange(date)}
+                            />
+                          );
+                        }}
                       />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </TableCell>
-                <TableCell>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']} sx={{ padding: 0 }}>
-                      <DatePicker
-                        defaultValue={dayjs(breakItem.endAt)}
-                        onChange={(newDate) => setEndAt(newDate)}
-                        disabled={!isEditing}
+                    </TableCell>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="endAt"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <DatePicker
+                              label="End Date"
+                              value={field.value}
+                              inputRef={field.ref}
+                              onChange={(date) => field.onChange(date)}
+                            />
+                          );
+                        }}
                       />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </TableCell>
-                {isEditing ? (
-                  <TableCell>
-                    <div className="flex justify-end gap-x-2.5">
-                      <Button variant="outlined" onClick={handleCancelClick}>
-                        Cancel
-                      </Button>
-                      <Button variant="contained" onClick={() => handleEditClick(breakItem.id)}>
-                        Save
-                      </Button>
-                    </div>
-                  </TableCell>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-end gap-x-2.5">
+                        <Button variant="outlined" type="button" onClick={handleCancelClick}>
+                          Cancel
+                        </Button>
+                        <Button variant="contained" type="submit">
+                          Save
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </>
                 ) : (
-                  <TableCell>
-                    <div className="flex justify-end">
-                      <TableMenu id={breakItem.id} onEdit={handleEditClick} onDelete={deleteBreak} />
-                    </div>
-                  </TableCell>
+                  <>
+                    <TableCell>{dayjs(breakItem.startAt).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>{dayjs(breakItem.endAt).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>
+                      <div className="flex justify-end">
+                        <TableMenu id={breakItem.id} onEdit={handleEditClick} onDelete={deleteBreak} />
+                      </div>
+                    </TableCell>
+                  </>
                 )}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </>
+            ))}
+          </TableBody>
+        </Table>
+      </form>
+    </LocalizationProvider>
   );
 };
 

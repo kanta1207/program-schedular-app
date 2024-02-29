@@ -14,6 +14,7 @@ export const getBreaks = async (): Promise<Break[]> => {
       headers: {
         'Content-Type': 'application/json',
       },
+      next: { tags: ['break'] },
     });
 
     if (!response.ok) {

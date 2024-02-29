@@ -3,16 +3,19 @@ import { revalidateTag } from 'next/cache';
 import { breaks } from '@/mock/_index';
 import { Break } from '@/types/_index';
 
-interface CreateBreakPayload {
+interface UpdateBreakPayload {
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const createBreak = async (payload: CreateBreakPayload): Promise<Break> => {
+export const updateBreak = async (id: number, payload: UpdateBreakPayload): Promise<Break> => {
   const { startAt, endAt } = payload;
-  console.log(startAt.toDate(), endAt.toDate());
+  console.log(id, startAt, endAt);
 
-  return breaks[0];
+  const tmpBreak = breaks.find((breakItem) => breakItem.id === id)!;
+  tmpBreak.startAt === startAt.toDate();
+  tmpBreak.endAt === endAt.toDate();
+  return tmpBreak;
 
   // TODO: Fetch data from api
   try {
@@ -20,7 +23,7 @@ export const createBreak = async (payload: CreateBreakPayload): Promise<Break> =
       throw new Error('Either startAt or endAt is required');
     }
 
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks/${id}`;
 
     const payload = {
       startAt: startAt,
@@ -28,7 +31,7 @@ export const createBreak = async (payload: CreateBreakPayload): Promise<Break> =
     };
 
     const response = await fetch(baseUrl, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
