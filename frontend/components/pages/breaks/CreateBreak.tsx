@@ -11,6 +11,11 @@ import { createBreak } from '@/actions/breaks/createBreak';
 const CreateBreak = () => {
   const [isCreating, setIsCreating] = useState(false);
 
+  const handleCancelClick = () => {
+    setIsCreating(false);
+    reset();
+  };
+
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       startAt: null as Dayjs | null,
@@ -85,10 +90,7 @@ const CreateBreak = () => {
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 variant={'outlined'}
                 type="button"
-                onClick={() => {
-                  setIsCreating(!isCreating);
-                  reset();
-                }}
+                onClick={handleCancelClick}
               >
                 Cancel
               </Button>
