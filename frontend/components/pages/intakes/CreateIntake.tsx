@@ -1,97 +1,102 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PROGRAMS } from '@/constants/_index';
-
+import { Button, TextField } from '@mui/material';
+import { Dayjs } from 'dayjs';
+import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 const CreateIntake = () => {
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState('');
-  const [hours, setHours] = useState('');
-  // will be replaced with datepicker functions
-  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (/^\d+$/.test(value) || value === '') {
-      setHours(value);
+  const handleCancelClick = () => {
+    setIsCreating(false);
+    reset();
+  };
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      startAt: null as Dayjs | null,
+      endAt: null as Dayjs | null,
+    },
+  });
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const payload = {
+        startAt: data.startAt,
+        endAt: data.endAt,
+      };
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  const handleSelectProgram = (event: SelectChangeEvent) => {
-    setSelectedProgram(event.target.value);
-  };
-
   return (
-    <div>
-      <div className="flex justify-end mb-4 ">
-        {!isCreating && (
-          <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
-            New Intake
-          </Button>
-        )}
-      </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-end mb-4 ">
+          {!isCreating && (
+            <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
+              New Intake
+            </Button>
+          )}
+        </div>
 
-      {isCreating && (
-        <div className="flex gap-4 items-end p-4 border my-4">
-          <div>
-            <TextField required id="IntakeName" label="Name" placeholder="Enter Intake Name" sx={{ width: '20rem' }} />
-          </div>
-          <FormControl>
-            <InputLabel id="select-program" required>
-              Program
-            </InputLabel>
-            <Select
-              labelId="select-program"
-              id="select-program"
-              value={selectedProgram}
-              label="Program"
-              onChange={handleSelectProgram}
-              sx={{ width: '10rem' }}
-              required
-            >
-              {PROGRAMS.map((program) => (
-                <MenuItem key={program.id} value={program.name}>
-                  {program.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <div>
-            {/* //Change with datepicker */}
-            <TextField
-              required
-              id="requiredHours"
-              label="Required Hours"
-              placeholder="60"
-              type="number"
-              value={hours}
-              sx={{ width: '20rem' }}
-              onChange={handleHoursChange}
-              inputProps={{
-                type: 'number',
-                min: 0,
-                max: 999,
-                maxLength: 3,
-                onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-                  e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
-                },
+        {isCreating && (
+          <div className="flex gap-4 items-end p-4 border my-4">
+            <div>
+              <TextField
+                required
+                id="IntakeName"
+                label="Name"
+                placeholder="Enter Intake Name"
+                sx={{ width: '20rem' }}
+              />
+            </div>
+            {/* Start Date */}
+            <Controller
+              control={control}
+              name="startAt"
+              rules={{ required: true }}
+              render={({ field }: any) => {
+                return (
+                  <DatePicker
+                    label="Start Date"
+                    value={field.value}
+                    inputRef={field.ref}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
               }}
             />
+            {/* End Date */}
+            <Controller
+              control={control}
+              name="endAt"
+              rules={{ required: true }}
+              render={({ field }: any) => {
+                return (
+                  <DatePicker
+                    label="End Date"
+                    value={field.value}
+                    inputRef={field.ref}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
+              }}
+            />
+            <div className="flex items-end gap-4 ml-auto">
+              <Button
+                sx={{ display: 'flex', justifyContent: 'flex-end' }}
+                variant={'outlined'}
+                onClick={() => setIsCreating(!isCreating)}
+              >
+                Cancel
+              </Button>
+              <Button variant={'contained'}>Create</Button>
+            </div>
           </div>
-          <div className="ml-auto flex gap-4">
-            <Button
-              sx={{ display: 'flex', justifyContent: 'flex-end' }}
-              variant={'outlined'}
-              onClick={() => setIsCreating(!isCreating)}
-            >
-              Cancel
-            </Button>
-            <Button variant={'contained'}>Create</Button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </form>
+    </LocalizationProvider>
   );
 };
 

@@ -129,12 +129,14 @@ const IntakeTableList = () => {
                       </TableCell>
                     </>
                     <TableCell colSpan={4} sx={{ marginLeft: 'auto' }}>
-                      <Button variant="outlined" onClick={() => handleCancelClick()}>
-                        Cancel
-                      </Button>
-                      <Button variant="contained" onClick={() => handleSaveClick(intake.id)}>
-                        Save
-                      </Button>
+                      <div className="flex justify-end gap-x-2.5">
+                        <Button variant="outlined" onClick={() => handleCancelClick()}>
+                          Cancel
+                        </Button>
+                        <Button variant="contained" onClick={() => handleSaveClick(intake.id)}>
+                          Save
+                        </Button>
+                      </div>
                     </TableCell>
                   </>
                 ) : (
