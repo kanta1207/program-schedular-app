@@ -1,4 +1,3 @@
-'use client';
 import { CohortInfoForm } from '@/components/pages/cohorts/CohortInfoForm';
 import { CohortScheduleTable } from '@/components/pages/cohorts/CohortScheduleTable';
 import { Box, Typography } from '@mui/material';

@@ -1,16 +1,19 @@
+'use client';
 import { submitNewCohort } from '@/actions/cohorts/formAction';
 import { PERIOD_OF_DAYS } from '@/constants/period-of-days';
 import { PROGRAMS } from '@/constants/program';
 import { intakes } from '@/mock/intake';
+import { Cohort } from '@/types/cohort';
 import { Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface CohortInfoFormProps {
   pageType: 'new' | 'edit' | 'view';
+  cohort?: Cohort;
 }
 
-export const CohortInfoForm: React.FC<CohortInfoFormProps> = (pageType) => {
+export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort }) => {
   const [intake, setIntake] = React.useState('');
   const [program, setProgram] = React.useState('');
   const [period, setPeriod] = React.useState('');
