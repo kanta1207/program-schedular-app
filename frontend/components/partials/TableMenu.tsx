@@ -62,6 +62,22 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
     setAnchorEl(null);
   };
 
+  const handleEdit = () => {
+    handleClose();
+    onEdit(id);
+  };
+
+  const handleDelete = () => {
+    const message = `
+    Are you sure you want to delete this item?
+    This action cannot be undone.
+    `;
+    if (confirm(message)) {
+      handleClose();
+      onDelete(id);
+    }
+  };
+
   return (
     <div className="flex justify-end">
       <IconButton
@@ -82,23 +98,11 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onEdit(id);
-          }}
-          disableRipple
-        >
+        <MenuItem onClick={handleEdit} disableRipple>
           <EditIcon />
           Edit
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onDelete(id);
-          }}
-          disableRipple
-        >
+        <MenuItem onClick={handleDelete} disableRipple>
           <DeleteIcon />
           Delete
         </MenuItem>
