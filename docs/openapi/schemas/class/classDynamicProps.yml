@@ -1,0 +1,11 @@
+type: object
+required:
+  - start_at
+  - end_at
+properties:
+  start_at:
+    type: string
+    example: 2022-09-01T08:00:00.000Z
+  end_at:
+    type: string
+    example: 2023-08-30T17:00:00.000Z

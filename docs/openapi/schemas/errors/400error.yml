@@ -1,0 +1,16 @@
+description: Invalid request error
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - code
+        - message
+        - data
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Bad Request

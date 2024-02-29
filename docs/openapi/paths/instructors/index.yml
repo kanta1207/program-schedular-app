@@ -1,0 +1,86 @@
+get:
+  tags:
+    - Instructor
+  summary: Get instructors
+  parameters:
+    - in: query
+      name: courseId
+      schema:
+        type: integer
+      required: false
+      description: Course id to get the assignable instructors to the specific course.
+    - in: query
+      name: rangeId
+      schema:
+        type: integer
+      required: false
+      description: Range id to get the assignable instructors to the specific range of days.
+  responses:
+    '200':
+      description: Returns Instructors
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                    - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                    - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+
+post:
+  tags:
+    - Instructor
+  summary: Create a new instructor
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+            - $ref: '../../schemas/instructor/instructorDynamicForeignProps.yml'
+  responses:
+    '200':
+      description: Returns the created instructor
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Created
+              data:
+                allOf:
+                  - $ref: '../../schemas/instructor/instructorStaticProps.yml'
+                  - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
+                  - $ref: '../../schemas/instructor/instructorStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

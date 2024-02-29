@@ -1,0 +1,132 @@
+get:
+  tags:
+    - Intake
+  summary: Get the Intake by id
+  parameters:
+    - in: path
+      name: intakeId
+      schema:
+        type: integer
+      required: true
+      description: Id of the intake to get
+  responses:
+    '200':
+      description: Returns the Intake with Cohorts (name, Program, classroom, PeriodOfDay)
+      content:
+        application/json:
+          schema:
+            $ref: '../../index.yml#/components/schemas/IntakeWithCohort'
+patch:
+  tags:
+    - Intake
+  summary: Update the Intake by id
+  parameters:
+    - in: path
+      name: intakeId
+      schema:
+        type: integer
+      required: true
+      description: Id of the intake to update
+  requestBody:
+    description: Create new intake
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: DMS-24-Sep
+            startAt:
+              type: string
+              example: 2024-05-23
+            endAt:
+              type: string
+              example: 2025-04-30
+  responses:
+    '200':
+      description: Returns the updated Intake
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                type: object
+                required:
+                  - id
+                  - name
+                  - startAt
+                  - endAt
+                  - createdAt
+                  - updatedAt
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: DMS-24-Sep
+                  startAt:
+                    type: string
+                    example: 2024-05-23
+                  endAt:
+                    type: string
+                    example: 2025-04-30
+                  createdAt:
+                    type: string
+                    example: 2024-05-23
+                  updatedAt:
+                    type: string
+                    example: 2025-04-30
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
+delete:
+  tags:
+    - Intake
+  summary: Delete the intake by id
+  parameters:
+    - in: path
+      name: intakeId
+      schema:
+        type: integer
+      required: true
+      description: Id of the intake to delete
+  responses:
+    '204':
+      description: Delete intake by id
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 204
+              message:
+                type: string
+                example: No Content
+              data:
+                type: string
+                nullable: true
+                example: null
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'
