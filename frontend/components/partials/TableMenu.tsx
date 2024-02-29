@@ -1,5 +1,4 @@
 'use client';
-import * as React from 'react';
 import { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
@@ -45,26 +44,29 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
-const CustomizedMenus = ({ index, onEdit }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+interface TableMenuProps {
+  id: number;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
+}
+
+const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [editCourseId, setEditCourseId] = useState(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
-  };
-  const handleEditClick = (index: any) => {
-    setEditCourseId(index);
   };
 
   return (
     <div>
       <IconButton
-        id="demo-customized-button"
-        aria-controls={open ? 'demo-customized-menu' : undefined}
+        id="menu-trigger-button"
+        aria-controls={open ? 'menu-trigger-button' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
@@ -72,9 +74,9 @@ const CustomizedMenus = ({ index, onEdit }) => {
         <MoreVertIcon />
       </IconButton>
       <StyledMenu
-        id="demo-customized-menu"
+        id="table-menu"
         MenuListProps={{
-          'aria-labelledby': 'demo-customized-button',
+          'aria-labelledby': 'menu-list-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -83,14 +85,20 @@ const CustomizedMenus = ({ index, onEdit }) => {
         <MenuItem
           onClick={() => {
             handleClose();
-            onEdit(index);
+            onEdit(id);
           }}
           disableRipple
         >
           <EditIcon />
           Edit
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            onDelete(id);
+          }}
+          disableRipple
+        >
           <DeleteIcon />
           Delete
         </MenuItem>
@@ -98,4 +106,4 @@ const CustomizedMenus = ({ index, onEdit }) => {
     </div>
   );
 };
-export default CustomizedMenus;
+export default TableMenu;
