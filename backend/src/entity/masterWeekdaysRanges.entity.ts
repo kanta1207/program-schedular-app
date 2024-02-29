@@ -7,7 +7,7 @@ export class WeekdaysRange {
 
   @Column({
     type: 'enum',
-    enum: ['Monday - Friday', 'Monday - Wednesday', 'Wednesday - Friday'],
+    enum: ['Mon - Fri', 'Mon - Wed', 'Wed - Fri'],
   })
   name: string;
 
