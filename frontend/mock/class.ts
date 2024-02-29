@@ -18,7 +18,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-13').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -28,7 +28,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -38,7 +38,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-24').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -48,7 +48,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-24').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -58,7 +58,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -68,7 +68,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -78,7 +78,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rodrigo')!,
   },
   {
@@ -88,7 +88,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rodrigo')!,
   },
   // A-1023
@@ -99,7 +99,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -109,7 +109,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-03').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -119,7 +119,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -129,7 +129,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-24').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -139,7 +139,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -149,7 +149,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -159,7 +159,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -169,7 +169,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   // E1-1023
@@ -180,7 +180,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -190,7 +190,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-13').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Aswini')!,
   },
   {
@@ -200,7 +200,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -210,7 +210,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Jana')!,
   },
   {
@@ -220,7 +220,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -230,7 +230,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Brigitte')!,
   },
   {
@@ -240,7 +240,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -250,7 +250,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Youtube')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   // E2-1023
@@ -261,7 +261,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Jana')!,
   },
   {
@@ -271,7 +271,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-13').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -281,7 +281,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-11-03').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -291,7 +291,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -301,7 +301,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -311,7 +311,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -321,7 +321,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Jana')!,
   },
   {
@@ -331,7 +331,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Jana')!,
   },
   //// DMS-2024-Jan
@@ -343,7 +343,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brigitte')!,
   },
   {
@@ -353,7 +353,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -363,7 +363,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -373,7 +373,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -383,7 +383,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -393,7 +393,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Rodrigo')!,
   },
   {
@@ -403,7 +403,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -413,7 +413,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-06-21').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Facebook')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   // E1--0124
@@ -424,7 +424,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Diogo')!,
   },
   {
@@ -434,7 +434,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -444,7 +444,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -454,7 +454,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -464,7 +464,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -474,7 +474,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -484,7 +484,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!, // Nathalia was not in the list
   },
   {
@@ -494,7 +494,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -504,7 +504,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-06-21').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Amazon')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   // E2--0124
@@ -515,7 +515,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'Design')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -525,7 +525,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-19').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -535,7 +535,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 1')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -545,7 +545,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'WordPress')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Diogo')!,
   },
   {
@@ -555,7 +555,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Digital Marketing 2')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!,
   },
   {
@@ -565,7 +565,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -575,7 +575,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Social Media')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Gaurav')!,
   },
   {
@@ -585,7 +585,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Analytics')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Rafael')!,
   },
   {
@@ -595,7 +595,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-06-21').toDate(),
     course: courses.find(({ name }) => name === 'Campaign Management')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Caio Franco')!, // Nathalia was not in the list
   },
   /*=============================
@@ -610,7 +610,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-20').toDate(),
     course: courses.find(({ name }) => name === 'E-commerce')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -620,7 +620,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-10-20').toDate(),
     course: courses.find(({ name }) => name === 'Content Creation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -630,7 +630,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-15').toDate(),
     course: courses.find(({ name }) => name === 'Digital Ads')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -640,7 +640,7 @@ export const classes: Class[] = [
     endAt: dayjs('2023-12-01').toDate(),
     course: courses.find(({ name }) => name === 'Growth Marketing')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Vedant')!,
   },
   {
@@ -650,7 +650,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-26').toDate(),
     course: courses.find(({ name }) => name === 'Advanced Digital Strategies')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Hootsuite')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Iman')!,
   },
   {
@@ -660,7 +660,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Advanced SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -670,7 +670,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-09').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Iman')!,
   },
   {
@@ -680,7 +680,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-02-23').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Iman')!,
   },
   //// 2023-November-intake
@@ -692,7 +692,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-26').toDate(),
     course: courses.find(({ name }) => name === 'Content Creation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -702,7 +702,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-01-26').toDate(),
     course: courses.find(({ name }) => name === 'E-commerce')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -712,7 +712,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-08').toDate(),
     course: courses.find(({ name }) => name === 'Growth Marketing')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Kwame')!,
   },
   {
@@ -722,7 +722,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-03-22').toDate(),
     course: courses.find(({ name }) => name === 'Digital Ads')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -732,7 +732,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-04-26').toDate(),
     course: courses.find(({ name }) => name === 'Advanced Digital Strategies')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Iman')!,
   },
   {
@@ -742,7 +742,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Advanced SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -752,7 +752,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-10').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Vedant')!,
   },
   {
@@ -762,7 +762,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-05-24').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Microsoft')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Vedant')!,
   },
   //// 2024-March-intake
@@ -774,7 +774,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-04-26').toDate(),
     course: courses.find(({ name }) => name === 'Content Creation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -784,7 +784,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-04-26').toDate(),
     course: courses.find(({ name }) => name === 'E-commerce')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -794,7 +794,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-06-07').toDate(),
     course: courses.find(({ name }) => name === 'Advanced Digital Strategies')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Mariam')!,
   },
   {
@@ -804,7 +804,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-06-21').toDate(),
     course: courses.find(({ name }) => name === 'Digital Ads')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Brian')!,
   },
   {
@@ -814,7 +814,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-07-26').toDate(),
     course: courses.find(({ name }) => name === 'Growth Marketing')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: instructors.find(({ name }) => name === 'Vedant')!,
   },
   {
@@ -824,7 +824,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-08-09').toDate(),
     course: courses.find(({ name }) => name === 'Advanced SEO')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wednesday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Wed - Fri')!,
     instructor: instructors.find(({ name }) => name === 'Iman')!,
   },
   {
@@ -834,7 +834,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-08-09').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Wednesday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Wed')!,
     instructor: null,
   },
   {
@@ -844,7 +844,7 @@ export const classes: Class[] = [
     endAt: dayjs('2024-08-23').toDate(),
     course: courses.find(({ name }) => name === 'Automation')!,
     classroom: CLASSROOMS.find(({ name }) => name === 'Apple')!,
-    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Monday - Friday')!,
+    weekdaysRange: WEEKDAYS_RANGES.find(({ name }) => name === 'Mon - Fri')!,
     instructor: null,
   },
 ];
