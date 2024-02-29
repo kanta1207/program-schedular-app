@@ -9,10 +9,9 @@ const CreateIntake = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState('');
   const [hours, setHours] = useState('');
-
+  // will be replaced with datepicker functions
   const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    // Check if the value is a non-negative integer number
     if (/^\d+$/.test(value) || value === '') {
       setHours(value);
     }
