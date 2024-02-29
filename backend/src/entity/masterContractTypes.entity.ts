@@ -5,7 +5,7 @@ export class MasterContractType {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: ['Full time', 'Part time', 'Contract'] })
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
   @Column({ type: 'int', nullable: true })
@@ -13,14 +13,4 @@ export class MasterContractType {
 
   @Column({ type: 'int', nullable: true })
   minHours: number | null;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 }
