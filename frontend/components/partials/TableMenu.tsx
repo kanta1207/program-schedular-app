@@ -62,6 +62,18 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
     setAnchorEl(null);
   };
 
+  const deleteItemWithId = onDelete.bind(null, id);
+
+  const onSubmit = () => {
+    const message = `
+    Are you sure you want to delete this item?
+    This action cannot be undone.
+    `;
+    if (confirm(message)) {
+      deleteItemWithId();
+    }
+  };
+
   return (
     <div>
       <IconButton
@@ -92,16 +104,14 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
           <EditIcon />
           Edit
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onDelete(id);
-          }}
-          disableRipple
-        >
-          <DeleteIcon />
-          Delete
-        </MenuItem>
+        <form action={onSubmit}>
+          <MenuItem onClick={handleClose} sx={{ padding: 0 }} disableRipple>
+            <button type="submit" className="flex items-center w-full py-1.5 px-4">
+              <DeleteIcon />
+              Delete
+            </button>
+          </MenuItem>
+        </form>
       </StyledMenu>
     </div>
   );

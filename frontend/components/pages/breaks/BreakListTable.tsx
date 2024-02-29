@@ -13,6 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Break } from '@/types/break';
 import TableMenu from '@/components/partials/TableMenu';
+import { deleteBreak } from '@/actions/breaks/deleteBreak';
 
 interface BreakListTableProps {
   breaks: Break[];
@@ -27,10 +28,8 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
     setEditBreakId(id);
   };
 
-  const handleDeleteClick = (id: number) => {};
-
   const handleCancelClick = () => {
-    setEditBreakId(null); // Reset the edit state to exit edit mode
+    setEditBreakId(null);
   };
 
   return (
@@ -85,7 +84,7 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                 ) : (
                   <TableCell>
                     <div className="flex justify-end">
-                      <TableMenu id={breakItem.id} onEdit={handleEditClick} onDelete={handleDeleteClick} />
+                      <TableMenu id={breakItem.id} onEdit={handleEditClick} onDelete={deleteBreak} />
                     </div>
                   </TableCell>
                 )}
