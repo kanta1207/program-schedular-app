@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, TextField, MenuItem } from '@mui/material';
+import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PROGRAMS } from '@/constants/_index';
 
 const CreateCourse = () => {
@@ -9,7 +10,7 @@ const CreateCourse = () => {
   const [selectedProgram, setSelectedProgram] = useState('');
   const [hours, setHours] = useState('');
 
-  const handleHoursChange = (event) => {
+  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     // Check if the value is a non-negative integer number
     if (/^\d+$/.test(value) || value === '') {
@@ -17,9 +18,10 @@ const CreateCourse = () => {
     }
   };
 
-  const handleSelectProgram = (event) => {
+  const handleSelectProgram = (event: SelectChangeEvent) => {
     setSelectedProgram(event.target.value);
   };
+
   return (
     <div>
       <div className="flex justify-end mb-4 ">
@@ -35,62 +37,52 @@ const CreateCourse = () => {
           <div>
             <TextField
               required
-              id="outlined-required"
+              id="courseName"
               label="Course Name"
               placeholder="Enter course name"
-              className="w-80"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              sx={{ width: '20rem' }}
             />
           </div>
-          <div>
-            <TextField
+
+          <FormControl>
+            <InputLabel id="select-program" required>
+              Program
+            </InputLabel>
+            <Select
+              labelId="select-program"
               id="select-program"
-              label="Program *"
               value={selectedProgram}
+              label="Program"
               onChange={handleSelectProgram}
-              select
-              className="w-40"
-              SelectProps={{
-                displayEmpty: true, // needed for placeholder
-                renderValue: (selected) => {
-                  if (selected === '') {
-                    return <em>Choose...</em>;
-                  }
-                  return selected;
-                },
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
+              sx={{ width: '10rem' }}
+              required
             >
               {PROGRAMS.map((program) => (
                 <MenuItem key={program.id} value={program.name}>
                   {program.name}
                 </MenuItem>
               ))}
-            </TextField>
-          </div>
+            </Select>
+          </FormControl>
+
           <div>
             <TextField
               required
-              id="outlined-required"
+              id="requiredHours"
               label="Required Hours"
               placeholder="60"
               type="number"
-              className="w-40"
-              InputLabelProps={{
-                shrink: true,
-              }}
               value={hours}
+              sx={{ width: '20rem' }}
               onChange={handleHoursChange}
               inputProps={{
+                type: 'number',
                 min: 0,
-                onInput: (e) => {
+                max: 999,
+                maxLength: 3,
+                onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
                   e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
                 },
-                maxLength: 4,
               }}
             />
           </div>
