@@ -3,13 +3,15 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { CohortTableRow } from './CohortTableRow';
 
 export const CohortTable = () => {
+  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow sx={{ bgcolor: 'primary.main' }}>
-          <TableCell sx={{ color: '#FFF', borderRight: '#FFF 1px solid' }}>Name</TableCell>
-          <TableCell sx={{ color: '#FFF', borderRight: '#FFF 1px solid' }}>Intake</TableCell>
-          <TableCell sx={{ color: '#FFF', borderRight: '#FFF 1px solid' }}>Program</TableCell>
+          <TableCell sx={thStyle}>Name</TableCell>
+          <TableCell sx={thStyle}>Intake</TableCell>
+          <TableCell sx={thStyle}>Program</TableCell>
           <TableCell sx={{ color: '#FFF' }}>Period</TableCell>
         </TableRow>
       </TableHead>

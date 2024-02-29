@@ -6,7 +6,7 @@ type CohortProps = {
   cohort: Cohort;
 };
 
-export const CohortTableRow = ({ cohort }: CohortProps) => {
+export const CohortTableRow: React.FC<CohortProps> = ({ cohort }: CohortProps) => {
   return (
     <>
       <TableCell component="th" scope="row">
