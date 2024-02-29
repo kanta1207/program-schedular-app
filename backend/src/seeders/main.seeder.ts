@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { masterClassroomSeeder } from './masterClassRooms.seeder';
+import { masterClassroomSeeder } from './masterClassroom.seeder';
 
 const mainSeeder = async () => {
   try {
