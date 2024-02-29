@@ -2,11 +2,11 @@ import { Cohort } from '@/types/cohort';
 import { TableCell } from '@mui/material';
 import Link from 'next/link';
 
-type CohortProps = {
+interface CohortProps {
   cohort: Cohort;
-};
+}
 
-export const CohortTableRow: React.FC<CohortProps> = ({ cohort }: CohortProps) => {
+export const CohortTableRow: React.FC<CohortProps> = ({ cohort }) => {
   return (
     <>
       <TableCell component="th" scope="row">

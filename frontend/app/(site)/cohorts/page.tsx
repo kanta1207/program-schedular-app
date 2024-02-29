@@ -6,7 +6,7 @@ const page = () => {
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Typography variant="h4">Cohort</Typography>
+        <Typography variant="h4">Cohorts</Typography>
         <Link href={'/cohorts/new'}>
           <Button variant="contained">New Cohort</Button>
         </Link>
