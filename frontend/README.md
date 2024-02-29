@@ -38,8 +38,11 @@ $ npm run dev
 │   ├── layouts ## Components for site layouts
 │   │   ├── Container.tsx
 │   │   └── Header.tsx
-│   └── pages ## Components used in pages
-│       ├── cohorts
+│   ├── pages ## Components used in pages
+│   │   ├── cohorts
+│   │   └── ...
+│   └── partials ## Components used in entire application
+│       ├── Headline
 │       └── ...
 ├── constants ## Constant values used in entire application
 │   ├── _index.ts ## Barrel export (Exports all at once)
@@ -81,3 +84,5 @@ $ npm run dev
   - Use styling attributes in components provided by MUI as much as possible.
 - Icons
   - Use material icons (https://mui.com/material-ui/material-icons/)
+- Date
+  - Use dayjs instead of builtin Date object

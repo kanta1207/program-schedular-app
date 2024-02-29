@@ -29,15 +29,15 @@ export const ScheduleGuide = () => {
         <div className="flex items-center gap-x-4">
           <div className="flex items-center gap-1">
             <div className="w-4 h-4 rounded-sm bg-[#662d91]" />
-            Monday - Friday
+            Mon - Fri
           </div>
           <div className="flex items-center gap-1">
             <div className="w-4 h-4 rounded-sm bg-[#0047AB]" />
-            Monday - Wednesday
+            Mon - Wed
           </div>
           <div className="flex items-center gap-1">
             <div className="w-4 h-4 rounded-sm bg-[#BA0021]" />
-            Wednesday - Friday
+            Wed - Fri
           </div>
         </div>
       </div>
