@@ -92,35 +92,35 @@ export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesT
       project: parentName,
       styles: {
         progressColor:
-          classItem.weekdaysRange.name === 'Monday - Friday'
+          classItem.weekdaysRange.name === 'Mon - Fri'
             ? '#76568f'
-            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            : classItem.weekdaysRange.name === 'Mon - Wed'
             ? '#3866a8'
-            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            : classItem.weekdaysRange.name === 'Wed - Fri'
             ? '#ba4359'
             : '',
         progressSelectedColor:
-          classItem.weekdaysRange.name === 'Monday - Friday'
+          classItem.weekdaysRange.name === 'Mon - Fri'
             ? '#76568f'
-            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            : classItem.weekdaysRange.name === 'Mon - Wed'
             ? '#3866a8'
-            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            : classItem.weekdaysRange.name === 'Wed - Fri'
             ? '#ba4359'
             : '',
         backgroundColor:
-          classItem.weekdaysRange.name === 'Monday - Friday'
+          classItem.weekdaysRange.name === 'Mon - Fri'
             ? '#662d91'
-            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            : classItem.weekdaysRange.name === 'Mon - Wed'
             ? '#0047AB'
-            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            : classItem.weekdaysRange.name === 'Wed - Fri'
             ? '#BA0021'
             : '',
         backgroundSelectedColor:
-          classItem.weekdaysRange.name === 'Monday - Friday'
+          classItem.weekdaysRange.name === 'Mon - Fri'
             ? '#662d91'
-            : classItem.weekdaysRange.name === 'Monday - Wednesday'
+            : classItem.weekdaysRange.name === 'Mon - Wed'
             ? '#0047AB'
-            : classItem.weekdaysRange.name === 'Wednesday - Friday'
+            : classItem.weekdaysRange.name === 'Wed - Fri'
             ? '#BA0021'
             : '',
       },

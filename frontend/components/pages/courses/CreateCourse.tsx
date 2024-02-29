@@ -27,7 +27,7 @@ const CreateCourse = () => {
       <div className="flex justify-end mb-4 ">
         {!isCreating && (
           <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
-            New course
+            New Course
           </Button>
         )}
       </div>
@@ -54,7 +54,7 @@ const CreateCourse = () => {
               value={selectedProgram}
               label="Program"
               onChange={handleSelectProgram}
-              sx={{ width: '10rem' }}
+              sx={{ width: '20rem' }}
               required
             >
               {PROGRAMS.map((program) => (

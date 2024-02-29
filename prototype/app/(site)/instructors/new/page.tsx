@@ -59,18 +59,18 @@ const NewInstructorPage = () => {
 
         <div className="flex gap-6">
           <p>Days:</p>
-          <RadioGroup defaultValue="Monday-Friday" className="flex gap-x-4">
+          <RadioGroup defaultValue="Mon - Fri" className="flex gap-x-4">
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Monday-Friday" id="Monday-Friday" />
-              <Label htmlFor="Monday-Friday">Monday-Friday</Label>
+              <RadioGroupItem value="Mon - Fri" id="Mon - Fri" />
+              <Label htmlFor="Mon - Fri">Mon - Fri</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Monday-Wednesday" id="Monday-Wednesday" />
-              <Label htmlFor="Monday-Wednesday">Monday-Wednesday</Label>
+              <RadioGroupItem value="Mon - Wed" id="Mon - Wed" />
+              <Label htmlFor="Mon - Wed">Mon - Wed</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Wednesday-Friday" id="Wednesday-Friday" />
-              <Label htmlFor="Wednesday-Friday">Wednesday-Friday</Label>
+              <RadioGroupItem value="Wed - Fri" id="Wed - Fri" />
+              <Label htmlFor="Wed - Fri">Wed - Fri</Label>
             </div>
           </RadioGroup>
         </div>
