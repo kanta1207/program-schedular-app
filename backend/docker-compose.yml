@@ -28,7 +28,7 @@ services:
     depends_on:
       - program-scheduler-db
     volumes:
-      - ./src:/app/src
+      - .:/app
       - /app/node_modules
     networks:
       - program-scheduler-backend
