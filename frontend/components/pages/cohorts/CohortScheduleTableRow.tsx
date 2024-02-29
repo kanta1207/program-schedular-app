@@ -1,13 +1,14 @@
 import { Class } from '@/types/class';
 import { TableCell } from '@mui/material';
+import dayjs from 'dayjs';
 
 interface CohortScheduleTableRowProps {
-  temp: Class;
+  classData: Class;
 }
 
-export const CohortScheduleTableRow: React.FC<CohortScheduleTableRowProps> = ({ temp }) => {
-  const startDate = temp.startAt.getFullYear() + temp.startAt.getMonth() + temp.startAt.getDay();
-  const endDate = temp.endAt.getFullYear() + temp.endAt.getMonth() + temp.endAt.getDay();
+export const CohortScheduleTableRow: React.FC<CohortScheduleTableRowProps> = ({ classData }) => {
+  const startDate = dayjs(classData.startAt).format('YYYY-MM-DD');
+  const endDate = dayjs(classData.endAt).format('YYYY-MM-DD');
 
   return (
     <>
@@ -15,10 +16,11 @@ export const CohortScheduleTableRow: React.FC<CohortScheduleTableRowProps> = ({ 
         {startDate}
       </TableCell>
       <TableCell>{endDate}</TableCell>
-      <TableCell>{temp.course.name}</TableCell>
-      <TableCell>{temp.weekdaysRange.name}</TableCell>
-      <TableCell>{temp.course.requiredHours}</TableCell>
-      <TableCell>{temp.instructor?.name}</TableCell>
+      <TableCell>{classData.course.name}</TableCell>
+      <TableCell>{classData.weekdaysRange.name}</TableCell>
+      <TableCell>{classData.course.requiredHours}</TableCell>
+      <TableCell>{classData.instructor?.name}</TableCell>
+      <TableCell></TableCell>
     </>
   );
 };

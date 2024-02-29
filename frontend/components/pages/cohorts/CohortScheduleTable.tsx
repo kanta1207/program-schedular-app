@@ -1,12 +1,18 @@
+import { classes } from '@/mock/class';
+import { Class } from '@/types/class';
+import { Cohort } from '@/types/cohort';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react';
+import { CohortScheduleTableRow } from './CohortScheduleTableRow';
 
 interface CohortScheduleTableProps {
   pageType: 'new' | 'edit' | 'view';
+  cohort?: Cohort;
 }
 
-export const CohortScheduleTable: React.FC<CohortScheduleTableProps> = ({ pageType }) => {
+export const CohortScheduleTable: React.FC<CohortScheduleTableProps> = ({ pageType, cohort }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+  const cohortSchedule: Class[] = classes.filter((classData) => classData.cohort.name === cohort?.name);
 
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -21,7 +27,17 @@ export const CohortScheduleTable: React.FC<CohortScheduleTableProps> = ({ pageTy
           <TableCell sx={{ color: '#FFF' }}></TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>{pageType === 'new' ? '' : ''}</TableBody>
+      {pageType === 'new' ? (
+        ''
+      ) : (
+        <TableBody>
+          {cohortSchedule.map((classData) => (
+            <TableRow key={classData.id}>
+              <CohortScheduleTableRow classData={classData} />
+            </TableRow>
+          ))}
+        </TableBody>
+      )}
     </Table>
   );
 };
