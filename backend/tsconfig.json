@@ -17,6 +17,5 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  },
-  "include": ["./src/**/*", "migrations/**/*.ts", "src/entity/**/*.ts"]
+  }
 }
