@@ -6,18 +6,8 @@ export class WeekdaysRange {
   id: number;
 
   @Column({
-    type: 'enum',
-    enum: ['Mon - Fri', 'Mon - Wed', 'Wed - Fri'],
+    type: 'varchar',
+    length: 255,
   })
   name: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 }
