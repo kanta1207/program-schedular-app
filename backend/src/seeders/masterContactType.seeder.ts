@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { MasterContractType } from 'src/entity/masterContractType.entity';
+import { MasterContractType } from '../entity/masterContractType.entity';
 import { seederWrapper } from './utils';
 
 const contractTypes = [
@@ -11,7 +11,7 @@ const contractTypes = [
 });
 
 export const masterContractTypeSeeder = async () => {
-  seederWrapper('master_contract_types', async () => {
+  await seederWrapper('master_contract_types', async () => {
     const masterContractTypeRepo = dataSource.getRepository(MasterContractType);
     await masterContractTypeRepo.save(contractTypes);
   });

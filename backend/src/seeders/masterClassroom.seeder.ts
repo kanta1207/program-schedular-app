@@ -16,7 +16,7 @@ const classrooms = [
 });
 
 export const masterClassroomSeeder = async () => {
-  seederWrapper('master_classrooms', async () => {
+  await seederWrapper('master_classrooms', async () => {
     const masterClassroomRepo = dataSource.getRepository(MasterClassroom);
     await masterClassroomRepo.save(classrooms);
   });
