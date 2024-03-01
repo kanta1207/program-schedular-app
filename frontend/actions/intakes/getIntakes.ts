@@ -7,7 +7,7 @@ export const getIntakes = async (): Promise<Intake[]> => {
 
   // TODO: Remove mock and fetch data from api
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes`;
 
     const response = await fetch(baseUrl, {
       method: 'GET',

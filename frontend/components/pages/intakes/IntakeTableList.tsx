@@ -13,7 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TableMenu from '@/components/partials/TableMenu';
-import { Intake } from '@/types/_index';
+import { Intake, PeriodOfDayName } from '@/types/_index';
 
 import { updateIntake } from '@/actions/intakes/updateIntakes';
 
@@ -75,7 +75,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
     setEditIntakeId(null);
   };
 
-  const getCohortsByPeriod = (intake: Intake, period: string) => {
+  const getCohortsByPeriod = (intake: Intake, period: PeriodOfDayName) => {
     return intake.cohorts
       .filter((cohort) => cohort.periodOfDay.name === period)
       .map((cohort) => cohort.name)
@@ -93,7 +93,8 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Morning Cohorts</TableCell>
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Afternoon Cohorts</TableCell>
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Evening Cohorts</TableCell>
-              <TableCell sx={{ marginLeft: 'auto' }}></TableCell> {/* Empty head for edit and delete */}
+              <TableCell sx={{ marginLeft: 'auto', border: '1px solid white', color: 'white' }}></TableCell>
+              {/* Empty head for edit and delete */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -112,48 +113,46 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                         }}
                       />
                     </TableCell>
-                    <>
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name="startAt"
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <DatePicker
-                                label="Start Date"
-                                value={field.value}
-                                inputRef={field.ref}
-                                onChange={(date) => field.onChange(date)}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name="endAt"
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <DatePicker
-                                label="End Date"
-                                value={field.value}
-                                inputRef={field.ref}
-                                onChange={(date) => field.onChange(date)}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-                    </>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="startAt"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <DatePicker
+                              label="Start Date"
+                              value={field.value}
+                              inputRef={field.ref}
+                              onChange={(date) => field.onChange(date)}
+                            />
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="endAt"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <DatePicker
+                              label="End Date"
+                              value={field.value}
+                              inputRef={field.ref}
+                              onChange={(date) => field.onChange(date)}
+                            />
+                          );
+                        }}
+                      />
+                    </TableCell>
                     <TableCell colSpan={4} sx={{ marginLeft: 'auto' }}>
                       <div className="flex justify-end gap-x-2.5">
-                        <Button variant="outlined" onClick={() => handleCancelClick()}>
+                        <Button variant="outlined" type="button" onClick={handleCancelClick}>
                           Cancel
                         </Button>
-                        <Button variant="contained" onClick={() => handleSaveClick(intake.id)}>
+                        <Button variant="contained" type="submit" onClick={() => handleSaveClick(intake.id)}>
                           Save
                         </Button>
                       </div>

@@ -17,6 +17,7 @@ const CreateIntake = () => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
+      intakeName: null,
       startAt: null as Dayjs | null,
       endAt: null as Dayjs | null,
     },
@@ -52,17 +53,24 @@ const CreateIntake = () => {
 
         {isCreating && (
           <div className="flex gap-4 items-end p-4 border my-4">
-            <div>
-              {' '}
-              {/* Intake name */}
-              <TextField
-                required
-                id="IntakeName"
-                label="Name"
-                placeholder="Enter Intake Name"
-                sx={{ width: '20rem' }}
-              />
-            </div>
+            {/* Intake name */}
+            <Controller
+              control={control}
+              name="intakeName"
+              rules={{ required: true }}
+              render={({ field }: any) => {
+                return (
+                  <TextField
+                    label="Intake Name"
+                    id="IntakeName"
+                    sx={{ width: '20rem' }}
+                    value={field.value}
+                    inputRef={field.ref}
+                    onChange={(name) => field.onChange(name)}
+                  />
+                );
+              }}
+            />
             {/* Start Date */}
             <Controller
               control={control}
@@ -99,11 +107,14 @@ const CreateIntake = () => {
               <Button
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
                 variant={'outlined'}
+                type="button"
                 onClick={handleCancelClick}
               >
                 Cancel
               </Button>
-              <Button variant={'contained'}>Create</Button>
+              <Button variant={'contained'} type="submit">
+                Create
+              </Button>
             </div>
           </div>
         )}

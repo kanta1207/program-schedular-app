@@ -3,13 +3,13 @@ import { revalidateTag } from 'next/cache';
 import { intakes } from '@/mock/_index';
 import { Intake } from '@/types/_index';
 
-interface UpdateIntakekPayload {
+interface UpdateIntakePayload {
   name: string;
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const updateIntake = async (id: number, payload: UpdateIntakekPayload): Promise<Intake> => {
+export const updateIntake = async (id: number, payload: UpdateIntakePayload): Promise<Intake> => {
   const { name, startAt, endAt } = payload;
   console.log(id, name, startAt, endAt);
 
@@ -50,7 +50,7 @@ export const updateIntake = async (id: number, payload: UpdateIntakekPayload): P
 
     const data = await response.json();
 
-    revalidateTag('break');
+    revalidateTag('intake');
 
     return data;
   } catch (error: any) {
