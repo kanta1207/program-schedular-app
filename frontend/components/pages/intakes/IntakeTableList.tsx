@@ -16,6 +16,7 @@ import TableMenu from '@/components/partials/TableMenu';
 import { Intake, PeriodOfDayName } from '@/types/_index';
 
 import { updateIntake } from '@/actions/intakes/updateIntakes';
+import { deleteIntake } from '@/actions/intakes/deleteIntake';
 
 interface IntakeTableListProps {
   intakes: Intake[];
@@ -66,10 +67,6 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
     setEditIntakeId(id);
   };
 
-  const handleSaveClick = (id: number) => {};
-
-  const handleDeleteClick = (id: number) => {};
-
   const handleCancelClick = () => {
     reset();
     setEditIntakeId(null);
@@ -93,8 +90,8 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Morning Cohorts</TableCell>
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Afternoon Cohorts</TableCell>
               <TableCell sx={{ border: '1px solid white', color: 'white' }}>Evening Cohorts</TableCell>
-              <TableCell sx={{ marginLeft: 'auto', border: '1px solid white', color: 'white' }}></TableCell>
               {/* Empty head for edit and delete */}
+              <TableCell sx={{ marginLeft: 'auto', border: '1px solid white', color: 'white' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -152,7 +149,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                         <Button variant="outlined" type="button" onClick={handleCancelClick}>
                           Cancel
                         </Button>
-                        <Button variant="contained" type="submit" onClick={() => handleSaveClick(intake.id)}>
+                        <Button variant="contained" type="submit">
                           Save
                         </Button>
                       </div>
@@ -170,7 +167,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                     <TableCell>{getCohortsByPeriod(intake, 'Afternoon')}</TableCell>
                     <TableCell>{getCohortsByPeriod(intake, 'Evening')}</TableCell>
                     <TableCell>
-                      <TableMenu id={intake.id} onEdit={handleEditClick} onDelete={handleDeleteClick} />
+                      <TableMenu id={intake.id} onEdit={handleEditClick} onDelete={deleteIntake} />
                     </TableCell>
                   </>
                 )}

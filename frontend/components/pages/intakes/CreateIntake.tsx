@@ -61,7 +61,7 @@ const CreateIntake = () => {
               render={({ field }: any) => {
                 return (
                   <TextField
-                    label="Intake Name"
+                    label="Name"
                     id="IntakeName"
                     sx={{ width: '20rem' }}
                     value={field.value}
