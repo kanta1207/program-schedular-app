@@ -95,7 +95,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {intakes?.map((intake) => (
+            {intakes.map((intake) => (
               <TableRow key={intake.id}>
                 {editIntakeId === intake.id ? (
                   // Edit mode
