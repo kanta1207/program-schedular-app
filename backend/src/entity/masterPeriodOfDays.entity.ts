@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Cohort } from './cohorts.entity';
+import { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
 
 @Entity('master_period_of_days')
 export class MasterPeriodOfDay {
@@ -14,4 +15,10 @@ export class MasterPeriodOfDay {
 
   @OneToMany(() => Cohort, (cohort) => cohort.periodOfDay)
   cohorts: Cohort[];
+
+  @OneToMany(
+    () => InstructorsPeriodOfDays,
+    (instructorsPeriodOfDays) => instructorsPeriodOfDays.periodOfDay,
+  )
+  availableInstructors: InstructorsPeriodOfDays[];
 }

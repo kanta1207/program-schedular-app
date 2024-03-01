@@ -5,11 +5,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { MasterContractType } from './masterContractTypes.entity';
 import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
+import { CoursesInstructors } from './coursesInstructors.entity';
+import { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
 
 @Entity('instructors')
 export class Instructor {
@@ -50,4 +53,16 @@ export class Instructor {
   )
   @JoinColumn({ name: 'range_id' })
   weekdaysRange: MasterWeekdaysRange;
+
+  @OneToMany(
+    () => CoursesInstructors,
+    (coursesInstructors) => coursesInstructors.instructor,
+  )
+  availableCourses: CoursesInstructors[];
+
+  @OneToMany(
+    () => InstructorsPeriodOfDays,
+    (instructorsPeriodOfDays) => instructorsPeriodOfDays.instructor,
+  )
+  availablePeriodOfDays: InstructorsPeriodOfDays[];
 }

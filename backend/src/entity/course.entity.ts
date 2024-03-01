@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Program } from './programs.entity';
 import { Class } from './classes.entity';
+import { CoursesInstructors } from './coursesInstructors.entity';
 
 @Entity()
 export class Course {
@@ -38,4 +39,10 @@ export class Course {
 
   @OneToMany(() => Class, (clazz) => clazz.course)
   classes: Class[];
+
+  @OneToMany(
+    () => CoursesInstructors,
+    (coursesInstructors) => coursesInstructors.instructor,
+  )
+  availableInstructors: CoursesInstructors[];
 }
