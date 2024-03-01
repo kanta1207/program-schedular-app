@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('weekdays_ranges')
-export class WeekdaysRange {
+@Entity('master_weekdays_ranges')
+export class MasterWeekdaysRange {
   @PrimaryGeneratedColumn()
   id: number;
 

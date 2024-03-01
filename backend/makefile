@@ -15,3 +15,5 @@ migration-run:
 	docker exec -it program-scheduler-api sh -c "npm run migration:run"
 migration-revert:
 	docker exec -it program-scheduler-api sh -c "npm run migration:revert"
+seed:
+	docker exec -it program-scheduler-api sh -c "npm run seed"
