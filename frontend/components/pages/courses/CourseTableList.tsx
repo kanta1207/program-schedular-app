@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { courses } from '@/mock/_index';
 import { PROGRAMS } from '@/constants/_index';
 import TableMenu from '@/components/partials/TableMenu';
@@ -48,10 +48,11 @@ const CourseTableList = () => {
       <Table>
         <TableHead>
           <TableRow sx={{ bgcolor: 'primary.main' }}>
-            <TableCell sx={{ border: '1px solid white', color: 'white' }}>Course name</TableCell>
-            <TableCell sx={{ border: '1px solid white', color: 'white' }}>Program</TableCell>
-            <TableCell sx={{ border: '1px solid white', color: 'white' }}>Required hours</TableCell>
-            <TableCell></TableCell> {/* Empty head for edit and delete */}
+            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Course name</TableCell>
+            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Program</TableCell>
+            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Required hours</TableCell>
+            {/* Empty head for edit and delete */}
+            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }} />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -61,40 +62,33 @@ const CourseTableList = () => {
                 // Edit mode
                 <>
                   <TableCell>
-                    <TextField defaultValue={course.name} variant="outlined" />
+                    <TextField defaultValue={course.name} variant="outlined" sx={{ width: '100%' }} />
                   </TableCell>
                   <TableCell>
-                    <FormControl>
-                      <InputLabel id="select-program" required>
-                        Program
-                      </InputLabel>
-                      <Select
-                        labelId="select-program"
-                        id="select-program"
-                        value={selectedProgram}
-                        label="Program"
-                        onChange={handleSelectProgram}
-                        sx={{ width: '10rem' }}
-                        required
-                      >
-                        {PROGRAMS.map((program) => (
-                          <MenuItem key={program.id} value={program.name}>
-                            {program.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                    <Select
+                      labelId="select-program"
+                      id="select-program"
+                      defaultValue={course.program.name}
+                      onChange={handleSelectProgram}
+                      sx={{ width: '100%' }}
+                      required
+                    >
+                      {PROGRAMS.map((program) => (
+                        <MenuItem key={program.id} value={program.name}>
+                          {program.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </TableCell>
 
                   <TableCell>
                     <TextField
                       required
                       id="requiredHours"
-                      label="Required Hours"
                       placeholder="60"
                       type="number"
                       defaultValue={course.requiredHours}
-                      sx={{ width: '20rem' }}
+                      sx={{ width: '100%' }}
                       onChange={handleHoursChange}
                       inputProps={{
                         type: 'number',
@@ -110,12 +104,14 @@ const CourseTableList = () => {
                     />
                   </TableCell>
                   <TableCell>
-                    <Button variant="outlined" onClick={() => handleCancelClick()} sx={{ mr: 1 }}>
-                      Cancel
-                    </Button>
-                    <Button variant="contained" onClick={() => handleSaveClick(course.id)}>
-                      Save
-                    </Button>
+                    <div className="flex justify-end gap-x-2.5">
+                      <Button variant="outlined" onClick={() => handleCancelClick()}>
+                        Cancel
+                      </Button>
+                      <Button variant="contained" onClick={() => handleSaveClick(course.id)}>
+                        Save
+                      </Button>
+                    </div>
                   </TableCell>
                 </>
               ) : (

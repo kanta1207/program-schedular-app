@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Cohort } from './cohorts.entity';
 
-@Entity('master_periods_of_day')
+@Entity('master_period_of_days')
 export class MasterPeriodOfDay {
   @PrimaryGeneratedColumn()
   id: number;
