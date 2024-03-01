@@ -1,3 +1,4 @@
+import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { Class } from '@/types/class';
 import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
@@ -28,7 +29,9 @@ export const CohortScheduleTableRow: React.FC<CohortScheduleTableRowProps> = ({ 
       </TableCell>
       <TableCell>{endDate}</TableCell>
       <TableCell>{classData.course.name}</TableCell>
-      <TableCell>{classData.weekdaysRange.name}</TableCell>
+      <TableCell>
+        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
+      </TableCell>
       <TableCell>
         {classHours} / {classData.course.requiredHours}
       </TableCell>
