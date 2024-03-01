@@ -54,6 +54,7 @@ const CreateIntake = () => {
         {isCreating && (
           <div className="flex gap-4 items-end p-4 border my-4">
             {/* Intake name */}
+            console.log(data.name)
             <Controller
               control={control}
               name="intakeName"
@@ -62,7 +63,7 @@ const CreateIntake = () => {
                 return (
                   <TextField
                     label="Name"
-                    id="IntakeName"
+                    id="name"
                     sx={{ width: '20rem' }}
                     value={field.value}
                     inputRef={field.ref}

@@ -106,7 +106,15 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                         name="name"
                         rules={{ required: true }}
                         render={({ field }: any) => {
-                          return <TextField defaultValue={intake.name} variant="outlined" />;
+                          return (
+                            <TextField
+                              label="Name"
+                              id="name"
+                              value={field.value}
+                              inputRef={field.ref}
+                              onChange={(name) => field.onChange(name)}
+                            />
+                          );
                         }}
                       />
                     </TableCell>
