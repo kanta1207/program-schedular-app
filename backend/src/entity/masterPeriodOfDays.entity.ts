@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('master_periods_of_day')
+@Entity('master_period_of_days')
 export class MasterPeriodOfDay {
   @PrimaryGeneratedColumn()
   id: number;
