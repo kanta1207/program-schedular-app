@@ -1,9 +1,15 @@
 import { breaks } from '@/mock/_index';
 import { Break } from '@/types/_index';
+import { ApiResponse } from '@/types/_index';
 
-export const getBreaks = async (): Promise<Break[]> => {
+export const getBreaks = async (): Promise<ApiResponse<Break[]>> => {
   const sortedBreaks = breaks.sort((a, b) => b.startAt.getTime() - a.startAt.getTime());
-  return sortedBreaks;
+  const data = {
+    statusCode: 200,
+    message: 'OK',
+    data: sortedBreaks,
+  };
+  return data;
 
   // TODO: Remove mock and fetch data from api
   try {

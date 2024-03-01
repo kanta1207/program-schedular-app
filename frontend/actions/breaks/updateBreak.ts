@@ -1,21 +1,28 @@
 import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
 import { breaks } from '@/mock/_index';
-import { Break } from '@/types/_index';
+import { ApiResponse, Break } from '@/types/_index';
 
 interface UpdateBreakPayload {
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const updateBreak = async (id: number, payload: UpdateBreakPayload): Promise<Break> => {
+export const updateBreak = async (id: number, payload: UpdateBreakPayload): Promise<ApiResponse<Break>> => {
   const { startAt, endAt } = payload;
   console.log(id, startAt, endAt);
 
   const tmpBreak = breaks.find((breakItem) => breakItem.id === id)!;
   tmpBreak.startAt === startAt.toDate();
   tmpBreak.endAt === endAt.toDate();
-  return tmpBreak;
+
+  const data = {
+    statusCode: 200,
+    message: 'Updated',
+    data: tmpBreak,
+  };
+
+  return data;
 
   // TODO: Fetch data from api
   try {

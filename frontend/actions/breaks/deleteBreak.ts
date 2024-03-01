@@ -1,9 +1,18 @@
-export const deleteBreak = async (id: number): Promise<null> => {
+import { ApiResponse } from '@/types/_index';
+
+export const deleteBreak = async (id: number): Promise<ApiResponse<null>> => {
   // Simulate a long-running operation
   console.log(`Deleting ${id}...`);
   await new Promise((resolve) => setTimeout(resolve, 2000));
   console.log(`Deleted ${id}!`);
-  return null;
+
+  const data = {
+    statusCode: 204,
+    message: 'No Content',
+    data: null,
+  };
+
+  return data;
 
   // TODO: Fetch data from api
   try {
