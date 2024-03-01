@@ -34,7 +34,7 @@ properties:
       required:
         - id
         - name
-        - classRoom
+        - classroom
         - program
       properties:
         id:
@@ -43,7 +43,7 @@ properties:
         name:
           type: string
           example: M1-0922
-        classRoom:
+        classroom:
           type: object
           required:
             - id
