@@ -80,7 +80,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
           <Typography sx={{ width: '5rem' }}>Name:</Typography>
           <TextField
             value={name}
-            sx={{ width: '12rem' }}
+            sx={{ width: '14rem' }}
             size="small"
             name="name"
             onChange={handleNameInput}
@@ -91,7 +91,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
         <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Intake:</Typography>
           <Select
-            sx={{ width: '12rem' }}
+            sx={{ width: '14rem' }}
             size="small"
             value={intake}
             name="intake"
@@ -111,7 +111,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
         <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Program:</Typography>
           <Select
-            sx={{ width: '12rem' }}
+            sx={{ width: '14rem' }}
             size="small"
             id="program-select"
             value={program}
@@ -132,7 +132,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
         <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Period:</Typography>
           <Select
-            sx={{ width: '12rem' }}
+            sx={{ width: '14rem' }}
             size="small"
             id="program-select"
             name="period"
