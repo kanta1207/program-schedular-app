@@ -40,4 +40,4 @@ export interface WeekdaysRange {
   updatedAt?: Date;
 }
 
-export type WeekdaysRangeName = 'Monday - Friday' | 'Monday - Wednesday' | 'Wednesday - Friday';
+export type WeekdaysRangeName = 'Mon - Fri' | 'Mon - Wed' | 'Wed - Fri';

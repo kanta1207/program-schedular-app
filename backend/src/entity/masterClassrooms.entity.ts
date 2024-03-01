@@ -6,30 +6,11 @@ export class MasterClassroom {
   id: number;
 
   @Column({
-    type: 'enum',
-    enum: [
-      'Google',
-      'Youtube',
-      'Uber',
-      'Amazon',
-      'Facebook',
-      'Apple',
-      'Hootsuite',
-      'Microsoft',
-    ],
+    type: 'varchar',
+    length: 255,
   })
   name: string;
 
-  @Column({ type: 'enum', enum: ['2nd', '3rd', '4th'] })
+  @Column({ type: 'varchar', length: 255 })
   floor: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 }
