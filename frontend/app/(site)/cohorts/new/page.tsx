@@ -13,7 +13,9 @@ const page = () => {
       </Box>
       <CohortInfoForm pageType="new" />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Typography variant="h4">Schedule</Typography>
+        <Typography variant="h4" color="primary.main" fontWeight={500} letterSpacing={0.25}>
+          Schedule
+        </Typography>
       </Box>
       <CohortScheduleTable pageType={'new'} />
     </>
