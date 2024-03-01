@@ -9,18 +9,15 @@ import dataSource from '../data-source';
  */
 export const truncateTable = async (tableName: string, cascade = false) => {
   const queryRunner = dataSource.createQueryRunner();
+  await queryRunner.connect();
 
   const truncateQuery = `TRUNCATE TABLE ${tableName}${cascade ? ' RESTART IDENTITY CASCADE' : ''};`;
 
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
   try {
     await queryRunner.query(truncateQuery);
-    await queryRunner.commitTransaction();
-    console.log(`${tableName} table truncated successfully.`);
+    console.log(`${tableName} table truncated successfully`);
   } catch (err) {
     console.error(`Error truncating ${tableName} table: `, err);
-    await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
   }
