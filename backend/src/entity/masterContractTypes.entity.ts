@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Instructor } from './instructor.entity';
 
 @Entity('master_contract_types')
 export class MasterContractType {
@@ -13,4 +14,7 @@ export class MasterContractType {
 
   @Column({ type: 'int', nullable: true })
   minHours: number | null;
+
+  @OneToMany(() => Instructor, (instructors) => instructors.contractType)
+  instructors: Instructor[];
 }

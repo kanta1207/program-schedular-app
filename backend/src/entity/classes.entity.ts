@@ -8,7 +8,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Cohort } from './cohorts.entity';
-import { WeekdaysRange } from './masterWeekdaysRanges.entity';
+
+import { Course } from './course.entity';
+import { MasterClassroom } from './masterClassrooms.entity';
+import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
 
 @Entity('classes')
 export class Class {
@@ -31,7 +34,21 @@ export class Class {
   @JoinColumn({ name: 'cohort_id' })
   cohort: Cohort;
 
-  @ManyToOne(() => WeekdaysRange, (weekdaysRange) => weekdaysRange.classes)
+  @ManyToOne(
+    () => MasterWeekdaysRange,
+    (masterWeekdaysRange) => masterWeekdaysRange.classes,
+  )
   @JoinColumn({ name: 'range_id' })
-  weekdaysRange: WeekdaysRange;
+  weekdaysRange: MasterWeekdaysRange;
+
+  @ManyToOne(() => Course, (course) => course.classes)
+  @JoinColumn({ name: 'course_id' })
+  course: Course;
+
+  @ManyToOne(
+    () => MasterClassroom,
+    (masterClassroom) => masterClassroom.classes,
+  )
+  @JoinColumn({ name: 'classroom_id' })
+  classroom: MasterClassroom;
 }

@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Cohort } from './cohorts.entity';
+import { Course } from './course.entity';
 
 @Entity('programs')
 export class Program {
@@ -26,4 +27,7 @@ export class Program {
     cascade: true,
   })
   cohorts: Cohort[];
+
+  @OneToMany(() => Course, (course) => course.program, { cascade: true })
+  courses: Course[];
 }
