@@ -2,8 +2,6 @@ export interface Classroom {
   id: number;
   name: ClassroomName;
   floor: FloorName;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export type ClassroomName = 'Google' | 'Youtube' | 'Uber' | 'Amazon' | 'Facebook' | 'Apple' | 'Hootsuite' | 'Microsoft';
@@ -14,8 +12,6 @@ export interface PeriodOfDay {
   id: number;
   name: PeriodOfDayName;
   time: TimeName;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export type PeriodOfDayName = 'Morning' | 'Afternoon' | 'Evening';
@@ -27,8 +23,6 @@ export interface ContractType {
   name: ContractName;
   maxHours?: number | null;
   minHours?: number | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export type ContractName = 'Full time' | 'Part time' | 'Contract';
@@ -36,8 +30,6 @@ export type ContractName = 'Full time' | 'Part time' | 'Contract';
 export interface WeekdaysRange {
   id: number;
   name: WeekdaysRangeName;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export type WeekdaysRangeName = 'Mon - Fri' | 'Mon - Wed' | 'Wed - Fri';
