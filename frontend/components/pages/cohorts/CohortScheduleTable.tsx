@@ -6,7 +6,7 @@ import React from 'react';
 import { CohortScheduleTableRow } from './CohortScheduleTableRow';
 
 interface CohortScheduleTableProps {
-  pageType: 'new' | 'edit' | 'view';
+  pageType: 'new' | 'view';
   cohort?: Cohort;
 }
 
