@@ -1,14 +1,41 @@
-import { Classroom, Cohort, Course, Instructor, WeekdaysRange } from './_index';
+import { Classroom, Course, Intake, Program, WeekdaysRange } from './_index';
 
 export interface Class {
   id: number;
-  cohort: Cohort;
-  weekdaysRange: WeekdaysRange;
-  course: Course;
   startAt: Date;
   endAt: Date;
-  instructor: Instructor | null;
+}
+
+export interface CreateClassResponse extends Class {
+  cohort: {
+    name: string;
+    intake: Intake;
+    program: Program;
+  };
+  weekdaysRange: WeekdaysRange;
+  course: Course;
   classroom: Classroom;
-  createdAt?: Date;
-  updatedAt?: Date;
+  instructor: {
+    id: number;
+    name: string;
+    isActive: boolean;
+    desiredWorkingHour: number;
+  };
+}
+
+export interface UpdateClassResponse extends Class {
+  cohort: {
+    name: string;
+    intake: Intake;
+    program: Program;
+  };
+  weekdaysRange: WeekdaysRange;
+  course: Course;
+  classroom: Classroom;
+  instructor: {
+    id: number;
+    name: string;
+    isActive: boolean;
+    desiredWorkingHour: number;
+  };
 }

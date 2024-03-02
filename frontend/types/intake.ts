@@ -1,20 +1,26 @@
-import { PeriodOfDay, PeriodOfDayName, ClassroomName, ProgramName, Cohort } from './_index';
+import { PeriodOfDay, Classroom, Program } from './_index';
 
 export interface Intake {
   id: number;
   name: string;
   startAt: Date;
   endAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface CreateIntakeResponse extends Intake {
+  cohorts: {
+    id: number;
+    name: string;
+    classroom: Classroom;
+    program: Program;
+    periodOfDay: PeriodOfDay;
+  };
 }
 
 interface GetIntakesPeriodOfDay extends PeriodOfDay {
   cohorts: {
     id: number;
     name: string;
-    createdAt: Date;
-    updatedAt: Date;
   }[];
 }
 
@@ -22,21 +28,22 @@ export interface GetIntakesResponse extends Intake {
   periodOfDays: GetIntakesPeriodOfDay[];
 }
 
-export interface GetIntakeByIdResponse extends Intake {
+export interface GetIntakeResponse extends Intake {
   cohorts: {
     id: number;
     name: string;
-    classroom: {
-      id: number;
-      name: ClassroomName;
-    };
-    program: {
-      id: number;
-      name: ProgramName;
-    };
-    periodOfDay: {
-      id: number;
-      name: PeriodOfDayName;
-    };
+    classroom: Classroom;
+    program: Program;
+    periodOfDay: PeriodOfDay;
+  };
+}
+
+export interface UpdateIntakeResponse extends Intake {
+  cohorts: {
+    id: number;
+    name: string;
+    classroom: Classroom;
+    program: Program;
+    periodOfDay: PeriodOfDay;
   };
 }
