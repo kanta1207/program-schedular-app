@@ -12,6 +12,7 @@ import { Cohort } from './cohorts.entity';
 import { Course } from './course.entity';
 import { MasterClassroom } from './masterClassrooms.entity';
 import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
+import { Instructor } from './instructor.entity';
 
 @Entity('classes')
 export class Class {
@@ -51,4 +52,8 @@ export class Class {
   )
   @JoinColumn({ name: 'classroom_id' })
   classroom: MasterClassroom;
+
+  @ManyToOne(() => Instructor, (instructor) => instructor.classes)
+  @JoinColumn({ name: 'instructor_id' })
+  instructor: Instructor;
 }

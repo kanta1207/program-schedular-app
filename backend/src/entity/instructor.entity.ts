@@ -13,6 +13,7 @@ import { MasterContractType } from './masterContractTypes.entity';
 import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
 import { CoursesInstructors } from './coursesInstructors.entity';
 import { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
+import { Class } from './classes.entity';
 
 @Entity('instructors')
 export class Instructor {
@@ -53,6 +54,9 @@ export class Instructor {
   )
   @JoinColumn({ name: 'range_id' })
   weekdaysRange: MasterWeekdaysRange;
+
+  @OneToMany(() => Class, (clazz) => clazz.instructor)
+  classes: Class[];
 
   @OneToMany(
     () => CoursesInstructors,
