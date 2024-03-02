@@ -3,6 +3,7 @@ import { breakSeeder } from './break.seeder';
 import { classSeeder } from './class.seeder';
 import { cohortSeeder } from './cohort.seeder';
 import { courseSeeder } from './course.seeder';
+import { coursesInstructorsSeeder } from './coursesInstructors.seeder';
 import { instructorSeeder } from './instructor.seeder';
 import { intakeSeeder } from './intake.seeder';
 import { masterClassroomSeeder } from './masterClassroom.seeder';
@@ -34,6 +35,7 @@ const mainSeeder = async () => {
       await courseSeeder();
       await instructorSeeder();
       await classSeeder();
+      await coursesInstructorsSeeder();
     }
 
     await queryRunner.commitTransaction();
