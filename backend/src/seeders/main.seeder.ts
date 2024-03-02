@@ -5,6 +5,7 @@ import { cohortSeeder } from './cohort.seeder';
 import { courseSeeder } from './course.seeder';
 import { coursesInstructorsSeeder } from './coursesInstructors.seeder';
 import { instructorSeeder } from './instructor.seeder';
+import { instructorsPeriodOfDaysSeeder } from './instructorsPeriodOfDays.seeder';
 import { intakeSeeder } from './intake.seeder';
 import { masterClassroomSeeder } from './masterClassroom.seeder';
 import { masterContractTypeSeeder } from './masterContactType.seeder';
@@ -36,6 +37,7 @@ const mainSeeder = async () => {
       await instructorSeeder();
       await classSeeder();
       await coursesInstructorsSeeder();
+      await instructorsPeriodOfDaysSeeder();
     }
 
     await queryRunner.commitTransaction();
