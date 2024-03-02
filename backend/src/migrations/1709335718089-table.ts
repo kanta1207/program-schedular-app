@@ -11,7 +11,7 @@ export class Table1709335718089 implements MigrationInterface {
       `CREATE TABLE "courses_instructors" ("id" SERIAL NOT NULL, "instructor_id" integer, "course_id" integer, CONSTRAINT "PK_168b217d09e41dc0305c1ebc512" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "course" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "name" character varying(255) NOT NULL, "required_hours" integer NOT NULL, "program_id" integer, CONSTRAINT "PK_bf95180dd756fd204fb01ce4916" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "courses" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "name" character varying(255) NOT NULL, "required_hours" integer NOT NULL, "program_id" integer, CONSTRAINT "PK_bf95180dd756fd204fb01ce4916" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "classes" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "start_at" TIMESTAMP NOT NULL, "end_at" TIMESTAMP NOT NULL, "cohort_id" integer, "range_id" integer, "course_id" integer, "classroom_id" integer, CONSTRAINT "PK_e207aa15404e9b2ce35910f9f7f" PRIMARY KEY ("id"))`,
@@ -32,10 +32,10 @@ export class Table1709335718089 implements MigrationInterface {
       `ALTER TABLE "courses_instructors" ADD CONSTRAINT "FK_5ef0cc909d9a40d9fa204e7512a" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "courses_instructors" ADD CONSTRAINT "FK_1c6a3c33136069c8bb33368f4e5" FOREIGN KEY ("course_id") REFERENCES "course"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "courses_instructors" ADD CONSTRAINT "FK_1c6a3c33136069c8bb33368f4e5" FOREIGN KEY ("course_id") REFERENCES "courses"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "course" ADD CONSTRAINT "FK_b119153e3c1b0cc68ae086f265d" FOREIGN KEY ("program_id") REFERENCES "programs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "courses" ADD CONSTRAINT "FK_b119153e3c1b0cc68ae086f265d" FOREIGN KEY ("program_id") REFERENCES "programs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "classes" ADD CONSTRAINT "FK_ddedf3ef47019db34bfc0b7bc71" FOREIGN KEY ("cohort_id") REFERENCES "cohorts"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -44,7 +44,7 @@ export class Table1709335718089 implements MigrationInterface {
       `ALTER TABLE "classes" ADD CONSTRAINT "FK_fe5b699a6858248f61d0017cac9" FOREIGN KEY ("range_id") REFERENCES "master_weekdays_ranges"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "classes" ADD CONSTRAINT "FK_bd4c6c725acd427f07264770ceb" FOREIGN KEY ("course_id") REFERENCES "course"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "classes" ADD CONSTRAINT "FK_bd4c6c725acd427f07264770ceb" FOREIGN KEY ("course_id") REFERENCES "courses"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "classes" ADD CONSTRAINT "FK_7400a31f7e26c287426c2e999a8" FOREIGN KEY ("classroom_id") REFERENCES "master_classrooms"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -107,7 +107,7 @@ export class Table1709335718089 implements MigrationInterface {
       `ALTER TABLE "classes" DROP CONSTRAINT "FK_ddedf3ef47019db34bfc0b7bc71"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "course" DROP CONSTRAINT "FK_b119153e3c1b0cc68ae086f265d"`,
+      `ALTER TABLE "courses" DROP CONSTRAINT "FK_b119153e3c1b0cc68ae086f265d"`,
     );
     await queryRunner.query(
       `ALTER TABLE "courses_instructors" DROP CONSTRAINT "FK_1c6a3c33136069c8bb33368f4e5"`,
@@ -120,7 +120,7 @@ export class Table1709335718089 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "instructors_period_of_days"`);
     await queryRunner.query(`DROP TABLE "instructors"`);
     await queryRunner.query(`DROP TABLE "classes"`);
-    await queryRunner.query(`DROP TABLE "course"`);
+    await queryRunner.query(`DROP TABLE "courses"`);
     await queryRunner.query(`DROP TABLE "courses_instructors"`);
     await queryRunner.query(`DROP TABLE "intakes"`);
   }
