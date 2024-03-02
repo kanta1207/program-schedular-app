@@ -1,18 +1,20 @@
-import { CohortTable } from '@/components/pages/cohorts/CohortTable';
+import { getCohorts } from '@/actions/cohorts/getCohorts';
+import { CohortListTable } from '@/components/pages/cohorts/CohortListTable';
 import Headline from '@/components/partials/Headline';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 
-const page = () => {
+const page = async () => {
+  const cohorts = await getCohorts();
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Headline name="Cohorts" />
+      <Headline name="Cohorts" />
+      <div className="flex justify-end mb-4 ">
         <Link href={'/cohorts/new'}>
           <Button variant="contained">New Cohort</Button>
         </Link>
-      </Box>
-      <CohortTable />
+      </div>
+      <CohortListTable cohorts={cohorts} />
     </>
   );
 };

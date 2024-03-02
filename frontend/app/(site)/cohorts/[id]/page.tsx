@@ -1,16 +1,16 @@
+import { getCohortById } from '@/actions/cohorts/getCohorts';
 import { CohortInfoForm } from '@/components/pages/cohorts/CohortInfoForm';
 import { CohortScheduleTable } from '@/components/pages/cohorts/CohortScheduleTable';
 import Headline from '@/components/partials/Headline';
-import { cohorts } from '@/mock/cohort';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 interface PageProps {
   params: { id: string };
 }
 
-const page = ({ params }: PageProps) => {
+const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const cohort = cohorts.find((cohort) => cohort.id === parseInt(id));
+  const cohort = await getCohortById(id);
 
   return (
     <>
@@ -20,12 +20,7 @@ const page = ({ params }: PageProps) => {
       <CohortInfoForm pageType={'view'} cohort={cohort} />
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
-          <Typography
-            variant="h4"
-            color="primary.main"
-            fontWeight={500}
-            letterSpacing={0.25}
-          >{`Schedule: ${cohort?.name}`}</Typography>
+          <Headline name={`Schedule: ${cohort?.name}`} />
           <Button variant="contained">Edit Schedule</Button>
         </Box>
         <CohortScheduleTable pageType="view" cohort={cohort} />
