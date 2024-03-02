@@ -5,6 +5,7 @@ import { masterClassroomSeeder } from './masterClassroom.seeder';
 import { masterContractTypeSeeder } from './masterContactType.seeder';
 import { masterPeriodOfDaySeeder } from './masterPeriodOfDay.seeder';
 import { masterWeekdaysRangeSeeder } from './masterWeekdaysRange.seeder';
+import { programSeeder } from './program.seeder';
 
 const mainSeeder = async () => {
   await dataSource.initialize();
@@ -24,6 +25,7 @@ const mainSeeder = async () => {
     if (process.env.NODE_ENV === 'development') {
       await breakSeeder();
       await intakeSeeder();
+      await programSeeder();
     }
 
     await queryRunner.commitTransaction();
