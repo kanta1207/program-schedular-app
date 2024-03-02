@@ -2,7 +2,6 @@ type: object
 required:
   - contractTypeId
   - weekdaysRangeId
-
   - courseIds
   - periodOfDayIds
 properties:
