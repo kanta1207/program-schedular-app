@@ -23,11 +23,9 @@ export class Program {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @OneToMany(() => Cohort, (cohort) => cohort.program, {
-    cascade: true,
-  })
+  @OneToMany(() => Cohort, (cohort) => cohort.program)
   cohorts: Cohort[];
 
-  @OneToMany(() => Course, (course) => course.program, { cascade: true })
+  @OneToMany(() => Course, (course) => course.program)
   courses: Course[];
 }
