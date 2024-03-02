@@ -13,7 +13,7 @@ import { Program } from './programs.entity';
 import { Class } from './classes.entity';
 import { CoursesInstructors } from './coursesInstructors.entity';
 
-@Entity()
+@Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()
   id: number;
