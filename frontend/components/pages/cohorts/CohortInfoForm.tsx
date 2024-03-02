@@ -1,23 +1,25 @@
 'use client';
+import { createCohort } from '@/actions/cohorts/createCohort';
+import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { submitNewCohort } from '@/actions/cohorts/formAction';
+import { updateCohort } from '@/actions/cohorts/updateCohort';
 import { PERIOD_OF_DAYS } from '@/constants/period-of-days';
 import { PROGRAMS } from '@/constants/program';
 import { intakes } from '@/mock/intake';
 import { Cohort } from '@/types/cohort';
-import { Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { PeriodOfDayName } from '@/types/master';
+import { ProgramName } from '@/types/program';
+import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 interface CohortInfoFormProps {
-  pageType: 'new' | 'edit' | 'view';
+  pageType: 'new' | 'view';
   cohort?: Cohort;
 }
 
 export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort }) => {
-  const [name, setName] = React.useState('');
-  const [intake, setIntake] = React.useState('');
-  const [program, setProgram] = React.useState('');
-  const [period, setPeriod] = React.useState('');
   const [isEditMode, setIsEditMode] = React.useState(false);
   const router = useRouter();
 
@@ -27,28 +29,14 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
     }
 
     if (pageType === 'view' && !isEditMode) {
-      setName(cohort!.name);
-      setIntake(cohort!.intake.name);
-      setProgram(cohort!.program.name);
-      setPeriod(cohort!.periodOfDay.name);
+      reset({
+        name: cohort!.name,
+        intake: cohort!.intake.name,
+        program: cohort!.program.name,
+        period: cohort!.periodOfDay.name,
+      });
     }
-  });
-
-  const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleIntakeChange = (event: SelectChangeEvent) => {
-    setIntake(event.target.value as string);
-  };
-
-  const handleProgramChange = (event: SelectChangeEvent) => {
-    setProgram(event.target.value as string);
-  };
-
-  const handlePeriodChange = (event: SelectChangeEvent) => {
-    setPeriod(event.target.value as string);
-  };
+  }, []);
 
   const handleCancelButton = () => {
     const result = confirm('Do you really want to cancel?');
@@ -58,98 +46,173 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
       }
       if (pageType === 'view') {
         setIsEditMode(false);
-        setName(cohort!.name);
-        setIntake(cohort!.intake.name);
-        setProgram(cohort!.program.name);
-        setPeriod(cohort!.periodOfDay.name);
+        reset({
+          name: cohort!.name,
+          intake: cohort!.intake.name,
+          program: cohort!.program.name,
+          period: cohort!.periodOfDay.name,
+        });
       }
     }
   };
 
   const handleDeleteButton = () => {
     alert('Do you really want to delete?');
+    deleteCohort(cohort!.id);
   };
 
-  const handleSubmit = () => {
-    console.log('submit');
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: null as string | null,
+      intake: '' as string | null,
+      program: '' as ProgramName | null,
+      period: '' as PeriodOfDayName | null,
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const payload = {
+        name: data.name,
+        intakeName: data.intake,
+        programName: data.program,
+        periodName: data.period,
+      };
+
+      if (pageType === 'view' && isEditMode) {
+        await updateCohort(cohort!.id, payload);
+        reset({
+          name: payload.name,
+          intake: payload.intakeName,
+          program: payload.programName,
+          period: payload.periodName,
+        });
+        setIsEditMode(false);
+      } else if (pageType === 'new') {
+        const newCohort = await createCohort(payload);
+
+        // [future] redirect to cohorts/:id when new cohort is saved
+        // const newCohortId = newCohort.id;
+        // router.push(`/cohorts/${newCohortId}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <form className="w-fit mb-32" action={submitNewCohort}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Name:</Typography>
-          <TextField
-            value={name}
-            sx={{ width: '14rem' }}
-            size="small"
+          <Controller
+            control={control}
             name="name"
-            onChange={handleNameInput}
-            required
-            disabled={isEditMode ? false : true}
+            rules={{ required: true }}
+            render={({ field }: any) => {
+              return (
+                <TextField
+                  sx={{ width: '14rem' }}
+                  size="small"
+                  value={field.value ?? ''}
+                  inputRef={field.ref}
+                  onChange={(name) => field.onChange(name)}
+                  disabled={isEditMode ? false : true}
+                />
+              );
+            }}
           />
         </Box>
-        <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Intake:</Typography>
-          <Select
-            sx={{ width: '14rem' }}
-            size="small"
-            value={intake}
+          <Controller
+            control={control}
             name="intake"
-            onChange={handleIntakeChange}
-            required
-            disabled={isEditMode ? false : true}
-          >
-            {intakes.map((intake) => {
+            rules={{ required: true }}
+            render={({ field }: any) => {
               return (
-                <MenuItem key={intake.id} value={intake.name}>
-                  {intake.name}
-                </MenuItem>
+                <FormControl>
+                  <Select
+                    sx={{ width: '14rem' }}
+                    size="small"
+                    value={field.value ?? ''}
+                    required
+                    disabled={isEditMode ? false : true}
+                    {...field}
+                  >
+                    {intakes.map((intake) => {
+                      return (
+                        <MenuItem key={intake.id} value={intake.name}>
+                          {intake.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               );
-            })}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            }}
+          />
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Program:</Typography>
-          <Select
-            sx={{ width: '14rem' }}
-            size="small"
-            id="program-select"
-            value={program}
+          <Controller
+            control={control}
             name="program"
-            onChange={handleProgramChange}
-            required
-            disabled={isEditMode ? false : true}
-          >
-            {PROGRAMS.map((program) => {
+            rules={{ required: true }}
+            render={({ field }: any) => {
               return (
-                <MenuItem key={program.id} value={program.name}>
-                  {program.name}
-                </MenuItem>
+                <FormControl>
+                  <Select
+                    sx={{ width: '14rem' }}
+                    size="small"
+                    value={field.value ?? ''}
+                    required
+                    disabled={isEditMode ? false : true}
+                    {...field}
+                  >
+                    {PROGRAMS.map((program) => {
+                      return (
+                        <MenuItem key={program.id} value={program.name}>
+                          {program.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               );
-            })}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            }}
+          />
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Period:</Typography>
-          <Select
-            sx={{ width: '14rem' }}
-            size="small"
-            id="program-select"
+          <Controller
+            control={control}
             name="period"
-            value={period}
-            onChange={handlePeriodChange}
-            required
-            disabled={isEditMode ? false : true}
-          >
-            {PERIOD_OF_DAYS.map((period) => {
+            rules={{ required: true }}
+            render={({ field }: any) => {
               return (
-                <MenuItem key={period.id} value={period.name}>
-                  {period.name}
-                </MenuItem>
+                <FormControl>
+                  <Select
+                    sx={{ width: '14rem' }}
+                    size="small"
+                    value={field.value ?? ''}
+                    required
+                    disabled={isEditMode ? false : true}
+                    {...field}
+                  >
+                    {PERIOD_OF_DAYS.map((period) => {
+                      return (
+                        <MenuItem key={period.id} value={period.name}>
+                          {period.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
               );
-            })}
-          </Select>
-        </FormControl>
+            }}
+          />
+        </Box>
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content', position: 'relative', left: '100%' }}>
         {isEditMode ? (
@@ -157,7 +220,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
             <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
               Cancel
             </Button>
-            <Button size="medium" variant="contained" type="submit">
+            <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
               Save
             </Button>
           </>
