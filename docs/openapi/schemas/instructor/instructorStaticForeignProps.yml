@@ -2,6 +2,7 @@ type: object
 required:
   - contractType
   - weekdaysRange
+  - classes
   - courses
   - periodOfDays
 properties:
@@ -18,6 +19,13 @@ properties:
     $ref: '../contractType/contractType.yml'
   weekdaysRange:
     $ref: '../weekdaysRange/weekdaysRange.yml'
+  classes:
+    type: array
+    items:
+      allOf:
+        - $ref: '../class/classStaticProps.yml'
+        - $ref: '../class/classDynamicProps.yml'
+        - $ref: '../class/classStaticForeignProps.yml'
   courses:
     type: array
     items:
