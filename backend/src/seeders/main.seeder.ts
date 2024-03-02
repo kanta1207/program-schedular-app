@@ -1,8 +1,17 @@
 import dataSource from '../data-source';
+import { breakSeeder } from './break.seeder';
+import { classSeeder } from './class.seeder';
+import { cohortSeeder } from './cohort.seeder';
+import { courseSeeder } from './course.seeder';
+import { coursesInstructorsSeeder } from './coursesInstructors.seeder';
+import { instructorSeeder } from './instructor.seeder';
+import { instructorsPeriodOfDaysSeeder } from './instructorsPeriodOfDays.seeder';
+import { intakeSeeder } from './intake.seeder';
 import { masterClassroomSeeder } from './masterClassroom.seeder';
 import { masterContractTypeSeeder } from './masterContactType.seeder';
 import { masterPeriodOfDaySeeder } from './masterPeriodOfDay.seeder';
 import { masterWeekdaysRangeSeeder } from './masterWeekdaysRange.seeder';
+import { programSeeder } from './program.seeder';
 
 const mainSeeder = async () => {
   await dataSource.initialize();
@@ -19,6 +28,17 @@ const mainSeeder = async () => {
     await masterContractTypeSeeder();
     await masterPeriodOfDaySeeder();
     await masterWeekdaysRangeSeeder();
+    await programSeeder();
+    if (process.env.NODE_ENV === 'development') {
+      await breakSeeder();
+      await intakeSeeder();
+      await cohortSeeder();
+      await courseSeeder();
+      await instructorSeeder();
+      await classSeeder();
+      await coursesInstructorsSeeder();
+      await instructorsPeriodOfDaysSeeder();
+    }
 
     await queryRunner.commitTransaction();
     console.log('All seeding completed successfully');

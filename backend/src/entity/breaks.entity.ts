@@ -11,19 +11,19 @@ export class Break {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'start_at', type: 'date' })
-  startAt: string;
+  @Column({ name: 'start_at', type: 'timestamp' })
+  startAt: Date;
 
-  @Column({ name: 'end_at', type: 'date' })
-  endAt: string;
+  @Column({ name: 'end_at', type: 'timestamp' })
+  endAt: Date;
 
   @CreateDateColumn({
     name: 'created_at',
   })
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
   })
-  updatedAt: string;
+  updatedAt: Date;
 }
