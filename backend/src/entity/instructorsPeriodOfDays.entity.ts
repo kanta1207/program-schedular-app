@@ -7,7 +7,7 @@ export class InstructorsPeriodOfDays {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Instructor, (instructor) => instructor.availablePeriodOfDays)
+  @ManyToOne(() => Instructor, (instructor) => instructor.periodOfDays)
   @JoinColumn({ name: 'instructor_id' })
   instructor: Instructor;
 

@@ -58,11 +58,11 @@ export class Instructor {
     () => CoursesInstructors,
     (coursesInstructors) => coursesInstructors.instructor,
   )
-  availableCourses: CoursesInstructors[];
+  courses: CoursesInstructors[];
 
   @OneToMany(
     () => InstructorsPeriodOfDays,
     (instructorsPeriodOfDays) => instructorsPeriodOfDays.instructor,
   )
-  availablePeriodOfDays: InstructorsPeriodOfDays[];
+  periodOfDays: InstructorsPeriodOfDays[];
 }
