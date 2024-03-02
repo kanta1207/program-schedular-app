@@ -35,7 +35,7 @@ export class Instructor {
   @Column({ name: 'is_active', type: 'boolean', default: true })
   isActive: boolean;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   note: string;
 
   @Column({ name: 'desired_working_hours', type: 'int', nullable: true })
