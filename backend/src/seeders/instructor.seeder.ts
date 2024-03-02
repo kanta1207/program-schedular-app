@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { Instructor } from '../entity/instructor.entity';
+import { Instructor } from '../entity/instructors.entity';
 import { seederWrapper } from './utils';
 
 const instructors = [
