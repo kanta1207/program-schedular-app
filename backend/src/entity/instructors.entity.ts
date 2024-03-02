@@ -61,12 +61,14 @@ export class Instructor {
   @OneToMany(
     () => CoursesInstructors,
     (coursesInstructors) => coursesInstructors.instructor,
+    { cascade: true },
   )
   courses: CoursesInstructors[];
 
   @OneToMany(
     () => InstructorsPeriodOfDays,
     (instructorsPeriodOfDays) => instructorsPeriodOfDays.instructor,
+    { cascade: true },
   )
   periodOfDays: InstructorsPeriodOfDays[];
 }
