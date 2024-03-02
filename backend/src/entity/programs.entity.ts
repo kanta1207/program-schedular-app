@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Cohort } from './cohorts.entity';
-import { Course } from './course.entity';
+import { Course } from './courses.entity';
 
 @Entity('programs')
 export class Program {

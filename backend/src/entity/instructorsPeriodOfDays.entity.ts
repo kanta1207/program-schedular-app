@@ -1,5 +1,5 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Instructor } from './instructor.entity';
+import { Instructor } from './instructors.entity';
 import { MasterPeriodOfDay } from './masterPeriodOfDays.entity';
 
 @Entity('instructors_period_of_days')

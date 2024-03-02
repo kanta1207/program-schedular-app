@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Class } from './classes.entity';
-import { Instructor } from './instructor.entity';
+import { Instructor } from './instructors.entity';
 
 @Entity('master_weekdays_ranges')
 export class MasterWeekdaysRange {

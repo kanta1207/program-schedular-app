@@ -9,10 +9,10 @@ import {
 } from 'typeorm';
 import { Cohort } from './cohorts.entity';
 
-import { Course } from './course.entity';
+import { Course } from './courses.entity';
 import { MasterClassroom } from './masterClassrooms.entity';
 import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
-import { Instructor } from './instructor.entity';
+import { Instructor } from './instructors.entity';
 
 @Entity('classes')
 export class Class {
