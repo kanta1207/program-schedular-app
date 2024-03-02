@@ -28,10 +28,10 @@ const mainSeeder = async () => {
     await masterContractTypeSeeder();
     await masterPeriodOfDaySeeder();
     await masterWeekdaysRangeSeeder();
+    await programSeeder();
     if (process.env.NODE_ENV === 'development') {
       await breakSeeder();
       await intakeSeeder();
-      await programSeeder();
       await cohortSeeder();
       await courseSeeder();
       await instructorSeeder();
