@@ -1,5 +1,6 @@
 import dataSource from '../data-source';
 import { breakSeeder } from './break.seeder';
+import { classSeeder } from './class.seeder';
 import { cohortSeeder } from './cohort.seeder';
 import { courseSeeder } from './course.seeder';
 import { instructorSeeder } from './instructor.seeder';
@@ -32,6 +33,7 @@ const mainSeeder = async () => {
       await cohortSeeder();
       await courseSeeder();
       await instructorSeeder();
+      await classSeeder();
     }
 
     await queryRunner.commitTransaction();
