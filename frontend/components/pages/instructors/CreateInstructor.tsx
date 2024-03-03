@@ -64,7 +64,12 @@ const CreateInstructor = () => {
             <TableCell sx={{ border: 'none' }}>Days:</TableCell>
             <TableCell sx={{ border: 'none' }}>
               <FormGroup row>
-                <FormControlLabel value="monFri" control={<Checkbox />} label="Mon - Fri" />
+                <FormControlLabel
+                  value="monFri"
+                  control={<Checkbox />}
+                  label="Mon - Fri"
+                  sx={{ backgroundColor: 'red' }} // Apply sx prop correctly here
+                />
                 <FormControlLabel value="monWed" control={<Checkbox />} label="Mon - Wed" />
                 <FormControlLabel value="wedFri" control={<Checkbox />} label="Wed - Fri" />
               </FormGroup>
@@ -109,7 +114,7 @@ const CreateInstructor = () => {
           <TableRow>
             <TableCell sx={{ border: 'none' }}>Notes:</TableCell>
             <TableCell sx={{ border: 'none' }}>
-              <TextField multiline rows={4} variant="outlined" />
+              <TextField multiline rows={4} variant="outlined" sx={{ width: '20rem' }} />
             </TableCell>
           </TableRow>
           {/* Buttons */}
