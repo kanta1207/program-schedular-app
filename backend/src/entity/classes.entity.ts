@@ -31,7 +31,7 @@ export class Class {
   @Column({ name: 'end_at', type: 'timestamp' })
   endAt: Date;
 
-  @ManyToOne(() => Cohort, (cohort) => cohort.classes)
+  @ManyToOne(() => Cohort, (cohort) => cohort.classes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'cohort_id' })
   cohort: Cohort;
 
