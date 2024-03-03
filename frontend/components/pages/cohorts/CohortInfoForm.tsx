@@ -1,7 +1,6 @@
 'use client';
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
-import { submitNewCohort } from '@/actions/cohorts/formAction';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
 import { PERIOD_OF_DAYS } from '@/constants/period-of-days';
 import { PROGRAMS } from '@/constants/program';
@@ -101,7 +100,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
   };
 
   return (
-    <form className="w-fit mb-32" action={submitNewCohort}>
+    <form className="w-fit mb-32">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Typography sx={{ width: '5rem' }}>Name:</Typography>
