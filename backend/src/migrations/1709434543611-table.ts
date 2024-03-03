@@ -1,14 +1,11 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Table1709365558508 implements MigrationInterface {
-  name = 'Table1709365558508';
+export class Table1709434543611 implements MigrationInterface {
+  name = 'Table1709434543611';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `CREATE TABLE "intakes" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "start_at" TIMESTAMP NOT NULL, "end_at" TIMESTAMP NOT NULL, "name" character varying(255) NOT NULL, CONSTRAINT "PK_a90d2ecf82eb04f663a52d34fef" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "master_contract_types" ("id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, "max_hours" integer, "min_hours" integer, CONSTRAINT "PK_53b07d1462211a6f18a97c07a66" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "courses_instructors" ("id" SERIAL NOT NULL, "instructor_id" integer, "course_id" integer, CONSTRAINT "PK_168b217d09e41dc0305c1ebc512" PRIMARY KEY ("id"))`,
@@ -17,13 +14,7 @@ export class Table1709365558508 implements MigrationInterface {
       `CREATE TABLE "courses" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "name" character varying(255) NOT NULL, "required_hours" integer NOT NULL, "program_id" integer, CONSTRAINT "PK_3f70a487cc718ad8eda4e6d58c9" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "master_classrooms" ("id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, "floor" character varying(255) NOT NULL, CONSTRAINT "PK_78deddebf346404eefba0571af7" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
       `CREATE TABLE "classes" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "start_at" TIMESTAMP NOT NULL, "end_at" TIMESTAMP NOT NULL, "cohort_id" integer, "range_id" integer, "course_id" integer, "classroom_id" integer, "instructor_id" integer, CONSTRAINT "PK_e207aa15404e9b2ce35910f9f7f" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "master_weekdays_ranges" ("id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, CONSTRAINT "PK_9f844c55c715f6e3433fd5e9371" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "instructors" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "name" character varying(255) NOT NULL, "is_active" boolean NOT NULL DEFAULT true, "note" text, "desired_working_hours" integer, "contract_type_id" integer, "range_id" integer, CONSTRAINT "PK_95e3da69ca76176ea4ab8435098" PRIMARY KEY ("id"))`,
@@ -32,16 +23,18 @@ export class Table1709365558508 implements MigrationInterface {
       `CREATE TABLE "instructors_period_of_days" ("id" SERIAL NOT NULL, "instructor_id" integer, "period_of_day_id" integer, CONSTRAINT "PK_a5692adbb663ad58880a41162dd" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "master_period_of_days" ("id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, "time" character varying NOT NULL, CONSTRAINT "PK_c9578e347e642caa1ef09affa10" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
       `CREATE TABLE "cohorts" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying(255) NOT NULL, "intake_id" integer, "period_of_day_id" integer, "program_id" integer, CONSTRAINT "PK_fd38f76b135e907b834fda1e752" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "programs" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "name" character varying(255) NOT NULL, CONSTRAINT "PK_d43c664bcaafc0e8a06dfd34e05" PRIMARY KEY ("id"))`,
     );
+    await queryRunner.query(`ALTER TABLE "breaks" DROP COLUMN "start_at"`);
     await queryRunner.query(
-      `CREATE TABLE "breaks" ("id" SERIAL NOT NULL, "start_at" TIMESTAMP NOT NULL, "end_at" TIMESTAMP NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_cc0e8a24c815804239ea5cbad9a" PRIMARY KEY ("id"))`,
+      `ALTER TABLE "breaks" ADD "start_at" TIMESTAMP NOT NULL`,
+    );
+    await queryRunner.query(`ALTER TABLE "breaks" DROP COLUMN "end_at"`);
+    await queryRunner.query(
+      `ALTER TABLE "breaks" ADD "end_at" TIMESTAMP NOT NULL`,
     );
     await queryRunner.query(
       `ALTER TABLE "courses_instructors" ADD CONSTRAINT "FK_5ef0cc909d9a40d9fa204e7512a" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -136,18 +129,19 @@ export class Table1709365558508 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "courses_instructors" DROP CONSTRAINT "FK_5ef0cc909d9a40d9fa204e7512a"`,
     );
-    await queryRunner.query(`DROP TABLE "breaks"`);
+    await queryRunner.query(`ALTER TABLE "breaks" DROP COLUMN "end_at"`);
+    await queryRunner.query(`ALTER TABLE "breaks" ADD "end_at" date NOT NULL`);
+    await queryRunner.query(`ALTER TABLE "breaks" DROP COLUMN "start_at"`);
+    await queryRunner.query(
+      `ALTER TABLE "breaks" ADD "start_at" date NOT NULL`,
+    );
     await queryRunner.query(`DROP TABLE "programs"`);
     await queryRunner.query(`DROP TABLE "cohorts"`);
-    await queryRunner.query(`DROP TABLE "master_period_of_days"`);
     await queryRunner.query(`DROP TABLE "instructors_period_of_days"`);
     await queryRunner.query(`DROP TABLE "instructors"`);
-    await queryRunner.query(`DROP TABLE "master_weekdays_ranges"`);
     await queryRunner.query(`DROP TABLE "classes"`);
-    await queryRunner.query(`DROP TABLE "master_classrooms"`);
     await queryRunner.query(`DROP TABLE "courses"`);
     await queryRunner.query(`DROP TABLE "courses_instructors"`);
-    await queryRunner.query(`DROP TABLE "master_contract_types"`);
     await queryRunner.query(`DROP TABLE "intakes"`);
   }
 }
