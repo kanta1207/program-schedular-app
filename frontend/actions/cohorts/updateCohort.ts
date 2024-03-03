@@ -1,7 +1,5 @@
-import { PERIOD_OF_DAYS } from '@/constants/period-of-days';
-import { PROGRAMS } from '@/constants/program';
-import { cohorts } from '@/mock/cohort';
-import { intakes } from '@/mock/intake';
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
+import { cohorts, intakes } from '@/mock/_index';
 import { Cohort, PeriodOfDayName, ProgramName } from '@/types/_index';
 import { revalidateTag } from 'next/cache';
 

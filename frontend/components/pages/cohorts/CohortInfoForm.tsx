@@ -2,12 +2,9 @@
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
-import { PERIOD_OF_DAYS } from '@/constants/period-of-days';
-import { PROGRAMS } from '@/constants/program';
-import { intakes } from '@/mock/intake';
-import { Cohort } from '@/types/cohort';
-import { PeriodOfDayName } from '@/types/master';
-import { ProgramName } from '@/types/program';
+import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
+import { intakes } from '@/mock/_index';
+import { Cohort, PeriodOfDayName, ProgramName } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';

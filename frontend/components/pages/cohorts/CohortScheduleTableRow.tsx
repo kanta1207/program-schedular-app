@@ -1,5 +1,5 @@
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { Class } from '@/types/class';
+import { Class } from '@/types/_index';
 import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
 

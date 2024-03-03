@@ -1,4 +1,4 @@
-import { Cohort } from '@/types/cohort';
+import { Cohort } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { CohortListTableRow } from './CohortListTableRow';
 

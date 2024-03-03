@@ -1,5 +1,5 @@
 import { cohorts } from '@/mock/_index';
-import { Cohort } from '@/types/cohort';
+import { Cohort } from '@/types/_index';
 
 export const getCohortById = async (id: string): Promise<Cohort | undefined> => {
   const foundCohort = cohorts.find((cohort) => cohort.id === parseInt(id));

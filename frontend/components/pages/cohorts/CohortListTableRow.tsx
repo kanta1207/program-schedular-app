@@ -1,4 +1,4 @@
-import { Cohort } from '@/types/cohort';
+import { Cohort } from '@/types/_index';
 import { TableCell } from '@mui/material';
 import Link from 'next/link';
 

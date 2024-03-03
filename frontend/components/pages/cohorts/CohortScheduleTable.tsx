@@ -1,6 +1,5 @@
-import { classes } from '@/mock/class';
-import { Class } from '@/types/class';
-import { Cohort } from '@/types/cohort';
+import { classes } from '@/mock/_index';
+import { Class, Cohort } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 import { CohortScheduleTableRow } from './CohortScheduleTableRow';
