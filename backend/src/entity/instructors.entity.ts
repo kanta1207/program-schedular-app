@@ -36,10 +36,10 @@ export class Instructor {
   isActive: boolean;
 
   @Column({ type: 'text', nullable: true })
-  note: string;
+  note: string | null;
 
   @Column({ name: 'desired_working_hours', type: 'int', nullable: true })
-  desiredWorkingHours: number;
+  desiredWorkingHours: number | null;
 
   @ManyToOne(
     () => MasterContractType,
