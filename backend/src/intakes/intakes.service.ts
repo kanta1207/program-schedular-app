@@ -4,12 +4,15 @@ import { UpdateIntakeDto } from './dto/update-intake.dto';
 import { Repository } from 'typeorm';
 import { Intake } from 'src/entity/intakes.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MasterPeriodOfDay } from 'src/entity/masterPeriodOfDays.entity';
 
 @Injectable()
 export class IntakesService {
   constructor(
     @InjectRepository(Intake)
     private readonly intakeRepository: Repository<Intake>,
+    @InjectRepository(MasterPeriodOfDay)
+    private readonly masterPeriodOfDayRepository: Repository<MasterPeriodOfDay>,
   ) {}
 
   create(createIntakeDto: CreateIntakeDto) {
@@ -21,8 +24,33 @@ export class IntakesService {
       order: {
         id: 'DESC',
       },
+      relations: ['cohorts.periodOfDay'],
     });
-    return intakes;
+
+    const masterPeriodOfDays = await this.masterPeriodOfDayRepository.find();
+
+    const formattedIntakes = intakes.map(
+      ({ id, name, startAt, endAt, createdAt, updatedAt, cohorts }) => ({
+        id,
+        name,
+        startAt,
+        endAt,
+        createdAt,
+        updatedAt,
+        periodOfDays: masterPeriodOfDays.map((period) => ({
+          ...period,
+          cohorts: cohorts
+            .filter((cohort) => cohort.periodOfDay.id === period.id)
+            .map(({ id, name, createdAt, updatedAt }) => ({
+              id,
+              name,
+              createdAt,
+              updatedAt,
+            })),
+        })),
+      }),
+    );
+    return formattedIntakes;
   }
 
   async findOne(id: number) {
