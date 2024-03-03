@@ -18,13 +18,13 @@ export const CohortScheduleTable: React.FC<CohortScheduleTableProps> = ({ pageTy
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow sx={{ bgcolor: 'primary.main' }}>
-          <TableCell sx={thStyle}>Start Date</TableCell>
-          <TableCell sx={thStyle}>End Date</TableCell>
-          <TableCell sx={thStyle}>Course</TableCell>
-          <TableCell sx={thStyle}>Days of the Week</TableCell>
-          <TableCell sx={thStyle}>Hours / Required</TableCell>
-          <TableCell sx={thStyle}>Instructor</TableCell>
-          <TableCell sx={{ color: '#FFF' }}></TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 2/12)' }}>Start Date</TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 2/12)' }}>End Date</TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 3/12)' }}>Course</TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
+          <TableCell sx={{ ...thStyle, width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
+          <TableCell sx={{ color: '#FFF', width: 'calc(100% * 0.5/12)' }}></TableCell>
         </TableRow>
       </TableHead>
       {pageType === 'new' ? (
