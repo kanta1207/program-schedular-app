@@ -26,7 +26,12 @@ export class IntakesService {
   }
 
   async findOne(id: number) {
-    const intake = await this.intakeRepository.findOneBy({ id });
+    const intake = await this.intakeRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['cohorts.periodOfDay', 'cohorts.program'],
+    });
 
     if (!intake) throw new NotFoundException('Intake Not Found');
 
