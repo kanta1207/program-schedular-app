@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsDateString, MaxLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsString, IsNotEmpty, MaxLength, IsDate } from 'class-validator';
 import { IsAfterDate } from 'src/common/validator/is-after-date';
 
 export class CreateIntakeDto {
@@ -7,10 +8,12 @@ export class CreateIntakeDto {
   @MaxLength(255)
   name: string;
 
-  @IsDateString()
+  @IsDate()
+  @Transform(({ value }) => new Date(value))
   startAt: Date;
 
-  @IsDateString()
+  @IsDate()
+  @Transform(({ value }) => new Date(value))
   @IsAfterDate<CreateIntakeDto>('startAt')
   endAt: Date;
 }

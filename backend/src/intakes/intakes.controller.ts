@@ -6,8 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  ParseIntPipe,
-  ValidationPipe,
 } from '@nestjs/common';
 import { IntakesService } from './intakes.service';
 import { CreateIntakeDto } from './dto/create-intake.dto';
@@ -18,7 +16,7 @@ export class IntakesController {
   constructor(private readonly intakesService: IntakesService) {}
 
   @Post()
-  create(@Body(ValidationPipe) createIntakeDto: CreateIntakeDto) {
+  create(@Body() createIntakeDto: CreateIntakeDto) {
     return this.intakesService.create(createIntakeDto);
   }
 
@@ -28,20 +26,17 @@ export class IntakesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: number) {
     return this.intakesService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) updateIntakeDto: UpdateIntakeDto,
-  ) {
+  update(@Param('id') id: number, @Body() updateIntakeDto: UpdateIntakeDto) {
     return this.intakesService.update(id, updateIntakeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: number) {
     return this.intakesService.remove(id);
   }
 }
