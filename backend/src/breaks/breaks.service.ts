@@ -1,13 +1,7 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Break } from '../entity/breaks.entity';
 import { Repository } from 'typeorm';
-
-// type ApiResponse<T> = {
-//   statusCode: number;
-//   messages: string;
-//   data: T;
-// };
 
 @Injectable()
 export class BreaksService {
@@ -26,7 +20,6 @@ export class BreaksService {
     try {
       return await this.breakRepository.find();
     } catch (error) {
-      Logger.error(error);
       throw new HttpException(
         'Failed to get breaks.',
         HttpStatus.INTERNAL_SERVER_ERROR,

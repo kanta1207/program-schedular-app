@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from './data-source';
 import { BreaksModule } from './breaks/breaks.module';
-import { BreaksController } from './breaks/breaks.controller';
 
 @Module({
   imports: [
@@ -13,7 +12,7 @@ import { BreaksController } from './breaks/breaks.controller';
     TypeOrmModule.forRoot(dataSourceOptions),
     BreaksModule,
   ],
-  controllers: [AppController, BreaksController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
