@@ -3,6 +3,7 @@ required:
   - intake
   - periodOfDay
   - program
+  - classes
 properties:
   intake:
     allOf:
@@ -12,3 +13,10 @@ properties:
     $ref: '../periodOfDay/periodOfDay.yml'
   program:
     $ref: '../program/program.yml'
+  classes:
+    type: array
+    items:
+      allOf:
+        - $ref: '../class/classStaticProps.yml'
+        - $ref: '../class/classDynamicProps.yml'
+        - $ref: '../class/classStaticForeignProps.yml'

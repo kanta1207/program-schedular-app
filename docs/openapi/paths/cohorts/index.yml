@@ -1,7 +1,7 @@
 get:
   tags:
     - Cohort
-  summary: Get the Cohort by id
+  summary: Get the Cohorts
   parameters:
     - in: query
       name: cohortId
