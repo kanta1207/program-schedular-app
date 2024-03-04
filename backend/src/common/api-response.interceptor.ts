@@ -29,7 +29,7 @@ export class ApiResponseInterceptor<T>
             ? response.message
             : StatusCodes.STATUS_OK.message;
 
-        const data = 'data' in response ? response.data : {};
+        const data = 'data' in response ? response.data : response;
 
         return ApiResponse.success<T>(data, httpStatus, message);
       }),
