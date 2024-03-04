@@ -1,7 +1,7 @@
 import { CohortInfoForm } from '@/components/pages/cohorts/CohortInfoForm';
 import { CohortScheduleTable } from '@/components/pages/cohorts/CohortScheduleTable';
 import Headline from '@/components/partials/Headline';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 const page = () => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
@@ -13,9 +13,7 @@ const page = () => {
       </Box>
       <CohortInfoForm pageType="new" />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Typography variant="h4" color="primary.main" fontWeight={500} letterSpacing={0.25}>
-          Schedule
-        </Typography>
+        <Headline name="Schedule" />
       </Box>
       <CohortScheduleTable pageType={'new'} />
     </>
