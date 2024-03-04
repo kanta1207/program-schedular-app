@@ -2,10 +2,8 @@
 import {
   Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
   Radio,
   RadioGroup,
   Switch,
