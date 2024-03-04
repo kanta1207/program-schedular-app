@@ -14,6 +14,7 @@ Before you begin, ensure you have the following installed on your machine:
 ### Configuration
 
 1. Clone the repository to your local machine:
+
    ```bash
    git clone https://your-repository-url.git
    cd your-repository-directory
@@ -23,7 +24,6 @@ Before you begin, ensure you have the following installed on your machine:
    ```bash
    cp .env.example .env
    ```
-   
 3. Open the `.env` file in your editor and update the environment variables to match your local setup. The most important variables to update are:
    - `POSTGRES_USER` - The PostgreSQL username.
    - `POSTGRES_PASSWORD` - The password for the PostgreSQL user.
@@ -35,16 +35,19 @@ Before you begin, ensure you have the following installed on your machine:
 ### Building and Running the Project
 
 1. Build the Docker images without using cache (to ensure you get the latest versions of everything):
+
    ```bash
    docker-compose build --no-cache
    ```
 
 2. Start the containers:
+
    ```bash
    docker-compose up
    ```
-   
+
    Alternatively, to run the containers in the background, use:
+
    ```bash
    docker-compose up -d
    ```
@@ -54,11 +57,13 @@ Before you begin, ensure you have the following installed on your machine:
 ### Stopping the Containers
 
 To stop the containers, use:
+
 ```bash
 docker-compose down
 ```
 
 To stop the containers and remove all volumes (which will erase the database), use:
+
 ```bash
 docker-compose down -v
 ```
