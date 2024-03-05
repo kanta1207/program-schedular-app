@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { IntakesService } from './intakes.service';
 import { CreateIntakeDto } from './dto/create-intake.dto';
@@ -32,6 +33,10 @@ export class IntakesController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateIntakeDto: UpdateIntakeDto) {
+    const { startAt, endAt } = updateIntakeDto;
+    if (startAt.getTime() > endAt.getTime()) {
+      throw new UnprocessableEntityException('endAt must be after startAt');
+    }
     return this.intakesService.update(id, updateIntakeDto);
   }
 

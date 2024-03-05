@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
 import { Repository } from 'typeorm';
@@ -71,11 +67,6 @@ export class IntakesService {
   }
 
   async update(id: number, updateIntakeDto: UpdateIntakeDto) {
-    const { startAt, endAt } = updateIntakeDto;
-    if (startAt.getTime() > endAt.getTime()) {
-      throw new UnprocessableEntityException('endAt must be after startAt');
-    }
-
     await this.intakeRepository.update(id, updateIntakeDto);
     return this.intakeRepository.findOneBy({ id });
   }
