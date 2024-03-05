@@ -10,10 +10,8 @@ import { BreaksModule } from './breaks/breaks.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-
     TypeOrmModule.forRoot(dataSourceOptions),
     IntakesModule,
-    ,
     BreaksModule,
   ],
   controllers: [AppController],
