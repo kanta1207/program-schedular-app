@@ -51,8 +51,8 @@ export class ProgramsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number) {
-    await this.programService.delete(id);
+  async remove(@Param('id') id: number) {
+    await this.programService.remove(id);
     return ApiResponse.new(
       null,
       StatusCodes.STATUS_NO_CONTENT.code,

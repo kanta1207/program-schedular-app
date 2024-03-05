@@ -35,7 +35,7 @@ export class ProgramsService {
     return savedProgram;
   }
 
-  async delete(id: number) {
+  async remove(id: number) {
     const program = await this.programRepository.findOne({
       where: { id },
     });
