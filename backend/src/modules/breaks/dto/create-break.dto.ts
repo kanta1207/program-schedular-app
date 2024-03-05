@@ -1,5 +1,6 @@
 import { IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsAfterDate } from '../../../common/validator/is-after-date';
 
 export class CreateBreakDto {
   @Type(() => Date)
@@ -8,6 +9,6 @@ export class CreateBreakDto {
 
   @Type(() => Date)
   @IsDate()
-  // TODO: @IsAfterDate
+  @IsAfterDate<CreateBreakDto>('startAt')
   endAt: Date;
 }
