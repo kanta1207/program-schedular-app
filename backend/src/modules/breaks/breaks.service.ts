@@ -1,6 +1,6 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Break } from '../entity/breaks.entity';
+import { Break } from '../../entity/breaks.entity';
 import { Repository } from 'typeorm';
 import { StatusCodes } from 'src/common/status-code';
 
