@@ -58,8 +58,8 @@ export class ProgramsService {
    */
   async update(id: number, updateProgramDto: UpdateProgramDto) {
     try {
-      const program = await this.programRepository.findOne({
-        where: { id },
+      const program = await this.programRepository.findOneBy({
+        id,
       });
       if (!program) {
         throw new NotFoundException('Program not found');
