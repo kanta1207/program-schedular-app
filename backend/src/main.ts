@@ -1,9 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ApiResponseInterceptor } from './common/api-response.interceptor';
+import { AllExceptionsFilter } from './common/all-exceptions.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['log', 'error', 'fatal'],
+  });
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new ApiResponseInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
