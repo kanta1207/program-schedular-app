@@ -7,9 +7,7 @@ interface InstructorProps {
 }
 
 export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }) => {
-  const formatPeriods = (periods: PeriodOfDay[]) => {
-    return periods.map((period) => `${period.name} (${period.time})`).join(', ');
-  };
+  const periodNames = instructor.periodOfDay?.map((period) => period.name).join(', ');
   return (
     <>
       <TableCell component="th" scope="row">
@@ -22,12 +20,8 @@ export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }
         <Link href={`/instructor/${instructor.id}`}>{instructor.desiredWorkingHours}</Link>
       </TableCell>
       <TableCell>
-        {/* //this will change I am having issues with period */}
-        {instructor.periodOfDay && instructor.periodOfDay.length > 0 ? (
-          <Link href={`/instructor/${instructor.id}`}>{formatPeriods(instructor.periodOfDay)}</Link>
-        ) : (
-          'No periods assigned'
-        )}
+        {/* fix this */}
+        <Link href={`/instructor/${instructor.id}`}>{periodNames}</Link>
       </TableCell>
       <TableCell>
         <Link href={`/instructor/${instructor.id}`}>{instructor.weekdaysRange.name}</Link>
