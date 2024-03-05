@@ -1,30 +1,55 @@
 import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
-import { breaks } from '@/mock/_index';
-import { Break } from '@/types/_index';
+import { instructors } from '@/mock/_index';
+import { Instructor, PeriodOfDayName } from '@/types/_index';
 
 interface CreateInstructorPayload {
-  startAt: Dayjs;
-  endAt: Dayjs;
+  name: string;
+  isActive: boolean;
+  desiredWorkingHours: number;
+  contractTypeName: string;
+  weekdaysRangeName: string;
+  periodOfDayNames: PeriodOfDayName[];
+  coursesNames: string[];
+  notes: string;
 }
 
-export const createInstructor = async (payload: CreateInstructorPayload): Promise<Break> => {
-  const { startAt, endAt } = payload;
-  console.log(startAt.toDate(), endAt.toDate());
+export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
+  const {
+    name,
+    isActive,
+    desiredWorkingHours,
+    contractTypeName,
+    weekdaysRangeName,
+    periodOfDayNames,
+    coursesNames,
+    notes,
+  } = payload;
 
-  return breaks[0];
+  console.log(
+    isActive,
+    desiredWorkingHours,
+    contractTypeName,
+    weekdaysRangeName,
+    periodOfDayNames,
+    coursesNames,
+    notes,
+  );
+  return instructors[0];
 
   // TODO: Fetch data from api
   try {
-    if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
-    }
-
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
     const payload = {
-      startAt: startAt,
-      endAt: endAt,
+      name: name,
+      isActive: isActive,
+      desiredWorkingHours: desiredWorkingHours,
+      contractType: contractTypeName,
+      weekdaysRange: weekdaysRangeName,
+      periodOfDay: periodOfDayNames,
+      courses: coursesNames,
+      notes: notes,
     };
 
     const response = await fetch(baseUrl, {
@@ -41,7 +66,7 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
 
     const data = await response.json();
 
-    revalidateTag('break');
+    revalidateTag('instructors');
 
     return data;
   } catch (error: any) {

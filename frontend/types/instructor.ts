@@ -7,9 +7,9 @@ export interface Instructor {
   desiredWorkingHours: number;
   contractType: ContractType;
   weekdaysRange: WeekdaysRange;
-  periodOfDay: PeriodOfDay[];
+  periodOfDays: PeriodOfDay[];
   courses: Course[];
   createdAt?: Date;
   updatedAt?: Date;
-  notes: string;
+  notes: string | null;
 }

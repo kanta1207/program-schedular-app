@@ -49,6 +49,7 @@ export const instructors: Instructor[] = [
         program: PROGRAMS.find(({ name }) => name === 'DMA')!,
       },
     ],
+    notes: '',
   },
   {
     id: 2,
@@ -114,9 +115,11 @@ export const instructors: Instructor[] = [
         program: PROGRAMS.find(({ name }) => name === 'DMA')!,
       },
     ],
+    notes: '',
   },
   {
     id: 3,
+    notes: '',
     name: 'Caio Franco',
     isActive: true,
     desiredWorkingHours: 20,
@@ -146,6 +149,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 4,
+    notes: '',
     name: 'Diogo',
     isActive: true,
     desiredWorkingHours: 20,
@@ -163,6 +167,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 5,
+    notes: '',
     name: 'Gaurav',
     isActive: true,
     desiredWorkingHours: 20,
@@ -210,6 +215,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 6,
+    notes: '',
     name: 'Iman',
     isActive: true,
     desiredWorkingHours: 10,
@@ -239,6 +245,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 7,
+    notes: '',
     name: 'Jana',
     isActive: true,
     desiredWorkingHours: 20,
@@ -268,6 +275,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 8,
+    notes: '',
     name: 'Kwame',
     isActive: true,
     desiredWorkingHours: 10,
@@ -315,6 +323,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 9,
+    notes: '',
     name: 'Mariam',
     isActive: true,
     desiredWorkingHours: 40,
@@ -368,6 +377,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 10,
+    notes: '',
     name: 'Rafael',
     isActive: true,
     desiredWorkingHours: 40,
@@ -409,6 +419,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 11,
+    notes: '',
     name: 'Rodrigo',
     isActive: true,
     desiredWorkingHours: 20,
@@ -456,6 +467,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 12,
+    notes: '',
     name: 'Vedant',
     isActive: true,
     desiredWorkingHours: 20,
@@ -491,6 +503,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 13,
+    notes: '',
     name: 'Amir',
     isActive: false,
     desiredWorkingHours: 10,
@@ -514,6 +527,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 14,
+    notes: '',
     name: 'Andres Franco',
     isActive: false,
     desiredWorkingHours: 40,
@@ -591,6 +605,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 15,
+    notes: '',
     name: 'Aswini',
     isActive: false,
     desiredWorkingHours: 10,
@@ -608,6 +623,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 16,
+    notes: '',
     name: 'Brigitte',
     isActive: false,
     desiredWorkingHours: 30,
@@ -643,6 +659,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 17,
+    notes: '',
     name: 'Cody',
     isActive: false,
     desiredWorkingHours: 10,
@@ -684,6 +701,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 18,
+    notes: '',
     name: 'Daria Astanaeva',
     isActive: false,
     desiredWorkingHours: 10,
@@ -725,6 +743,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 19,
+    notes: '',
     name: 'Elmira',
     isActive: false,
     desiredWorkingHours: 30,
@@ -748,6 +767,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 20,
+    notes: '',
     name: 'Jasleen',
     isActive: false,
     desiredWorkingHours: 10,
@@ -771,6 +791,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 21,
+    notes: '',
     name: 'Rafaela',
     isActive: false,
     desiredWorkingHours: 10,
@@ -818,6 +839,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 22,
+    notes: '',
     name: 'Tiago',
     isActive: false,
     desiredWorkingHours: 40,

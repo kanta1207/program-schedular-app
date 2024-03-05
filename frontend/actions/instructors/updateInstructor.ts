@@ -1,34 +1,76 @@
 import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
-import { breaks } from '@/mock/_index';
-import { Break } from '@/types/_index';
+import { instructors } from '@/mock/_index';
+import { Course, Instructor, PeriodOfDay, PeriodOfDayName } from '@/types/_index';
+import { CONTRACT_TYPES, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 
 interface UpdateInstructorPayload {
-  startAt: Dayjs;
-  endAt: Dayjs;
+  name: string;
+  isActive: boolean;
+  desiredWorkingHours: number;
+  contractTypeName: string;
+  weekdaysRangeName: string;
+  periodOfDayNames: PeriodOfDayName[];
+  coursesNames: string[];
+  notes: string;
 }
 
-export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Break> => {
-  const { startAt, endAt } = payload;
-  console.log(id, startAt, endAt);
+export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
+  const {
+    name,
+    isActive,
+    desiredWorkingHours,
+    contractTypeName,
+    weekdaysRangeName,
+    periodOfDayNames,
+    coursesNames,
+    notes,
+  } = payload;
 
-  const tmpBreak = breaks.find((breakItem) => breakItem.id === id)!;
-  tmpBreak.startAt === startAt.toDate();
-  tmpBreak.endAt === endAt.toDate();
-  return tmpBreak;
+  console.log(
+    id,
+    isActive,
+    desiredWorkingHours,
+    contractTypeName,
+    weekdaysRangeName,
+    periodOfDayNames,
+    coursesNames,
+    notes,
+  );
 
-  // TODO: Fetch data from api
+  const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
+  if (!tmpInstructor) throw new Error('Instructor not found');
+
+  tmpInstructor.name = name;
+  tmpInstructor.isActive = isActive;
+  tmpInstructor.desiredWorkingHours = desiredWorkingHours;
+  tmpInstructor.contractType =
+    CONTRACT_TYPES.find((type) => type.name === contractTypeName) ?? tmpInstructor.contractType;
+  tmpInstructor.weekdaysRange =
+    WEEKDAYS_RANGES.find((range) => range.name === weekdaysRangeName) ?? tmpInstructor.weekdaysRange;
+  tmpInstructor.periodOfDays = periodOfDayNames
+    .map((name) => PERIOD_OF_DAYS.find((period) => period.name === name))
+    .filter((period) => period !== undefined) as PeriodOfDay[];
+
+  // Handle courses by name
+  // tmpInstructor.courses = coursesNames
+  //   .map((courseName) => COURSES.find((course) => course.name === courseName))
+  //   .filter((course) => course !== undefined) as Course[];
+
+  tmpInstructor.notes = notes;
+
   try {
-    if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
-    }
-
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks/${id}`;
-
-    const payload = {
-      startAt: startAt,
-      endAt: endAt,
-    };
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
+    // const updatePayload = {
+    //   name,
+    //   isActive,
+    //   desiredWorkingHours,
+    //   contractType: tmpInstructor.contractType.name,
+    //   weekdaysRange: tmpInstructor.weekdaysRange.name,
+    //   periodOfDay: tmpInstructor.periodOfDays.map((pd) => pd.name),
+    //   courses: tmpInstructor.courses.map((course) => course.name),
+    //   notes,
+    // };
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',
@@ -44,7 +86,7 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
 
     const data = await response.json();
 
-    revalidateTag('break');
+    revalidateTag('instructor');
 
     return data;
   } catch (error: any) {
