@@ -232,17 +232,23 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                 <Controller
                   name="period"
                   control={control}
-                  render={({ field: { onChange, value } }) => (
+                  render={({ field }: any) => {
                     <FormGroup row>
                       {PERIOD_OF_DAYS.map((period) => (
                         <FormControlLabel
                           key={period.id}
-                          control={<Checkbox checked={value?.includes(period.name)} value={period.name} />}
+                          control={
+                            <Checkbox
+                              checked={value.includes(period.name)}
+                              value={period.name}
+                              onChange={(e) => field.onChange(e.target.checked)}
+                            />
+                          }
                           label={`${period.name}`}
                         />
                       ))}
-                    </FormGroup>
-                  )}
+                    </FormGroup>;
+                  }}
                 />
               </TableCell>
             </TableRow>

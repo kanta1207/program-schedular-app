@@ -7,7 +7,7 @@ interface InstructorProps {
 }
 
 export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }) => {
-  const periodNames = instructor.periodOfDay?.map((period) => period.name).join(', ');
+  const periodNames = instructor.periodOfDays?.map((period) => period.name).join(', ');
   return (
     <>
       <TableCell component="th" scope="row">
@@ -20,7 +20,6 @@ export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }
         <Link href={`/instructor/${instructor.id}`}>{instructor.desiredWorkingHours}</Link>
       </TableCell>
       <TableCell>
-        {/* fix this */}
         <Link href={`/instructor/${instructor.id}`}>{periodNames}</Link>
       </TableCell>
       <TableCell>
