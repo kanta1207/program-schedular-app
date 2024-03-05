@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Break } from '../../entity/breaks.entity';
 import { Repository } from 'typeorm';
@@ -12,44 +16,39 @@ export class BreaksService {
     private readonly breakRepository: Repository<Break>,
   ) {}
 
-  async findAll(): Promise<Break[]> {
-    try {
-      return await this.breakRepository.find();
-    } catch (error) {
-      throw error;
-    }
+  async findAll() {
+    return await this.breakRepository.find();
   }
 
-  async findOne(id: number): Promise<Break> {
-    try {
-      return await this.breakRepository.findOneBy({ id });
-    } catch (error) {
-      throw error;
-    }
+  async findOne(id: number) {
+    return await this.breakRepository.findOneBy({ id });
   }
 
-  async create(createBreakDto: CreateBreakDto): Promise<Break> {
-    try {
-      return this.breakRepository.save(createBreakDto);
-    } catch (error) {
-      throw error;
-    }
+  async create(createBreakDto: CreateBreakDto) {
+    return this.breakRepository.save(createBreakDto);
   }
 
-  async update(id: number, updateBreakDto: UpdateBreakDto): Promise<Break> {
-    try {
-      await this.breakRepository.update(id, updateBreakDto);
-      return await this.findOne(id);
-    } catch (error) {
-      throw error;
+  async update(id: number, updateBreakDto: UpdateBreakDto) {
+    const { startAt, endAt } = updateBreakDto;
+    const existingBreak = await this.breakRepository.findOneBy({ id });
+    if (
+      (startAt && endAt && startAt.getTime() >= endAt.getTime()) ||
+      (startAt && startAt.getTime() >= existingBreak.endAt.getTime()) ||
+      (endAt && endAt.getTime() <= existingBreak.startAt.getTime())
+    ) {
+      throw new BadRequestException('endAt must be after startAt');
     }
+
+    const updatedResult = await this.breakRepository.update(id, updateBreakDto);
+
+    if (updatedResult.affected === 0) {
+      throw new NotFoundException('Break Not Found');
+    }
+
+    return await this.findOne(id);
   }
 
   async remove(id: number) {
-    try {
-      this.breakRepository.delete(id);
-    } catch (error) {
-      throw error;
-    }
+    await this.breakRepository.delete(id);
   }
 }
