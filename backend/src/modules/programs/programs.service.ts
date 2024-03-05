@@ -31,7 +31,7 @@ export class ProgramsService {
 
   /**
    * Create a program
-   * @param createProgramDto {@link CreateProgramDto} - program to be created
+   * @param createProgramDto {@link CreateProgramDto} - dto for creating a program
    * @returns created program
    * @memberof {@link ProgramsService}
    */
@@ -53,7 +53,7 @@ export class ProgramsService {
    * Update a program
    * @returns updated program
    * @param id - program id
-   * @param updateProgramDto {@link UpdateProgramDto} - program to be updated
+   * @param updateProgramDto {@link UpdateProgramDto} - dto for updating a program
    * @memberof {@link ProgramsService}
    */
   async update(id: number, updateProgramDto: UpdateProgramDto) {
