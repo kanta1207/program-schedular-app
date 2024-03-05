@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from './data-source';
-import { IntakesModule } from './intakes/intakes.module';
+import { IntakesModule } from './modules/intakes/intakes.module';
 import { BreaksModule } from './modules/breaks/breaks.module';
 
 @Module({
