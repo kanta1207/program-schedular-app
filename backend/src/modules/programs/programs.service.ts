@@ -13,11 +13,6 @@ export class ProgramsService {
     private readonly programRepository: Repository<Program>,
   ) {}
 
-  /**
-   * Return all programs
-   * @returns all programs
-   * @memberof {@link ProgramsService}
-   */
   async findAll(): Promise<Program[]> {
     try {
       return await this.programRepository.find();
@@ -29,12 +24,6 @@ export class ProgramsService {
     }
   }
 
-  /**
-   * Create a program
-   * @param createProgramDto {@link CreateProgramDto} - dto for creating a program
-   * @returns created program
-   * @memberof {@link ProgramsService}
-   */
   async create(createProgramDto: CreateProgramDto): Promise<Program> {
     try {
       // Create a new program
@@ -49,13 +38,6 @@ export class ProgramsService {
     }
   }
 
-  /**
-   * Update a program
-   * @returns updated program
-   * @param id - program id
-   * @param updateProgramDto {@link UpdateProgramDto} - dto for updating a program
-   * @memberof {@link ProgramsService}
-   */
   async update(id: number, updateProgramDto: UpdateProgramDto) {
     try {
       const program = await this.programRepository.findOneBy({
@@ -79,11 +61,6 @@ export class ProgramsService {
     }
   }
 
-  /**
-   * Delete a program
-   * @returns deleted program
-   * @memberof {@link ProgramsService}
-   */
   async delete(id: number) {
     try {
       const program = await this.programRepository.findOne({
