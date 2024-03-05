@@ -31,7 +31,7 @@ export class ApiResponseInterceptor<T>
 
         const data = 'data' in response ? response.data : response;
 
-        return ApiResponse.success<T>(data, httpStatus, message);
+        return ApiResponse.new<T>(data, httpStatus, message);
       }),
     );
   }

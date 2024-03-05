@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from './data-source';
 import { IntakesModule } from './intakes/intakes.module';
-import { BreaksModule } from './breaks/breaks.module';
+import { BreaksModule } from './modules/breaks/breaks.module';
 
 @Module({
   imports: [
