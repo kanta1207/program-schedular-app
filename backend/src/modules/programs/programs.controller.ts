@@ -56,7 +56,7 @@ export class ProgramsController {
     return ApiResponse.new(
       null,
       StatusCodes.STATUS_NO_CONTENT.code,
-      StatusCodes.STATUS_OK.message,
+      StatusCodes.STATUS_NO_CONTENT.message,
     );
   }
 }
