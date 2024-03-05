@@ -64,10 +64,14 @@ export class ProgramsService {
       if (!program) {
         throw new NotFoundException('Program not found');
       }
+
       const updatedProgram = { id, ...updateProgramDto };
       const savedProgram = await this.programRepository.save(updatedProgram);
       return savedProgram;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new HttpException(
         'Failed to update program.',
         StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code,
@@ -90,10 +94,13 @@ export class ProgramsService {
       }
       return await this.programRepository.delete(id);
     } catch (error) {
-      throw new HttpException(
-        'Failed to delete program.',
-        StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code,
-      );
+      if (error.status instanceof NotFoundException) {
+        throw error;
+      } else
+        throw new HttpException(
+          'Failed to delete program.',
+          StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code,
+        );
     }
   }
 }
