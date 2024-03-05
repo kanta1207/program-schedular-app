@@ -19,6 +19,8 @@ tags:
     description: Operation about instructor
   - name: Course
     description: Operation about course
+  - name: Program
+    description: Operation about program
 paths:
   /intakes:
     $ref: 'paths/intakes/index.yml'
@@ -44,6 +46,10 @@ paths:
     $ref: 'paths/courses/index.yml'
   /courses/{courseId}:
     $ref: 'paths/courses/course-id.yml'
+  /programs:
+    $ref: 'paths/programs/index.yml'
+  /programs/{programId}:
+    $ref: 'paths/programs/program-id.yml'
 
 components:
   schemas:
@@ -68,6 +74,11 @@ components:
         - $ref: 'schemas/course/courseStaticProps.yml'
         - $ref: 'schemas/course/courseDynamicProps.yml'
         - $ref: 'schemas/course/courseStaticForeignProps.yml'
+    Program:
+      allOf:
+        - $ref: 'schemas/program/programStaticProps.yml'
+        - $ref: 'schemas/program/programDynamicProps.yml'
+        - $ref: 'schemas/program/programStaticForeignProps.yml'
     400Error:
       $ref: 'schemas/errors/400error.yml'
     500Error:

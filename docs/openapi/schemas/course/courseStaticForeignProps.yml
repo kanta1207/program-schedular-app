@@ -3,4 +3,7 @@ required:
   - program
 properties:
   program:
-    $ref: '../program/program.yml'
+    allOf:
+      - $ref: '../program/programStaticProps.yml'
+      - $ref: '../program/programDynamicProps.yml'
+      - $ref: '../program/programStaticForeignProps.yml'
