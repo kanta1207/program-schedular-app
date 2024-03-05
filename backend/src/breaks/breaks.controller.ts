@@ -10,7 +10,7 @@ export class BreaksController {
   @Get()
   async findAll() {
     const breaks = await this.breakService.findAll();
-    return ApiResponse.success(
+    return ApiResponse.new(
       breaks,
       StatusCodes.STATUS_OK.code,
       StatusCodes.STATUS_OK.message,

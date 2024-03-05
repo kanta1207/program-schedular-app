@@ -11,7 +11,7 @@ export class ApiResponse<T = void> {
     this.data = data || null;
   }
 
-  public static success<T>(
+  public static new<T>(
     data: T,
     statusCode?: number,
     message?: string,
@@ -20,14 +20,5 @@ export class ApiResponse<T = void> {
     const resultMessage: string = message || StatusCodes.STATUS_OK.message;
 
     return new ApiResponse(resultCode, resultMessage, data);
-  }
-
-  public static error(statusCode?: number, message?: string): ApiResponse {
-    const resultCode: number =
-      statusCode || StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code;
-    const resultMessage: string =
-      message || StatusCodes.STATUS_INTERNAL_SERVER_ERROR.message;
-
-    return new ApiResponse(resultCode, resultMessage);
   }
 }
