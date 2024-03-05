@@ -1,7 +1,17 @@
-import { Controller, Delete, Get, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ProgramsService } from './programs.service';
 import { ApiResponse } from 'src/common/api-response';
 import { StatusCodes } from 'src/common/status-code';
+import { CreateProgramDto } from './dto/create-program.dto';
+import { UpdateProgramDto } from './dto/update-program.dto';
 
 @Controller('programs')
 export class ProgramsController {
@@ -17,9 +27,22 @@ export class ProgramsController {
     );
   }
 
+  @Post()
+  async create(@Body() createProgramDto: CreateProgramDto) {
+    const program = await this.programService.create(createProgramDto);
+    return ApiResponse.new(
+      program,
+      StatusCodes.STATUS_CREATED.code,
+      StatusCodes.STATUS_CREATED.message,
+    );
+  }
+
   @Patch(':id')
-  async update() {
-    const program = await this.programService.update();
+  async update(
+    @Param('id') id: number,
+    @Body() updateProgramDto: UpdateProgramDto,
+  ) {
+    const program = await this.programService.update(id, updateProgramDto);
     return ApiResponse.new(
       program,
       StatusCodes.STATUS_OK.code,
@@ -28,8 +51,8 @@ export class ProgramsController {
   }
 
   @Delete(':id')
-  async delete() {
-    await this.programService.delete();
+  async delete(@Param('id') id: number) {
+    await this.programService.delete(id);
     return ApiResponse.new(
       {},
       StatusCodes.STATUS_OK.code,
