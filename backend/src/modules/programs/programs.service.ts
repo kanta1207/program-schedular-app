@@ -64,7 +64,9 @@ export class ProgramsService {
       if (!program) {
         throw new NotFoundException('Program not found');
       }
-      return await this.programRepository.update(id, updateProgramDto);
+      const updatedProgram = { id, ...updateProgramDto };
+      const savedProgram = await this.programRepository.save(updatedProgram);
+      return savedProgram;
     } catch (error) {
       throw new HttpException(
         'Failed to update program.',
