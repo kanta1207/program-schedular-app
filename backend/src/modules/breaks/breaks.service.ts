@@ -1,8 +1,13 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Break } from '../../entity/breaks.entity';
 import { Repository } from 'typeorm';
-import { StatusCodes } from 'src/common/status-code';
+import { CreateBreakDto } from './dto/create-break.dto';
+import { UpdateBreakDto } from './dto/update-break.dto';
 
 @Injectable()
 export class BreaksService {
@@ -11,43 +16,39 @@ export class BreaksService {
     private readonly breakRepository: Repository<Break>,
   ) {}
 
-  /**
-   * Return all breaks
-   *
-   * @return {Promise<Break[]>}
-   * @memberof BreaksService
-   */
-  async findAll(): Promise<Break[]> {
-    try {
-      return await this.breakRepository.find();
-    } catch (error) {
-      throw new HttpException(
-        'Failed to get breaks.',
-        StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code,
-      );
-    }
+  async findAll() {
+    return await this.breakRepository.find();
   }
 
-  /**
-   *
-   *
-   * @param {number} id
-   * @return {Promise<Break>}
-   * @memberof BreaksService
-   */
-  async findOne(id: number): Promise<Break> {
-    try {
-      const breakData = await this.breakRepository.findOneBy({ id });
-      if (!breakData) {
-        throw new NotFoundException('Break not found');
-      }
+  async findOne(id: number) {
+    return await this.breakRepository.findOneBy({ id });
+  }
 
-      return breakData;
-    } catch (error) {
-      throw new HttpException(
-        'Failed to find break by id',
-        StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code,
-      );
+  async create(createBreakDto: CreateBreakDto) {
+    return this.breakRepository.save(createBreakDto);
+  }
+
+  async update(id: number, updateBreakDto: UpdateBreakDto) {
+    const { startAt, endAt } = updateBreakDto;
+    const existingBreak = await this.breakRepository.findOneBy({ id });
+    if (
+      (startAt && endAt && startAt.getTime() >= endAt.getTime()) ||
+      (startAt && startAt.getTime() >= existingBreak.endAt.getTime()) ||
+      (endAt && endAt.getTime() <= existingBreak.startAt.getTime())
+    ) {
+      throw new BadRequestException('endAt must be after startAt');
     }
+
+    const updatedResult = await this.breakRepository.update(id, updateBreakDto);
+
+    if (updatedResult.affected === 0) {
+      throw new NotFoundException('Break Not Found');
+    }
+
+    return await this.findOne(id);
+  }
+
+  async remove(id: number) {
+    await this.breakRepository.delete(id);
   }
 }
