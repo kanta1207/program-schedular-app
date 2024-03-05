@@ -11,22 +11,22 @@ export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }
   return (
     <>
       <TableCell component="th" scope="row">
-        <Link href={`/instructor/${instructor.id}`}>{instructor.name}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{instructor.name}</Link>
       </TableCell>
       <TableCell>
-        <Link href={`/instructor/${instructor.id}`}>{instructor.contractType.name}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{instructor.contractType.name}</Link>
       </TableCell>
       <TableCell>
-        <Link href={`/instructor/${instructor.id}`}>{instructor.desiredWorkingHours}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{instructor.desiredWorkingHours}</Link>
       </TableCell>
       <TableCell>
-        <Link href={`/instructor/${instructor.id}`}>{periodNames}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{periodNames}</Link>
       </TableCell>
       <TableCell>
-        <Link href={`/instructor/${instructor.id}`}>{instructor.weekdaysRange.name}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{instructor.weekdaysRange.name}</Link>
       </TableCell>
       <TableCell>
-        <Link href={`/instructor/${instructor.id}`}>{instructor.isActive ? 'Active' : 'Inactive'}</Link>
+        <Link href={`/instructors/${instructor.id}`}>{instructor.isActive ? 'Active' : 'Inactive'}</Link>
       </TableCell>
     </>
   );

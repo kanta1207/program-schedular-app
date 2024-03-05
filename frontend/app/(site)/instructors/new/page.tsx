@@ -5,7 +5,7 @@ const InstructorPage = () => {
   return (
     <div className="w-full">
       <Headline name="New Instructor" />
-      <CreateInstructor pageType={'view'} />
+      <CreateInstructor pageType={'new'} />
     </div>
   );
 };

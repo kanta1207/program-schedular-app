@@ -19,9 +19,9 @@ import {
   TextField,
 } from '@mui/material';
 import { courses } from '@/mock/_index';
-import { ContractName, ContractType, Instructor, PeriodOfDayName, WeekdaysRange } from '@/types/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { ContractName, Instructor, PeriodOfDayName } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
@@ -72,11 +72,11 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
           name: instructor?.name,
           contract: instructor?.contractType.name,
           hours: instructor?.desiredWorkingHours,
-          days: instructor!.weekdaysRange.name,
-          period: instructor!.periodOfDays?.map((period) => period.name) ?? [],
-          isActive: instructor!.isActive,
-          courses: instructor!.courses,
-          notes: instructor!.notes,
+          days: instructor?.weekdaysRange.name,
+          period: instructor?.periodOfDays?.map((period) => period.name) ?? [],
+          isActive: instructor?.isActive,
+          courses: instructor?.courses,
+          notes: instructor?.notes,
         });
       }
     }
@@ -127,10 +127,6 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         setIsEditMode(false);
       } else if (pageType === 'new') {
         const newInstructor = await createInstructor(payload);
-
-        // [future] redirect to instructors/:id when new cohort is saved
-        // const newInstructorId = newInstructor.id;
-        // router.push(`/instructors/${newInstructorId}`);
       }
     } catch (error) {
       console.error(error);
@@ -157,7 +153,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                         value={field.value ?? ''}
                         inputRef={field.ref}
                         onChange={(name) => field.onChange(name)}
-                        disabled={isEditMode ? true : false}
+                        disabled={isEditMode ? false : true}
                       />
                     );
                   }}
@@ -232,22 +228,32 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                 <Controller
                   name="period"
                   control={control}
-                  render={({ field }: any) => {
-                    <FormGroup row>
-                      {PERIOD_OF_DAYS.map((period) => (
-                        <FormControlLabel
-                          key={period.id}
-                          control={
-                            <Checkbox
-                              checked={value.includes(period.name)}
-                              value={period.name}
-                              onChange={(e) => field.onChange(e.target.checked)}
-                            />
-                          }
-                          label={`${period.name}`}
-                        />
-                      ))}
-                    </FormGroup>;
+                  render={({ field }) => {
+                    const selectedPeriods = (field.value as PeriodOfDayName[]) || [];
+
+                    return (
+                      <FormGroup row>
+                        {PERIOD_OF_DAYS.map((period) => (
+                          <FormControlLabel
+                            key={period.id}
+                            control={
+                              <Checkbox
+                                checked={selectedPeriods.includes(period.name)}
+                                onChange={(e) => {
+                                  const updatedPeriods = e.target.checked
+                                    ? [...selectedPeriods, period.name]
+                                    : selectedPeriods.filter((selectedPeriod) => selectedPeriod !== period.name);
+
+                                  field.onChange(updatedPeriods);
+                                }}
+                                value={period.name}
+                              />
+                            }
+                            label={`${period.name} (${period.time})`}
+                          />
+                        ))}
+                      </FormGroup>
+                    );
                   }}
                 />
               </TableCell>
@@ -292,12 +298,25 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
             {/* Buttons */}
             <TableRow>
               <TableCell sx={{ border: 'none' }} colSpan={2} align="right">
-                <Button variant="outlined" color="primary" style={{ marginRight: '8px' }}>
-                  Cancel
-                </Button>
-                <Button variant="contained" color="primary">
-                  Save
-                </Button>
+                {isEditMode ? (
+                  <>
+                    <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
+                      Cancel
+                    </Button>
+                    <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
+                      Save
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button size="medium" variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
+                      Edit
+                    </Button>
+                    <Button size="medium" variant="contained" color="error" type="button" onClick={handleDeleteButton}>
+                      Delete
+                    </Button>
+                  </>
+                )}
               </TableCell>
             </TableRow>
           </TableBody>

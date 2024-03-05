@@ -27,6 +27,7 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
   } = payload;
 
   console.log(
+    name,
     isActive,
     desiredWorkingHours,
     contractTypeName,
@@ -43,11 +44,11 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
 
     const payload = {
       name: name,
-      isActive: isActive,
-      desiredWorkingHours: desiredWorkingHours,
       contractType: contractTypeName,
+      desiredWorkingHours: desiredWorkingHours,
       weekdaysRange: weekdaysRangeName,
       periodOfDay: periodOfDayNames,
+      isActive: isActive,
       courses: coursesNames,
       notes: notes,
     };
