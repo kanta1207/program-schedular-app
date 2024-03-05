@@ -6,42 +6,67 @@ import {
   Param,
   Patch,
   Post,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { IntakesService } from './intakes.service';
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
+import { ApiResponse } from 'src/common/api-response';
+import { StatusCodes } from 'src/common/status-code';
 
 @Controller('intakes')
 export class IntakesController {
   constructor(private readonly intakesService: IntakesService) {}
 
   @Post()
-  create(@Body() createIntakeDto: CreateIntakeDto) {
-    return this.intakesService.create(createIntakeDto);
+  async create(@Body() createIntakeDto: CreateIntakeDto) {
+    const intake = await this.intakesService.create(createIntakeDto);
+    return ApiResponse.new(
+      intake,
+      StatusCodes.STATUS_CREATED.code,
+      StatusCodes.STATUS_CREATED.message,
+    );
   }
 
   @Get()
-  findAll() {
-    return this.intakesService.findAll();
+  async findAll() {
+    const intakes = await this.intakesService.findAll();
+    return ApiResponse.new(
+      intakes,
+      StatusCodes.STATUS_OK.code,
+      StatusCodes.STATUS_OK.message,
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.intakesService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    const intake = await this.intakesService.findOne(id);
+    return ApiResponse.new(
+      intake,
+      StatusCodes.STATUS_OK.code,
+      StatusCodes.STATUS_OK.message,
+    );
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateIntakeDto: UpdateIntakeDto) {
-    const { startAt, endAt } = updateIntakeDto;
-    if (startAt.getTime() > endAt.getTime()) {
-      throw new UnprocessableEntityException('endAt must be after startAt');
-    }
-    return this.intakesService.update(id, updateIntakeDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateIntakeDto: UpdateIntakeDto,
+  ) {
+    const intake = await this.intakesService.update(id, updateIntakeDto);
+    return ApiResponse.new(
+      intake,
+      StatusCodes.STATUS_OK.code,
+      StatusCodes.STATUS_OK.message,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.intakesService.remove(id);
+  async remove(@Param('id') id: number) {
+    await this.intakesService.remove(id);
+    return ApiResponse.new(
+      null,
+      StatusCodes.STATUS_NO_CONTENT.code,
+      StatusCodes.STATUS_NO_CONTENT.message,
+    );
   }
 }
