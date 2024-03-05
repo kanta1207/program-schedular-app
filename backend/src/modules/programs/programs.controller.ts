@@ -54,7 +54,7 @@ export class ProgramsController {
   async delete(@Param('id') id: number) {
     await this.programService.delete(id);
     return ApiResponse.new(
-      {},
+      null,
       StatusCodes.STATUS_OK.code,
       StatusCodes.STATUS_OK.message,
     );
