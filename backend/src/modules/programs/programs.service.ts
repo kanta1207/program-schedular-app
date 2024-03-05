@@ -13,11 +13,11 @@ export class ProgramsService {
     private readonly programRepository: Repository<Program>,
   ) {}
 
-  async findAll(): Promise<Program[]> {
+  async findAll() {
     return await this.programRepository.find();
   }
 
-  async create(createProgramDto: CreateProgramDto): Promise<Program> {
+  async create(createProgramDto: CreateProgramDto) {
     return await this.programRepository.save(createProgramDto);
   }
 
