@@ -5,7 +5,6 @@ import {
   Param,
   Patch,
   Post,
-  HttpCode,
   Delete,
 } from '@nestjs/common';
 import { BreaksService } from './breaks.service';
@@ -44,8 +43,7 @@ export class BreaksController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
-  async delete(@Param('id') id: number) {
+  async remove(@Param('id') id: number) {
     await this.breakService.remove(id);
     return ApiResponse.new(
       null,
