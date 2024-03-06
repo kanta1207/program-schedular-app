@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from './data-source';
+import { ProgramsModule } from './modules/programs/programs.module';
 import { IntakesModule } from './modules/intakes/intakes.module';
 import { BreaksModule } from './modules/breaks/breaks.module';
 
@@ -13,6 +14,7 @@ import { BreaksModule } from './modules/breaks/breaks.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     IntakesModule,
     BreaksModule,
+    ProgramsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
