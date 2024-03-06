@@ -3,7 +3,7 @@ required:
   - cohort
   - weekdaysRange
   - course
-  - classRoom
+  - classroom
   - instructor
 properties:
   cohort:
@@ -14,8 +14,8 @@ properties:
     allOf:
       - $ref: '../course/courseStaticProps.yml'
       - $ref: '../course/courseDynamicProps.yml'
-  classRoom:
-    $ref: '../classRoom/classRoom.yml'
+  classroom:
+    $ref: '../classroom/classroom.yml'
   instructor:
     allOf:
       - $ref: '../instructor/instructorStaticProps.yml'
