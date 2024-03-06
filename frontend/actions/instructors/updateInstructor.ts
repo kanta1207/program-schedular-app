@@ -8,35 +8,18 @@ interface UpdateInstructorPayload {
   name: string;
   isActive: boolean;
   desiredWorkingHours: number;
-  contractTypeName: string;
-  weekdaysRangeName: string;
-  periodOfDayNames: PeriodOfDayName[];
-  coursesNames: string[];
+  contractTypeId: number;
+  weekdaysRangeId: number;
+  periodOfDayId: PeriodOfDayName[];
+  coursesIds: number[];
   notes: string;
 }
 
 export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
-  const {
-    name,
-    isActive,
-    desiredWorkingHours,
-    contractTypeName,
-    weekdaysRangeName,
-    periodOfDayNames,
-    coursesNames,
-    notes,
-  } = payload;
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes } =
+    payload;
 
-  console.log(
-    id,
-    isActive,
-    desiredWorkingHours,
-    contractTypeName,
-    weekdaysRangeName,
-    periodOfDayNames,
-    coursesNames,
-    notes,
-  );
+  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes);
 
   const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
   if (!tmpInstructor) throw new Error('Instructor not found');
@@ -44,16 +27,14 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
   tmpInstructor.name = name;
   tmpInstructor.isActive = isActive;
   tmpInstructor.desiredWorkingHours = desiredWorkingHours;
-  tmpInstructor.contractType =
-    CONTRACT_TYPES.find((type) => type.name === contractTypeName) ?? tmpInstructor.contractType;
+  tmpInstructor.contractType = CONTRACT_TYPES.find((type) => type.id === contractTypeId) ?? tmpInstructor.contractType;
   tmpInstructor.weekdaysRange =
-    WEEKDAYS_RANGES.find((range) => range.name === weekdaysRangeName) ?? tmpInstructor.weekdaysRange;
-  tmpInstructor.periodOfDays = periodOfDayNames
+    WEEKDAYS_RANGES.find((range) => range.id === weekdaysRangeId) ?? tmpInstructor.weekdaysRange;
+  tmpInstructor.periodOfDays = periodOfDayId
     .map((name) => PERIOD_OF_DAYS.find((period) => period.name === name))
     .filter((period) => period !== undefined) as PeriodOfDay[];
 
-  // Handle courses by name
-  // tmpInstructor.courses = coursesNames
+  // tmpInstructor.courses = coursesIds
   //   .map((courseName) => COURSES.find((course) => course.name === courseName))
   //   .filter((course) => course !== undefined) as Course[];
 

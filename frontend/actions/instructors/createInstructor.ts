@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
 import { instructors } from '@/mock/_index';
 import { Instructor, PeriodOfDayName } from '@/types/_index';
@@ -7,35 +6,18 @@ interface CreateInstructorPayload {
   name: string;
   isActive: boolean;
   desiredWorkingHours: number;
-  contractTypeName: string;
-  weekdaysRangeName: string;
-  periodOfDayNames: PeriodOfDayName[];
-  coursesNames: string[];
+  contractTypeId: number;
+  weekdaysRangeId: number;
+  periodOfDayId: PeriodOfDayName[];
+  coursesIds: number[];
   notes: string;
 }
 
 export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
-  const {
-    name,
-    isActive,
-    desiredWorkingHours,
-    contractTypeName,
-    weekdaysRangeName,
-    periodOfDayNames,
-    coursesNames,
-    notes,
-  } = payload;
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes } =
+    payload;
 
-  console.log(
-    name,
-    isActive,
-    desiredWorkingHours,
-    contractTypeName,
-    weekdaysRangeName,
-    periodOfDayNames,
-    coursesNames,
-    notes,
-  );
+  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes);
   return instructors[0];
 
   // TODO: Fetch data from api
@@ -44,12 +26,12 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
 
     const payload = {
       name: name,
-      contractType: contractTypeName,
+      contractType: contractTypeId,
       desiredWorkingHours: desiredWorkingHours,
-      weekdaysRange: weekdaysRangeName,
-      periodOfDay: periodOfDayNames,
+      weekdaysRange: weekdaysRangeId,
+      periodOfDay: periodOfDayId,
       isActive: isActive,
-      courses: coursesNames,
+      courses: coursesIds,
       notes: notes,
     };
 

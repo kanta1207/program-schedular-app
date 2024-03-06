@@ -103,12 +103,12 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     try {
       const payload = {
         name: data.name,
-        contractTypeName: data.contract,
+        contractTypeId: data.contract,
         desiredWorkingHours: data.hours,
-        weekdaysRangeName: data.days,
-        periodOfDayNames: data.period,
+        weekdaysRangeId: data.days,
+        periodOfDayId: data.period,
         isActive: data.isActive,
-        coursesNames: data.courses,
+        coursesIds: data.courses,
         notes: data.notes,
       };
 
@@ -116,12 +116,12 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         await updateInstructor(instructor!.id, payload);
         reset({
           name: payload.name,
-          contract: payload.contractTypeName,
+          contract: payload.contractTypeId,
           hours: payload.desiredWorkingHours,
-          days: payload.weekdaysRangeName,
-          period: payload.periodOfDayNames,
+          days: payload.weekdaysRangeId,
+          period: payload.periodOfDayId,
           isActive: payload.isActive,
-          courses: payload.coursesNames,
+          courses: payload.coursesIds,
           notes: payload.notes,
         });
         setIsEditMode(false);
@@ -207,16 +207,12 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                 <Controller
                   name="days"
                   control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <FormGroup row>
+                  render={({ field }) => (
+                    <RadioGroup {...field} row>
                       {WEEKDAYS_RANGES.map((range) => (
-                        <FormControlLabel
-                          key={range.id}
-                          control={<Checkbox checked={value?.includes(range.name)} value={range.name} />}
-                          label={range.name}
-                        />
+                        <FormControlLabel key={range.id} value={range.name} control={<Radio />} label={range.name} />
                       ))}
-                    </FormGroup>
+                    </RadioGroup>
                   )}
                 />
               </TableCell>
