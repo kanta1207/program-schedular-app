@@ -7,6 +7,7 @@ import { dataSourceOptions } from './data-source';
 import { ProgramsModule } from './modules/programs/programs.module';
 import { IntakesModule } from './modules/intakes/intakes.module';
 import { BreaksModule } from './modules/breaks/breaks.module';
+import { InstructorsModule } from './modules/instructors/instructors.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BreaksModule } from './modules/breaks/breaks.module';
     IntakesModule,
     BreaksModule,
     ProgramsModule,
+    InstructorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
