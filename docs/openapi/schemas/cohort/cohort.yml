@@ -28,4 +28,7 @@ properties:
         type: string
         example: 2023-08-30
   program:
-    $ref: '../program/program.yml'
+    allOf:
+      - $ref: '../program/programStaticProps.yml'
+      - $ref: '../program/programDynamicProps.yml'
+      - $ref: '../program/programStaticForeignProps.yml'

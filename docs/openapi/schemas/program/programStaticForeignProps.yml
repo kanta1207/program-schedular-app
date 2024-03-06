@@ -1,0 +1,19 @@
+type: object
+required:
+  - cohorts
+  - courses
+properties:
+  cohorts:
+    type: array
+    items:
+      allOf:
+        - $ref: '../cohort/cohortStaticProps.yml'
+        - $ref: '../cohort/cohortDynamicProps.yml'
+        - $ref: '../cohort/cohortStaticForeignProps.yml'
+  courses:
+    type: array
+    items:
+      allOf:
+        - $ref: '../course/courseStaticProps.yml'
+        - $ref: '../course/courseDynamicProps.yml'
+        - $ref: '../course/courseStaticForeignProps.yml'

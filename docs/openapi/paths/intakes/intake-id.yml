@@ -15,7 +15,23 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../index.yml#/components/schemas/IntakeWithCohort'
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: OK
+              data:
+                allOf:
+                  - $ref: '../../schemas/intake/intakeStaticProps.yml'
+                  - $ref: '../../schemas/intake/intakeDynamicProps.yml'
+                  - $ref: '../../schemas/intake/intakeStaticForeignProps.yml'
 patch:
   tags:
     - Intake
@@ -32,17 +48,7 @@ patch:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            name:
-              type: string
-              example: DMS-24-Sep
-            startAt:
-              type: string
-              example: 2024-05-23
-            endAt:
-              type: string
-              example: 2025-04-30
+          $ref: '../../schemas/intake/intakeDynamicProps.yml'
   responses:
     '200':
       description: Returns the updated Intake
@@ -62,33 +68,10 @@ patch:
                 type: string
                 example: Updated
               data:
-                type: object
-                required:
-                  - id
-                  - name
-                  - startAt
-                  - endAt
-                  - createdAt
-                  - updatedAt
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: DMS-24-Sep
-                  startAt:
-                    type: string
-                    example: 2024-05-23
-                  endAt:
-                    type: string
-                    example: 2025-04-30
-                  createdAt:
-                    type: string
-                    example: 2024-05-23
-                  updatedAt:
-                    type: string
-                    example: 2025-04-30
+                allOf:
+                  - $ref: '../../schemas/intake/intakeStaticProps.yml'
+                  - $ref: '../../schemas/intake/intakeDynamicProps.yml'
+                  - $ref: '../../schemas/intake/intakeStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

@@ -1,0 +1,15 @@
+type: object
+required:
+  - name
+  - startAt
+  - endAt
+properties:
+  name:
+    type: string
+    example: 2024 March DMA
+  startAt:
+    type: string
+    example: 2024-03-01
+  endAt:
+    type: string
+    example: 2025-02-28
