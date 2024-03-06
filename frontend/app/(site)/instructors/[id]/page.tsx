@@ -21,7 +21,10 @@ const page = async ({ params }: PageProps) => {
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
         <Headline name={`${instructor?.name}'s Schedule:`} />
-        <Button variant="contained">Edit Schedule</Button>
+        <Box sx={{ display: 'flex', gap: '1rem' }}>
+          <Button variant="contained">List</Button>
+          <Button variant="contained">Gantt</Button>
+        </Box>
       </Box>
       <InstructorScheduleTable pageType="view" instructor={instructor} />
     </div>

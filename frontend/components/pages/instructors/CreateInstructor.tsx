@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
 
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -49,10 +50,10 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     if (pageType === 'view' && !isEditMode) {
       reset({
         name: instructor?.name,
-        contract: instructor?.contractType.name,
+        contractType: instructor?.contractType.name,
         hours: instructor?.desiredWorkingHours,
         days: instructor?.weekdaysRange.name,
-        period: instructor?.periodOfDays[0].name,
+        periodOfDayId: instructor?.periodOfDays[0].name, //this should change
         isActive: instructor?.isActive,
         courses: instructor?.courses,
         notes: instructor?.notes,
@@ -61,8 +62,8 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
   }, []);
 
   const handleCancelButton = () => {
-    const result = confirm('Do you want to cancel?');
-    if (result) {
+    const isConfirmed = confirm('Do you want to cancel?');
+    if (isConfirmed) {
       if (pageType === 'new') {
         router.push('/instructors');
       }
@@ -70,10 +71,10 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         setIsEditMode(false);
         reset({
           name: instructor?.name,
-          contract: instructor?.contractType.name,
+          contractType: instructor?.contractType.name,
           hours: instructor?.desiredWorkingHours,
           days: instructor?.weekdaysRange.name,
-          period: instructor?.periodOfDays?.map((period) => period.name) ?? [],
+          periodOfDayId: instructor?.periodOfDays?.map((period) => period.name) ?? [],
           isActive: instructor?.isActive,
           courses: instructor?.courses,
           notes: instructor?.notes,
@@ -82,17 +83,17 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     }
   };
   const handleDeleteButton = () => {
-    alert('Do you really want to delete?');
+    confirm('Do you want to delete?');
     deleteInstructor(instructor!.id);
   };
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: null as string | null,
-      contract: '' as ContractName | null,
+      contractType: '' as ContractName | null,
       hours: 10,
       days: null as string | null,
-      period: [] as unknown | null,
+      periodOfDayId: [] as unknown | null,
       isActive: false,
       courses: [] as unknown | null,
       notes: null as string | null,
@@ -116,10 +117,10 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         await updateInstructor(instructor!.id, payload);
         reset({
           name: payload.name,
-          contract: payload.contractTypeId,
+          contractType: payload.contractTypeId,
           hours: payload.desiredWorkingHours,
           days: payload.weekdaysRangeId,
-          period: payload.periodOfDayId,
+          periodOfDayId: payload.periodOfDayId,
           isActive: payload.isActive,
           courses: payload.coursesIds,
           notes: payload.notes,
@@ -165,7 +166,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
               <TableCell sx={{ border: 'none' }}>Contract:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="contract"
+                  name="contractType"
                   control={control}
                   rules={{ required: 'Contract type is required' }}
                   render={({ field }) => (
@@ -176,6 +177,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                           value={contract.name}
                           control={<Radio />}
                           label={contract.name}
+                          disabled={isEditMode ? false : true}
                         />
                       ))}
                     </RadioGroup>
@@ -193,7 +195,13 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   render={({ field }) => (
                     <RadioGroup {...field} row>
                       {DESIRED_WORKING_HOURS.map((hour) => (
-                        <FormControlLabel key={hour} value={hour} control={<Radio />} label={`${hour}`} />
+                        <FormControlLabel
+                          key={hour}
+                          value={hour}
+                          control={<Radio />}
+                          label={`${hour}`}
+                          disabled={isEditMode ? false : true}
+                        />
                       ))}
                     </RadioGroup>
                   )}
@@ -210,7 +218,13 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   render={({ field }) => (
                     <RadioGroup {...field} row>
                       {WEEKDAYS_RANGES.map((range) => (
-                        <FormControlLabel key={range.id} value={range.name} control={<Radio />} label={range.name} />
+                        <FormControlLabel
+                          key={range.id}
+                          value={range.name}
+                          control={<Radio />}
+                          label={range.name}
+                          disabled={isEditMode ? false : true}
+                        />
                       ))}
                     </RadioGroup>
                   )}
@@ -222,7 +236,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
               <TableCell sx={{ border: 'none' }}>Period:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="period"
+                  name="periodOfDayId"
                   control={control}
                   render={({ field }) => {
                     const selectedPeriods = (field.value as PeriodOfDayName[]) || [];
@@ -246,6 +260,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                               />
                             }
                             label={`${period.name} (${period.time})`}
+                            disabled={isEditMode ? false : true}
                           />
                         ))}
                       </FormGroup>
@@ -262,7 +277,12 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   name="isActive"
                   control={control}
                   render={({ field }) => (
-                    <Switch {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
+                    <Switch
+                      {...field}
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                      disabled={isEditMode ? false : true}
+                    />
                   )}
                 />
               </TableCell>
@@ -294,25 +314,33 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
             {/* Buttons */}
             <TableRow>
               <TableCell sx={{ border: 'none' }} colSpan={2} align="right">
-                {isEditMode ? (
-                  <>
-                    <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
-                      Cancel
-                    </Button>
-                    <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
-                      Save
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button size="medium" variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
-                      Edit
-                    </Button>
-                    <Button size="medium" variant="contained" color="error" type="button" onClick={handleDeleteButton}>
-                      Delete
-                    </Button>
-                  </>
-                )}
+                <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
+                  {isEditMode ? (
+                    <>
+                      <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
+                        Cancel
+                      </Button>
+                      <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
+                        Save
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button size="medium" variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
+                        Edit
+                      </Button>
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="error"
+                        type="button"
+                        onClick={handleDeleteButton}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </Box>
               </TableCell>
             </TableRow>
           </TableBody>

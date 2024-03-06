@@ -7,7 +7,7 @@ const InstructorList = () => {
   return (
     <div className="w-full p-20">
       <div className="flex justify-end">
-        <Button asChild>
+        <Button>
           <Link href="/instructors/new">New instructor</Link>
         </Button>
       </div>

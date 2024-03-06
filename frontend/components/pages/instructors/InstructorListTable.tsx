@@ -22,13 +22,8 @@ export const InstructorListTable: React.FC<InstructorListTableProps> = ({ instru
         </TableRow>
       </TableHead>
       <TableBody>
-        {instructors.map((instructors) => (
-          <TableRow
-            key={instructors.id}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 }, ':hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' } }}
-          >
-            <InstructorListTableRow instructor={instructors} />
-          </TableRow>
+        {instructors.map((instructor) => (
+          <InstructorListTableRow key={instructor.id} instructor={instructor} />
         ))}
       </TableBody>
     </Table>

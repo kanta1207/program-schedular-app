@@ -10,9 +10,9 @@ const page = async () => {
     <>
       <Headline name="Instructors" />
       <div className="flex justify-end mb-4 ">
-        <Link href={'/instructors/new'}>
-          <Button variant="contained">New Instructor</Button>
-        </Link>
+        <Button href={'/instructors/new'} variant="contained">
+          New Instructor
+        </Button>
       </div>
       <InstructorListTable instructors={instructors} />
     </>

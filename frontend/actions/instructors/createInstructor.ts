@@ -20,7 +20,6 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
   console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes);
   return instructors[0];
 
-  // TODO: Fetch data from api
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
