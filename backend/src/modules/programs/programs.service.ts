@@ -30,9 +30,7 @@ export class ProgramsService {
       throw new NotFoundException('Program not found');
     }
 
-    const updatedProgram = { id, ...updateProgramDto };
-    const savedProgram = await this.programRepository.save(updatedProgram);
-    return savedProgram;
+    return await this.programRepository.findOneBy({ id });
   }
 
   async remove(id: number) {
