@@ -2,17 +2,29 @@ type: object
 required:
   - contractType
   - weekdaysRange
+  - classes
+  - courses
+  - periodOfDays
 properties:
-  name:
-    type: string
-    example: John Doe
-  isActive:
-    type: boolean
-    example: true
-  desiredWorkingHour:
-    type: integer
-    example: 40
   contractType:
     $ref: '../contractType/contractType.yml'
   weekdaysRange:
     $ref: '../weekdaysRange/weekdaysRange.yml'
+  classes:
+    type: array
+    items:
+      allOf:
+        - $ref: '../class/classStaticProps.yml'
+        - $ref: '../class/classDynamicProps.yml'
+        - $ref: '../class/classStaticForeignProps.yml'
+  courses:
+    type: array
+    items:
+      allOf:
+        - $ref: '../course/courseStaticProps.yml'
+        - $ref: '../course/courseDynamicProps.yml'
+        - $ref: '../course/courseStaticForeignProps.yml'
+  periodOfDays:
+    type: array
+    items:
+      $ref: '../periodOfDay/periodOfDay.yml'

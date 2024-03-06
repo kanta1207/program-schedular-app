@@ -3,7 +3,7 @@ required:
   - cohortId
   - weekdaysRangeId
   - courseId
-  - classRoomId
+  - classroomId
   - instructorId
 properties:
   cohortId:
@@ -15,7 +15,7 @@ properties:
   courseId:
     type: integer
     example: 1
-  classRoomId:
+  classroomId:
     type: integer
     example: 1
   instructorId:

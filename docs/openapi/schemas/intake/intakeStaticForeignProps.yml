@@ -1,0 +1,11 @@
+type: object
+required:
+  - cohorts
+properties:
+  cohorts:
+    type: array
+    items:
+      allOf:
+        - $ref: '../cohort/cohortStaticProps.yml'
+        - $ref: '../cohort/cohortDynamicProps.yml'
+        - $ref: '../cohort/cohortStaticForeignProps.yml'

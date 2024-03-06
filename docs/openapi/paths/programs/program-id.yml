@@ -1,0 +1,44 @@
+patch:
+  tags:
+    - Program
+  summary: Update the Program by id
+  parameters:
+    - in: path
+      name: programId
+      schema:
+        type: integer
+      required: true
+      description: Id of the program to update
+  requestBody:
+    description: Create new program
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/program/programDynamicProps.yml'
+  responses:
+    '200':
+      description: Returns the updated Program
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+              - data
+            properties:
+              statusCode:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Updated
+              data:
+                allOf:
+                  - $ref: '../../schemas/program/programStaticProps.yml'
+                  - $ref: '../../schemas/program/programDynamicProps.yml'
+                  - $ref: '../../schemas/program/programStaticForeignProps.yml'
+    '400':
+      $ref: '../../index.yml#/components/schemas/400Error'
+    '500':
+      $ref: '../../index.yml#/components/schemas/500Error'

@@ -23,7 +23,10 @@ get:
               data:
                 type: array
                 items:
-                  $ref: '../../index.yml#/components/schemas/Intake'
+                  allOf:
+                    - $ref: '../../schemas/intake/intakeStaticProps.yml'
+                    - $ref: '../../schemas/intake/intakeDynamicProps.yml'
+                    - $ref: '../../schemas/intake/intakeStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -37,21 +40,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - name
-            - startAt
-            - endAt
-          properties:
-            name:
-              type: string
-              example: DMS-24-Sep
-            startAt:
-              type: string
-              example: 2024-05-23
-            endAt:
-              type: string
-              example: 2025-04-30
+          $ref: '../../schemas/intake/intakeDynamicProps.yml'
   responses:
     '201':
       description: Returns created Intake
@@ -71,33 +60,10 @@ post:
                 type: string
                 example: Created
               data:
-                type: object
-                required:
-                  - id
-                  - name
-                  - startAt
-                  - endAt
-                  - createdAt
-                  - updatedAt
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: DMS-24-Sep
-                  startAt:
-                    type: string
-                    example: 2024-05-23
-                  endAt:
-                    type: string
-                    example: 2025-04-30
-                  createdAt:
-                    type: string
-                    example: 2024-05-23
-                  updatedAt:
-                    type: string
-                    example: 2025-04-30
+                allOf:
+                  - $ref: '../../schemas/intake/intakeStaticProps.yml'
+                  - $ref: '../../schemas/intake/intakeDynamicProps.yml'
+                  - $ref: '../../schemas/intake/intakeStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
