@@ -1,10 +1,10 @@
 get:
   tags:
-    - Class
-  summary: Get classes
+    - Program
+  summary: Get Programs
   responses:
     '200':
-      description: Returns classes
+      description: Returns a list of Program
       content:
         application/json:
           schema:
@@ -24,29 +24,26 @@ get:
                 type: array
                 items:
                   allOf:
-                    - $ref: '../../schemas/class/classStaticProps.yml'
-                    - $ref: '../../schemas/class/classDynamicProps.yml'
-                    - $ref: '../../schemas/class/classStaticForeignProps.yml'
+                    - $ref: '../../schemas/program/programStaticProps.yml'
+                    - $ref: '../../schemas/program/programDynamicProps.yml'
+                    - $ref: '../../schemas/program/programStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
       $ref: '../../index.yml#/components/schemas/500Error'
-
 post:
   tags:
-    - Class
-  summary: Create new class
+    - 'Program'
+  summary: Create new program
   requestBody:
-    required: true
+    description: Create new program
     content:
       application/json:
         schema:
-          allOf:
-            - $ref: '../../schemas/class/classDynamicProps.yml'
-            - $ref: '../../schemas/class/classDynamicForeignProps.yml'
+          $ref: '../../schemas/program/programDynamicProps.yml'
   responses:
-    '200':
-      description: Returns new class
+    '201':
+      description: Returns created Program
       content:
         application/json:
           schema:
@@ -58,15 +55,15 @@ post:
             properties:
               statusCode:
                 type: integer
-                example: 200
+                example: 201
               message:
                 type: string
-                example: OK
+                example: Created
               data:
                 allOf:
-                  - $ref: '../../schemas/class/classStaticProps.yml'
-                  - $ref: '../../schemas/class/classDynamicProps.yml'
-                  - $ref: '../../schemas/class/classStaticForeignProps.yml'
+                  - $ref: '../../schemas/program/programStaticProps.yml'
+                  - $ref: '../../schemas/program/programDynamicProps.yml'
+                  - $ref: '../../schemas/program/programStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

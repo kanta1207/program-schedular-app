@@ -1,7 +1,7 @@
 get:
   tags:
     - Cohort
-  summary: Get the Intake by id
+  summary: Get the Cohorts
   parameters:
     - in: query
       name: cohortId
@@ -32,80 +32,10 @@ get:
               data:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - createdAt
-                    - updatedAt
-                    - intake
-                    - program
-                    - periodOfDay
-                  properties:
-                    id:
-                      type: integer
-                      example: 1
-                    name:
-                      type: string
-                      example: A1-0922
-                    createdAt:
-                      type: string
-                      example: 2022-09-01
-                    updatedAt:
-                      type: string
-                      example: 2022-09-01
-                    intake:
-                      type: object
-                      required:
-                        - id
-                        - name
-                        - startAt
-                        - endAt
-                        - createdAt
-                        - updatedAt
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: 2022 September 2022
-                        startAt:
-                          type: string
-                          example: 2022-09-01
-                        endAt:
-                          type: string
-                          example: 2023-08-30
-                        createdAt:
-                          type: string
-                          example: 2022-09-01
-                        updatedAt:
-                          type: string
-                          example: 2022-09-01
-                    program:
-                      type: object
-                      required:
-                        - id
-                        - name
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: DMS
-                    periodOfDay:
-                      type: object
-                      required:
-                        - id
-                        - name
-                      properties:
-                        id:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: Afternoon
+                  allOf:
+                    - $ref: '../../schemas/cohort/cohortStaticProps.yml'
+                    - $ref: '../../schemas/cohort/cohortDynamicProps.yml'
+                    - $ref: '../../schemas/cohort/cohortStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
@@ -118,27 +48,9 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - intakeId
-            - name
-            - programId
-            - periodOfDayId
-          properties:
-            intakeId:
-              type: integer
-              example: 1
-            name:
-              type: string
-              example: A1-0922
-            programId:
-              type: integer
-              example: 1
-              description: DMS or DMA
-            periodOfDayId:
-              type: integer
-              example: 1
-              description: Morning/Afternoon/Evening
+          allOf:
+            - $ref: '../../schemas/cohort/cohortDynamicProps.yml'
+            - $ref: '../../schemas/cohort/cohortDynamicForeignProps.yml'
   responses:
     '201':
       description: Returns created cohort
@@ -158,31 +70,12 @@ post:
                 type: string
                 example: Created
               data:
-                type: object
-                required:
-                  - id
-                  - intakeId
-                  - name
-                  - programId
-                  - periodOfDayId
-                properties:
-                  id:
-                    type: integer
-                    example: 1
-                  intakeId:
-                    type: integer
-                    example: 1
-                  name:
-                    type: string
-                    example: A1-0922
-                  programId:
-                    type: integer
-                    example: 1
-                    description: DMS or DMA
-                  periodOfDayId:
-                    type: integer
-                    example: 1
-                    description: Morning/Afternoon/Evening
+                type: array
+                items:
+                  allOf:
+                    - $ref: '../../schemas/cohort/cohortStaticProps.yml'
+                    - $ref: '../../schemas/cohort/cohortDynamicProps.yml'
+                    - $ref: '../../schemas/cohort/cohortStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
