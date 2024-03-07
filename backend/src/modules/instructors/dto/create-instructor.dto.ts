@@ -22,6 +22,7 @@ export class CreateInstructorDto {
   @IsString()
   note: string | null;
 
+  @IsOptional()
   @IsNumber()
   @IsNotEmpty()
   desiredWorkingHours: number;
