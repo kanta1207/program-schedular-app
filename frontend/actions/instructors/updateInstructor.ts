@@ -11,15 +11,15 @@ interface UpdateInstructorPayload {
   contractTypeId: number;
   weekdaysRangeId: number;
   periodOfDayId: PeriodOfDayName[];
-  coursesIds: number[];
+  courseIds: number[];
   notes: string;
 }
 
 export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes } =
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes } =
     payload;
 
-  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes);
+  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes);
 
   const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
   if (!tmpInstructor) throw new Error('Instructor not found');
