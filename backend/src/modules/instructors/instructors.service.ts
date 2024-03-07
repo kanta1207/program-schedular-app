@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,16 +32,29 @@ export class InstructorsService {
 
   async create(createInstructorDto: CreateInstructorDto) {
     const {
+      desiredWorkingHours,
       contractTypeId,
       weekdaysRangeId,
       courseIds,
       periodOfDaysIds,
-      ...dtoProps
+      ...restOfDtoProps
     } = createInstructorDto;
 
     const contractType = await this.masterContractTypeRepository.findOne({
       where: { id: contractTypeId },
     });
+
+    // Validate contractor's desired working hours, making it sure it's not empty
+    if (contractType.id === 3 && !desiredWorkingHours)
+      throw new BadRequestException(
+        'Desired working hours is required for contract instructors',
+      );
+
+    // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
+    if (contractType.id !== 3 && desiredWorkingHours)
+      throw new BadRequestException(
+        'Desired working hours should not be provided for full-time or part-time instructors',
+      );
 
     const weekdaysRange = await this.masterWeekdaysRangeRepository.findOne({
       where: { id: weekdaysRangeId },
@@ -49,7 +62,8 @@ export class InstructorsService {
 
     // save instructor and get the saved instructor data
     const instructor = await this.instructorRepository.save({
-      ...dtoProps,
+      ...restOfDtoProps,
+      desiredWorkingHours,
       contractType,
       weekdaysRange,
     });
