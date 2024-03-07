@@ -110,7 +110,7 @@ export class InstructorsService {
   }
 
   async findOne(id: number) {
-    return await this.instructorRepository.findOne({
+    const instructor = await this.instructorRepository.findOne({
       where: {
         id,
       },
@@ -118,11 +118,29 @@ export class InstructorsService {
         contractType: true,
         weekdaysRange: true,
         periodOfDays: true,
-        courses: {
+        classes: {
           course: true,
+          cohort: {
+            program: true,
+          },
+          weekdaysRange: true,
+          classroom: true,
         },
       },
     });
+    // Get all the courses associated with the instructor
+    const coursesInstructors = await this.coursesInstructorsRepository.find({
+      where: {
+        instructor: { id },
+      },
+      relations: { course: true },
+    });
+    const courses = coursesInstructors.map((ci) => ci.course);
+
+    // Add the courses to the result object
+    const result = { ...instructor, courses };
+
+    return result;
   }
 
   update(id: number, updateInstructorDto: UpdateInstructorDto) {
