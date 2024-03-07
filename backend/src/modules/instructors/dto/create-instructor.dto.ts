@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -17,8 +18,9 @@ export class CreateInstructorDto {
   @IsNotEmpty()
   isActive: boolean;
 
+  @IsOptional()
   @IsString()
-  note: string;
+  note: string | null;
 
   @IsNumber()
   @IsNotEmpty()
@@ -40,5 +42,5 @@ export class CreateInstructorDto {
   @IsArray()
   @IsNumber({}, { each: true })
   @IsNotEmpty()
-  periodOfDaysIds: number;
+  periodOfDaysIds: number[];
 }
