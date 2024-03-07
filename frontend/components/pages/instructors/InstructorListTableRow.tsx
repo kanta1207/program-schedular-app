@@ -1,4 +1,5 @@
 'use client';
+import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { Instructor } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -26,7 +27,9 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
       <TableCell>{instructor.contractType.name}</TableCell>
       <TableCell>{instructor.desiredWorkingHours}</TableCell>
       <TableCell>{periodNames}</TableCell>
-      <TableCell>{instructor.weekdaysRange.name}</TableCell>
+      <TableCell>
+        <DaysOfTheWeekChip daysOfTheWeek={instructor.weekdaysRange.name} />
+      </TableCell>
       <TableCell>{instructor.isActive ? 'Active' : 'Inactive'}</TableCell>
     </TableRow>
   );

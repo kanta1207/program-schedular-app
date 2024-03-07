@@ -1,4 +1,4 @@
-// import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { Class } from '@/types/_index';
 import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
@@ -20,9 +20,7 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
       <TableCell>{classData.course.name}</TableCell>
       <TableCell>{classData.cohort.name}</TableCell>
       <TableCell>
-        {/* <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
-         */}
-        {classData.weekdaysRange.name}
+        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
       </TableCell>
       <TableCell>{classData.cohort.periodOfDay.time}</TableCell>
       <TableCell>{classData.course.program.name}</TableCell>
