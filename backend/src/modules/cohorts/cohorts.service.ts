@@ -21,19 +21,6 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
   ) {}
 
-  // TODO: Remove
-  private readonly relationList = [
-    'intake',
-    'program',
-    'periodOfDay',
-    'classes',
-    'classes.cohort',
-    'classes.weekdaysRange',
-    'classes.course',
-    'classes.classroom',
-    'classes.instructor',
-  ];
-
   async create(createCohortDto: CreateCohortDto) {
     const { name, intakeId, periodOfDayId, programId } = createCohortDto;
 
@@ -52,18 +39,38 @@ export class CohortsService {
     return await this.cohortRepository.save(cohort);
   }
 
-  // TODO: Specify relations wit object
   async findAll() {
     return await this.cohortRepository.find({
-      relations: this.relationList,
+      relations: {
+        intake: true,
+        program: true,
+        periodOfDay: true,
+        classes: {
+          cohort: true,
+          weekdaysRange: true,
+          course: true,
+          classroom: true,
+          instructor: true,
+        },
+      },
     });
   }
 
-  // TODO: Specify relations wit object
   async findOne(id: number) {
     const cohort = await this.cohortRepository.findOne({
       where: { id },
-      relations: this.relationList,
+      relations: {
+        intake: true,
+        program: true,
+        periodOfDay: true,
+        classes: {
+          cohort: true,
+          weekdaysRange: true,
+          course: true,
+          classroom: true,
+          instructor: true,
+        },
+      },
     });
     if (!cohort) {
       throw new NotFoundException('Cohort Not Found');
