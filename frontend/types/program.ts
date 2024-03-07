@@ -1,6 +1,4 @@
 export interface Program {
   id: number;
-  name: ProgramName;
+  name: string;
 }
-
-export type ProgramName = 'DMS' | 'DMA';
