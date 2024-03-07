@@ -31,29 +31,36 @@ export class Class {
   @Column({ name: 'end_at', type: 'timestamp' })
   endAt: Date;
 
-  @ManyToOne(() => Cohort, (cohort) => cohort.classes, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Cohort, (cohort) => cohort.classes, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'cohort_id' })
   cohort: Cohort;
 
   @ManyToOne(
     () => MasterWeekdaysRange,
     (masterWeekdaysRange) => masterWeekdaysRange.classes,
+    { nullable: false },
   )
   @JoinColumn({ name: 'range_id' })
   weekdaysRange: MasterWeekdaysRange;
 
-  @ManyToOne(() => Course, (course) => course.classes)
+  @ManyToOne(() => Course, (course) => course.classes, { nullable: false })
   @JoinColumn({ name: 'course_id' })
   course: Course;
 
   @ManyToOne(
     () => MasterClassroom,
     (masterClassroom) => masterClassroom.classes,
+    { nullable: false },
   )
   @JoinColumn({ name: 'classroom_id' })
   classroom: MasterClassroom;
 
-  @ManyToOne(() => Instructor, (instructor) => instructor.classes)
+  @ManyToOne(() => Instructor, (instructor) => instructor.classes, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'instructor_id' })
   instructor: Instructor;
 }
