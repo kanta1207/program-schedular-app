@@ -6,8 +6,8 @@ export interface BreakBase {
   updatedAt: Date;
 }
 
-export interface CreateBreakResponse extends BreakBase {}
+export type GetBreaksResponse = BreakBase[];
 
-export interface GetBreaksResponse extends BreakBase {}
+export interface CreateBreakResponse extends BreakBase {}
 
 export interface UpdateBreakResponse extends BreakBase {}

@@ -1,8 +1,35 @@
-import { Program } from './_index';
+import { ClassBase } from './class';
+import { CohortBase } from './cohort';
+import { IntakeBase } from './intake';
+import { PeriodOfDay } from './master';
+import { ProgramBase } from './program';
 
-export interface Course {
+export interface CourseBase {
   id: number;
   name: string;
   requiredHours: number;
-  // program: Program;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+interface GetCoursesProgramCohorts extends CohortBase {
+  intake: IntakeBase;
+  periodOfDay: PeriodOfDay;
+  program: ProgramBase;
+  classes: ClassBase[];
+}
+
+interface GetCoursesProgram extends ProgramBase {
+  cohorts: GetCoursesProgramCohorts;
+  courses: CourseBase[];
+}
+
+interface GetCourseResponse extends CourseBase {
+  program: GetCoursesProgram;
+}
+
+export type GetCoursesResponse = GetCourseResponse[];
+
+export interface CreateCourseResponse extends GetCourseResponse {}
+
+export interface UpdateCourseResponse extends GetCourseResponse {}

@@ -1,53 +1,27 @@
-import { Class, Course, Intake, PeriodOfDayName, Program, WeekdaysRange } from './_index';
+import { ClassBase, CourseBase, InstructorBase, IntakeBase, PeriodOfDay, ProgramBase, WeekdaysRange } from './_index';
 
-export interface Cohort {
+export interface CohortBase {
   id: number;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface CreateCohortResponse extends Cohort {
-  intake: Intake;
-  program: Program;
-  periodOfDay: {
-    id: number;
-    name: PeriodOfDayName;
-  };
-  classes: GetCohortClass[];
-}
-
-export interface GetCohortsResponse extends Cohort {
-  intake: Intake;
-  program: Program;
-  periodOfDay: {
-    id: number;
-    name: PeriodOfDayName;
-  };
-}
-
-interface GetCohortClass extends Class {
+interface GetCohortClass extends ClassBase {
   weekdaysRange: WeekdaysRange;
-  course: Course;
-  instructor: {
-    id: number;
-    name: string;
-  };
+  course: CourseBase;
+  instructor: InstructorBase;
 }
-export interface GetCohortResponse extends Cohort {
-  intake: Intake;
-  program: Program;
-  periodOfDay: {
-    id: number;
-    name: PeriodOfDayName;
-  };
+
+export interface GetCohortResponse extends CohortBase {
+  intake: IntakeBase;
+  program: ProgramBase;
+  periodOfDay: PeriodOfDay;
   classes: GetCohortClass[];
 }
 
-export interface UpdateCohortResponse extends Cohort {
-  intake: Intake;
-  program: Program;
-  periodOfDay: {
-    id: number;
-    name: PeriodOfDayName;
-  };
-  classes: GetCohortClass[];
-}
+export type GetCohortsResponse = GetCohortResponse[];
+
+export interface CreateCohortResponse extends GetCohortClass {}
+
+export interface UpdateCohortResponse extends GetCohortClass {}
