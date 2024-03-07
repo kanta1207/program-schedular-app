@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Instructor } from 'src/entity/instructors.entity';
 import { In, Repository } from 'typeorm';
 import { CoursesInstructors } from 'src/entity/coursesInstructors.entity';
+import { MasterContractType } from 'src/entity/masterContractTypes.entity';
+import { MasterWeekdaysRange } from 'src/entity/masterWeekdaysRanges.entity';
 
 @Injectable()
 export class InstructorsService {
@@ -13,10 +15,27 @@ export class InstructorsService {
     private readonly instructorRepository: Repository<Instructor>,
     @InjectRepository(CoursesInstructors)
     private readonly coursesInstructorsRepository: Repository<CoursesInstructors>,
+    @InjectRepository(MasterContractType)
+    private readonly masterContractTypeRepository: Repository<MasterContractType>,
+    @InjectRepository(MasterWeekdaysRange)
+    private readonly masterWeekdaysRangeRepository: Repository<MasterWeekdaysRange>,
   ) {}
 
   async create(createInstructorDto: CreateInstructorDto) {
-    return await this.instructorRepository.save(createInstructorDto);
+    const { contractTypeId, weekdaysRangeId, ...dtoProps } =
+      createInstructorDto;
+    const contractType = await this.masterContractTypeRepository.findOne({
+      where: { id: contractTypeId },
+    });
+    const weekdaysRange = await this.masterWeekdaysRangeRepository.findOne({
+      where: { id: weekdaysRangeId },
+    });
+    const instructor = this.instructorRepository.create({
+      ...dtoProps,
+      contractType,
+      weekdaysRange,
+    });
+    return await this.instructorRepository.save(instructor);
   }
 
   async findAll(rangeId: number | undefined, courseId: number | undefined) {
