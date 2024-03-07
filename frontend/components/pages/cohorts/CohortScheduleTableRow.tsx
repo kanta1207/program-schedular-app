@@ -8,18 +8,16 @@ interface CohortScheduleTableRowProps {
 }
 
 export const CohortScheduleTableRow: React.FC<CohortScheduleTableRowProps> = ({ classData }) => {
-  const startDate = dayjs(classData.startAt).format('YYYY-MM-DD');
-  const endDate = dayjs(classData.endAt).format('YYYY-MM-DD');
+  const startDate = dayjs(classData.startAt).format('YYYY-MM-DD (ddd)');
+  const endDate = dayjs(classData.endAt).format('YYYY-MM-DD (ddd)');
 
-  const days = dayjs(classData.endAt).diff(dayjs(classData.startAt)) / (24 * 60 * 60 * 1000);
-  const weeks = Math.round((Math.round(days) + 2) / 7);
+  // TODO: Take break period into consideration
+  const daysDiff = dayjs(classData.endAt).diff(dayjs(classData.startAt)) / (24 * 60 * 60 * 1000);
+  // StartAt usually starts on Monday and endAt ends on Friday, then add 2 (Saturday and Sunday)
+  const weeks = Math.round((Math.round(daysDiff) + 2) / 7);
 
-  let hoursPerWeek = 0;
-  if (classData.weekdaysRange.name === 'Mon - Fri') {
-    hoursPerWeek = 20;
-  } else {
-    hoursPerWeek = 10;
-  }
+  const hoursPerWeek = classData.weekdaysRange.name === 'Mon - Fri' ? 20 : 10;
+
   const classHours = hoursPerWeek * weeks;
 
   return (
