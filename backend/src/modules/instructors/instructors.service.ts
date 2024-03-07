@@ -28,7 +28,7 @@ export class InstructorsService {
         where: {
           course: { id: courseId },
         },
-        relations: ['instructor'],
+        relations: { instructor: true },
       });
 
       instructorIds = coursesInstructors.map((ci) => ci.instructor.id);
@@ -47,8 +47,20 @@ export class InstructorsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} instructor`;
+  async findOne(id: number) {
+    return await this.instructorRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        contractType: true,
+        weekdaysRange: true,
+        periodOfDays: true,
+        courses: {
+          course: true,
+        },
+      },
+    });
   }
 
   update(id: number, updateInstructorDto: UpdateInstructorDto) {
