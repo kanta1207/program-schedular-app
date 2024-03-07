@@ -1,7 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Class } from './classes.entity';
+import { Instructor } from './instructors.entity';
 
-@Entity('weekdays_ranges')
-export class WeekdaysRange {
+@Entity('master_weekdays_ranges')
+export class MasterWeekdaysRange {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,4 +12,10 @@ export class WeekdaysRange {
     length: 255,
   })
   name: string;
+
+  @OneToMany(() => Class, (clazz) => clazz.weekdaysRange)
+  classes: Class[];
+
+  @OneToMany(() => Instructor, (instructor) => instructor.weekdaysRange)
+  instructors: Instructor[];
 }

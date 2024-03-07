@@ -8,4 +8,4 @@ properties:
     example: 1
   name:
     type: string
-    example: Monday to Friday
+    example: Mon - Fri
