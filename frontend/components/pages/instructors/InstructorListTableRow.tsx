@@ -3,11 +3,11 @@ import { Instructor, PeriodOfDay } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-interface InstructorProps {
+interface InstructorListTableRowProps {
   instructor: Instructor;
 }
 
-export const InstructorListTableRow: React.FC<InstructorProps> = ({ instructor }) => {
+export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ instructor }) => {
   const router = useRouter();
   const handleRowClick = () => {
     router.push(`/instructors/${instructor.id}`);
