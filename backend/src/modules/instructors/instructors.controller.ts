@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InstructorsService } from './instructors.service';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
@@ -30,8 +31,14 @@ export class InstructorsController {
   }
 
   @Get()
-  async findAll() {
-    const instructors = await this.instructorsService.findAll();
+  async findAll(
+    @Query('rangeId') rangeId: number | undefined,
+    @Query('courseId') courseId: number | undefined,
+  ) {
+    const instructors = await this.instructorsService.findAll(
+      rangeId,
+      courseId,
+    );
     return ApiResponse.new(
       instructors,
       StatusCodes.STATUS_OK.code,
