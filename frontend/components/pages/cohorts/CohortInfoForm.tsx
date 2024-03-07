@@ -15,20 +15,18 @@ interface CohortInfoFormProps {
 }
 
 export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
-  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [isEditable, setIsEditable] = React.useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (!cohort) {
-      setIsEditMode(true);
-    }
-
-    if (cohort && !isEditMode) {
+      setIsEditable(true);
+    } else if (cohort) {
       reset({
-        name: cohort!.name,
-        intakeId: cohort!.intake.id,
-        periodOfDayId: cohort!.periodOfDay.id,
-        programId: cohort!.program.id,
+        name: cohort.name,
+        intakeId: cohort.intake.id,
+        periodOfDayId: cohort.periodOfDay.id,
+        programId: cohort.program.id,
       });
     }
   }, []);
@@ -38,14 +36,13 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
     if (isConfirmed) {
       if (!cohort) {
         router.push('/cohorts');
-      }
-      if (cohort) {
-        setIsEditMode(false);
+      } else if (cohort) {
+        setIsEditable(false);
         reset({
-          name: cohort!.name,
-          intakeId: cohort!.intake.id,
-          periodOfDayId: cohort!.periodOfDay.id,
-          programId: cohort!.program.id,
+          name: cohort.name,
+          intakeId: cohort.intake.id,
+          periodOfDayId: cohort.periodOfDay.id,
+          programId: cohort.program.id,
         });
       }
     }
@@ -77,8 +74,8 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
         programId: data.programId,
       };
 
-      if (cohort && isEditMode) {
-        const updatedCohort = await updateCohort(cohort!.id, payload);
+      if (cohort) {
+        const updatedCohort = await updateCohort(cohort.id, payload);
         console.log('updated cohort:', updatedCohort);
 
         reset({
@@ -87,7 +84,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
           periodOfDayId: payload.periodOfDayId,
           programId: payload.programId,
         });
-        setIsEditMode(false);
+        setIsEditable(false);
       } else if (!cohort) {
         const newCohort = await createCohort(payload);
 
@@ -117,7 +114,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                   value={field.value ?? ''}
                   inputRef={field.ref}
                   onChange={(name) => field.onChange(name)}
-                  disabled={isEditMode ? false : true}
+                  disabled={!isEditable}
                 />
               );
             }}
@@ -137,7 +134,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                     size="small"
                     value={field.value ?? ''}
                     required
-                    disabled={isEditMode ? false : true}
+                    disabled={!isEditable}
                     {...field}
                   >
                     {intakes.map((intake) => {
@@ -167,7 +164,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                     size="small"
                     value={field.value ?? ''}
                     required
-                    disabled={isEditMode ? false : true}
+                    disabled={!isEditable}
                     {...field}
                   >
                     {PROGRAMS.map((program) => {
@@ -197,7 +194,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                     size="small"
                     value={field.value ?? ''}
                     required
-                    disabled={isEditMode ? false : true}
+                    disabled={!isEditable}
                     {...field}
                   >
                     {PERIOD_OF_DAYS.map((period) => {
@@ -215,21 +212,21 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content', position: 'relative', left: '100%' }}>
-        {isEditMode ? (
+        {isEditable ? (
           <>
-            <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
+            <Button variant="outlined" type="button" onClick={handleCancelButton}>
               Cancel
             </Button>
-            <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
+            <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
               Save
             </Button>
           </>
         ) : (
           <>
-            <Button size="medium" variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
+            <Button variant="outlined" type="button" onClick={() => setIsEditable(true)}>
               Edit
             </Button>
-            <Button size="medium" variant="contained" color="error" type="button" onClick={handleDeleteButton}>
+            <Button variant="contained" color="error" type="button" onClick={handleDeleteButton}>
               Delete
             </Button>
           </>

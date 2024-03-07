@@ -2,6 +2,23 @@
 import { createTheme } from '@mui/material/styles';
 import { Roboto } from 'next/font/google';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    daysOfWeek: {
+      monfri: string;
+      monwed: string;
+      wedfri: string;
+    };
+  }
+  interface PaletteOptions {
+    daysOfWeek?: {
+      monfri?: string;
+      monwed?: string;
+      wedfri?: string;
+    };
+  }
+}
+
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -26,6 +43,11 @@ const theme = createTheme({
     },
     success: {
       main: '#19B571',
+    },
+    daysOfWeek: {
+      monfri: '#662d91',
+      monwed: '#0047AB',
+      wedfri: '#BA0021',
     },
   },
   typography: {

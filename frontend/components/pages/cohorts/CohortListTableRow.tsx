@@ -3,11 +3,11 @@ import { Cohort } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-interface CohortProps {
+interface CohortListTableRowProps {
   cohort: Cohort;
 }
 
-export const CohortListTableRow: React.FC<CohortProps> = ({ cohort }) => {
+export const CohortListTableRow: React.FC<CohortListTableRowProps> = ({ cohort }) => {
   const router = useRouter();
   const handleRowClick = () => {
     router.push(`/cohorts/${cohort.id}`);

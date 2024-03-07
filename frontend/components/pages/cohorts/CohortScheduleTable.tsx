@@ -27,9 +27,7 @@ export const CohortScheduleTable: React.FC<CohortScheduleTableProps> = ({ cohort
           <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
         </TableRow>
       </TableHead>
-      {!cohort ? (
-        ''
-      ) : (
+      {cohort && (
         <TableBody>
           {cohortSchedule.map((classData) => (
             <TableRow key={classData.id}>
