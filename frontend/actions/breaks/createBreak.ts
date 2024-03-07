@@ -1,6 +1,4 @@
 import { Dayjs } from 'dayjs';
-import { revalidateTag } from 'next/cache';
-import { breaks } from '@/mock/_index';
 import { ApiResponse, Break } from '@/types/_index';
 
 interface CreateBreakPayload {
@@ -10,17 +8,6 @@ interface CreateBreakPayload {
 
 export const createBreak = async (payload: CreateBreakPayload): Promise<ApiResponse<Break>> => {
   const { startAt, endAt } = payload;
-  console.log(startAt.toDate(), endAt.toDate());
-
-  const data = {
-    statusCode: 201,
-    message: 'Created',
-    data: breaks[0],
-  };
-
-  return data;
-
-  // TODO: Fetch data from api
   try {
     if (!startAt && !endAt) {
       throw new Error('Either startAt or endAt is required');
@@ -46,8 +33,6 @@ export const createBreak = async (payload: CreateBreakPayload): Promise<ApiRespo
     }
 
     const data = await response.json();
-
-    revalidateTag('break');
 
     return data;
   } catch (error: any) {
