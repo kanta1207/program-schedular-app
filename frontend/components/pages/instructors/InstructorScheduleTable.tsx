@@ -11,7 +11,7 @@ interface InstructorScheduleTableProps {
 
 export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = ({ pageType, instructor }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-  const instructorSchedule = classes.filter((classData) => classData.instructor?.name === instructor?.name);
+  const instructorSchedule = classes.filter((classData) => classData.instructor?.id === instructor?.id);
 
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
