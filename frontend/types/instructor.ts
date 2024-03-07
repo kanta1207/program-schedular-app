@@ -4,11 +4,20 @@ export interface Instructor {
   id: number;
   name: string;
   isActive: boolean;
-  desiredWorkingHours: number;
+  desiredWorkingHour: number;
   contractType: ContractType;
   weekdaysRange: WeekdaysRange;
   periodOfDays: PeriodOfDay[];
+}
+
+export interface CreateInstructorResponse extends Instructor {}
+
+export interface GetInstructorsResponse extends Instructor {}
+
+export interface GetInstructorResponse extends Instructor {
   courses: Course[];
-  createdAt?: Date;
-  updatedAt?: Date;
+}
+
+export interface UpdateInstructorResponse extends Instructor {
+  courses: Course[];
 }

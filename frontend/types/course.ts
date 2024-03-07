@@ -4,7 +4,5 @@ export interface Course {
   id: number;
   name: string;
   requiredHours: number;
-  program: Program;
-  createdAt?: Date;
-  updatedAt?: Date;
+  // program: Program;
 }

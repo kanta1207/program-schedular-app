@@ -1,18 +1,24 @@
 import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
 import { breaks } from '@/mock/_index';
-import { Break } from '@/types/_index';
+import { ApiResponse, Break } from '@/types/_index';
 
 interface CreateBreakPayload {
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const createBreak = async (payload: CreateBreakPayload): Promise<Break> => {
+export const createBreak = async (payload: CreateBreakPayload): Promise<ApiResponse<Break>> => {
   const { startAt, endAt } = payload;
   console.log(startAt.toDate(), endAt.toDate());
 
-  return breaks[0];
+  const data = {
+    statusCode: 201,
+    message: 'Created',
+    data: breaks[0],
+  };
+
+  return data;
 
   // TODO: Fetch data from api
   try {

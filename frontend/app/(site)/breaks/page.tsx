@@ -4,7 +4,7 @@ import CreateBreak from '@/components/pages/breaks/CreateBreak';
 import Headline from '@/components/partials/Headline';
 
 const BreakList = async () => {
-  const breaks = await getBreaks();
+  const { data: breaks } = await getBreaks();
   return (
     <>
       <Headline name="Breaks" />
