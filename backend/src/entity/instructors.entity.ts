@@ -44,6 +44,7 @@ export class Instructor {
   @ManyToOne(
     () => MasterContractType,
     (contractType) => contractType.instructors,
+    { nullable: false },
   )
   @JoinColumn({ name: 'contract_type_id' })
   contractType: MasterContractType;
@@ -51,6 +52,7 @@ export class Instructor {
   @ManyToOne(
     () => MasterWeekdaysRange,
     (weekdaysRange) => weekdaysRange.instructors,
+    { nullable: false },
   )
   @JoinColumn({ name: 'range_id' })
   weekdaysRange: MasterWeekdaysRange;

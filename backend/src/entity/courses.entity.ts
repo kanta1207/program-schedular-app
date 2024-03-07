@@ -33,7 +33,7 @@ export class Course {
   @Column({ name: 'required_hours', type: 'int' })
   requiredHours: number;
 
-  @ManyToOne(() => Program, (program) => program.courses)
+  @ManyToOne(() => Program, (program) => program.courses, { nullable: false })
   @JoinColumn({ name: 'program_id' })
   program: Program;
 
