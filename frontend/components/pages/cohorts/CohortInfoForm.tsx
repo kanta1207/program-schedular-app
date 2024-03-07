@@ -85,7 +85,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
           programId: payload.programId,
         });
         setIsEditable(false);
-      } else if (!cohort) {
+      } else {
         const newCohort = await createCohort(payload);
 
         // [future] redirect to cohorts/:id when new cohort is saved
