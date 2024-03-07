@@ -4,65 +4,67 @@ import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
 import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
 import { intakes } from '@/mock/_index';
-import { Cohort, PeriodOfDayName, ProgramName } from '@/types/_index';
+import { Cohort } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 interface CohortInfoFormProps {
-  pageType: 'new' | 'view';
   cohort?: Cohort;
 }
 
-export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort }) => {
+export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
   const [isEditMode, setIsEditMode] = React.useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (pageType === 'new') {
+    if (!cohort) {
       setIsEditMode(true);
     }
 
-    if (pageType === 'view' && !isEditMode) {
+    if (cohort && !isEditMode) {
       reset({
         name: cohort!.name,
-        intake: cohort!.intake.name,
-        program: cohort!.program.name,
-        period: cohort!.periodOfDay.name,
+        intakeId: cohort!.intake.id,
+        periodOfDayId: cohort!.periodOfDay.id,
+        programId: cohort!.program.id,
       });
     }
   }, []);
 
   const handleCancelButton = () => {
-    const result = confirm('Do you really want to cancel?');
-    if (result) {
-      if (pageType === 'new') {
+    const isConfirmed = confirm('Do you really want to cancel?');
+    if (isConfirmed) {
+      if (!cohort) {
         router.push('/cohorts');
       }
-      if (pageType === 'view') {
+      if (cohort) {
         setIsEditMode(false);
         reset({
           name: cohort!.name,
-          intake: cohort!.intake.name,
-          program: cohort!.program.name,
-          period: cohort!.periodOfDay.name,
+          intakeId: cohort!.intake.id,
+          periodOfDayId: cohort!.periodOfDay.id,
+          programId: cohort!.program.id,
         });
       }
     }
   };
 
-  const handleDeleteButton = () => {
-    alert('Do you really want to delete?');
-    deleteCohort(cohort!.id);
+  const handleDeleteButton = async () => {
+    const isConfirmed = confirm('Do you really want to delete?');
+    if (isConfirmed) {
+      await deleteCohort(cohort!.id);
+      router.push('/cohorts');
+    }
   };
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: null as string | null,
-      intake: '' as string | null,
-      program: '' as ProgramName | null,
-      period: '' as PeriodOfDayName | null,
+      name: '' as string | null,
+      intakeId: '' as number | string,
+      periodOfDayId: '' as number | string,
+      programId: '' as number | string,
     },
   });
 
@@ -70,21 +72,23 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
     try {
       const payload = {
         name: data.name,
-        intakeName: data.intake,
-        programName: data.program,
-        periodName: data.period,
+        intakeId: data.intakeId,
+        periodOfDayId: data.periodOfDayId,
+        programId: data.programId,
       };
 
-      if (pageType === 'view' && isEditMode) {
-        await updateCohort(cohort!.id, payload);
+      if (cohort && isEditMode) {
+        const updatedCohort = await updateCohort(cohort!.id, payload);
+        console.log('updated cohort:', updatedCohort);
+
         reset({
           name: payload.name,
-          intake: payload.intakeName,
-          program: payload.programName,
-          period: payload.periodName,
+          intakeId: payload.intakeId,
+          periodOfDayId: payload.periodOfDayId,
+          programId: payload.programId,
         });
         setIsEditMode(false);
-      } else if (pageType === 'new') {
+      } else if (!cohort) {
         const newCohort = await createCohort(payload);
 
         // [future] redirect to cohorts/:id when new cohort is saved
@@ -123,7 +127,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
           <Typography sx={{ width: '5rem' }}>Intake:</Typography>
           <Controller
             control={control}
-            name="intake"
+            name="intakeId"
             rules={{ required: true }}
             render={({ field }: any) => {
               return (
@@ -138,7 +142,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
                   >
                     {intakes.map((intake) => {
                       return (
-                        <MenuItem key={intake.id} value={intake.name}>
+                        <MenuItem key={intake.id} value={intake.id}>
                           {intake.name}
                         </MenuItem>
                       );
@@ -153,7 +157,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
           <Typography sx={{ width: '5rem' }}>Program:</Typography>
           <Controller
             control={control}
-            name="program"
+            name="programId"
             rules={{ required: true }}
             render={({ field }: any) => {
               return (
@@ -168,7 +172,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
                   >
                     {PROGRAMS.map((program) => {
                       return (
-                        <MenuItem key={program.id} value={program.name}>
+                        <MenuItem key={program.id} value={program.id}>
                           {program.name}
                         </MenuItem>
                       );
@@ -183,7 +187,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
           <Typography sx={{ width: '5rem' }}>Period:</Typography>
           <Controller
             control={control}
-            name="period"
+            name="periodOfDayId"
             rules={{ required: true }}
             render={({ field }: any) => {
               return (
@@ -198,7 +202,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ pageType, cohort
                   >
                     {PERIOD_OF_DAYS.map((period) => {
                       return (
-                        <MenuItem key={period.id} value={period.name}>
+                        <MenuItem key={period.id} value={period.id}>
                           {period.name}
                         </MenuItem>
                       );

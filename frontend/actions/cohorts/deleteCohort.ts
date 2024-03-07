@@ -7,7 +7,7 @@ export const deleteCohort = async (id: number): Promise<null> => {
 
   // TODO: Fetch data from api
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/Cohorts/${id}`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts/${id}`;
 
     const response = await fetch(baseUrl, {
       method: 'DELETE',

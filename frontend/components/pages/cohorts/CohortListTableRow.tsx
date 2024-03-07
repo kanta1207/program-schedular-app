@@ -1,26 +1,31 @@
+'use client';
 import { Cohort } from '@/types/_index';
-import { TableCell } from '@mui/material';
-import Link from 'next/link';
+import { TableCell, TableRow } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 interface CohortProps {
   cohort: Cohort;
 }
 
 export const CohortListTableRow: React.FC<CohortProps> = ({ cohort }) => {
+  const router = useRouter();
+  const handleRowClick = () => {
+    router.push(`/cohorts/${cohort.id}`);
+  };
+
   return (
-    <>
-      <TableCell component="th" scope="row">
-        <Link href={`/cohorts/${cohort.id}`}>{cohort.name}</Link>
-      </TableCell>
-      <TableCell>
-        <Link href={`/cohorts/${cohort.id}`}>{cohort.intake.name}</Link>
-      </TableCell>
-      <TableCell>
-        <Link href={`/cohorts/${cohort.id}`}>{cohort.program.name}</Link>
-      </TableCell>
-      <TableCell>
-        <Link href={`/cohorts/${cohort.id}`}>{cohort.periodOfDay.name}</Link>
-      </TableCell>
-    </>
+    <TableRow
+      onClick={handleRowClick}
+      sx={{
+        cursor: 'pointer',
+        '&:last-child td, &:last-child th': { border: 0 },
+        ':hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' },
+      }}
+    >
+      <TableCell>{cohort.name}</TableCell>
+      <TableCell>{cohort.intake.name}</TableCell>
+      <TableCell>{cohort.program.name}</TableCell>
+      <TableCell>{cohort.periodOfDay.name}</TableCell>
+    </TableRow>
   );
 };

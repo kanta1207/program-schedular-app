@@ -8,25 +8,21 @@ interface CohortListTableProps {
 
 export const CohortListTable: React.FC<CohortListTableProps> = ({ cohorts }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
-        <TableRow sx={{ bgcolor: 'primary.main' }}>
-          <TableCell sx={thStyle}>Name</TableCell>
-          <TableCell sx={thStyle}>Intake</TableCell>
-          <TableCell sx={thStyle}>Program</TableCell>
-          <TableCell sx={{ color: '#FFF' }}>Period</TableCell>
+        <TableRow sx={thRowStyle}>
+          <TableCell>Name</TableCell>
+          <TableCell>Intake</TableCell>
+          <TableCell>Program</TableCell>
+          <TableCell>Period</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {cohorts.map((cohort) => (
-          <TableRow
-            key={cohort.id}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 }, ':hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' } }}
-          >
-            <CohortListTableRow cohort={cohort} />
-          </TableRow>
+          <CohortListTableRow key={cohort.id} cohort={cohort} />
         ))}
       </TableBody>
     </Table>

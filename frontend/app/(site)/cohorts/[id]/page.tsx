@@ -17,13 +17,13 @@ const page = async ({ params }: PageProps) => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
         <Headline name="Cohorts" />
       </Box>
-      <CohortInfoForm pageType="view" cohort={cohort} />
+      <CohortInfoForm cohort={cohort} />
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
           <Button variant="contained">Edit Schedule</Button>
         </Box>
-        <CohortScheduleTable pageType="view" cohort={cohort} />
+        <CohortScheduleTable cohort={cohort} />
       </Box>
     </>
   );

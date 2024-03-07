@@ -1,40 +1,33 @@
-import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
-import { cohorts, intakes } from '@/mock/_index';
-import { Cohort, PeriodOfDayName, ProgramName } from '@/types/_index';
+import { cohorts } from '@/mock/_index';
+import { Cohort } from '@/types/_index';
 import { revalidateTag } from 'next/cache';
 
 interface CreateCohortPayload {
   name: string;
-  intakeName: string;
-  programName: ProgramName;
-  periodName: PeriodOfDayName;
+  intakeId: number;
+  periodOfDayId: number;
+  programId: number;
 }
 
 export const createCohort = async (payload: CreateCohortPayload): Promise<Cohort> => {
-  const { name, intakeName, programName, periodName } = payload;
-  console.log(name, intakeName, programName, periodName);
+  const { name, intakeId, periodOfDayId, programId } = payload;
+  console.log(name, intakeId, periodOfDayId, programId);
 
   return cohorts[0];
 
   // TODO: Fetch data from api
   try {
-    if (!name && !intakeName && !programName && !periodName) {
+    if (!name && !intakeId && !periodOfDayId && !programId) {
       throw new Error("Something's wrong in the input data");
     }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts`;
 
-    // TODO: Fetch data from intake api
-    const intake = intakes.find((intake) => intake.name === intakeName);
-
-    const program = PROGRAMS.find((program) => program.name === programName);
-    const period = PERIOD_OF_DAYS.find((period) => period.name === periodName);
-
     const payload = {
       name: name,
-      intake: intake,
-      program: program,
-      period: period,
+      intakeId: intakeId,
+      periodOfDayId: periodOfDayId,
+      programId: programId,
     };
 
     const response = await fetch(baseUrl, {
@@ -51,7 +44,7 @@ export const createCohort = async (payload: CreateCohortPayload): Promise<Cohort
 
     const data = await response.json();
 
-    revalidateTag('Cohort');
+    revalidateTag('cohort');
 
     return data;
   } catch (error: any) {
