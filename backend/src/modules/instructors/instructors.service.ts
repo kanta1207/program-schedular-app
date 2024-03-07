@@ -14,8 +14,9 @@ export class InstructorsService {
     @InjectRepository(CoursesInstructors)
     private readonly coursesInstructorsRepository: Repository<CoursesInstructors>,
   ) {}
-  create(createInstructorDto: CreateInstructorDto) {
-    return 'This action adds a new instructor';
+
+  async create(createInstructorDto: CreateInstructorDto) {
+    return await this.instructorRepository.save(createInstructorDto);
   }
 
   async findAll(rangeId: number | undefined, courseId: number | undefined) {
