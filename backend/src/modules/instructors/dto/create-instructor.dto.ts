@@ -25,7 +25,7 @@ export class CreateInstructorDto {
   @IsOptional()
   @IsNumber()
   @IsNotEmpty()
-  desiredWorkingHours: number;
+  desiredWorkingHours: number | undefined;
 
   @IsNumber()
   @IsNotEmpty()
