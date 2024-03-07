@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 import { revalidateTag } from 'next/cache';
-import { instructors } from '@/mock/_index';
+import { instructors, courses } from '@/mock/_index';
 import { Course, Instructor, PeriodOfDay, PeriodOfDayName } from '@/types/_index';
 import { CONTRACT_TYPES, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 
@@ -31,11 +31,11 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
   tmpInstructor.weekdaysRange =
     WEEKDAYS_RANGES.find((range) => range.id === weekdaysRangeId) ?? tmpInstructor.weekdaysRange;
   tmpInstructor.periodOfDays = periodOfDayId
-    .map((name) => PERIOD_OF_DAYS.find((period) => period.id === id))
+    .map((periodId) => PERIOD_OF_DAYS.find((period) => period.id === periodId))
     .filter((period) => period !== undefined) as PeriodOfDay[];
 
   tmpInstructor.courses = courseIds
-    .map((courseName) => Course.find((course) => course.name === courseName))
+    .map((courseId) => courses.find((course) => course.id === courseId))
     .filter((course) => course !== undefined) as Course[];
 
   tmpInstructor.notes = notes;
@@ -66,8 +66,6 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
     }
 
     const data = await response.json();
-
-    revalidateTag('instructor');
 
     return data;
   } catch (error: any) {

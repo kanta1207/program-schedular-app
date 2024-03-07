@@ -1,6 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import { instructors } from '@/mock/_index';
-import { Instructor, PeriodOfDayName } from '@/types/_index';
+import { Instructor } from '@/types/_index';
 
 interface CreateInstructorPayload {
   name: string;
@@ -47,8 +47,6 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
     }
 
     const data = await response.json();
-
-    revalidateTag('instructor');
 
     return data;
   } catch (error: any) {

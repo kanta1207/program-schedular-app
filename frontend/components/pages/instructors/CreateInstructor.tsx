@@ -22,7 +22,7 @@ import {
 import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { ContractName, Instructor, PeriodOfDayName } from '@/types/_index';
+import { Instructor, PeriodOfDayName } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
@@ -64,12 +64,11 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     if (pageType === 'view' && !isEditMode) {
       reset({
         name: instructor?.name,
-        contractType: instructor?.contractType.name,
+        contractTypeId: instructor?.contractType.id,
         hours: instructor?.desiredWorkingHours,
         days: instructor?.weekdaysRange.name,
-        periodOfDayId: instructor?.periodOfDays[0].name, //this should change
-        isActive: instructor?.isActive,
-        courseIds: instructor?.courseIds,
+        periodOfDayId: instructor?.periodOfDays.map((period) => period.id),
+        courseIds: instructor?.courses.map((course) => course.id),
         notes: instructor?.notes,
       });
     }
@@ -85,12 +84,12 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         setIsEditMode(false);
         reset({
           name: instructor?.name,
-          contractType: instructor?.contractType.name,
+          contractTypeId: instructor?.contractType.id,
           hours: instructor?.desiredWorkingHours,
           days: instructor?.weekdaysRange.name,
-          periodOfDayId: instructor?.periodOfDays?.map((period) => period.name) ?? [],
+          periodOfDayId: instructor?.periodOfDays?.map((period) => period.id),
           isActive: instructor?.isActive,
-          courseIds: instructor?.courseIds,
+          courseIds: instructor?.courses.map((course) => course.id),
           notes: instructor?.notes,
         });
       }
@@ -104,7 +103,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: null as string | null,
-      contractType: '' as ContractName | null,
+      contractTypeId: 0,
       hours: 10,
       days: null as string | null,
       periodOfDayId: [] as unknown | null,
@@ -118,7 +117,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     try {
       const payload = {
         name: data.name,
-        contractTypeId: data.contract,
+        contractTypeId: data.contractTypeId,
         desiredWorkingHours: data.hours,
         weekdaysRangeId: data.days,
         periodOfDayId: data.period,
@@ -131,7 +130,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         await updateInstructor(instructor!.id, payload);
         reset({
           name: payload.name,
-          contractType: payload.contractTypeId,
+          contractTypeId: payload.contractTypeId,
           hours: payload.desiredWorkingHours,
           days: payload.weekdaysRangeId,
           periodOfDayId: payload.periodOfDayId,
@@ -180,7 +179,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
               <TableCell sx={{ border: 'none' }}>Contract:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="contractType"
+                  name="contractTypeId"
                   control={control}
                   rules={{ required: 'Contract type is required' }}
                   render={({ field }) => (

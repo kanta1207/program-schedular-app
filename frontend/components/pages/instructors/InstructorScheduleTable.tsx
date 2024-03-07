@@ -1,5 +1,5 @@
 import { classes } from '@/mock/_index';
-import { Class, Instructor } from '@/types/_index';
+import { Instructor } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 import { InstructorScheduleTableRow } from './InstructorScheduleTableRow';

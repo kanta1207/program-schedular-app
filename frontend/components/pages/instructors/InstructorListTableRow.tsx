@@ -1,5 +1,5 @@
 'use client';
-import { Instructor, PeriodOfDay } from '@/types/_index';
+import { Instructor } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
