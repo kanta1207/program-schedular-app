@@ -7,35 +7,78 @@ import { In, Repository } from 'typeorm';
 import { CoursesInstructors } from 'src/entity/coursesInstructors.entity';
 import { MasterContractType } from 'src/entity/masterContractTypes.entity';
 import { MasterWeekdaysRange } from 'src/entity/masterWeekdaysRanges.entity';
+import { MasterPeriodOfDay } from 'src/entity/masterPeriodOfDays.entity';
+import { InstructorsPeriodOfDays } from 'src/entity/instructorsPeriodOfDays.entity';
+import { Course } from 'src/entity/courses.entity';
 
 @Injectable()
 export class InstructorsService {
   constructor(
     @InjectRepository(Instructor)
     private readonly instructorRepository: Repository<Instructor>,
-    @InjectRepository(CoursesInstructors)
-    private readonly coursesInstructorsRepository: Repository<CoursesInstructors>,
     @InjectRepository(MasterContractType)
     private readonly masterContractTypeRepository: Repository<MasterContractType>,
     @InjectRepository(MasterWeekdaysRange)
     private readonly masterWeekdaysRangeRepository: Repository<MasterWeekdaysRange>,
+    @InjectRepository(MasterPeriodOfDay)
+    private readonly masterPeriodOfDayRepository: Repository<MasterPeriodOfDay>,
+    @InjectRepository(InstructorsPeriodOfDays)
+    private readonly instructorsPeriodOfDaysRepository: Repository<InstructorsPeriodOfDays>,
+    @InjectRepository(Course)
+    private readonly courseRepository: Repository<Course>,
+    @InjectRepository(CoursesInstructors)
+    private readonly coursesInstructorsRepository: Repository<CoursesInstructors>,
   ) {}
 
   async create(createInstructorDto: CreateInstructorDto) {
-    const { contractTypeId, weekdaysRangeId, ...dtoProps } =
-      createInstructorDto;
+    const {
+      contractTypeId,
+      weekdaysRangeId,
+      courseIds,
+      periodOfDaysIds,
+      ...dtoProps
+    } = createInstructorDto;
+
     const contractType = await this.masterContractTypeRepository.findOne({
       where: { id: contractTypeId },
     });
+
     const weekdaysRange = await this.masterWeekdaysRangeRepository.findOne({
       where: { id: weekdaysRangeId },
     });
-    const instructor = this.instructorRepository.create({
+
+    // save instructor and get the saved instructor data
+    const instructor = await this.instructorRepository.save({
       ...dtoProps,
       contractType,
       weekdaysRange,
     });
-    return await this.instructorRepository.save(instructor);
+
+    // Save period of days and instructors relationship
+    for (let i = 0; i < periodOfDaysIds.length; i++) {
+      const periodOfDay = await this.masterPeriodOfDayRepository.findOne({
+        where: { id: periodOfDaysIds[i] },
+      });
+
+      await this.instructorsPeriodOfDaysRepository.save({
+        instructor,
+        periodOfDay,
+      });
+    }
+
+    // Save courses and instructors relationship
+    for (let i = 0; i < courseIds.length; i++) {
+      const course = await this.courseRepository.findOne({
+        where: { id: courseIds[i] },
+      });
+
+      await this.coursesInstructorsRepository.save({
+        instructor,
+        course,
+      });
+    }
+
+    return instructor;
   }
 
   async findAll(rangeId: number | undefined, courseId: number | undefined) {
@@ -53,7 +96,7 @@ export class InstructorsService {
       instructorIds = coursesInstructors.map((ci) => ci.instructor.id);
     }
 
-    return this.instructorRepository.find({
+    return await this.instructorRepository.find({
       where: {
         id: instructorIds.length > 0 ? In(instructorIds) : undefined,
         weekdaysRange: rangeId ? { id: rangeId } : undefined,
