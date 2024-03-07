@@ -8,7 +8,7 @@ export interface Instructor {
   contractType: ContractType;
   weekdaysRange: WeekdaysRange;
   periodOfDays: PeriodOfDay[];
-  courses: Course[];
+  courseIds: Course[];
   createdAt?: Date;
   updatedAt?: Date;
   notes: string | null;

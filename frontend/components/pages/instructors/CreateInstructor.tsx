@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
-
 import {
   Box,
   Button,
@@ -38,7 +37,13 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     return courses
       .filter((course) => course.program.name === programName)
       .map((course) => (
-        <FormControlLabel key={course.id} control={<Checkbox />} label={course.name} value={course.name} />
+        <FormControlLabel
+          key={course.id}
+          control={<Checkbox />}
+          label={course.name}
+          value={course.name}
+          disabled={isEditMode ? false : true}
+        />
       ));
   };
 
@@ -55,7 +60,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         days: instructor?.weekdaysRange.name,
         periodOfDayId: instructor?.periodOfDays[0].name, //this should change
         isActive: instructor?.isActive,
-        courses: instructor?.courses,
+        courseIds: instructor?.courseIds,
         notes: instructor?.notes,
       });
     }
@@ -76,7 +81,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
           days: instructor?.weekdaysRange.name,
           periodOfDayId: instructor?.periodOfDays?.map((period) => period.name) ?? [],
           isActive: instructor?.isActive,
-          courses: instructor?.courses,
+          courseIds: instructor?.courseIds,
           notes: instructor?.notes,
         });
       }
@@ -95,7 +100,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
       days: null as string | null,
       periodOfDayId: [] as unknown | null,
       isActive: false,
-      courses: [] as unknown | null,
+      courseIds: [] as unknown | null,
       notes: null as string | null,
     },
   });
@@ -109,7 +114,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         weekdaysRangeId: data.days,
         periodOfDayId: data.period,
         isActive: data.isActive,
-        coursesIds: data.courses,
+        courseIds: data.courses,
         notes: data.notes,
       };
 
@@ -122,7 +127,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
           days: payload.weekdaysRangeId,
           periodOfDayId: payload.periodOfDayId,
           isActive: payload.isActive,
-          courses: payload.coursesIds,
+          courseIds: payload.courseIds,
           notes: payload.notes,
         });
         setIsEditMode(false);
@@ -308,34 +313,42 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Notes:</TableCell>
               <TableCell sx={{ border: 'none' }}>
-                <TextField multiline rows={4} variant="outlined" sx={{ width: '20rem' }} />
+                <Controller
+                  control={control}
+                  name="notes"
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      sx={{ width: '20rem' }}
+                      disabled={isEditMode ? false : true}
+                    />
+                  )}
+                />
               </TableCell>
             </TableRow>
+
             {/* Buttons */}
             <TableRow>
               <TableCell sx={{ border: 'none' }} colSpan={2} align="right">
                 <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
                   {isEditMode ? (
                     <>
-                      <Button size="medium" variant="outlined" type="button" onClick={handleCancelButton}>
+                      <Button variant="outlined" type="button" onClick={handleCancelButton}>
                         Cancel
                       </Button>
-                      <Button size="medium" variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
+                      <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
                         Save
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Button size="medium" variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
+                      <Button variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
                         Edit
                       </Button>
-                      <Button
-                        size="medium"
-                        variant="contained"
-                        color="error"
-                        type="button"
-                        onClick={handleDeleteButton}
-                      >
+                      <Button variant="contained" color="error" type="button" onClick={handleDeleteButton}>
                         Delete
                       </Button>
                     </>

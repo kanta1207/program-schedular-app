@@ -8,16 +8,16 @@ interface CreateInstructorPayload {
   desiredWorkingHours: number;
   contractTypeId: number;
   weekdaysRangeId: number;
-  periodOfDayId: PeriodOfDayName[];
-  coursesIds: number[];
+  periodOfDayId: number[];
+  courseIds: number[];
   notes: string;
 }
 
 export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes } =
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes } =
     payload;
 
-  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, coursesIds, notes);
+  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes);
   return instructors[0];
 
   try {
@@ -30,7 +30,7 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
       weekdaysRange: weekdaysRangeId,
       periodOfDay: periodOfDayId,
       isActive: isActive,
-      courses: coursesIds,
+      courses: courseIds,
       notes: notes,
     };
 
@@ -48,7 +48,7 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
 
     const data = await response.json();
 
-    revalidateTag('instructors');
+    revalidateTag('instructor');
 
     return data;
   } catch (error: any) {

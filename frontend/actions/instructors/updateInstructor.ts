@@ -10,7 +10,7 @@ interface UpdateInstructorPayload {
   desiredWorkingHours: number;
   contractTypeId: number;
   weekdaysRangeId: number;
-  periodOfDayId: PeriodOfDayName[];
+  periodOfDayId: number[];
   courseIds: number[];
   notes: string;
 }
@@ -31,27 +31,27 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
   tmpInstructor.weekdaysRange =
     WEEKDAYS_RANGES.find((range) => range.id === weekdaysRangeId) ?? tmpInstructor.weekdaysRange;
   tmpInstructor.periodOfDays = periodOfDayId
-    .map((name) => PERIOD_OF_DAYS.find((period) => period.name === name))
+    .map((name) => PERIOD_OF_DAYS.find((period) => period.id === id))
     .filter((period) => period !== undefined) as PeriodOfDay[];
 
-  // tmpInstructor.courses = coursesIds
-  //   .map((courseName) => COURSES.find((course) => course.name === courseName))
-  //   .filter((course) => course !== undefined) as Course[];
+  tmpInstructor.courses = courseIds
+    .map((courseName) => Course.find((course) => course.name === courseName))
+    .filter((course) => course !== undefined) as Course[];
 
   tmpInstructor.notes = notes;
 
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
-    // const updatePayload = {
-    //   name,
-    //   isActive,
-    //   desiredWorkingHours,
-    //   contractType: tmpInstructor.contractType.name,
-    //   weekdaysRange: tmpInstructor.weekdaysRange.name,
-    //   periodOfDay: tmpInstructor.periodOfDays.map((pd) => pd.name),
-    //   courses: tmpInstructor.courses.map((course) => course.name),
-    //   notes,
-    // };
+    const updatePayload = {
+      name,
+      isActive,
+      desiredWorkingHours,
+      contractType: tmpInstructor.contractType.name,
+      weekdaysRange: tmpInstructor.weekdaysRange.name,
+      periodOfDay: tmpInstructor.periodOfDays.map((pd) => pd.name),
+      courses: tmpInstructor.courses.map((course) => course.name),
+      notes,
+    };
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',
