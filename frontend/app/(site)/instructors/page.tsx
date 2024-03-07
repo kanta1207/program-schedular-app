@@ -2,8 +2,6 @@ import { getInstructors } from '@/actions/instructors/getInstructors';
 import { InstructorListTable } from '@/components/pages/instructors/InstructorListTable';
 import Headline from '@/components/partials/Headline';
 import { Button } from '@mui/material';
-import Link from 'next/link';
-
 const page = async () => {
   const instructors = await getInstructors();
   return (
