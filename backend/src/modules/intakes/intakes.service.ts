@@ -95,7 +95,19 @@ export class IntakesService {
       throw new NotFoundException('Intake Not Found');
     }
 
-    return this.intakeRepository.findOneBy({ id });
+    const intake = this.intakeRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        cohorts: {
+          periodOfDay: true,
+          program: true,
+        },
+      },
+    });
+
+    return intake;
   }
 
   async remove(id: number) {
