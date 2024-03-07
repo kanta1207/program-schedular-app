@@ -27,18 +27,23 @@ export class Cohort {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @ManyToOne(() => Intake, (intake) => intake.cohorts, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Intake, (intake) => intake.cohorts, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'intake_id' })
   intake: Intake;
 
-  @ManyToOne(() => MasterPeriodOfDay, (periodOfDay) => periodOfDay.cohorts)
+  @ManyToOne(() => MasterPeriodOfDay, (periodOfDay) => periodOfDay.cohorts, {
+    nullable: false,
+  })
   @JoinColumn({ name: 'period_of_day_id' })
   periodOfDay: MasterPeriodOfDay;
 
-  @ManyToOne(() => Program, (program) => program.cohorts)
+  @ManyToOne(() => Program, (program) => program.cohorts, { nullable: false })
   @JoinColumn({ name: 'program_id' })
   program: Program;
 
-  @OneToMany(() => Class, (clazz) => clazz.cohort, { cascade: true })
+  @OneToMany(() => Class, (clazz) => clazz.cohort, { onDelete: 'CASCADE' })
   classes: Class[];
 }
