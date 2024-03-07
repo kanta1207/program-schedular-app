@@ -17,10 +17,11 @@ import {
   TableContainer,
   TableRow,
   TextField,
+  Typography,
 } from '@mui/material';
 import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
-import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { ContractName, Instructor, PeriodOfDayName } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
@@ -33,20 +34,28 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
   const [isEditMode, setIsEditMode] = useState(false);
   const router = useRouter();
 
-  const coursesByProgram = (programName: string) => {
-    return courses
-      .filter((course) => course.program.name === programName)
-      .map((course) => (
-        <FormControlLabel
-          key={course.id}
-          control={<Checkbox />}
-          label={course.name}
-          value={course.name}
-          disabled={isEditMode ? false : true}
-        />
-      ));
+  const coursesByProgram = () => {
+    return (
+      <>
+        {PROGRAMS.map((program) => (
+          <Box key={program.id}>
+            <Typography variant="subtitle1">{program.name}</Typography>
+            {courses
+              .filter((course) => course.program.id === program.id)
+              .map((filteredCourse) => (
+                <FormControlLabel
+                  key={filteredCourse.id}
+                  control={<Checkbox />}
+                  label={filteredCourse.name}
+                  value={filteredCourse.name}
+                  disabled={isEditMode ? false : true}
+                />
+              ))}
+          </Box>
+        ))}
+      </>
+    );
   };
-
   useEffect(() => {
     if (pageType === 'new') {
       setIsEditMode(true);
@@ -295,18 +304,8 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
 
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Course:</TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell sx={{ border: 'none' }}>DMS:</TableCell>
               <TableCell sx={{ border: 'none' }}>
-                <FormGroup row>{coursesByProgram('DMS')}</FormGroup>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell sx={{ border: 'none' }}>DMA:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
-                <FormGroup row>{coursesByProgram('DMA')}</FormGroup>
+                <FormGroup row>{coursesByProgram()}</FormGroup>
               </TableCell>
             </TableRow>
 
@@ -319,7 +318,6 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      multiline
                       rows={4}
                       variant="outlined"
                       sx={{ width: '20rem' }}
