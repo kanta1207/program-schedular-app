@@ -1,7 +1,7 @@
-import { Break } from '@/types/_index';
+import { GetBreaksResponse } from '@/types/_index';
 import { ApiResponse } from '@/types/_index';
 
-export const getBreaks = async (): Promise<ApiResponse<Break[]>> => {
+export const getBreaks = async (): Promise<ApiResponse<GetBreaksResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
 

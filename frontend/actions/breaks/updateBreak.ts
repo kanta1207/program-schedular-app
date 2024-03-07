@@ -1,12 +1,15 @@
 import { Dayjs } from 'dayjs';
-import { ApiResponse, Break } from '@/types/_index';
+import { ApiResponse, UpdateBreakResponse } from '@/types/_index';
 
 interface UpdateBreakPayload {
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const updateBreak = async (id: number, payload: UpdateBreakPayload): Promise<ApiResponse<Break>> => {
+export const updateBreak = async (
+  id: number,
+  payload: UpdateBreakPayload,
+): Promise<ApiResponse<UpdateBreakResponse>> => {
   const { startAt, endAt } = payload;
   try {
     if (!startAt && !endAt) {
