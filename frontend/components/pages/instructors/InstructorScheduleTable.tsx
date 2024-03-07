@@ -5,11 +5,10 @@ import React from 'react';
 import { InstructorScheduleTableRow } from './InstructorScheduleTableRow';
 
 interface InstructorScheduleTableProps {
-  pageType: 'new' | 'view';
   instructor: Instructor;
 }
 
-export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = ({ pageType, instructor }) => {
+export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = ({ instructor }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const instructorSchedule = classes.filter((classData) => classData.instructor?.id === instructor?.id);
 
@@ -27,17 +26,13 @@ export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = (
           <TableCell sx={{ ...thStyle, width: 'calc(100% * 2/12)' }}>Classroom</TableCell>
         </TableRow>
       </TableHead>
-      {pageType === 'new' ? (
-        ''
-      ) : (
-        <TableBody>
-          {instructorSchedule.map((classData) => (
-            <TableRow key={classData.id}>
-              <InstructorScheduleTableRow classData={classData} />
-            </TableRow>
-          ))}
-        </TableBody>
-      )}
+      <TableBody>
+        {instructorSchedule.map((classData) => (
+          <TableRow key={classData.id}>
+            <InstructorScheduleTableRow classData={classData} />
+          </TableRow>
+        ))}
+      </TableBody>
     </Table>
   );
 };
