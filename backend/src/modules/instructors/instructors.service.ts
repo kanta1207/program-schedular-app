@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -40,21 +44,21 @@ export class InstructorsService {
       ...restOfDtoProps
     } = createInstructorDto;
 
-    const contractType = await this.masterContractTypeRepository.findOne({
-      where: { id: contractTypeId },
-    });
-
     // Validate contractor's desired working hours, making it sure it's not empty
-    if (contractType.id === 3 && !desiredWorkingHours)
+    if (contractTypeId === 3 && !desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
-    if (contractType.id !== 3 && desiredWorkingHours)
+    if (contractTypeId !== 3 && desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours should not be provided for full-time or part-time instructors',
       );
+
+    const contractType = await this.masterContractTypeRepository.findOne({
+      where: { id: contractTypeId },
+    });
 
     const weekdaysRange = await this.masterWeekdaysRangeRepository.findOne({
       where: { id: weekdaysRangeId },
@@ -120,6 +124,7 @@ export class InstructorsService {
         weekdaysRange: true,
         periodOfDays: true,
       },
+      order: { id: 'DESC' },
     });
   }
 
@@ -157,8 +162,124 @@ export class InstructorsService {
     return result;
   }
 
-  update(id: number, updateInstructorDto: UpdateInstructorDto) {
-    return `This action updates a #${id} instructor`;
+  async update(id: number, updateInstructorDto: UpdateInstructorDto) {
+    const existingInstructor = await this.instructorRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        contractType: true,
+        weekdaysRange: true,
+        periodOfDays: true,
+        classes: {
+          course: true,
+          cohort: {
+            program: true,
+          },
+          weekdaysRange: true,
+          classroom: true,
+        },
+      },
+    });
+
+    if (!existingInstructor) {
+      throw new NotFoundException('Instructor not found');
+    }
+
+    const {
+      desiredWorkingHours,
+      contractTypeId,
+      weekdaysRangeId,
+      periodOfDaysIds,
+      courseIds,
+      ...restOfDtoProps
+    } = updateInstructorDto;
+
+    // Validate contractor's desired working hours, making it sure it's not empty
+    if (
+      (contractTypeId === 3 || existingInstructor.contractType.id === 3) &&
+      !desiredWorkingHours
+    )
+      throw new BadRequestException(
+        'Desired working hours is required for contract instructors',
+      );
+
+    // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
+    if (
+      (contractTypeId !== 3 || existingInstructor.contractType.id !== 3) &&
+      desiredWorkingHours
+    )
+      throw new BadRequestException(
+        'Desired working hours should not be provided for full-time or part-time instructors',
+      );
+
+    const attrToUpdate: Partial<Instructor> = {
+      desiredWorkingHours,
+      ...restOfDtoProps,
+    };
+
+    if (contractTypeId) {
+      const contractType = await this.masterContractTypeRepository.findOne({
+        where: { id: contractTypeId },
+      });
+      attrToUpdate.contractType = contractType;
+    }
+
+    if (weekdaysRangeId) {
+      const weekdaysRange = await this.masterWeekdaysRangeRepository.findOne({
+        where: { id: weekdaysRangeId },
+      });
+      attrToUpdate.weekdaysRange = weekdaysRange;
+    }
+
+    // Update the instructor
+    // Using save method instead of update method to get the updated instructor data
+    const updatedInstructor = await this.instructorRepository.save({
+      id,
+      ...attrToUpdate,
+    });
+
+    // Update period of days and instructors relationship
+    if (periodOfDaysIds) {
+      // Delete all the existing period of days and target instructors relationship
+      await this.instructorsPeriodOfDaysRepository.delete({
+        instructor: { id },
+      });
+
+      // Save all of the period of days and instructors relationship again
+      for (let i = 0; i < periodOfDaysIds.length; i++) {
+        const periodOfDay = await this.masterPeriodOfDayRepository.findOne({
+          where: { id: periodOfDaysIds[i] },
+        });
+
+        await this.instructorsPeriodOfDaysRepository.save({
+          instructor: updatedInstructor,
+          periodOfDay,
+        });
+      }
+    }
+
+    // Update courses and instructors relationship
+    if (courseIds) {
+      // Delete all the existing courses and target instructors relationship
+      await this.coursesInstructorsRepository.delete({
+        instructor: { id },
+      });
+
+      // Save all of the courses and instructors relationship again
+      for (let i = 0; i < courseIds.length; i++) {
+        const course = await this.courseRepository.findOne({
+          where: { id: courseIds[i] },
+        });
+
+        await this.coursesInstructorsRepository.save({
+          instructor: updatedInstructor,
+          course,
+        });
+      }
+    }
+
+    return updatedInstructor;
   }
 
   remove(id: number) {
