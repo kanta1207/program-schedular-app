@@ -1,7 +1,0 @@
-type: object
-required:
-  - id
-  - name
-properties:
-  periodOfDay:
-    $ref: './periodOfDay.yml'

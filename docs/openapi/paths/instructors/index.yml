@@ -41,7 +41,7 @@ get:
                     - $ref: '../../schemas/instructor/instructorDynamicProps.yml'
                     - $ref: '../../schemas/contractType/contractTypeAsForeignProp.yml'
                     - $ref: '../../schemas/weekdaysRange/weekdaysRangeAsForeignProp.yml'
-                    - $ref: '../../schemas/periodOfDay/periodOfDayAsForeignProp.yml'
+                    - $ref: '../../schemas/periodOfDay/periodOfDayAsManyForeignProp.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':
