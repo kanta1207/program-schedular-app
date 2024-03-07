@@ -1,0 +1,26 @@
+type: object
+required:
+  - intake
+  - periodOfDay
+  - program
+  - classes
+properties:
+  intake:
+    allOf:
+      - $ref: '../intake/intakeStaticProps.yml'
+      - $ref: '../intake/intakeDynamicProps.yml'
+  periodOfDay:
+    $ref: '../periodOfDay/periodOfDay.yml'
+  program:
+    allOf:
+      - $ref: '../program/programStaticProps.yml'
+      - $ref: '../program/programDynamicProps.yml'
+      - $ref: '../program/programStaticForeignProps.yml'
+
+  classes:
+    type: array
+    items:
+      allOf:
+        - $ref: '../class/classStaticProps.yml'
+        - $ref: '../class/classDynamicProps.yml'
+        - $ref: '../class/classStaticForeignProps.yml'

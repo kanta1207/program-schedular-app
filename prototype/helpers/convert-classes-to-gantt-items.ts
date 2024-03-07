@@ -75,6 +75,16 @@ export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesT
     const classRecord: Task = {
       start: dayjs(classItem.startAt).toDate(),
       end: dayjs(classItem.endAt).toDate(),
+      // name: `${
+      //   classItem.cohort.periodOfDay.name === 'Morning'
+      //     ? '🌅'
+      //     : classItem.cohort.periodOfDay.name === 'Afternoon'
+      //     ? '☀️'
+      //     : classItem.cohort.periodOfDay.name === 'Evening'
+      //     ? '🌙'
+      //     : ''
+      // } ${classItem.course.name} (${classItem.cohort.name} at ${classItem.classroom.name})
+      // ${groupBy === 'cohort' ? ` | ${classItem.instructor?.name}` : ''}`,
       name: `${
         classItem.cohort.periodOfDay.name === 'Morning'
           ? '🌅'
@@ -83,8 +93,7 @@ export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesT
           : classItem.cohort.periodOfDay.name === 'Evening'
           ? '🌙'
           : ''
-      } ${classItem.course.name} (${classItem.cohort.name} at ${classItem.classroom.name})
-      ${groupBy === 'cohort' ? ` | ${classItem.instructor?.name}` : ''}`,
+      } ${classItem.course.name} ${groupBy === 'cohort' ? ` | ${classItem.instructor?.name}` : ''}`,
       id: classItem.id.toString(),
       type: 'task',
       progress: getProgress(classItem.startAt, classItem.endAt),
@@ -93,35 +102,35 @@ export const convertClassesToGanttItems = ({ classes, groupBy }: convertClassesT
       styles: {
         progressColor:
           classItem.weekdaysRange.name === 'Mon - Fri'
-            ? '#76568f'
+            ? '#72519E'
             : classItem.weekdaysRange.name === 'Mon - Wed'
-            ? '#3866a8'
+            ? '#365390'
             : classItem.weekdaysRange.name === 'Wed - Fri'
-            ? '#ba4359'
+            ? '#BF3F4F'
             : '',
         progressSelectedColor:
           classItem.weekdaysRange.name === 'Mon - Fri'
-            ? '#76568f'
+            ? '#72519E'
             : classItem.weekdaysRange.name === 'Mon - Wed'
-            ? '#3866a8'
+            ? '#365390'
             : classItem.weekdaysRange.name === 'Wed - Fri'
-            ? '#ba4359'
+            ? '#BF3F4F'
             : '',
         backgroundColor:
           classItem.weekdaysRange.name === 'Mon - Fri'
-            ? '#662d91'
+            ? '#512888'
             : classItem.weekdaysRange.name === 'Mon - Wed'
-            ? '#0047AB'
+            ? '#062A77'
             : classItem.weekdaysRange.name === 'Wed - Fri'
-            ? '#BA0021'
+            ? '#B11225'
             : '',
         backgroundSelectedColor:
           classItem.weekdaysRange.name === 'Mon - Fri'
-            ? '#662d91'
+            ? '#512888'
             : classItem.weekdaysRange.name === 'Mon - Wed'
-            ? '#0047AB'
+            ? '#062A77'
             : classItem.weekdaysRange.name === 'Wed - Fri'
-            ? '#BA0021'
+            ? '#B11225'
             : '',
       },
     };

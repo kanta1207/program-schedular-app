@@ -12,7 +12,7 @@ services:
     networks:
       - program-scheduler-backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,11 +28,10 @@ services:
     depends_on:
       - program-scheduler-db
     volumes:
-      - ./src:/app/src
+      - .:/app
       - /app/node_modules
     networks:
       - program-scheduler-backend
 
 networks:
   program-scheduler-backend:
-

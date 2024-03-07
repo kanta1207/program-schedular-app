@@ -1,0 +1,18 @@
+type: object
+required:
+  - intakeId
+  - periodOfDayId
+  - programId
+properties:
+  intakeId:
+    type: integer
+    example: 1
+    description: The ID of the intake this cohort belongs to
+  periodOfDayId:
+    type: integer
+    example: 1
+    description: The ID of the period of day this cohort belongs to
+  programId:
+    type: integer
+    example: 1
+    description: The ID of the program this cohort belongs to
