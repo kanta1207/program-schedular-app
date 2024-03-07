@@ -21,7 +21,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
   useEffect(() => {
     if (!cohort) {
       setIsEditable(true);
-    } else if (cohort) {
+    } else {
       reset({
         name: cohort.name,
         intakeId: cohort.intake.id,
@@ -36,7 +36,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
     if (isConfirmed) {
       if (!cohort) {
         router.push('/cohorts');
-      } else if (cohort) {
+      } else {
         setIsEditable(false);
         reset({
           name: cohort.name,
@@ -50,8 +50,8 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
 
   const handleDeleteButton = async () => {
     const isConfirmed = confirm('Do you really want to delete?');
-    if (isConfirmed) {
-      await deleteCohort(cohort!.id);
+    if (isConfirmed && cohort) {
+      await deleteCohort(cohort.id);
       router.push('/cohorts');
     }
   };
