@@ -44,9 +44,6 @@ export class Cohort {
   @JoinColumn({ name: 'program_id' })
   program: Program;
 
-  @OneToMany(() => Class, (clazz) => clazz.cohort, {
-    nullable: false,
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Class, (clazz) => clazz.cohort, { onDelete: 'CASCADE' })
   classes: Class[];
 }
