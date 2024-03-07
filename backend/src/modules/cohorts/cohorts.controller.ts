@@ -20,7 +20,11 @@ export class CohortsController {
   @Post()
   async create(@Body() createCohortDto: CreateCohortDto) {
     const createdCohort = await this.cohortsService.create(createCohortDto);
-    return ApiResponse.new(createdCohort);
+    return ApiResponse.new(
+      createdCohort,
+      StatusCodes.STATUS_CREATED.code,
+      StatusCodes.STATUS_CREATED.message,
+    );
   }
 
   @Get()
