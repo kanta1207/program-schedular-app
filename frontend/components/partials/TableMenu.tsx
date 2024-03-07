@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
+import { useRouter } from 'next/navigation';
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -51,6 +52,7 @@ interface TableMenuProps {
 }
 
 const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -75,6 +77,7 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
     if (confirm(message)) {
       handleClose();
       onDelete(id);
+      router.refresh();
     }
   };
 
