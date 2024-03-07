@@ -2,7 +2,8 @@ import { getInstructorById } from '@/actions/instructors/getInstructorById';
 import CreateInstructor from '@/components/pages/instructors/CreateInstructor';
 import { InstructorScheduleTable } from '@/components/pages/instructors/InstructorScheduleTable';
 import Headline from '@/components/partials/Headline';
-import { Box, Button } from '@mui/material';
+import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { useState } from 'react';
 
 interface PageProps {
   params: { id: string };
@@ -25,6 +26,11 @@ const page = async ({ params }: PageProps) => {
           <Button variant="contained">List</Button>
           <Button variant="contained">Gantt</Button>
         </Box>
+
+        <ToggleButtonGroup color="primary" exclusive aria-label="Schedule Type">
+          <ToggleButton value="list">List</ToggleButton>
+          <ToggleButton value="gantt">Gantt</ToggleButton>
+        </ToggleButtonGroup>
       </Box>
       <InstructorScheduleTable instructor={instructor} />
     </div>
