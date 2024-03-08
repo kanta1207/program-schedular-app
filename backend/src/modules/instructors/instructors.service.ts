@@ -235,10 +235,7 @@ export class InstructorsService {
 
     // Update the instructor
     // Using save method instead of update method to get the updated instructor data
-    const updatedInstructor = await this.instructorRepository.save({
-      id,
-      ...attrToUpdate,
-    });
+    await this.instructorRepository.update(id, attrToUpdate);
 
     // Update period of days and instructors relationship
     if (periodOfDaysIds) {
@@ -252,7 +249,7 @@ export class InstructorsService {
         where: { id: In(periodOfDaysIds) },
       });
       const instructorsPeriodOfDays = periodOfDays.map((periodOfDay) => ({
-        instructor: updatedInstructor,
+        instructor: { id },
         periodOfDay,
       }));
       await this.instructorsPeriodOfDaysRepository.save(
@@ -272,13 +269,14 @@ export class InstructorsService {
         where: { id: In(courseIds) },
       });
       const coursesInstructors = courses.map((course) => ({
-        instructor: updatedInstructor,
+        instructor: { id },
         course,
       }));
       await this.coursesInstructorsRepository.save(coursesInstructors);
     }
 
-    return updatedInstructor;
+    // Get the updated instructor data and return it
+    return await this.findOne(id);
   }
 
   async remove(id: number) {
