@@ -1,42 +1,41 @@
 'use client';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
-import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
-import { intakes } from '@/mock/_index';
-import { Cohort } from '@/types/_index';
-import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { PERIOD_OF_DAYS } from '@/constants/_index';
+import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 
 interface CohortInfoFormProps {
-  cohort?: Cohort;
+  cohort?: GetCohortResponse;
+  intakes: GetIntakesResponse[];
+  programs: GetProgramsResponse;
 }
 
-export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
+export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes, programs }) => {
   const [isEditable, setIsEditable] = React.useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!cohort) {
-      setIsEditable(true);
-    } else {
+    if (cohort) {
       reset({
         name: cohort.name,
         intakeId: cohort.intake.id,
         periodOfDayId: cohort.periodOfDay.id,
         programId: cohort.program.id,
       });
+    } else {
+      setIsEditable(true);
     }
   }, []);
 
-  const handleCancelButton = () => {
-    const isConfirmed = confirm('Do you really want to cancel?');
-    if (isConfirmed) {
-      if (!cohort) {
-        router.push('/cohorts');
-      } else {
+  const handleCancel = () => {
+    const message = 'Do you really want to cancel?';
+    if (confirm(message)) {
+      if (cohort) {
         setIsEditable(false);
         reset({
           name: cohort.name,
@@ -44,13 +43,15 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
           periodOfDayId: cohort.periodOfDay.id,
           programId: cohort.program.id,
         });
+      } else {
+        router.push('/cohorts');
       }
     }
   };
 
-  const handleDeleteButton = async () => {
-    const isConfirmed = confirm('Do you really want to delete?');
-    if (isConfirmed && cohort) {
+  const handleDelete = async () => {
+    const message = 'Do you really want to delete?';
+    if (confirm(message) && cohort) {
       await deleteCohort(cohort.id);
       router.push('/cohorts');
     }
@@ -58,10 +59,10 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: '' as string | null,
-      intakeId: '' as number | string,
-      periodOfDayId: '' as number | string,
-      programId: '' as number | string,
+      name: '',
+      intakeId: 0,
+      periodOfDayId: 1,
+      programId: 0,
     },
   });
 
@@ -75,22 +76,18 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
       };
 
       if (cohort) {
-        const updatedCohort = await updateCohort(cohort.id, payload);
-        console.log('updated cohort:', updatedCohort);
+        const { data: updatedCohort } = await updateCohort(cohort.id, payload);
 
         reset({
-          name: payload.name,
-          intakeId: payload.intakeId,
-          periodOfDayId: payload.periodOfDayId,
-          programId: payload.programId,
+          name: updatedCohort.name,
+          intakeId: updatedCohort.intake.id,
+          periodOfDayId: updatedCohort.periodOfDay.id,
+          programId: updatedCohort.program.id,
         });
         setIsEditable(false);
       } else {
-        const newCohort = await createCohort(payload);
-
-        // [future] redirect to cohorts/:id when new cohort is saved
-        // const newCohortId = newCohort.id;
-        // router.push(`/cohorts/${newCohortId}`);
+        const { data: newCohort } = await createCohort(payload);
+        router.push(`/cohorts/${newCohort.id}`);
       }
     } catch (error) {
       console.error(error);
@@ -111,7 +108,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                 <TextField
                   sx={{ width: '14rem' }}
                   size="small"
-                  value={field.value ?? ''}
+                  value={field.value}
                   inputRef={field.ref}
                   onChange={(name) => field.onChange(name)}
                   disabled={!isEditable}
@@ -132,7 +129,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                   <Select
                     sx={{ width: '14rem' }}
                     size="small"
-                    value={field.value ?? ''}
+                    value={field.value}
                     required
                     disabled={!isEditable}
                     {...field}
@@ -162,12 +159,12 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                   <Select
                     sx={{ width: '14rem' }}
                     size="small"
-                    value={field.value ?? ''}
+                    value={field.value}
                     required
                     disabled={!isEditable}
                     {...field}
                   >
-                    {PROGRAMS.map((program) => {
+                    {programs.map((program) => {
                       return (
                         <MenuItem key={program.id} value={program.id}>
                           {program.name}
@@ -192,7 +189,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
                   <Select
                     sx={{ width: '14rem' }}
                     size="small"
-                    value={field.value ?? ''}
+                    value={field.value}
                     required
                     disabled={!isEditable}
                     {...field}
@@ -214,7 +211,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
       <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content', position: 'relative', left: '100%' }}>
         {isEditable ? (
           <>
-            <Button variant="outlined" type="button" onClick={handleCancelButton}>
+            <Button variant="outlined" type="button" onClick={handleCancel}>
               Cancel
             </Button>
             <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
@@ -226,7 +223,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort }) => {
             <Button variant="outlined" type="button" onClick={() => setIsEditable(true)}>
               Edit
             </Button>
-            <Button variant="contained" color="error" type="button" onClick={handleDeleteButton}>
+            <Button variant="contained" color="error" type="button" onClick={handleDelete}>
               Delete
             </Button>
           </>

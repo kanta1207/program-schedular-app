@@ -13,7 +13,7 @@ interface GetProgramResponse extends ProgramBase {
   courses: CourseBase[];
 }
 
-export type GetProgramsResponse = GetProgramResponse[];
+export interface GetProgramsResponse extends GetProgramResponse {}
 
 export interface CreateProgramResponse extends GetProgramResponse {}
 

@@ -21,7 +21,7 @@ export interface GetClassResponse extends ClassBase {
   instructor: InstructorBase;
 }
 
-export type GetClassesResponse = GetClassResponse[];
+export interface GetClassesResponse extends GetClassResponse {}
 
 export interface CreateClassResponse extends GetClassResponse {}
 

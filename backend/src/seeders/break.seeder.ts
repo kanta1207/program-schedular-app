@@ -4,24 +4,24 @@ import { seederWrapper } from './utils';
 
 const breaks = [
   {
-    startAt: new Date('2023-06-26'),
-    endAt: new Date('2023-06-30'),
+    startAt: new Date('2023-06-26T08:00:00.000Z'),
+    endAt: new Date('2023-06-30T08:00:00.000Z'),
   },
   {
-    startAt: new Date('2023-12-18'),
-    endAt: new Date('2023-12-29'),
+    startAt: new Date('2023-12-18T08:00:00.000Z'),
+    endAt: new Date('2023-12-29T08:00:00.000Z'),
   },
   {
-    startAt: new Date('2024-03-25'),
-    endAt: new Date('2024-03-29'),
+    startAt: new Date('2024-03-25T08:00:00.000Z'),
+    endAt: new Date('2024-03-29T08:00:00.000Z'),
   },
   {
-    startAt: new Date('2024-06-24'),
-    endAt: new Date('2024-06-28'),
+    startAt: new Date('2024-06-24T08:00:00.000Z'),
+    endAt: new Date('2024-06-28T08:00:00.000Z'),
   },
   {
-    startAt: new Date('2024-08-26'),
-    endAt: new Date('2024-08-30'),
+    startAt: new Date('2024-08-26T08:00:00.000Z'),
+    endAt: new Date('2024-08-30T08:00:00.000Z'),
   },
 ].map((breakItem, i) => {
   return { id: i + 1, ...breakItem };

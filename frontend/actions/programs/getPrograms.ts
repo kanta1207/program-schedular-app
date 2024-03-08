@@ -1,14 +1,16 @@
-import { ApiResponse } from '@/types/apiResponse';
+import { GetProgramsResponse } from '@/types/_index';
+import { ApiResponse } from '@/types/_index';
 
-export const deleteCohort = async (id: number): Promise<ApiResponse<null>> => {
+export const getPrograms = async (): Promise<ApiResponse<GetProgramsResponse[]>> => {
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts/${id}`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/programs`;
 
     const response = await fetch(baseUrl, {
-      method: 'DELETE',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
+      cache: 'no-store',
     });
 
     if (!response.ok) {

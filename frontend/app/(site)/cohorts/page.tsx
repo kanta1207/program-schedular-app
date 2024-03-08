@@ -4,7 +4,7 @@ import Headline from '@/components/partials/Headline';
 import { Button } from '@mui/material';
 
 const page = async () => {
-  const cohorts = await getCohorts();
+  const { data: cohorts } = await getCohorts();
   return (
     <>
       <Headline name="Cohorts" />

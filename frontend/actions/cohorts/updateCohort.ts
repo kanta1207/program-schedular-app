@@ -1,7 +1,5 @@
-import { PERIOD_OF_DAYS, PROGRAMS } from '@/constants/_index';
-import { cohorts, intakes } from '@/mock/_index';
-import { Cohort } from '@/types/_index';
-import { revalidateTag } from 'next/cache';
+import { ApiResponse } from '@/types/apiResponse';
+import { UpdateCohortResponse } from '@/types/cohort';
 
 interface UpdateCohortPayload {
   name: string;
@@ -10,24 +8,11 @@ interface UpdateCohortPayload {
   programId: number;
 }
 
-export const updateCohort = async (id: number, payload: UpdateCohortPayload): Promise<Cohort> => {
+export const updateCohort = async (
+  id: number,
+  payload: UpdateCohortPayload,
+): Promise<ApiResponse<UpdateCohortResponse>> => {
   const { name, intakeId, periodOfDayId, programId } = payload;
-  console.log(id, name, intakeId, periodOfDayId, programId);
-
-  const tmpCohort = cohorts.find((CohortItem) => CohortItem.id === id)!;
-  const intake = intakes.find((intake) => intake.id === intakeId);
-  const program = PROGRAMS.find((program) => program.id === programId);
-  const periodOfDay = PERIOD_OF_DAYS.find((period) => period.id === periodOfDayId);
-
-  if (intake && program && periodOfDay) {
-    tmpCohort.name = name;
-    tmpCohort.intake = intake;
-    tmpCohort.program = program;
-    tmpCohort.periodOfDay = periodOfDay;
-    return tmpCohort;
-  }
-
-  // TODO: Fetch data from api
   try {
     if (!name && !intakeId && !periodOfDayId && !programId) {
       throw new Error("Something's wrong in the input data");
@@ -35,12 +20,7 @@ export const updateCohort = async (id: number, payload: UpdateCohortPayload): Pr
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts/${id}`;
 
-    const payload = {
-      name: name,
-      intakeId: intakeId,
-      periodOfDayId: periodOfDayId,
-      programId: programId,
-    };
+    const payload = { name, intakeId, periodOfDayId, programId };
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',
@@ -55,8 +35,6 @@ export const updateCohort = async (id: number, payload: UpdateCohortPayload): Pr
     }
 
     const data = await response.json();
-
-    revalidateTag('cohort');
 
     return data;
   } catch (error: any) {
