@@ -1,11 +1,50 @@
-import { Cohort } from './_index';
+import { PeriodOfDay, ProgramBase, CohortBase, ClassBase } from './_index';
 
-export interface Intake {
+export interface IntakeBase {
   id: number;
+  name: string;
   startAt: Date;
   endAt: Date;
-  name: string;
-  cohorts: Cohort[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface CreateIntakeCohorts extends CohortBase {
+  intake: IntakeBase;
+  periodOfDay: PeriodOfDay;
+  program: ProgramBase;
+  classes: ClassBase;
+}
+export interface CreateIntakeResponse extends IntakeBase {
+  cohorts: CreateIntakeCohorts;
+}
+
+interface GetIntakesPeriodOfDay extends PeriodOfDay {
+  cohorts: CohortBase[];
+}
+
+export interface GetIntakesResponse extends IntakeBase {
+  periodOfDays: GetIntakesPeriodOfDay[];
+}
+
+interface GetIntakeCohorts extends CohortBase {
+  intake: IntakeBase;
+  periodOfDay: PeriodOfDay;
+  program: ProgramBase;
+  classes: ClassBase;
+}
+
+export interface GetIntakeResponse extends IntakeBase {
+  cohorts: GetIntakeCohorts;
+}
+
+interface UpdateIntakeCohorts extends CohortBase {
+  intake: IntakeBase;
+  periodOfDay: PeriodOfDay;
+  program: ProgramBase;
+  classes: ClassBase;
+}
+
+export interface UpdateIntakeResponse extends IntakeBase {
+  cohorts: UpdateIntakeCohorts;
 }
