@@ -196,17 +196,15 @@ export class InstructorsService {
     } = updateInstructorDto;
 
     // Validate contractor's desired working hours, making it sure it's not empty
-    if (
-      (contractTypeId === 3 || existingInstructor.contractType.id === 3) &&
-      !desiredWorkingHours
-    )
+    if (contractTypeId === 3 && !desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
     if (
-      (contractTypeId !== 3 || existingInstructor.contractType.id !== 3) &&
+      contractTypeId !== 3 &&
+      existingInstructor.contractType.id !== 3 &&
       desiredWorkingHours
     )
       throw new BadRequestException(
