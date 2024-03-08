@@ -1,11 +1,7 @@
-import { cohorts } from '@/mock/_index';
-import { Cohort } from '@/types/_index';
+import { ApiResponse } from '@/types/apiResponse';
+import { GetCohortsResponse } from '@/types/cohort';
 
-export const getCohorts = async (): Promise<Cohort[]> => {
-  const sortedCohorts = cohorts.sort((a, b) => b.id - a.id);
-  return sortedCohorts;
-
-  // TODO: Remove mock and fetch data from api
+export const getCohorts = async (): Promise<ApiResponse<GetCohortsResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts`;
 
@@ -14,7 +10,7 @@ export const getCohorts = async (): Promise<Cohort[]> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['cohort'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {
