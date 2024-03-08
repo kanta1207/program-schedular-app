@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import { instructors } from '@/mock/_index';
 import { Instructor } from '@/types/_index';
 

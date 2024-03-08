@@ -1,7 +1,5 @@
-import { Dayjs } from 'dayjs';
-import { revalidateTag } from 'next/cache';
 import { instructors, courses } from '@/mock/_index';
-import { Course, Instructor, PeriodOfDay, PeriodOfDayName } from '@/types/_index';
+import { Course, Instructor, PeriodOfDay } from '@/types/_index';
 import { CONTRACT_TYPES, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 
 interface UpdateInstructorPayload {

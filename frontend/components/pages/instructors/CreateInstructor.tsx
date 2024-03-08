@@ -29,8 +29,8 @@ import { createInstructor } from '@/actions/instructors/createInstructor';
 interface CreateInstructorProps {
   instructor?: Instructor;
 }
-export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }) => {
-  const [isEditMode, setIsEditMode] = useState(false);
+const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }) => {
+  const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
   const coursesByProgram = () => {
@@ -47,7 +47,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                   control={<Checkbox />}
                   label={filteredCourse.name}
                   value={filteredCourse.name}
-                  disabled={!isEditMode}
+                  disabled={!isEditable}
                 />
               ))}
           </Box>
@@ -168,7 +168,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                         value={field.value ?? ''}
                         inputRef={field.ref}
                         onChange={(name) => field.onChange(name)}
-                        disabled={!isEditMode}
+                        disabled={!isEditable}
                       />
                     );
                   }}
@@ -188,10 +188,10 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                       {CONTRACT_TYPES.map((contract) => (
                         <FormControlLabel
                           key={contract.id}
-                          value={contract.name}
+                          value={contract.id}
                           control={<Radio />}
                           label={contract.name}
-                          disabled={!isEditMode}
+                          disabled={!isEditable}
                         />
                       ))}
                     </RadioGroup>
@@ -214,7 +214,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                           value={hour}
                           control={<Radio />}
                           label={`${hour}`}
-                          disabled={!isEditMode}
+                          disabled={!isEditable}
                         />
                       ))}
                     </RadioGroup>
@@ -237,7 +237,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                           value={range.name}
                           control={<Radio />}
                           label={range.name}
-                          disabled={!isEditMode}
+                          disabled={!isEditable}
                         />
                       ))}
                     </RadioGroup>
@@ -254,7 +254,6 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                   control={control}
                   render={({ field }) => {
                     const selectedPeriods = (field.value as PeriodOfDayName[]) || [];
-
                     return (
                       <FormGroup row>
                         {PERIOD_OF_DAYS.map((period) => (
@@ -270,11 +269,11 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
 
                                   field.onChange(updatedPeriods);
                                 }}
-                                value={period.name}
+                                value={period.id}
                               />
                             }
                             label={`${period.name} (${period.time})`}
-                            disabled={!isEditMode}
+                            disabled={!isEditable}
                           />
                         ))}
                       </FormGroup>
@@ -295,7 +294,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                       {...field}
                       checked={field.value}
                       onChange={(e) => field.onChange(e.target.checked)}
-                      disabled={!isEditMode}
+                      disabled={!isEditable}
                     />
                   )}
                 />
@@ -316,7 +315,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
                   control={control}
                   name="notes"
                   render={({ field }) => (
-                    <TextField {...field} rows={4} variant="outlined" sx={{ width: '20rem' }} disabled={!isEditMode} />
+                    <TextField {...field} rows={4} variant="outlined" sx={{ width: '20rem' }} disabled={!isEditable} />
                   )}
                 />
               </TableCell>
@@ -326,7 +325,7 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
             <TableRow>
               <TableCell sx={{ border: 'none' }} colSpan={2} align="right">
                 <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
-                  {isEditMode ? (
+                  {isEditable ? (
                     <>
                       <Button variant="outlined" type="button" onClick={handleCancelButton}>
                         Cancel
@@ -354,3 +353,4 @@ export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }
     </form>
   );
 };
+export default CreateInstructor;
