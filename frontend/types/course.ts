@@ -28,7 +28,7 @@ interface GetCourseResponse extends CourseBase {
   program: GetCoursesProgram;
 }
 
-export type GetCoursesResponse = GetCourseResponse[];
+export interface GetCoursesResponse extends GetCourseResponse {}
 
 export interface CreateCourseResponse extends GetCourseResponse {}
 

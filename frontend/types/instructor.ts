@@ -18,7 +18,7 @@ export interface GetInstructorResponse extends InstructorBase {
   courses: CourseBase[];
 }
 
-export type GetInstructorsResponse = GetInstructorResponse[];
+export interface GetInstructorsResponse extends GetInstructorResponse {}
 
 export interface CreateInstructorResponse extends GetInstructorResponse {}
 
