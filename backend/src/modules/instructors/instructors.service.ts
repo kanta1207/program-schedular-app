@@ -129,6 +129,7 @@ export class InstructorsService {
   }
 
   async findOne(id: number) {
+    // Use query builder to get the instructor with all the related data, including sorted classes
     const instructor = await this.instructorRepository
       .createQueryBuilder('instructor')
       .leftJoinAndSelect('instructor.contractType', 'contractType')
