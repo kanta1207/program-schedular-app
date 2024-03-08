@@ -1,19 +1,23 @@
+import { In, Repository } from 'typeorm';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
-import { InjectRepository } from '@nestjs/typeorm';
+
 import { Instructor } from 'src/entity/instructors.entity';
-import { In, Repository } from 'typeorm';
 import { CoursesInstructors } from 'src/entity/coursesInstructors.entity';
 import { MasterContractType } from 'src/entity/masterContractTypes.entity';
 import { MasterWeekdaysRange } from 'src/entity/masterWeekdaysRanges.entity';
 import { MasterPeriodOfDay } from 'src/entity/masterPeriodOfDays.entity';
 import { InstructorsPeriodOfDays } from 'src/entity/instructorsPeriodOfDays.entity';
 import { Course } from 'src/entity/courses.entity';
+
+import { CONTRACTOR_CONTRACT_TYPE_ID } from './instructor.constant';
 
 @Injectable()
 export class InstructorsService {
@@ -45,13 +49,13 @@ export class InstructorsService {
     } = createInstructorDto;
 
     // Validate contractor's desired working hours, making it sure it's not empty
-    if (contractTypeId === 3 && !desiredWorkingHours)
+    if (contractTypeId === CONTRACTOR_CONTRACT_TYPE_ID && !desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
-    if (contractTypeId !== 3 && desiredWorkingHours)
+    if (contractTypeId !== CONTRACTOR_CONTRACT_TYPE_ID && desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours should not be provided for full-time or part-time instructors',
       );
@@ -228,15 +232,15 @@ export class InstructorsService {
     } = updateInstructorDto;
 
     // Validate contractor's desired working hours, making it sure it's not empty
-    if (contractTypeId === 3 && !desiredWorkingHours)
+    if (contractTypeId === CONTRACTOR_CONTRACT_TYPE_ID && !desiredWorkingHours)
       throw new BadRequestException(
         'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
     if (
-      contractTypeId !== 3 &&
-      existingInstructor.contractType.id !== 3 &&
+      contractTypeId !== CONTRACTOR_CONTRACT_TYPE_ID &&
+      existingInstructor.contractType.id !== CONTRACTOR_CONTRACT_TYPE_ID &&
       desiredWorkingHours
     )
       throw new BadRequestException(
