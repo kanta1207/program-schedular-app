@@ -42,9 +42,6 @@ interface CohortScheduleProps {
   cohort: GetCohortResponse;
 }
 
-const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
-
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const now = dayjs();
@@ -122,6 +119,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
   const getRequiredHours = (courseId: number): number => {
     return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
   };
+
+  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
