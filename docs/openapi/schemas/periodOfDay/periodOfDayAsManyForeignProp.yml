@@ -1,0 +1,8 @@
+type: object
+required:
+  - periodOfDays
+properties:
+  periodOfDays:
+    type: array
+    items:
+      $ref: './periodOfDay.yml'
