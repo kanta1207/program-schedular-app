@@ -87,6 +87,11 @@ export class CohortsService {
     }
 
     const { name, intakeId, periodOfDayId, programId } = updateCohortDto;
+
+    if (name) {
+      cohort.name = name;
+    }
+
     if (intakeId) {
       const intake = await this.intakeRepository.findOneBy({ id: intakeId });
       if (!intake) {
@@ -95,7 +100,7 @@ export class CohortsService {
       cohort.intake = intake;
     }
 
-    if (updateCohortDto.periodOfDayId) {
+    if (periodOfDayId) {
       const periodOfDay = await this.periodOfDayRepository.findOneBy({
         id: periodOfDayId,
       });
@@ -105,16 +110,12 @@ export class CohortsService {
       cohort.periodOfDay = periodOfDay;
     }
 
-    if (updateCohortDto.programId) {
+    if (programId) {
       const program = await this.programRepository.findOneBy({ id: programId });
       if (!program) {
         throw new NotFoundException(`Program Not Found`);
       }
       cohort.program = program;
-    }
-
-    if (name) {
-      cohort.name = name;
     }
 
     await this.cohortRepository.save(cohort);
