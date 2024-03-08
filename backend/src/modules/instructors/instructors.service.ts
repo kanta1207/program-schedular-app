@@ -111,7 +111,7 @@ export class InstructorsService {
       instructorIds = coursesInstructors.map((ci) => ci.instructor.id);
     }
 
-    return await this.instructorRepository.find({
+    const instructors = await this.instructorRepository.find({
       where: {
         id: instructorIds.length > 0 ? In(instructorIds) : undefined,
         weekdaysRange: rangeId ? { id: rangeId } : undefined,
@@ -119,10 +119,27 @@ export class InstructorsService {
       relations: {
         contractType: true,
         weekdaysRange: true,
-        periodOfDays: true,
       },
       order: { id: 'DESC' },
     });
+
+    const instructorPeriodOfDays =
+      await this.instructorsPeriodOfDaysRepository.find({
+        where: {
+          instructor: In(instructors.map((i) => i.id)),
+        },
+        relations: { periodOfDay: true, instructor: true },
+      });
+
+    // Add period of days to the result object
+    const result = instructors.map((instructor) => {
+      const periodOfDays = instructorPeriodOfDays
+        .filter((ipod) => ipod.instructor.id === instructor.id)
+        .map((ipod) => ipod.periodOfDay);
+      return { ...instructor, periodOfDays };
+    });
+
+    return result;
   }
 
   async findOne(id: number) {
@@ -133,7 +150,6 @@ export class InstructorsService {
       relations: {
         contractType: true,
         weekdaysRange: true,
-        periodOfDays: true,
         classes: {
           course: true,
           cohort: {
@@ -150,6 +166,19 @@ export class InstructorsService {
         },
       },
     });
+
+    // Get all the period of days associated with the instructor
+    const instructorsPeriodOfDays =
+      await this.instructorsPeriodOfDaysRepository.find({
+        where: {
+          instructor: { id },
+        },
+        relations: { periodOfDay: true },
+      });
+    const periodOfDays = instructorsPeriodOfDays.map(
+      (ipod) => ipod.periodOfDay,
+    );
+
     // Get all the courses associated with the instructor
     const coursesInstructors = await this.coursesInstructorsRepository.find({
       where: {
@@ -159,8 +188,8 @@ export class InstructorsService {
     });
     const courses = coursesInstructors.map((ci) => ci.course);
 
-    // Add the courses to the result object
-    const result = { ...instructor, courses };
+    // Add the period of days and the courses to the result object
+    const result = { ...instructor, periodOfDays, courses };
 
     return result;
   }
