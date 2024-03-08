@@ -24,11 +24,12 @@ export class CohortsService {
   async create(createCohortDto: CreateCohortDto) {
     const { name, intakeId, periodOfDayId, programId } = createCohortDto;
 
-    const intake = await this.intakeRepository.findOneBy({ id: intakeId });
-    const periodOfDay = await this.periodOfDayRepository.findOneBy({
-      id: periodOfDayId,
-    });
-    const program = await this.programRepository.findOneBy({ id: programId });
+    const [intake, periodOfDay, program] = await Promise.all([
+      this.intakeRepository.findOneBy({ id: intakeId }),
+      this.periodOfDayRepository.findOneBy({ id: periodOfDayId }),
+      this.programRepository.findOneBy({ id: programId }),
+    ]);
+
     const cohort = this.cohortRepository.create({
       name,
       intake,
