@@ -129,24 +129,23 @@ export class InstructorsService {
   }
 
   async findOne(id: number) {
-    const instructor = await this.instructorRepository.findOne({
-      where: {
-        id,
-      },
-      relations: {
-        contractType: true,
-        weekdaysRange: true,
-        periodOfDays: true,
-        classes: {
-          course: true,
-          cohort: {
-            program: true,
-          },
-          weekdaysRange: true,
-          classroom: true,
-        },
-      },
-    });
+    const instructor = await this.instructorRepository
+      .createQueryBuilder('instructor')
+      .leftJoinAndSelect('instructor.contractType', 'contractType')
+      .leftJoinAndSelect('instructor.weekdaysRange', 'weekdaysRange')
+      .leftJoinAndSelect('instructor.periodOfDays', 'periodOfDays')
+      .leftJoinAndSelect('instructor.classes', 'classes')
+      .leftJoinAndSelect('classes.course', 'course')
+      .leftJoinAndSelect('classes.cohort', 'cohort')
+      .leftJoinAndSelect('cohort.program', 'program')
+      .leftJoinAndSelect('classes.weekdaysRange', 'classesWeekdaysRange')
+      .leftJoinAndSelect('classes.classroom', 'classroom')
+      .where('instructor.id = :id', { id })
+      .orderBy({
+        'classes.startAt': 'ASC',
+        'classes.endAt': 'ASC',
+      })
+      .getOne();
     // Get all the courses associated with the instructor
     const coursesInstructors = await this.coursesInstructorsRepository.find({
       where: {
