@@ -165,7 +165,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
             {isScheduleEditable ? (
               <>
                 {fields.map((field, index) => {
-                  const classHours = getPlannedHours(
+                  const plannedHours = getPlannedHours(
                     dayjs(watchSchedule[index].startAt).toDate(),
                     dayjs(watchSchedule[index].endAt).toDate(),
                     watchSchedule[index].weekdaysRangeId,
@@ -283,8 +283,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
 
                       {/* Hours met */}
                       <TableCell>
-                        <span className={`${classHours > requiredHours && 'text-red-500 font-semibold'}`}>
-                          {classHours}
+                        <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
+                          {plannedHours}
                         </span>{' '}
                         / {requiredHours}
                       </TableCell>
@@ -364,7 +364,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
             ) : (
               <>
                 {cohort.classes.map((classData) => {
-                  const classHours = getPlannedHours(classData.startAt, classData.endAt, classData.weekdaysRange.id);
+                  const plannedHours = getPlannedHours(classData.startAt, classData.endAt, classData.weekdaysRange.id);
                   const requiredHours = classData.course.requiredHours;
                   return (
                     <TableRow key={classData.id}>
@@ -377,8 +377,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                         <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
                       </TableCell>
                       <TableCell>
-                        <span className={`${classHours > requiredHours && 'text-red-500 font-semibold'}`}>
-                          {classHours}
+                        <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
+                          {plannedHours}
                         </span>{' '}
                         / {requiredHours}
                       </TableCell>
