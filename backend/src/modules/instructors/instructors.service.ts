@@ -248,16 +248,16 @@ export class InstructorsService {
       });
 
       // Save all of the period of days and instructors relationship again
-      for (let i = 0; i < periodOfDaysIds.length; i++) {
-        const periodOfDay = await this.masterPeriodOfDayRepository.findOne({
-          where: { id: periodOfDaysIds[i] },
-        });
-
-        await this.instructorsPeriodOfDaysRepository.save({
-          instructor: updatedInstructor,
-          periodOfDay,
-        });
-      }
+      const periodOfDays = await this.masterPeriodOfDayRepository.find({
+        where: { id: In(periodOfDaysIds) },
+      });
+      const instructorsPeriodOfDays = periodOfDays.map((periodOfDay) => ({
+        instructor: updatedInstructor,
+        periodOfDay,
+      }));
+      await this.instructorsPeriodOfDaysRepository.save(
+        instructorsPeriodOfDays,
+      );
     }
 
     // Update courses and instructors relationship
@@ -268,16 +268,14 @@ export class InstructorsService {
       });
 
       // Save all of the courses and instructors relationship again
-      for (let i = 0; i < courseIds.length; i++) {
-        const course = await this.courseRepository.findOne({
-          where: { id: courseIds[i] },
-        });
-
-        await this.coursesInstructorsRepository.save({
-          instructor: updatedInstructor,
-          course,
-        });
-      }
+      const courses = await this.courseRepository.find({
+        where: { id: In(courseIds) },
+      });
+      const coursesInstructors = courses.map((course) => ({
+        instructor: updatedInstructor,
+        course,
+      }));
+      await this.coursesInstructorsRepository.save(coursesInstructors);
     }
 
     return updatedInstructor;
