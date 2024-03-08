@@ -1,6 +1,7 @@
 'use client';
 import { Dayjs } from 'dayjs';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createBreak } from '@/actions/breaks/createBreak';
 
 const CreateBreak = () => {
+  const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
 
   const handleCancelClick = () => {
@@ -32,8 +34,8 @@ const CreateBreak = () => {
 
       await createBreak(payload);
 
-      reset();
       setIsCreating(false);
+      router.refresh();
     } catch (error) {
       console.error(error);
     }

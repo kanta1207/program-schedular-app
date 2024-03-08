@@ -1,14 +1,25 @@
-import { ContractType, Course, PeriodOfDay, WeekdaysRange } from './_index';
+import { ContractType, CourseBase, GetClassResponse, PeriodOfDay, WeekdaysRange } from './_index';
 
-export interface Instructor {
+export interface InstructorBase {
   id: number;
   name: string;
   isActive: boolean;
-  desiredWorkingHours: number;
+  desiredWorkingHour: number | null; // If only contract type is "contract", there's number.
+  note: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GetInstructorResponse extends InstructorBase {
   contractType: ContractType;
   weekdaysRange: WeekdaysRange;
   periodOfDays: PeriodOfDay[];
-  courses: Course[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  classes: GetClassResponse;
+  courses: CourseBase[];
 }
+
+export type GetInstructorsResponse = GetInstructorResponse[];
+
+export interface CreateInstructorResponse extends GetInstructorResponse {}
+
+export interface UpdateInstructorResponse extends GetInstructorResponse {}

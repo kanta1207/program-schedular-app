@@ -1,4 +1,3 @@
-export * from './break';
 export * from './class';
 export * from './cohort';
 export * from './course';

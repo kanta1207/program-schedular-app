@@ -15,16 +15,22 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
+    // Default: 500 Internal Server Error
     let statusCode = StatusCodes.STATUS_INTERNAL_SERVER_ERROR.code;
-    let message = StatusCodes.STATUS_INTERNAL_SERVER_ERROR.message;
+    let messages = [StatusCodes.STATUS_INTERNAL_SERVER_ERROR.message];
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
+
+      // Get error messages from response
       const exceptionResponse = exception.getResponse();
-      message =
-        typeof exceptionResponse === 'string'
-          ? exceptionResponse
-          : exceptionResponse['message'] || message;
+      if (typeof exceptionResponse === 'string') {
+        messages = [exceptionResponse];
+      }
+      if (exceptionResponse['message']) {
+        const resMsg = exceptionResponse['message'];
+        messages = Array.isArray(resMsg) ? resMsg : [resMsg];
+      }
     }
 
     // Stack trace
@@ -35,14 +41,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const timestamp = new Date().toISOString();
     const path = request.url;
     Logger.error(
-      `Timestamp: ${timestamp}, Path: ${path}, Message: ${message}`,
+      `Timestamp: ${timestamp}, Path: ${path}, Message: ${messages.join(', ')}`,
       stack,
     );
 
     // Response to the client
     response.status(statusCode).json({
       statusCode,
-      message,
+      messages,
     });
   }
 }

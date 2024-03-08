@@ -1,16 +1,20 @@
-import { GetBreaksResponse } from '@/types/_index';
-import { ApiResponse } from '@/types/_index';
+import { cohorts } from '@/mock/_index';
+import { Cohort } from '@/types/_index';
 
-export const getBreaks = async (): Promise<ApiResponse<GetBreaksResponse[]>> => {
+export const getCohorts = async (): Promise<Cohort[]> => {
+  const sortedCohorts = cohorts.sort((a, b) => b.id - a.id);
+  return sortedCohorts;
+
+  // TODO: Remove mock and fetch data from api
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts`;
 
     const response = await fetch(baseUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      cache: 'no-store',
+      next: { tags: ['cohort'] },
     });
 
     if (!response.ok) {

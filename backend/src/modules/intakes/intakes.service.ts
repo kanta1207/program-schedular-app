@@ -30,7 +30,11 @@ export class IntakesService {
         order: {
           id: 'DESC',
         },
-        relations: ['cohorts.periodOfDay'],
+        relations: {
+          cohorts: {
+            periodOfDay: true,
+          },
+        },
       }),
     ]);
 
@@ -65,7 +69,12 @@ export class IntakesService {
       where: {
         id,
       },
-      relations: ['cohorts.periodOfDay', 'cohorts.program'],
+      relations: {
+        cohorts: {
+          periodOfDay: true,
+          program: true,
+        },
+      },
     });
 
     if (!intake) {
@@ -95,7 +104,19 @@ export class IntakesService {
       throw new NotFoundException('Intake Not Found');
     }
 
-    return this.intakeRepository.findOneBy({ id });
+    const intake = this.intakeRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        cohorts: {
+          periodOfDay: true,
+          program: true,
+        },
+      },
+    });
+
+    return intake;
   }
 
   async remove(id: number) {

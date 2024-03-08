@@ -17,7 +17,11 @@ export class BreaksService {
   ) {}
 
   async findAll() {
-    return await this.breakRepository.find();
+    return await this.breakRepository.find({
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number) {

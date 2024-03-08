@@ -1,6 +1,7 @@
 'use client';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -21,6 +22,7 @@ interface BreakListTableProps {
 }
 
 const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
+  const router = useRouter();
   const [editBreakId, setEditBreakId] = useState<number | null>(null);
 
   // Set default value in updating break
@@ -55,8 +57,8 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
 
       await updateBreak(editBreakId, payload);
 
-      reset();
       setEditBreakId(null);
+      router.refresh();
     } catch (error) {
       console.error(error);
     }
