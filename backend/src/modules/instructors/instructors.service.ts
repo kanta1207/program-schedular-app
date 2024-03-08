@@ -73,28 +73,25 @@ export class InstructorsService {
     });
 
     // Save period of days and instructors relationship
-    for (let i = 0; i < periodOfDaysIds.length; i++) {
-      const periodOfDay = await this.masterPeriodOfDayRepository.findOne({
-        where: { id: periodOfDaysIds[i] },
-      });
 
-      await this.instructorsPeriodOfDaysRepository.save({
-        instructor,
-        periodOfDay,
-      });
-    }
+    const periodOfDays = await this.masterPeriodOfDayRepository.find({
+      where: { id: In(periodOfDaysIds) },
+    });
+    const instructorsPeriodOfDays = periodOfDays.map((periodOfDay) => ({
+      instructor,
+      periodOfDay,
+    }));
+    await this.instructorsPeriodOfDaysRepository.save(instructorsPeriodOfDays);
 
     // Save courses and instructors relationship
-    for (let i = 0; i < courseIds.length; i++) {
-      const course = await this.courseRepository.findOne({
-        where: { id: courseIds[i] },
-      });
-
-      await this.coursesInstructorsRepository.save({
-        instructor,
-        course,
-      });
-    }
+    const courses = await this.courseRepository.find({
+      where: { id: In(courseIds) },
+    });
+    const coursesInstructors = courses.map((course) => ({
+      instructor,
+      course,
+    }));
+    await this.coursesInstructorsRepository.save(coursesInstructors);
 
     return instructor;
   }
