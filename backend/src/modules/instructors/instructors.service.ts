@@ -280,7 +280,7 @@ export class InstructorsService {
     return updatedInstructor;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} instructor`;
+  async remove(id: number) {
+    return await this.instructorRepository.softDelete(id);
   }
 }
