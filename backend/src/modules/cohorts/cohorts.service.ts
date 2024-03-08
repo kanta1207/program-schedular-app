@@ -44,7 +44,7 @@ export class CohortsService {
     return await this.cohortRepository.find({
       order: {
         id: 'DESC',
-        classes: { id: 'DESC' },
+        classes: { startAt: 'ASC', endAt: 'ASC' },
       },
       relations: {
         intake: true,
@@ -64,6 +64,10 @@ export class CohortsService {
   async findOne(id: number) {
     const cohort = await this.cohortRepository.findOne({
       where: { id },
+      order: {
+        id: 'DESC',
+        classes: { startAt: 'ASC', endAt: 'ASC' },
+      },
       relations: {
         intake: true,
         program: true,
