@@ -27,10 +27,9 @@ import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
 interface CreateInstructorProps {
-  pageType: 'new' | 'view';
   instructor?: Instructor;
 }
-const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructor }) => {
+export const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const router = useRouter();
 
@@ -48,7 +47,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   control={<Checkbox />}
                   label={filteredCourse.name}
                   value={filteredCourse.name}
-                  disabled={isEditMode ? false : true}
+                  disabled={!isEditMode}
                 />
               ))}
           </Box>
@@ -57,11 +56,9 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     );
   };
   useEffect(() => {
-    if (pageType === 'new') {
+    if (!instructor) {
       setIsEditMode(true);
-    }
-
-    if (pageType === 'view' && !isEditMode) {
+    } else {
       reset({
         name: instructor?.name,
         contractTypeId: instructor?.contractType.id,
@@ -77,10 +74,9 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
   const handleCancelButton = () => {
     const isConfirmed = confirm('Do you want to cancel?');
     if (isConfirmed) {
-      if (pageType === 'new') {
+      if (!instructor) {
         router.push('/instructors');
-      }
-      if (pageType === 'view') {
+      } else {
         setIsEditMode(false);
         reset({
           name: instructor?.name,
@@ -95,9 +91,13 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
       }
     }
   };
-  const handleDeleteButton = () => {
-    confirm('Do you want to delete?');
-    deleteInstructor(instructor!.id);
+
+  const handleDeleteButton = async () => {
+    const isConfirmed = confirm('Do you want to delete?');
+    if (isConfirmed && instructor) {
+      await deleteInstructor(instructor.id);
+      router.push('/instructors');
+    }
   };
 
   const { control, handleSubmit, reset } = useForm({
@@ -126,8 +126,9 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
         notes: data.notes,
       };
 
-      if (pageType === 'view' && isEditMode) {
-        await updateInstructor(instructor!.id, payload);
+      if (instructor) {
+        const updatedInstructor = await updateInstructor(instructor.id, payload);
+        console.log('updated cohort:', updatedInstructor);
         reset({
           name: payload.name,
           contractTypeId: payload.contractTypeId,
@@ -139,7 +140,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
           notes: payload.notes,
         });
         setIsEditMode(false);
-      } else if (pageType === 'new') {
+      } else {
         const newInstructor = await createInstructor(payload);
       }
     } catch (error) {
@@ -167,7 +168,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                         value={field.value ?? ''}
                         inputRef={field.ref}
                         onChange={(name) => field.onChange(name)}
-                        disabled={isEditMode ? false : true}
+                        disabled={!isEditMode}
                       />
                     );
                   }}
@@ -190,7 +191,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                           value={contract.name}
                           control={<Radio />}
                           label={contract.name}
-                          disabled={isEditMode ? false : true}
+                          disabled={!isEditMode}
                         />
                       ))}
                     </RadioGroup>
@@ -200,7 +201,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
             </TableRow>
             {/* Hours */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Hours:</TableCell>
+              <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
                   name="hours"
@@ -213,7 +214,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                           value={hour}
                           control={<Radio />}
                           label={`${hour}`}
-                          disabled={isEditMode ? false : true}
+                          disabled={!isEditMode}
                         />
                       ))}
                     </RadioGroup>
@@ -236,7 +237,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                           value={range.name}
                           control={<Radio />}
                           label={range.name}
-                          disabled={isEditMode ? false : true}
+                          disabled={!isEditMode}
                         />
                       ))}
                     </RadioGroup>
@@ -273,7 +274,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                               />
                             }
                             label={`${period.name} (${period.time})`}
-                            disabled={isEditMode ? false : true}
+                            disabled={!isEditMode}
                           />
                         ))}
                       </FormGroup>
@@ -294,7 +295,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                       {...field}
                       checked={field.value}
                       onChange={(e) => field.onChange(e.target.checked)}
-                      disabled={isEditMode ? false : true}
+                      disabled={!isEditMode}
                     />
                   )}
                 />
@@ -315,13 +316,7 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
                   control={control}
                   name="notes"
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      rows={4}
-                      variant="outlined"
-                      sx={{ width: '20rem' }}
-                      disabled={isEditMode ? false : true}
-                    />
+                    <TextField {...field} rows={4} variant="outlined" sx={{ width: '20rem' }} disabled={!isEditMode} />
                   )}
                 />
               </TableCell>
@@ -359,5 +354,3 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ pageType, instructo
     </form>
   );
 };
-
-export default CreateInstructor;
