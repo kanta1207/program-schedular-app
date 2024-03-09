@@ -33,28 +33,6 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
   const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
-  const coursesByProgram = () => {
-    return (
-      <>
-        {PROGRAMS.map((program) => (
-          <Box key={program.id}>
-            <Typography variant="subtitle1">{program.name}</Typography>
-            {courses
-              .filter((course) => course.program.id === program.id)
-              .map((filteredCourse) => (
-                <FormControlLabel
-                  key={filteredCourse.id}
-                  control={<Checkbox />}
-                  label={filteredCourse.name}
-                  value={filteredCourse.name}
-                  disabled={!isEditable}
-                />
-              ))}
-          </Box>
-        ))}
-      </>
-    );
-  };
   useEffect(() => {
     if (instructor) {
       reset({
@@ -63,6 +41,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         hours: instructor?.desiredWorkingHours,
         days: instructor?.weekdaysRange.name,
         periodOfDayId: instructor?.periodOfDays.map((period) => period.id),
+        isActive: instructor?.isActive,
         courseIds: instructor?.courses.map((course) => course.id),
         notes: instructor?.notes,
       });
@@ -71,7 +50,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   }, []);
 
-  const handleCancelButton = () => {
+  const handleCancel = () => {
     const isConfirmed = confirm('Do you want to cancel?');
     if (isConfirmed) {
       if (instructor) {
@@ -92,7 +71,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   };
 
-  const handleDeleteButton = async () => {
+  const handleDelete = async () => {
     const isConfirmed = confirm('Do you want to delete?');
     if (isConfirmed && instructor) {
       await deleteInstructor(instructor.id);
@@ -148,6 +127,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       console.error(error);
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TableContainer>
@@ -305,7 +285,24 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Course:</TableCell>
               <TableCell sx={{ border: 'none' }}>
-                <FormGroup row>{coursesByProgram()}</FormGroup>
+                <FormGroup row>
+                  {PROGRAMS.map((program) => (
+                    <Box key={program.id}>
+                      <Typography variant="subtitle1">{program.name}</Typography>
+                      {courses
+                        .filter((course) => course.program.id === program.id)
+                        .map((filteredCourse) => (
+                          <FormControlLabel
+                            key={filteredCourse.id}
+                            control={<Checkbox />}
+                            label={filteredCourse.name}
+                            value={filteredCourse.name}
+                            disabled={!isEditable}
+                          />
+                        ))}
+                    </Box>
+                  ))}
+                </FormGroup>
               </TableCell>
             </TableRow>
             {/* Notes */}
@@ -328,7 +325,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
                   {isEditable ? (
                     <>
-                      <Button variant="outlined" type="button" onClick={handleCancelButton}>
+                      <Button variant="outlined" type="button" onClick={handleCancel}>
                         Cancel
                       </Button>
                       <Button variant="contained" type="submit" onClick={handleSubmit(onSubmit)}>
@@ -340,7 +337,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                       <Button variant="outlined" type="button" onClick={() => setIsEditMode(true)}>
                         Edit
                       </Button>
-                      <Button variant="contained" color="error" type="button" onClick={handleDeleteButton}>
+                      <Button variant="contained" color="error" type="button" onClick={handleDelete}>
                         Delete
                       </Button>
                     </>
