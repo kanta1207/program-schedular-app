@@ -11,5 +11,5 @@ export interface Instructor {
   courses: Course[];
   createdAt?: Date;
   updatedAt?: Date;
-  notes: string | null;
+  note: string | null;
 }

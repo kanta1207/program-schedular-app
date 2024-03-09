@@ -49,7 +49,7 @@ export const instructors: Instructor[] = [
         program: PROGRAMS.find(({ name }) => name === 'DMA')!,
       },
     ],
-    notes: '',
+    note: '',
   },
   {
     id: 2,
@@ -115,11 +115,11 @@ export const instructors: Instructor[] = [
         program: PROGRAMS.find(({ name }) => name === 'DMA')!,
       },
     ],
-    notes: '',
+    note: '',
   },
   {
     id: 3,
-    notes: '',
+    note: '',
     name: 'Caio Franco',
     isActive: true,
     desiredWorkingHours: 20,
@@ -149,7 +149,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 4,
-    notes: '',
+    note: '',
     name: 'Diogo',
     isActive: true,
     desiredWorkingHours: 20,
@@ -167,7 +167,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 5,
-    notes: '',
+    note: '',
     name: 'Gaurav',
     isActive: true,
     desiredWorkingHours: 20,
@@ -215,7 +215,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 6,
-    notes: '',
+    note: '',
     name: 'Iman',
     isActive: true,
     desiredWorkingHours: 10,
@@ -245,7 +245,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 7,
-    notes: '',
+    note: '',
     name: 'Jana',
     isActive: true,
     desiredWorkingHours: 20,
@@ -275,7 +275,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 8,
-    notes: '',
+    note: '',
     name: 'Kwame',
     isActive: true,
     desiredWorkingHours: 10,
@@ -323,7 +323,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 9,
-    notes: '',
+    note: '',
     name: 'Mariam',
     isActive: true,
     desiredWorkingHours: 40,
@@ -377,7 +377,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 10,
-    notes: '',
+    note: '',
     name: 'Rafael',
     isActive: true,
     desiredWorkingHours: 40,
@@ -419,7 +419,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 11,
-    notes: '',
+    note: '',
     name: 'Rodrigo',
     isActive: true,
     desiredWorkingHours: 20,
@@ -467,7 +467,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 12,
-    notes: '',
+    note: 'aaaaaaaaa',
     name: 'Vedant',
     isActive: true,
     desiredWorkingHours: 20,
@@ -503,7 +503,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 13,
-    notes: '',
+    note: '',
     name: 'Amir',
     isActive: false,
     desiredWorkingHours: 10,
@@ -527,7 +527,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 14,
-    notes: '',
+    note: '',
     name: 'Andres Franco',
     isActive: false,
     desiredWorkingHours: 40,
@@ -605,7 +605,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 15,
-    notes: '',
+    note: '',
     name: 'Aswini',
     isActive: false,
     desiredWorkingHours: 10,
@@ -623,7 +623,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 16,
-    notes: '',
+    note: '',
     name: 'Brigitte',
     isActive: false,
     desiredWorkingHours: 30,
@@ -659,7 +659,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 17,
-    notes: '',
+    note: '',
     name: 'Cody',
     isActive: false,
     desiredWorkingHours: 10,
@@ -701,7 +701,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 18,
-    notes: '',
+    note: '',
     name: 'Daria Astanaeva',
     isActive: false,
     desiredWorkingHours: 10,
@@ -743,7 +743,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 19,
-    notes: '',
+    note: '',
     name: 'Elmira',
     isActive: false,
     desiredWorkingHours: 30,
@@ -767,7 +767,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 20,
-    notes: '',
+    note: '',
     name: 'Jasleen',
     isActive: false,
     desiredWorkingHours: 10,
@@ -791,7 +791,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 21,
-    notes: '',
+    note: '',
     name: 'Rafaela',
     isActive: false,
     desiredWorkingHours: 10,
@@ -839,7 +839,7 @@ export const instructors: Instructor[] = [
   },
   {
     id: 22,
-    notes: '',
+    note: '',
     name: 'Tiago',
     isActive: false,
     desiredWorkingHours: 40,

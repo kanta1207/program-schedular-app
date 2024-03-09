@@ -17,6 +17,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
+  TextareaAutosize,
   Typography,
 } from '@mui/material';
 import { courses } from '@/mock/_index';
@@ -43,7 +44,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         periodOfDayId: instructor?.periodOfDays.map((period) => period.id),
         isActive: instructor?.isActive,
         courseIds: instructor?.courses.map((course) => course.id),
-        notes: instructor?.notes,
+        note: instructor?.note,
       });
     } else {
       setIsEditMode(true);
@@ -63,7 +64,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
           periodOfDayId: instructor?.periodOfDays?.map((period) => period.id),
           isActive: instructor?.isActive,
           courseIds: instructor?.courses.map((course) => course.id),
-          notes: instructor?.notes,
+          note: instructor?.note,
         });
       } else {
         router.push('/instructors');
@@ -88,7 +89,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       periodOfDayId: [] as unknown | null,
       isActive: false,
       courseIds: [] as unknown | null,
-      notes: null as string | null,
+      note: null as string | null,
     },
   });
 
@@ -102,7 +103,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         periodOfDayId: data.period,
         isActive: data.isActive,
         courseIds: data.courses,
-        notes: data.notes,
+        note: data.note,
       };
 
       if (instructor) {
@@ -117,7 +118,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
           // periodOfDayId: updatedInstructor.periodOfDayId,
           // isActive: updatedInstructor.isActive,
           // courseIds: updatedInstructor.courseIds,
-          // notes: updatedInstructor.notes,
+          // note: updatedInstructor.note,
         });
         setIsEditMode(false);
       } else {
@@ -305,15 +306,23 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 </FormGroup>
               </TableCell>
             </TableRow>
-            {/* Notes */}
+            {/* Note */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Notes:</TableCell>
+              <TableCell sx={{ border: 'none' }}>Note:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
                   control={control}
-                  name="notes"
+                  name="note"
                   render={({ field }) => (
-                    <TextField {...field} rows={4} variant="outlined" sx={{ width: '20rem' }} disabled={!isEditable} />
+                    <TextField
+                      {...field}
+                      minRows={4}
+                      maxRows={Infinity}
+                      multiline
+                      variant="outlined"
+                      sx={{ width: '40rem' }}
+                      disabled={!isEditable}
+                    />
                   )}
                 />
               </TableCell>

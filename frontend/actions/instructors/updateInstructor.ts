@@ -10,14 +10,14 @@ interface UpdateInstructorPayload {
   weekdaysRangeId: number;
   periodOfDayId: number[];
   courseIds: number[];
-  notes: string;
+  note: string;
 }
 
 export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes } =
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note } =
     payload;
 
-  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, notes);
+  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note);
 
   const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
   if (!tmpInstructor) throw new Error('Instructor not found');
@@ -36,7 +36,7 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
     .map((courseId) => courses.find((course) => course.id === courseId))
     .filter((course) => course !== undefined) as Course[];
 
-  tmpInstructor.notes = notes;
+  tmpInstructor.note = note;
 
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
@@ -48,7 +48,7 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
       weekdaysRange: tmpInstructor.weekdaysRange.name,
       periodOfDay: tmpInstructor.periodOfDays.map((pd) => pd.name),
       courses: tmpInstructor.courses.map((course) => course.name),
-      notes,
+      note,
     };
 
     const response = await fetch(baseUrl, {
