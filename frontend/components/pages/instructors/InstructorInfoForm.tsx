@@ -222,7 +222,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-
+            {/* Days */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Days:</TableCell>
               <TableCell sx={{ border: 'none' }}>
@@ -245,7 +245,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-
+            {/* Period */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Period:</TableCell>
               <TableCell sx={{ border: 'none' }}>
@@ -282,7 +282,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-
+            {/* Active */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Active:</TableCell>
               <TableCell sx={{ border: 'none' }}>
@@ -300,14 +300,14 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-
+            {/* Course */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Course:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <FormGroup row>{coursesByProgram()}</FormGroup>
               </TableCell>
             </TableRow>
-
+            {/* Notes */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Notes:</TableCell>
               <TableCell sx={{ border: 'none' }}>
