@@ -9,6 +9,7 @@ import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
 import { Intake } from 'src/entity/intakes.entity';
 import { MasterPeriodOfDay } from 'src/entity/masterPeriodOfDays.entity';
+import checkDateOrder from 'src/common/utils/check-date-order.util';
 
 @Injectable()
 export class IntakesService {
@@ -87,11 +88,14 @@ export class IntakesService {
   async update(id: number, updateIntakeDto: UpdateIntakeDto) {
     const { startAt, endAt } = updateIntakeDto;
     const existingIntake = await this.intakeRepository.findOneBy({ id });
-    if (
-      (startAt && endAt && startAt.getTime() >= endAt.getTime()) ||
-      (startAt && startAt.getTime() >= existingIntake.endAt.getTime()) ||
-      (endAt && endAt.getTime() <= existingIntake.startAt.getTime())
-    ) {
+
+    const isValidDateOrder = checkDateOrder(
+      startAt,
+      endAt,
+      existingIntake.startAt,
+      existingIntake.endAt,
+    );
+    if (!isValidDateOrder) {
       throw new BadRequestException('endAt must be after startAt');
     }
 
