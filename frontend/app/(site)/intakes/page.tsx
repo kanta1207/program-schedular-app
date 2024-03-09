@@ -3,7 +3,7 @@ import IntakeTableList from '@/components/pages/intakes/IntakeTableList';
 import Headline from '@/components/partials/Headline';
 import { getIntakes } from '@/actions/intakes/getIntakes';
 const IntakeList = async () => {
-  const intakes = await getIntakes();
+  const { data: intakes } = await getIntakes();
   return (
     <div className="w-full">
       <Headline name="Intakes" />

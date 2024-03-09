@@ -1,7 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { revalidateTag } from 'next/cache';
-import { intakes } from '@/mock/_index';
-import { Intake } from '@/types/_index';
+import { ApiResponse, UpdateIntakeResponse } from '@/types/_index';
 
 interface UpdateIntakePayload {
   name: string;
@@ -9,17 +7,11 @@ interface UpdateIntakePayload {
   endAt: Dayjs;
 }
 
-export const updateIntake = async (id: number, payload: UpdateIntakePayload): Promise<Intake> => {
+export const updateIntake = async (
+  id: number,
+  payload: UpdateIntakePayload,
+): Promise<ApiResponse<UpdateIntakeResponse>> => {
   const { name, startAt, endAt } = payload;
-  console.log(id, name, startAt, endAt);
-
-  const tmpIntake = intakes.find((IntakeItem) => IntakeItem.id === id)!;
-  tmpIntake.name = name;
-  tmpIntake.startAt === startAt.toDate();
-  tmpIntake.endAt === endAt.toDate();
-  return tmpIntake;
-
-  // TODO: Fetch data from api
   try {
     if (name === '') {
       throw new Error('Name cannot be empty');
@@ -30,11 +22,7 @@ export const updateIntake = async (id: number, payload: UpdateIntakePayload): Pr
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes/${id}`;
 
-    const payload = {
-      name: name,
-      startAt: startAt,
-      endAt: endAt,
-    };
+    const payload = { name, startAt, endAt };
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',
@@ -49,8 +37,6 @@ export const updateIntake = async (id: number, payload: UpdateIntakePayload): Pr
     }
 
     const data = await response.json();
-
-    revalidateTag('intake');
 
     return data;
   } catch (error: any) {

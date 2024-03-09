@@ -9,7 +9,7 @@ export const getIntakes = async (): Promise<ApiResponse<GetIntakesResponse[]>> =
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['intake'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {
