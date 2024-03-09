@@ -1,5 +1,5 @@
 import { getInstructorById } from '@/actions/instructors/getInstructorById';
-import CreateInstructor from '@/components/pages/instructors/CreateInstructor';
+import CreateInstructor from '@/components/pages/instructors/InstructorInfoForm';
 import { InstructorScheduleTable } from '@/components/pages/instructors/InstructorScheduleTable';
 import Headline from '@/components/partials/Headline';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';

@@ -26,10 +26,10 @@ import { Instructor, PeriodOfDayName } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
-interface CreateInstructorProps {
+interface InstructorInfoFormProps {
   instructor?: Instructor;
 }
-const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }) => {
+const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) => {
   const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
@@ -353,4 +353,4 @@ const CreateInstructor: React.FC<CreateInstructorProps> = ({ instructor }) => {
     </form>
   );
 };
-export default CreateInstructor;
+export default InstructorInfoForm;

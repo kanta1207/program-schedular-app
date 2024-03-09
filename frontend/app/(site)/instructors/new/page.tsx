@@ -1,4 +1,4 @@
-import CreateInstructor from '@/components/pages/instructors/CreateInstructor';
+import CreateInstructor from '@/components/pages/instructors/InstructorInfoForm';
 import Headline from '@/components/partials/Headline';
 
 const InstructorPage = () => {
