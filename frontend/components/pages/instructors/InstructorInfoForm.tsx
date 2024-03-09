@@ -56,9 +56,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     );
   };
   useEffect(() => {
-    if (!instructor) {
-      setIsEditMode(true);
-    } else {
+    if (instructor) {
       reset({
         name: instructor?.name,
         contractTypeId: instructor?.contractType.id,
@@ -68,15 +66,15 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         courseIds: instructor?.courses.map((course) => course.id),
         notes: instructor?.notes,
       });
+    } else {
+      setIsEditMode(true);
     }
   }, []);
 
   const handleCancelButton = () => {
     const isConfirmed = confirm('Do you want to cancel?');
     if (isConfirmed) {
-      if (!instructor) {
-        router.push('/instructors');
-      } else {
+      if (instructor) {
         setIsEditMode(false);
         reset({
           name: instructor?.name,
@@ -88,6 +86,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
           courseIds: instructor?.courses.map((course) => course.id),
           notes: instructor?.notes,
         });
+      } else {
+        router.push('/instructors');
       }
     }
   };
@@ -129,15 +129,16 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       if (instructor) {
         const updatedInstructor = await updateInstructor(instructor.id, payload);
         console.log('updated cohort:', updatedInstructor);
+        // TODO: reset form by updatedInstructor
         reset({
-          name: payload.name,
-          contractTypeId: payload.contractTypeId,
-          hours: payload.desiredWorkingHours,
-          days: payload.weekdaysRangeId,
-          periodOfDayId: payload.periodOfDayId,
-          isActive: payload.isActive,
-          courseIds: payload.courseIds,
-          notes: payload.notes,
+          // name: updatedInstructor.name,
+          // contractTypeId: updatedInstructor.contractTypeId,
+          // hours: updatedInstructor.desiredWorkingHours,
+          // days: updatedInstructor.weekdaysRangeId,
+          // periodOfDayId: updatedInstructor.periodOfDayId,
+          // isActive: updatedInstructor.isActive,
+          // courseIds: updatedInstructor.courseIds,
+          // notes: updatedInstructor.notes,
         });
         setIsEditMode(false);
       } else {
