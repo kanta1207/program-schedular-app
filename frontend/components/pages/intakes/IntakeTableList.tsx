@@ -13,17 +13,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TableMenu from '@/components/partials/TableMenu';
-import { Intake, PeriodOfDayName } from '@/types/_index';
-
+import { GetIntakesResponse } from '@/types/_index';
 import { updateIntake } from '@/actions/intakes/updateIntakes';
 import { deleteIntake } from '@/actions/intakes/deleteIntake';
+import { useRouter } from 'next/navigation';
 
 interface IntakeTableListProps {
-  intakes: Intake[];
+  intakes: GetIntakesResponse[];
 }
 
 const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
   const [editIntakeId, setEditIntakeId] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const updatingIntake = intakes.find((item) => item.id === editIntakeId);
@@ -44,6 +45,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
       endAt: null as Dayjs | null,
     },
   });
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const payload = {
@@ -57,8 +59,8 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
 
       await updateIntake(editIntakeId, payload);
 
-      reset();
       setEditIntakeId(null);
+      router.refresh();
     } catch (error) {
       console.error(error);
     }
@@ -72,26 +74,22 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
     setEditIntakeId(null);
   };
 
-  const getCohortsByPeriod = (intake: Intake, period: PeriodOfDayName) => {
-    return intake.cohorts
-      .filter((cohort) => cohort.periodOfDay.name === period)
-      .map((cohort) => cohort.name)
-      .join(', ');
-  };
+  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Table>
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
-            <TableRow sx={{ bgcolor: 'primary.main' }}>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>Name</TableCell>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>Start Date</TableCell>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>End Date</TableCell>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>Morning Cohorts</TableCell>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>Afternoon Cohorts</TableCell>
-              <TableCell sx={{ border: '1px solid white', color: 'white' }}>Evening Cohorts</TableCell>
-              {/* Empty head for edit and delete */}
-              <TableCell sx={{ marginLeft: 'auto', border: '1px solid white', color: 'white' }}></TableCell>
+            <TableRow sx={thRowStyle}>
+              <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Name</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Morning Cohorts</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Afternoon Cohorts</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Evening Cohorts</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -110,6 +108,7 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                             <TextField
                               label="Name"
                               id="name"
+                              sx={{ width: '100%' }}
                               value={field.value}
                               inputRef={field.ref}
                               onChange={(name) => field.onChange(name)}
@@ -171,9 +170,9 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
                     </TableCell>
                     <TableCell>{dayjs(intake.startAt).format('YYYY-MM-DD')}</TableCell>
                     <TableCell>{dayjs(intake.endAt).format('YYYY-MM-DD')}</TableCell>
-                    <TableCell>{getCohortsByPeriod(intake, 'Morning')}</TableCell>
-                    <TableCell>{getCohortsByPeriod(intake, 'Afternoon')}</TableCell>
-                    <TableCell>{getCohortsByPeriod(intake, 'Evening')}</TableCell>
+                    {intake.periodOfDays.map((period) => (
+                      <TableCell key={period.id}>{period.cohorts.map((cohort) => cohort.name).join(', ')}</TableCell>
+                    ))}
                     <TableCell>
                       <TableMenu id={intake.id} onEdit={handleEditClick} onDelete={deleteIntake} />
                     </TableCell>
