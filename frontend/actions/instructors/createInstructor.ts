@@ -7,16 +7,16 @@ interface CreateInstructorPayload {
   desiredWorkingHours: number;
   contractTypeId: number;
   weekdaysRangeId: number;
-  periodOfDayId: number[];
+  periodOfDayIds: number[];
   courseIds: number[];
-  note: string;
+  note: string | null;
 }
 
 export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note } =
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
     payload;
 
-  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note);
+  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note);
   return instructors[0];
 
   try {
@@ -27,7 +27,7 @@ export const createInstructor = async (payload: CreateInstructorPayload): Promis
       contractType: contractTypeId,
       desiredWorkingHours: desiredWorkingHours,
       weekdaysRange: weekdaysRangeId,
-      periodOfDay: periodOfDayId,
+      periodOfDayIds: periodOfDayIds,
       isActive: isActive,
       courses: courseIds,
       note: note,

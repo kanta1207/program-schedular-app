@@ -8,16 +8,16 @@ interface UpdateInstructorPayload {
   desiredWorkingHours: number;
   contractTypeId: number;
   weekdaysRangeId: number;
-  periodOfDayId: number[];
+  periodOfDayIds: number[];
   courseIds: number[];
-  note: string;
+  note: string | null;
 }
 
 export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note } =
+  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
     payload;
 
-  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayId, courseIds, note);
+  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note);
 
   const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
   if (!tmpInstructor) throw new Error('Instructor not found');
@@ -28,7 +28,7 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
   tmpInstructor.contractType = CONTRACT_TYPES.find((type) => type.id === contractTypeId) ?? tmpInstructor.contractType;
   tmpInstructor.weekdaysRange =
     WEEKDAYS_RANGES.find((range) => range.id === weekdaysRangeId) ?? tmpInstructor.weekdaysRange;
-  tmpInstructor.periodOfDays = periodOfDayId
+  tmpInstructor.periodOfDays = periodOfDayIds
     .map((periodId) => PERIOD_OF_DAYS.find((period) => period.id === periodId))
     .filter((period) => period !== undefined) as PeriodOfDay[];
 
@@ -46,7 +46,7 @@ export const updateInstructor = async (id: number, payload: UpdateInstructorPayl
       desiredWorkingHours,
       contractType: tmpInstructor.contractType.name,
       weekdaysRange: tmpInstructor.weekdaysRange.name,
-      periodOfDay: tmpInstructor.periodOfDays.map((pd) => pd.name),
+      periodOfDayIds: tmpInstructor.periodOfDays.map((pd) => pd.name),
       courses: tmpInstructor.courses.map((course) => course.name),
       note,
     };

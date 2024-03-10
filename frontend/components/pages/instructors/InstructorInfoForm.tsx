@@ -17,13 +17,12 @@ import {
   TableContainer,
   TableRow,
   TextField,
-  TextareaAutosize,
   Typography,
 } from '@mui/material';
 import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { Instructor, PeriodOfDayName } from '@/types/_index';
+import { Instructor } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
@@ -41,10 +40,10 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         contractTypeId: instructor?.contractType.id,
         hours: instructor?.desiredWorkingHours,
         days: instructor?.weekdaysRange.name,
-        periodOfDayId: instructor?.periodOfDays.map((period) => period.id),
+        periodOfDayIds: instructor?.periodOfDays.map(({ id }) => id),
         isActive: instructor?.isActive,
-        courseIds: instructor?.courses.map((course) => course.id),
-        note: instructor?.note,
+        courseIds: instructor?.courses.map(({ id }) => id),
+        note: instructor?.note ?? '',
       });
     } else {
       setIsEditMode(true);
@@ -61,10 +60,10 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
           contractTypeId: instructor?.contractType.id,
           hours: instructor?.desiredWorkingHours,
           days: instructor?.weekdaysRange.name,
-          periodOfDayId: instructor?.periodOfDays?.map((period) => period.id),
+          periodOfDayIds: instructor?.periodOfDays?.map(({ id }) => id),
           isActive: instructor?.isActive,
-          courseIds: instructor?.courses.map((course) => course.id),
-          note: instructor?.note,
+          courseIds: instructor?.courses.map(({ id }) => id),
+          note: instructor?.note ?? '',
         });
       } else {
         router.push('/instructors');
@@ -80,16 +79,16 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   };
 
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       name: null as string | null,
       contractTypeId: 0,
       hours: 10,
       days: null as string | null,
-      periodOfDayId: [] as unknown | null,
+      periodOfDayIds: [] as number[],
       isActive: false,
-      courseIds: [] as unknown | null,
-      note: null as string | null,
+      courseIds: [] as number[],
+      note: '',
     },
   });
 
@@ -100,10 +99,10 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         contractTypeId: data.contractTypeId,
         desiredWorkingHours: data.hours,
         weekdaysRangeId: data.days,
-        periodOfDayId: data.period,
+        periodOfDayIds: data.period,
         isActive: data.isActive,
         courseIds: data.courses,
-        note: data.note,
+        note: data.note || null,
       };
 
       if (instructor) {
@@ -115,7 +114,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
           // contractTypeId: updatedInstructor.contractTypeId,
           // hours: updatedInstructor.desiredWorkingHours,
           // days: updatedInstructor.weekdaysRangeId,
-          // periodOfDayId: updatedInstructor.periodOfDayId,
+          // periodOfDayIds: updatedInstructor.periodOfDayIds,
           // isActive: updatedInstructor.isActive,
           // courseIds: updatedInstructor.courseIds,
           // note: updatedInstructor.note,
@@ -232,35 +231,34 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
               <TableCell sx={{ border: 'none' }}>Period:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="periodOfDayId"
+                  name="periodOfDayIds"
                   control={control}
-                  render={({ field }) => {
-                    const selectedPeriods = (field.value as PeriodOfDayName[]) || [];
-                    return (
-                      <FormGroup row>
-                        {PERIOD_OF_DAYS.map((period) => (
-                          <FormControlLabel
-                            key={period.id}
-                            control={
-                              <Checkbox
-                                checked={selectedPeriods.includes(period.name)}
-                                onChange={(e) => {
-                                  const updatedPeriods = e.target.checked
-                                    ? [...selectedPeriods, period.name]
-                                    : selectedPeriods.filter((selectedPeriod) => selectedPeriod !== period.name);
-
-                                  field.onChange(updatedPeriods);
-                                }}
-                                value={period.id}
-                              />
-                            }
-                            label={`${period.name} (${period.time})`}
-                            disabled={!isEditable}
-                          />
-                        ))}
-                      </FormGroup>
-                    );
-                  }}
+                  render={({ field }) => (
+                    <FormGroup row>
+                      {PERIOD_OF_DAYS.map((period) => (
+                        <FormControlLabel
+                          key={period.id}
+                          control={
+                            <Checkbox
+                              value={period.id}
+                              checked={field.value.includes(period.id)}
+                              onChange={(e) => {
+                                const selectedValue = +e.target.value;
+                                setValue(
+                                  'periodOfDayIds',
+                                  field.value.includes(selectedValue)
+                                    ? field.value.filter((value) => value !== selectedValue)
+                                    : [...field.value, selectedValue],
+                                );
+                              }}
+                            />
+                          }
+                          label={`${period.name} (${period.time})`}
+                          disabled={!isEditable}
+                        />
+                      ))}
+                    </FormGroup>
+                  )}
                 />
               </TableCell>
             </TableRow>

@@ -15,7 +15,7 @@ const page = async ({ params }: PageProps) => {
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Headline name="New Instructor" />
+        <Headline name="Instructor" />
       </Box>
       <InstructorInfoForm instructor={instructor} />
       <br />
