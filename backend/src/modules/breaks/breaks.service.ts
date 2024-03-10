@@ -37,12 +37,12 @@ export class BreaksService {
     const { startAt, endAt } = updateBreakDto;
     const existingBreak = await this.breakRepository.findOneBy({ id });
 
-    const isValidDateOrder = checkDateOrder(
-      startAt,
-      endAt,
-      existingBreak.startAt,
-      existingBreak.endAt,
-    );
+    const isValidDateOrder = checkDateOrder({
+      newStartAt: startAt,
+      newEndAt: endAt,
+      existingStartAt: existingBreak.startAt,
+      existingEndAt: existingBreak.endAt,
+    });
     if (!isValidDateOrder) {
       throw new BadRequestException('endAt must be after startAt');
     }

@@ -89,12 +89,12 @@ export class IntakesService {
     const { startAt, endAt } = updateIntakeDto;
     const existingIntake = await this.intakeRepository.findOneBy({ id });
 
-    const isValidDateOrder = checkDateOrder(
-      startAt,
-      endAt,
-      existingIntake.startAt,
-      existingIntake.endAt,
-    );
+    const isValidDateOrder = checkDateOrder({
+      newStartAt: startAt,
+      newEndAt: endAt,
+      existingStartAt: existingIntake.startAt,
+      existingEndAt: existingIntake.endAt,
+    });
     if (!isValidDateOrder) {
       throw new BadRequestException('endAt must be after startAt');
     }

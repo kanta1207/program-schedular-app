@@ -7,12 +7,20 @@
  * @param {Date} existingEndAt - The end date of the existing range.
  * @returns {boolean} - Returns true if the date range is valid, otherwise false.
  */
-function checkDateOrder(
-  newStartAt: Date | undefined,
-  newEndAt: Date | undefined,
-  existingStartAt: Date,
-  existingEndAt: Date,
-): boolean {
+
+interface CheckDateOrderProps {
+  newStartAt?: Date;
+  newEndAt?: Date;
+  existingStartAt: Date;
+  existingEndAt: Date;
+}
+
+function checkDateOrder({
+  newStartAt,
+  newEndAt,
+  existingStartAt,
+  existingEndAt,
+}: CheckDateOrderProps): boolean {
   if (!newStartAt && !newEndAt) return false;
 
   if (newStartAt && newEndAt) {
