@@ -26,6 +26,17 @@ import { Instructor } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
+type FormValues = {
+  name: string;
+  contractTypeId: number;
+  desiredWorkingHours: number;
+  weekdaysRangeId: number;
+  periodOfDayIds: number[];
+  isActive: boolean;
+  courseIds: number[];
+  note: string;
+};
+
 interface InstructorInfoFormProps {
   instructor?: Instructor;
 }
@@ -38,8 +49,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       reset({
         name: instructor?.name,
         contractTypeId: instructor?.contractType.id,
-        hours: instructor?.desiredWorkingHours,
-        days: instructor?.weekdaysRange.name,
+        desiredWorkingHours: instructor?.desiredWorkingHours,
+        weekdaysRangeId: instructor?.weekdaysRange.id,
         periodOfDayIds: instructor?.periodOfDays.map(({ id }) => id),
         isActive: instructor?.isActive,
         courseIds: instructor?.courses.map(({ id }) => id),
@@ -56,14 +67,14 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       if (instructor) {
         setIsEditMode(false);
         reset({
-          name: instructor?.name,
-          contractTypeId: instructor?.contractType.id,
-          hours: instructor?.desiredWorkingHours,
-          days: instructor?.weekdaysRange.name,
-          periodOfDayIds: instructor?.periodOfDays?.map(({ id }) => id),
-          isActive: instructor?.isActive,
-          courseIds: instructor?.courses.map(({ id }) => id),
-          note: instructor?.note ?? '',
+          name: instructor.name,
+          contractTypeId: instructor.contractType.id,
+          desiredWorkingHours: instructor.desiredWorkingHours,
+          weekdaysRangeId: instructor.weekdaysRange.id,
+          periodOfDayIds: instructor.periodOfDays?.map(({ id }) => id),
+          isActive: instructor.isActive,
+          courseIds: instructor.courses.map(({ id }) => id),
+          note: instructor.note ?? '',
         });
       } else {
         router.push('/instructors');
@@ -79,29 +90,29 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   };
 
-  const { control, handleSubmit, reset, setValue } = useForm({
+  const { control, handleSubmit, reset, setValue } = useForm<FormValues>({
     defaultValues: {
-      name: null as string | null,
-      contractTypeId: 0,
-      hours: 10,
-      days: null as string | null,
+      name: '',
+      contractTypeId: 1,
+      desiredWorkingHours: 10,
+      weekdaysRangeId: 1,
       periodOfDayIds: [] as number[],
-      isActive: false,
+      isActive: true,
       courseIds: [] as number[],
       note: '',
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const payload = {
         name: data.name,
         contractTypeId: data.contractTypeId,
-        desiredWorkingHours: data.hours,
-        weekdaysRangeId: data.days,
-        periodOfDayIds: data.period,
+        desiredWorkingHours: data.desiredWorkingHours,
+        weekdaysRangeId: data.weekdaysRangeId,
+        periodOfDayIds: data.periodOfDayIds,
         isActive: data.isActive,
-        courseIds: data.courses,
+        courseIds: data.courseIds,
         note: data.note || null,
       };
 
@@ -112,8 +123,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         reset({
           // name: updatedInstructor.name,
           // contractTypeId: updatedInstructor.contractTypeId,
-          // hours: updatedInstructor.desiredWorkingHours,
-          // days: updatedInstructor.weekdaysRangeId,
+          // desiredWorkingHours: updatedInstructor.desiredWorkingHours,
+          // weekdaysRangeId: updatedInstructor.weekdaysRangeId,
           // periodOfDayIds: updatedInstructor.periodOfDayIds,
           // isActive: updatedInstructor.isActive,
           // courseIds: updatedInstructor.courseIds,
@@ -180,12 +191,12 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-            {/* Hours */}
+            {/* Desired Working Hours */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="hours"
+                  name="desiredWorkingHours"
                   control={control}
                   render={({ field }) => (
                     <RadioGroup {...field} row>
@@ -203,19 +214,19 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                 />
               </TableCell>
             </TableRow>
-            {/* Days */}
+            {/* Weekdays Range */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Days:</TableCell>
               <TableCell sx={{ border: 'none' }}>
                 <Controller
-                  name="days"
+                  name="weekdaysRangeId"
                   control={control}
                   render={({ field }) => (
                     <RadioGroup {...field} row>
                       {WEEKDAYS_RANGES.map((range) => (
                         <FormControlLabel
                           key={range.id}
-                          value={range.name}
+                          value={range.id}
                           control={<Radio />}
                           label={range.name}
                           disabled={!isEditable}
