@@ -8,6 +8,7 @@ import { Break } from '../../entity/breaks.entity';
 import { Repository } from 'typeorm';
 import { CreateBreakDto } from './dto/create-break.dto';
 import { UpdateBreakDto } from './dto/update-break.dto';
+import checkDateOrder from 'src/common/utils/check-date-order.util';
 
 @Injectable()
 export class BreaksService {
@@ -35,11 +36,14 @@ export class BreaksService {
   async update(id: number, updateBreakDto: UpdateBreakDto) {
     const { startAt, endAt } = updateBreakDto;
     const existingBreak = await this.breakRepository.findOneBy({ id });
-    if (
-      (startAt && endAt && startAt.getTime() >= endAt.getTime()) ||
-      (startAt && startAt.getTime() >= existingBreak.endAt.getTime()) ||
-      (endAt && endAt.getTime() <= existingBreak.startAt.getTime())
-    ) {
+
+    const isValidDateOrder = checkDateOrder({
+      newStartAt: startAt,
+      newEndAt: endAt,
+      existingStartAt: existingBreak.startAt,
+      existingEndAt: existingBreak.endAt,
+    });
+    if (!isValidDateOrder) {
       throw new BadRequestException('endAt must be after startAt');
     }
 
