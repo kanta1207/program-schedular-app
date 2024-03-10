@@ -1,14 +1,28 @@
-import { Classroom, Cohort, Course, Instructor, WeekdaysRange } from './_index';
+import { Classroom, CohortBase, CourseBase, InstructorBase, IntakeBase, ProgramBase, WeekdaysRange } from './_index';
 
-export interface Class {
+export interface ClassBase {
   id: number;
-  cohort: Cohort;
-  weekdaysRange: WeekdaysRange;
-  course: Course;
   startAt: Date;
   endAt: Date;
-  instructor: Instructor | null;
-  classroom: Classroom;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+interface GetClassResponseCohort extends CohortBase {
+  intake: IntakeBase;
+  program: ProgramBase;
+}
+
+export interface GetClassResponse extends ClassBase {
+  cohort: GetClassResponseCohort;
+  weekdaysRange: WeekdaysRange;
+  course: CourseBase;
+  classroom: Classroom;
+  instructor: InstructorBase;
+}
+
+export interface GetClassesResponse extends GetClassResponse {}
+
+export interface CreateClassResponse extends GetClassResponse {}
+
+export interface UpdateClassResponse extends GetClassResponse {}

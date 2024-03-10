@@ -1,0 +1,11 @@
+type: object
+required:
+  - courses
+properties:
+  courses:
+    type: array
+    items:
+      allOf:
+        - $ref: './courseStaticProps.yml'
+        - $ref: './courseDynamicProps.yml'
+        - $ref: './courseStaticForeignProps.yml'

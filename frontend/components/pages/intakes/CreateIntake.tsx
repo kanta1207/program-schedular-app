@@ -7,9 +7,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createIntake } from '@/actions/intakes/createIntake';
+import { useRouter } from 'next/navigation';
 
 const CreateIntake = () => {
   const [isCreating, setIsCreating] = useState(false);
+  const router = useRouter();
+
   const handleCancelClick = () => {
     setIsCreating(false);
     reset();
@@ -17,7 +20,7 @@ const CreateIntake = () => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      intakeName: null,
+      name: null,
       startAt: null as Dayjs | null,
       endAt: null as Dayjs | null,
     },
@@ -35,6 +38,7 @@ const CreateIntake = () => {
 
       reset();
       setIsCreating(false);
+      router.refresh();
     } catch (error) {
       console.error(error);
     }
@@ -54,10 +58,9 @@ const CreateIntake = () => {
         {isCreating && (
           <div className="flex gap-4 items-end p-4 border my-4">
             {/* Intake name */}
-            console.log(data.name)
             <Controller
               control={control}
-              name="intakeName"
+              name="name"
               rules={{ required: true }}
               render={({ field }: any) => {
                 return (

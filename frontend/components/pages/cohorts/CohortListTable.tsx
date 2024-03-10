@@ -1,9 +1,9 @@
-import { Cohort } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { CohortListTableRow } from './CohortListTableRow';
+import { CohortBase } from '@/types/cohort';
 
 interface CohortListTableProps {
-  cohorts: Cohort[];
+  cohorts: CohortBase[];
 }
 
 export const CohortListTable: React.FC<CohortListTableProps> = ({ cohorts }) => {

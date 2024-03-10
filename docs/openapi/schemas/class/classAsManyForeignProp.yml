@@ -1,0 +1,11 @@
+type: object
+required:
+  - classes
+properties:
+  classes:
+    type: array
+    items:
+      allOf:
+        - $ref: './classStaticProps.yml'
+        - $ref: './classDynamicProps.yml'
+        - $ref: './classStaticForeignProps.yml'

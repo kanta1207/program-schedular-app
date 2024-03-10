@@ -2,23 +2,24 @@ import { StatusCodes } from './status-code';
 
 export class ApiResponse<T = void> {
   public readonly statusCode: number;
-  public readonly message: string;
+  public readonly messages: string[];
   public readonly data?: T | null;
 
-  private constructor(statusCode: number, message: string, data?: T) {
+  private constructor(
+    statusCode: number,
+    message: string | string[],
+    data?: T,
+  ) {
     this.statusCode = statusCode;
-    this.message = message;
-    this.data = data || null;
+    this.messages = Array.isArray(message) ? message : [message];
+    this.data = data ?? null;
   }
 
   public static new<T>(
     data: T,
-    statusCode?: number,
-    message?: string,
+    statusCode = StatusCodes.STATUS_OK.code,
+    messages: string | string[] = StatusCodes.STATUS_OK.message,
   ): ApiResponse<T> {
-    const resultCode: number = statusCode || StatusCodes.STATUS_OK.code;
-    const resultMessage: string = message || StatusCodes.STATUS_OK.message;
-
-    return new ApiResponse(resultCode, resultMessage, data);
+    return new ApiResponse(statusCode, messages, data);
   }
 }

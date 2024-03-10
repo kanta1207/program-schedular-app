@@ -1,20 +1,13 @@
 import { Dayjs } from 'dayjs';
-import { revalidateTag } from 'next/cache';
-import { breaks } from '@/mock/_index';
-import { Break } from '@/types/_index';
+import { ApiResponse, CreateBreakResponse } from '@/types/_index';
 
 interface CreateBreakPayload {
   startAt: Dayjs;
   endAt: Dayjs;
 }
 
-export const createBreak = async (payload: CreateBreakPayload): Promise<Break> => {
+export const createBreak = async (payload: CreateBreakPayload): Promise<ApiResponse<CreateBreakResponse>> => {
   const { startAt, endAt } = payload;
-  console.log(startAt.toDate(), endAt.toDate());
-
-  return breaks[0];
-
-  // TODO: Fetch data from api
   try {
     if (!startAt && !endAt) {
       throw new Error('Either startAt or endAt is required');
@@ -40,8 +33,6 @@ export const createBreak = async (payload: CreateBreakPayload): Promise<Break> =
     }
 
     const data = await response.json();
-
-    revalidateTag('break');
 
     return data;
   } catch (error: any) {

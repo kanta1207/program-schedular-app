@@ -14,7 +14,9 @@ export class ProgramsService {
   ) {}
 
   async findAll() {
-    return await this.programRepository.find();
+    return await this.programRepository.find({
+      order: { id: 'DESC' },
+    });
   }
 
   async create(createProgramDto: CreateProgramDto) {

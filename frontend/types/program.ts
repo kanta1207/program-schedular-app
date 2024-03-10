@@ -1,8 +1,20 @@
-export interface Program {
+import { GetCohortResponse } from './cohort';
+import { CourseBase } from './course';
+
+export interface ProgramBase {
   id: number;
-  name: ProgramName;
-  createdAt?: Date;
-  updatedAt?: Date;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type ProgramName = 'DMS' | 'DMA';
+interface GetProgramResponse extends ProgramBase {
+  cohorts: GetCohortResponse[];
+  courses: CourseBase[];
+}
+
+export interface GetProgramsResponse extends GetProgramResponse {}
+
+export interface CreateProgramResponse extends GetProgramResponse {}
+
+export interface UpdateProgramResponse extends GetProgramResponse {}
