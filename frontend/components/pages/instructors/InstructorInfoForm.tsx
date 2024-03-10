@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import {
   Box,
   Button,
@@ -22,7 +22,6 @@ import {
 import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { Instructor } from '@/types/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 
