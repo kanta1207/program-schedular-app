@@ -284,24 +284,43 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Course:</TableCell>
               <TableCell sx={{ border: 'none' }}>
-                <FormGroup row>
-                  {PROGRAMS.map((program) => (
-                    <Box key={program.id}>
-                      <Typography variant="subtitle1">{program.name}</Typography>
-                      {courses
-                        .filter((course) => course.program.id === program.id)
-                        .map((filteredCourse) => (
-                          <FormControlLabel
-                            key={filteredCourse.id}
-                            control={<Checkbox />}
-                            label={filteredCourse.name}
-                            value={filteredCourse.name}
-                            disabled={!isEditable}
-                          />
-                        ))}
-                    </Box>
-                  ))}
-                </FormGroup>
+                <Controller
+                  name="courseIds"
+                  control={control}
+                  render={({ field }) => (
+                    <FormGroup row>
+                      {PROGRAMS.map((program) => (
+                        <Box key={program.id}>
+                          <Typography variant="subtitle1">{program.name}</Typography>
+                          {courses
+                            .filter((course) => course.program.id === program.id)
+                            .map((filteredCourse) => (
+                              <FormControlLabel
+                                key={filteredCourse.id}
+                                control={
+                                  <Checkbox
+                                    value={filteredCourse.id}
+                                    checked={field.value.includes(filteredCourse.id)}
+                                    onChange={(e) => {
+                                      const selectedValue = +e.target.value;
+                                      setValue(
+                                        'courseIds',
+                                        field.value.includes(selectedValue)
+                                          ? field.value.filter((value) => value !== selectedValue)
+                                          : [...field.value, selectedValue],
+                                      );
+                                    }}
+                                  />
+                                }
+                                label={filteredCourse.name}
+                                disabled={!isEditable}
+                              />
+                            ))}
+                        </Box>
+                      ))}
+                    </FormGroup>
+                  )}
+                />
               </TableCell>
             </TableRow>
             {/* Note */}
