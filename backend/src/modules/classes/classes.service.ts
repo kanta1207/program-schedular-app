@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { Instructor } from 'src/entity/instructors.entity';
@@ -67,7 +67,7 @@ export class ClassesService {
         },
       });
     } else {
-      throw new Error('Unexpected groupBy value');
+      throw new BadRequestException('Unexpected groupBy value');
     }
   }
 
