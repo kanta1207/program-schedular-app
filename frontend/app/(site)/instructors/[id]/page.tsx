@@ -10,7 +10,7 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const instructor = await getInstructorById(id);
+  const { data: instructor } = await getInstructorById(id);
 
   return (
     <>

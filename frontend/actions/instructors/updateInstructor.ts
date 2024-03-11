@@ -25,15 +25,17 @@ export const updateInstructor = async (
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
 
     const payload = {
-      name: name,
-      contractType: contractTypeId,
-      desiredWorkingHours: desiredWorkingHours,
-      weekdaysRange: weekdaysRangeId,
-      periodOfDayIds: periodOfDayIds,
-      isActive: isActive,
-      courses: courseIds,
-      note: note,
+      name,
+      isActive,
+      desiredWorkingHours,
+      contractTypeId,
+      weekdaysRangeId,
+      periodOfDayIds,
+      courseIds,
+      note,
     };
+
+    console.log(payload);
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',
