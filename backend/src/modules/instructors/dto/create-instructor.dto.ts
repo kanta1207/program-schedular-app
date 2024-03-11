@@ -43,5 +43,5 @@ export class CreateInstructorDto {
   @IsArray()
   @IsNumber({}, { each: true })
   @IsNotEmpty()
-  periodOfDaysIds: number[];
+  periodOfDayIds: number[];
 }
