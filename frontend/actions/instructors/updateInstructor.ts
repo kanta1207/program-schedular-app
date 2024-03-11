@@ -1,5 +1,6 @@
 import { instructors, courses } from '@/mock/_index';
-import { Course, Instructor, PeriodOfDay } from '@/types/_index';
+import { ApiResponse, UpdateInstructorResponse } from '@/types/_index';
+
 import { CONTRACT_TYPES, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 
 interface UpdateInstructorPayload {
@@ -13,42 +14,28 @@ interface UpdateInstructorPayload {
   note: string | null;
 }
 
-export const updateInstructor = async (id: number, payload: UpdateInstructorPayload): Promise<Instructor> => {
+export const updateInstructor = async (
+  id: number,
+  payload: UpdateInstructorPayload,
+): Promise<ApiResponse<UpdateInstructorResponse>> => {
   const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
     payload;
 
-  console.log(id, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note);
-
-  const tmpInstructor = instructors.find((instructorItem) => instructorItem.id === id);
-  if (!tmpInstructor) throw new Error('Instructor not found');
-
-  tmpInstructor.name = name;
-  tmpInstructor.isActive = isActive;
-  tmpInstructor.desiredWorkingHours = desiredWorkingHours;
-  tmpInstructor.contractType = CONTRACT_TYPES.find((type) => type.id === contractTypeId) ?? tmpInstructor.contractType;
-  tmpInstructor.weekdaysRange =
-    WEEKDAYS_RANGES.find((range) => range.id === weekdaysRangeId) ?? tmpInstructor.weekdaysRange;
-  tmpInstructor.periodOfDays = periodOfDayIds
-    .map((periodId) => PERIOD_OF_DAYS.find((period) => period.id === periodId))
-    .filter((period) => period !== undefined) as PeriodOfDay[];
-
-  tmpInstructor.courses = courseIds
-    .map((courseId) => courses.find((course) => course.id === courseId))
-    .filter((course) => course !== undefined) as Course[];
-
-  tmpInstructor.note = note;
-
   try {
+    if (!name && !contractTypeId) {
+      throw new Error('Either name or contract type is required'); // we can add other required sections in here later.
+    }
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
-    const updatePayload = {
-      name,
-      isActive,
-      desiredWorkingHours,
-      contractType: tmpInstructor.contractType.name,
-      weekdaysRange: tmpInstructor.weekdaysRange.name,
-      periodOfDayIds: tmpInstructor.periodOfDays.map((pd) => pd.name),
-      courses: tmpInstructor.courses.map((course) => course.name),
-      note,
+
+    const payload = {
+      name: name,
+      contractType: contractTypeId,
+      desiredWorkingHours: desiredWorkingHours,
+      weekdaysRange: weekdaysRangeId,
+      periodOfDayIds: periodOfDayIds,
+      isActive: isActive,
+      courses: courseIds,
+      note: note,
     };
 
     const response = await fetch(baseUrl, {
