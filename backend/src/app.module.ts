@@ -9,6 +9,7 @@ import { IntakesModule } from './modules/intakes/intakes.module';
 import { BreaksModule } from './modules/breaks/breaks.module';
 import { InstructorsModule } from './modules/instructors/instructors.module';
 import { CohortsModule } from './modules/cohorts/cohorts.module';
+import { CoursesModule } from './modules/courses/courses.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CohortsModule } from './modules/cohorts/cohorts.module';
     ProgramsModule,
     InstructorsModule,
     CohortsModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
