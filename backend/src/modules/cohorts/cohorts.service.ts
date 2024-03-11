@@ -10,17 +10,7 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import {
-  Cohort,
-  Intake,
-  MasterPeriodOfDay,
-  MasterClassroom,
-  MasterWeekdaysRange,
-  Program,
-  Class,
-  Course,
-  Instructor,
-} from 'src/entity';
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 
 @Injectable()
 export class CohortsService {
@@ -31,14 +21,6 @@ export class CohortsService {
     private readonly intakeRepository: Repository<Intake>,
     @InjectRepository(MasterPeriodOfDay)
     private readonly periodOfDayRepository: Repository<MasterPeriodOfDay>,
-    @InjectRepository(MasterWeekdaysRange)
-    private readonly weekdaysRangeRepository: Repository<MasterWeekdaysRange>,
-    @InjectRepository(MasterClassroom)
-    private readonly classroomRepository: Repository<MasterClassroom>,
-    @InjectRepository(Course)
-    private readonly courseRepository: Repository<Course>,
-    @InjectRepository(Instructor)
-    private readonly instructorRepository: Repository<Instructor>,
     @InjectRepository(Program)
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
@@ -162,13 +144,13 @@ export class CohortsService {
 
     // Create a new query runner to rollback if any error occurs
     const queryRunner =
-      this.cohortRepository.manager.connection.createQueryRunner();
+      this.classRepository.manager.connection.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
       // delete all classes of the cohort
-      await this.classRepository.delete({ cohort: { id } });
+      await queryRunner.manager.delete(Class, { cohort: { id } });
 
       const { classes } = updateClassesDto;
 
@@ -195,7 +177,8 @@ export class CohortsService {
       });
 
       // Save new classes
-      await this.classRepository.save(newClasses);
+      await queryRunner.manager.save(newClasses);
+      await queryRunner.commitTransaction();
     } catch (error) {
       // Rollback the transaction if any error occurs
       await queryRunner.rollbackTransaction();
@@ -203,9 +186,9 @@ export class CohortsService {
     } finally {
       // Release the query runner
       queryRunner.release();
-      // return cohort with new classes
-      return await this.findOne(id);
     }
+    // return cohort with new classes
+    return await this.findOne(id);
   }
 
   async remove(id: number) {
