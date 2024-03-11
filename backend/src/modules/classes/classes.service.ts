@@ -57,7 +57,6 @@ export class ClassesService {
         },
         where: {
           isActive: true,
-          deletedAt: null,
         },
         order: {
           id: 'DESC',
