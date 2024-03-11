@@ -124,7 +124,10 @@ export class InstructorsService {
         contractType: true,
         weekdaysRange: true,
       },
-      order: { id: 'DESC' },
+      order: {
+        isActive: 'DESC',
+        id: 'DESC',
+      },
     });
 
     const instructorPeriodOfDays =
@@ -170,6 +173,10 @@ export class InstructorsService {
         },
       },
     });
+
+    if (!instructor) {
+      throw new NotFoundException('Instructor not found');
+    }
 
     // Get all the period of days associated with the instructor
     const instructorsPeriodOfDays =
