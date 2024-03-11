@@ -130,6 +130,6 @@ export class CoursesService {
   }
 
   async remove(id: number) {
-    await this.courseRepository.delete(id);
+    await this.courseRepository.softDelete(id);
   }
 }
