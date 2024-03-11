@@ -1,13 +1,6 @@
-import { instructors } from '@/mock/_index';
-import { Instructor } from '@/types/_index';
+import { ApiResponse, GetBreaksResponse } from '@/types/_index';
 
-export const getInstructorById = async (id: string): Promise<Instructor> => {
-  const foundInstructor = instructors.find((instructor) => instructor.id === parseInt(id));
-  if (foundInstructor) {
-    return foundInstructor;
-  }
-
-  // TODO: Remove mock and fetch data from api
+export const getInstructorById = async (id: string): Promise<ApiResponse<GetBreaksResponse>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
 
