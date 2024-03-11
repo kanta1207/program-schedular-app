@@ -3,7 +3,7 @@ import CreateProgram from '@/components/pages/programs/CreateProgram';
 import ProgramTableList from '@/components/pages/programs/ProgramsListTable';
 import Headline from '@/components/partials/Headline';
 
-const ProjectList = async () => {
+const page = async () => {
   const { data: programs } = await getPrograms();
   return (
     <>
@@ -14,4 +14,4 @@ const ProjectList = async () => {
   );
 };
 
-export default ProjectList;
+export default page;
