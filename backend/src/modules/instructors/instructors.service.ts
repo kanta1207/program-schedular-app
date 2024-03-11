@@ -124,7 +124,10 @@ export class InstructorsService {
         contractType: true,
         weekdaysRange: true,
       },
-      order: { id: 'DESC' },
+      order: {
+        isActive: 'DESC',
+        id: 'DESC',
+      },
     });
 
     const instructorPeriodOfDays =
