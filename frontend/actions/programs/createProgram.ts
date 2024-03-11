@@ -5,7 +5,8 @@ interface CreateProgramPayload {
 }
 
 export const createProgram = async (payload: CreateProgramPayload): Promise<ApiResponse<CreateProgramResponse>> => {
-  const name = { payload };
+  const { name } = payload;
+
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/programs`;
 
