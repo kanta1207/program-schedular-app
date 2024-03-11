@@ -1,5 +1,4 @@
-import { instructors } from '@/mock/_index';
-import { Instructor } from '@/types/_index';
+import { ApiResponse, CreateInstructorResponse } from '@/types/_index';
 
 interface CreateInstructorPayload {
   name: string;
@@ -12,14 +11,17 @@ interface CreateInstructorPayload {
   note: string | null;
 }
 
-export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
+export const createInstructor = async (
+  payload: CreateInstructorPayload,
+): Promise<ApiResponse<CreateInstructorResponse>> => {
   const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
     payload;
 
-  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note);
-  return instructors[0];
-
   try {
+    if (!name && !contractTypeId) {
+      throw new Error('Either name or contract type is required'); // we can add other required sections in here later.
+    }
+
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
     const payload = {
