@@ -8,6 +8,10 @@ export const createProgram = async (payload: CreateProgramPayload): Promise<ApiR
   const { name } = payload;
 
   try {
+    if (name === '') {
+      throw new Error('Name cannot be empty');
+    }
+
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/programs`;
 
     const payload = { name };

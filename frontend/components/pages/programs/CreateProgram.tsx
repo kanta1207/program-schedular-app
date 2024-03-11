@@ -17,7 +17,7 @@ const CreateProgram = () => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: null as string | null,
+      name: '',
     },
   });
 
@@ -60,7 +60,6 @@ const CreateProgram = () => {
                   id="name"
                   sx={{ width: '20rem' }}
                   value={field.value}
-                  inputRef={field.ref}
                   onChange={(name) => field.onChange(name)}
                 />
               );

@@ -34,7 +34,7 @@ const ProgramTableList: React.FC<ProgramListTableProps> = ({ programs }) => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: null as string | null,
+      name: '',
     },
   });
 
@@ -96,7 +96,6 @@ const ProgramTableList: React.FC<ProgramListTableProps> = ({ programs }) => {
                             id="name"
                             sx={{ width: '100%' }}
                             value={field.value}
-                            inputRef={field.ref}
                             onChange={(name) => field.onChange(name)}
                           />
                         );
