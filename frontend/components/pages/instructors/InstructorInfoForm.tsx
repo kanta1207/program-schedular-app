@@ -24,6 +24,7 @@ import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
+import { GetInstructorResponse } from '@/types/_index';
 
 type FormValues = {
   name: string;
@@ -37,7 +38,7 @@ type FormValues = {
 };
 
 interface InstructorInfoFormProps {
-  instructor?: Instructor;
+  instructor?: GetInstructorResponse;
 }
 const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) => {
   const [isEditable, setIsEditMode] = useState(false);
@@ -46,14 +47,14 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
   useEffect(() => {
     if (instructor) {
       reset({
-        name: instructor?.name,
-        contractTypeId: instructor?.contractType.id,
-        desiredWorkingHours: instructor?.desiredWorkingHours,
-        weekdaysRangeId: instructor?.weekdaysRange.id,
-        periodOfDayIds: instructor?.periodOfDays.map(({ id }) => id),
-        isActive: instructor?.isActive,
-        courseIds: instructor?.courses.map(({ id }) => id),
-        note: instructor?.note ?? '',
+        name: instructor.name,
+        contractTypeId: instructor.contractType.id,
+        desiredWorkingHours: instructor.desiredWorkingHours ?? 10,
+        weekdaysRangeId: instructor.weekdaysRange.id,
+        periodOfDayIds: instructor.periodOfDays.map(({ id }) => id),
+        isActive: instructor.isActive,
+        courseIds: instructor.courses.map(({ id }) => id),
+        note: instructor.note ?? '',
       });
     } else {
       setIsEditMode(true);
@@ -106,32 +107,31 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     try {
       const payload = {
         name: data.name,
-        contractTypeId: data.contractTypeId,
-        desiredWorkingHours: data.desiredWorkingHours,
-        weekdaysRangeId: data.weekdaysRangeId,
+        contractTypeId: +data.contractTypeId,
+        desiredWorkingHours: +data.desiredWorkingHours,
+        weekdaysRangeId: +data.weekdaysRangeId,
         periodOfDayIds: data.periodOfDayIds,
         isActive: data.isActive,
         courseIds: data.courseIds,
         note: data.note || null,
       };
-
+      console.log(payload);
       if (instructor) {
-        const updatedInstructor = await updateInstructor(instructor.id, payload);
-        console.log('updated cohort:', updatedInstructor);
-        // TODO: reset form by updatedInstructor
+        const { data: updatedInstructor } = await updateInstructor(instructor.id, payload);
         reset({
-          // name: updatedInstructor.name,
-          // contractTypeId: updatedInstructor.contractTypeId,
-          // desiredWorkingHours: updatedInstructor.desiredWorkingHours,
-          // weekdaysRangeId: updatedInstructor.weekdaysRangeId,
-          // periodOfDayIds: updatedInstructor.periodOfDayIds,
-          // isActive: updatedInstructor.isActive,
-          // courseIds: updatedInstructor.courseIds,
-          // note: updatedInstructor.note,
+          name: updatedInstructor.name,
+          contractTypeId: updatedInstructor.contractType.id,
+          desiredWorkingHours: updatedInstructor.desiredWorkingHours,
+          weekdaysRangeId: updatedInstructor.weekdaysRange.id,
+          periodOfDayIds: updatedInstructor.periodOfDays.map(({ id }) => id),
+          isActive: updatedInstructor.isActive,
+          courseIds: updatedInstructor.courses.map(({ id }) => id),
+          note: updatedInstructor.note ?? '',
         });
         setIsEditMode(false);
       } else {
-        const newInstructor = await createInstructor(payload);
+        const { data: newInstructor } = await createInstructor(payload);
+        router.push(`/instructors/${newInstructor.id}`);
       }
     } catch (error) {
       console.error(error);

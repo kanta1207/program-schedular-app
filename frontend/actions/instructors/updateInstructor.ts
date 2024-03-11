@@ -1,7 +1,4 @@
-import { instructors, courses } from '@/mock/_index';
 import { ApiResponse, UpdateInstructorResponse } from '@/types/_index';
-
-import { CONTRACT_TYPES, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 
 interface UpdateInstructorPayload {
   name: string;

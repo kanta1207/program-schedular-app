@@ -26,14 +26,15 @@ export const createInstructor = async (
 
     const payload = {
       name: name,
-      contractType: contractTypeId,
+      contractTypeId: contractTypeId,
       desiredWorkingHours: desiredWorkingHours,
-      weekdaysRange: weekdaysRangeId,
+      weekdaysRangeId: weekdaysRangeId,
       periodOfDayIds: periodOfDayIds,
       isActive: isActive,
-      courses: courseIds,
+      courseIds: courseIds,
       note: note,
     };
+    console.log(payload);
 
     const response = await fetch(baseUrl, {
       method: 'POST',
