@@ -374,7 +374,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                       <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                       <TableCell>{classData.course.name}</TableCell>
                       <TableCell>
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
+                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />
                       </TableCell>
                       <TableCell>
                         <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>

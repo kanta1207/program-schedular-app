@@ -28,7 +28,7 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
       <TableCell>{instructor.desiredWorkingHours}</TableCell>
       <TableCell>{periodNames}</TableCell>
       <TableCell>
-        <DaysOfTheWeekChip daysOfTheWeek={instructor.weekdaysRange.name} />
+        <DaysOfTheWeekChip daysOfTheWeek={instructor.weekdaysRange} />
       </TableCell>
       <TableCell>{instructor.isActive ? 'Active' : 'Inactive'}</TableCell>
     </TableRow>
