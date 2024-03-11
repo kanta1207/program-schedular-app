@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { CohortsService } from './cohorts.service';
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { ApiResponse } from 'src/common/api-response';
 import { StatusCodes } from 'src/common/status-code';
+import { UpdateClassesDto } from './dto/update-classes.dto';
 
 @Controller('cohorts')
 export class CohortsController {
@@ -45,6 +47,18 @@ export class CohortsController {
     @Body() updateCohortDto: UpdateCohortDto,
   ) {
     const updatedCohort = await this.cohortsService.update(id, updateCohortDto);
+    return ApiResponse.new(updatedCohort);
+  }
+
+  @Put(':id/classes')
+  async updateClasses(
+    @Param('id') id: number,
+    @Body() updateCohortDto: UpdateClassesDto,
+  ) {
+    const updatedCohort = await this.cohortsService.updateClasses(
+      id,
+      updateCohortDto,
+    );
     return ApiResponse.new(updatedCohort);
   }
 

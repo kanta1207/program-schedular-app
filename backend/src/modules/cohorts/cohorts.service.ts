@@ -1,12 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Cohort } from '../../entity/cohorts.entity';
-import { Repository } from 'typeorm';
-import { Intake } from '../../entity/intakes.entity';
-import { MasterPeriodOfDay } from '../../entity/masterPeriodOfDays.entity';
-import { Program } from '../../entity/programs.entity';
+import { UpdateClassesDto } from './dto/update-classes.dto';
+
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  MasterClassroom,
+  MasterWeekdaysRange,
+  Program,
+  Class,
+  Course,
+  Instructor,
+} from 'src/entity';
 
 @Injectable()
 export class CohortsService {
@@ -17,8 +27,18 @@ export class CohortsService {
     private readonly intakeRepository: Repository<Intake>,
     @InjectRepository(MasterPeriodOfDay)
     private readonly periodOfDayRepository: Repository<MasterPeriodOfDay>,
+    @InjectRepository(MasterWeekdaysRange)
+    private readonly weekdaysRangeRepository: Repository<MasterWeekdaysRange>,
+    @InjectRepository(MasterClassroom)
+    private readonly classroomRepository: Repository<MasterClassroom>,
+    @InjectRepository(Course)
+    private readonly courseRepository: Repository<Course>,
+    @InjectRepository(Instructor)
+    private readonly instructorRepository: Repository<Instructor>,
     @InjectRepository(Program)
     private readonly programRepository: Repository<Program>,
+    @InjectRepository(Class)
+    private readonly classRepository: Repository<Class>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -128,6 +148,40 @@ export class CohortsService {
     await this.cohortRepository.save(cohort);
 
     return cohort;
+  }
+
+  async updateClasses(id: number, updateClassesDto: UpdateClassesDto) {
+    const cohort = await this.cohortRepository.findOneBy({ id });
+    if (!cohort) {
+      throw new NotFoundException(`Cohort with ID "${id}" not found`);
+    }
+
+    // delete all classes of the cohort
+    await this.classRepository.delete({ cohort: { id } });
+
+    const { classes } = updateClassesDto;
+
+    const newClasses = classes.map((clazz) => {
+      const {
+        startAt,
+        endAt,
+        weekdaysRangeId,
+        courseId,
+        classroomId,
+        instructorId,
+      } = clazz;
+
+      return this.classRepository.create({
+        startAt,
+        endAt,
+        weekdaysRange: { id: weekdaysRangeId },
+        course: { id: courseId },
+        classroom: { id: classroomId },
+        instructor: { id: instructorId },
+        cohort,
+      });
+    });
+    await this.classRepository.save(newClasses);
   }
 
   async remove(id: number) {

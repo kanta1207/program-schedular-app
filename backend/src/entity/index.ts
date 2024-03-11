@@ -1,0 +1,12 @@
+export { Break } from './breaks.entity';
+export { Class } from './classes.entity';
+export { Cohort } from './cohorts.entity';
+export { Course } from './courses.entity';
+export { Instructor } from './instructors.entity';
+export { Intake } from './intakes.entity';
+export { MasterClassroom } from './masterClassrooms.entity';
+export { MasterPeriodOfDay } from './masterPeriodOfDays.entity';
+export { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
+export { Program } from './programs.entity';
+export { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
+export { CoursesInstructors } from './coursesInstructors.entity';
