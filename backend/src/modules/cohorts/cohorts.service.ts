@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -156,32 +160,52 @@ export class CohortsService {
       throw new NotFoundException(`Cohort with ID "${id}" not found`);
     }
 
-    // delete all classes of the cohort
-    await this.classRepository.delete({ cohort: { id } });
+    // Create a new query runner to rollback if any error occurs
+    const queryRunner =
+      this.cohortRepository.manager.connection.createQueryRunner();
 
-    const { classes } = updateClassesDto;
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      // delete all classes of the cohort
+      await this.classRepository.delete({ cohort: { id } });
 
-    const newClasses = classes.map((clazz) => {
-      const {
-        startAt,
-        endAt,
-        weekdaysRangeId,
-        courseId,
-        classroomId,
-        instructorId,
-      } = clazz;
+      const { classes } = updateClassesDto;
 
-      return this.classRepository.create({
-        startAt,
-        endAt,
-        weekdaysRange: { id: weekdaysRangeId },
-        course: { id: courseId },
-        classroom: { id: classroomId },
-        instructor: { id: instructorId },
-        cohort,
+      // Create new classes
+      const newClasses = classes.map((clazz) => {
+        const {
+          startAt,
+          endAt,
+          weekdaysRangeId,
+          courseId,
+          classroomId,
+          instructorId,
+        } = clazz;
+
+        return this.classRepository.create({
+          startAt,
+          endAt,
+          weekdaysRange: { id: weekdaysRangeId },
+          course: { id: courseId },
+          classroom: { id: classroomId },
+          instructor: { id: instructorId },
+          cohort,
+        });
       });
-    });
-    await this.classRepository.save(newClasses);
+
+      // Save new classes
+      await this.classRepository.save(newClasses);
+    } catch (error) {
+      // Rollback the transaction if any error occurs
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error.message);
+    } finally {
+      // Release the query runner
+      queryRunner.release();
+      // return cohort with new classes
+      return await this.findOne(id);
+    }
   }
 
   async remove(id: number) {

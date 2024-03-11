@@ -1,4 +1,10 @@
-import { IsArray, IsDate, IsNumber, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { IsAfterDate } from 'src/common/validator/is-after-date';
 
@@ -24,6 +30,7 @@ class ClassDto {
   @IsNumber()
   classroomId: number;
 
+  @IsOptional()
   @IsNumber()
   instructorId: number;
 }
