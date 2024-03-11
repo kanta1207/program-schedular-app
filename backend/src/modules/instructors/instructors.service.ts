@@ -119,6 +119,7 @@ export class InstructorsService {
       where: {
         id: instructorIds.length > 0 ? In(instructorIds) : undefined,
         weekdaysRange: rangeId ? { id: rangeId } : undefined,
+        deletedAt: null,
       },
       relations: {
         contractType: true,
@@ -153,6 +154,7 @@ export class InstructorsService {
     const instructor = await this.instructorRepository.findOne({
       where: {
         id,
+        deletedAt: null,
       },
       relations: {
         contractType: true,
@@ -205,6 +207,7 @@ export class InstructorsService {
     const existingInstructor = await this.instructorRepository.findOne({
       where: {
         id,
+        deletedAt: null,
       },
       relations: {
         contractType: true,
