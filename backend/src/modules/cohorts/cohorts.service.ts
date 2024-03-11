@@ -188,7 +188,16 @@ export class CohortsService {
       queryRunner.release();
     }
     // return cohort with new classes
-    return await this.findOne(id);
+    return await this.classRepository.find({
+      where: { cohort: { id } },
+      relations: {
+        cohort: true,
+        weekdaysRange: true,
+        course: true,
+        classroom: true,
+        instructor: true,
+      },
+    });
   }
 
   async remove(id: number) {
