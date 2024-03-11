@@ -2,6 +2,14 @@ get:
   tags:
     - Class
   summary: Get classes
+  parameters:
+    - in: query
+      name: groupBy
+      schema:
+        type: string
+        enum: [cohort, instructor]
+      required: true
+      description: parent group which populates classes
   responses:
     '200':
       description: Returns classes
@@ -24,9 +32,9 @@ get:
                 type: array
                 items:
                   allOf:
-                    - $ref: '../../schemas/class/classStaticProps.yml'
-                    - $ref: '../../schemas/class/classDynamicProps.yml'
-                    - $ref: '../../schemas/class/classStaticForeignProps.yml'
+                    - $ref: '../../schemas/cohort/cohortStaticProps.yml'
+                    - $ref: '../../schemas/cohort/cohortDynamicProps.yml'
+                    - $ref: '../../schemas/cohort/cohortStaticForeignProps.yml'
     '400':
       $ref: '../../index.yml#/components/schemas/400Error'
     '500':

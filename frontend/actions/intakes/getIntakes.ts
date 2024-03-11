@@ -1,11 +1,6 @@
-import { intakes } from '@/mock/_index';
-import { Intake } from '@/types/_index';
+import { ApiResponse, GetIntakesResponse } from '@/types/_index';
 
-export const getIntakes = async (): Promise<Intake[]> => {
-  const sortedIntakes = intakes.sort((a, b) => b.startAt.getTime() - a.startAt.getTime());
-  return sortedIntakes;
-
-  // TODO: Remove mock and fetch data from api
+export const getIntakes = async (): Promise<ApiResponse<GetIntakesResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes`;
 
@@ -14,7 +9,7 @@ export const getIntakes = async (): Promise<Intake[]> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['intake'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {

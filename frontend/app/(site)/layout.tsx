@@ -8,7 +8,7 @@ interface SiteLayoutProps {
 
 const SiteLayout: FC<SiteLayoutProps> = ({ children }) => {
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <Header />
       <Container>
         <main>{children}</main>

@@ -1,6 +1,4 @@
-import { cohorts } from '@/mock/_index';
-import { Cohort } from '@/types/_index';
-import { revalidateTag } from 'next/cache';
+import { ApiResponse, CreateCohortResponse } from '@/types/_index';
 
 interface CreateCohortPayload {
   name: string;
@@ -9,13 +7,8 @@ interface CreateCohortPayload {
   programId: number;
 }
 
-export const createCohort = async (payload: CreateCohortPayload): Promise<Cohort> => {
+export const createCohort = async (payload: CreateCohortPayload): Promise<ApiResponse<CreateCohortResponse>> => {
   const { name, intakeId, periodOfDayId, programId } = payload;
-  console.log(name, intakeId, periodOfDayId, programId);
-
-  return cohorts[0];
-
-  // TODO: Fetch data from api
   try {
     if (!name && !intakeId && !periodOfDayId && !programId) {
       throw new Error("Something's wrong in the input data");
@@ -23,12 +16,7 @@ export const createCohort = async (payload: CreateCohortPayload): Promise<Cohort
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/cohorts`;
 
-    const payload = {
-      name: name,
-      intakeId: intakeId,
-      periodOfDayId: periodOfDayId,
-      programId: programId,
-    };
+    const payload = { name, intakeId, periodOfDayId, programId };
 
     const response = await fetch(baseUrl, {
       method: 'POST',
@@ -43,8 +31,6 @@ export const createCohort = async (payload: CreateCohortPayload): Promise<Cohort
     }
 
     const data = await response.json();
-
-    revalidateTag('cohort');
 
     return data;
   } catch (error: any) {
