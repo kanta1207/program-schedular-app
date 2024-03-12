@@ -146,19 +146,16 @@ export class CohortsService {
       throw new NotFoundException(`Cohort with ID "${id}" not found`);
     }
 
-    // Create a new query runner to rollback if any error occurs
     const queryRunner =
       this.classRepository.manager.connection.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      // delete all classes of the cohort
       await queryRunner.manager.delete(Class, { cohort: { id } });
 
       const { classes } = updateClassesDto;
 
-      // Create new classes
       const newClasses = classes.map((clazz) => {
         const {
           startAt,
@@ -180,18 +177,14 @@ export class CohortsService {
         });
       });
 
-      // Save new classes
       await queryRunner.manager.save(newClasses);
       await queryRunner.commitTransaction();
     } catch (error) {
-      // Rollback the transaction if any error occurs
       await queryRunner.rollbackTransaction();
       throw new BadRequestException(error.message);
     } finally {
-      // Release the query runner
       queryRunner.release();
     }
-    // return cohort with new classes
     return await this.classRepository.find({
       where: { cohort: { id } },
       relations: {
