@@ -1,28 +1,28 @@
 'use client';
-import dayjs, { Dayjs } from 'dayjs';
-import { useEffect, useState } from 'react';
-import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { deleteIntake } from '@/actions/intakes/deleteIntake';
+import { updateIntake } from '@/actions/intakes/updateIntakes';
+import TableMenu from '@/components/partials/TableMenu';
+import { GetIntakesResponse } from '@/types/_index';
+import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TableMenu from '@/components/partials/TableMenu';
-import { GetIntakesResponse } from '@/types/_index';
-import { updateIntake } from '@/actions/intakes/updateIntakes';
-import { deleteIntake } from '@/actions/intakes/deleteIntake';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-interface IntakeTableListProps {
+interface IntakeListTableProps {
   intakes: GetIntakesResponse[];
 }
 
-const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
+const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
   const [editIntakeId, setEditIntakeId] = useState<number | null>(null);
   const router = useRouter();
 
@@ -187,4 +187,4 @@ const IntakeTableList: React.FC<IntakeTableListProps> = ({ intakes }) => {
   );
 };
 
-export default IntakeTableList;
+export default IntakeListTable;

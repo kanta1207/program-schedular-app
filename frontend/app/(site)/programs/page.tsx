@@ -1,6 +1,6 @@
 import { getPrograms } from '@/actions/programs/getPrograms';
 import CreateProgram from '@/components/pages/programs/CreateProgram';
-import ProgramTableList from '@/components/pages/programs/ProgramsListTable';
+import ProgramListTable from '@/components/pages/programs/ProgramsListTable';
 import Headline from '@/components/partials/Headline';
 
 const page = async () => {
@@ -9,7 +9,7 @@ const page = async () => {
     <>
       <Headline name="Programs" />
       <CreateProgram />
-      <ProgramTableList programs={programs} />
+      <ProgramListTable programs={programs} />
     </>
   );
 };

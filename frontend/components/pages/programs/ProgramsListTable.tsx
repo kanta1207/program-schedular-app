@@ -18,7 +18,7 @@ interface ProgramListTableProps {
   programs: GetProgramsResponse[];
 }
 
-const ProgramTableList: React.FC<ProgramListTableProps> = ({ programs }) => {
+const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
   const [editProgramId, setEditProgramId] = useState<number | null>(null);
   const router = useRouter();
 
@@ -130,4 +130,4 @@ const ProgramTableList: React.FC<ProgramListTableProps> = ({ programs }) => {
   );
 };
 
-export default ProgramTableList;
+export default ProgramListTable;
