@@ -136,6 +136,10 @@ export class CohortsService {
     return cohort;
   }
 
+  async remove(id: number) {
+    await this.cohortRepository.delete(id);
+  }
+
   async updateClasses(id: number, updateClassesDto: UpdateClassesDto) {
     const cohort = await this.cohortRepository.findOneBy({ id });
     if (!cohort) {
@@ -202,9 +206,5 @@ export class CohortsService {
         endAt: 'ASC',
       },
     });
-  }
-
-  async remove(id: number) {
-    await this.cohortRepository.delete(id);
   }
 }
