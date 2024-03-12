@@ -1,11 +1,6 @@
-import { instructors } from '@/mock/_index';
-import { Instructor } from '@/types/_index';
+import { ApiResponse, GetInstructorsResponse } from '@/types/_index';
 
-export const getInstructors = async (): Promise<Instructor[]> => {
-  const sortedInstructors = instructors.sort((a, b) => b.id - a.id);
-  return sortedInstructors;
-
-  // TODO: Remove mock and fetch data from api
+export const getInstructors = async (): Promise<ApiResponse<GetInstructorsResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
@@ -14,7 +9,7 @@ export const getInstructors = async (): Promise<Instructor[]> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['instructor'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {

@@ -46,7 +46,7 @@ export class InstructorsService {
       contractTypeId,
       weekdaysRangeId,
       courseIds,
-      periodOfDaysIds,
+      periodOfDayIds,
       ...restOfDtoProps
     } = createInstructorDto;
 
@@ -81,7 +81,7 @@ export class InstructorsService {
     // Save period of days and instructors relationship
 
     const periodOfDays = await this.masterPeriodOfDayRepository.find({
-      where: { id: In(periodOfDaysIds) },
+      where: { id: In(periodOfDayIds) },
     });
     const instructorsPeriodOfDays = periodOfDays.map((periodOfDay) => ({
       instructor,
@@ -126,10 +126,7 @@ export class InstructorsService {
         contractType: true,
         weekdaysRange: true,
       },
-      order: {
-        isActive: 'DESC',
-        id: 'DESC',
-      },
+      order: { isActive: 'DESC', id: 'DESC' },
     });
 
     const instructorPeriodOfDays =
@@ -163,6 +160,7 @@ export class InstructorsService {
           course: true,
           cohort: {
             program: true,
+            periodOfDay: true,
           },
           weekdaysRange: true,
           classroom: true,
@@ -220,6 +218,7 @@ export class InstructorsService {
           course: true,
           cohort: {
             program: true,
+            periodOfDay: true,
           },
           weekdaysRange: true,
           classroom: true,
@@ -235,7 +234,7 @@ export class InstructorsService {
       desiredWorkingHours,
       contractTypeId,
       weekdaysRangeId,
-      periodOfDaysIds,
+      periodOfDayIds,
       courseIds,
       ...restOfDtoProps
     } = updateInstructorDto;
@@ -280,7 +279,7 @@ export class InstructorsService {
     await this.instructorRepository.update(id, attrToUpdate);
 
     // Update period of days and instructors relationship
-    if (periodOfDaysIds) {
+    if (periodOfDayIds) {
       // Delete all the existing period of days and target instructors relationship
       await this.instructorsPeriodOfDaysRepository.delete({
         instructor: { id },
@@ -288,7 +287,7 @@ export class InstructorsService {
 
       // Save all of the period of days and instructors relationship again
       const periodOfDays = await this.masterPeriodOfDayRepository.find({
-        where: { id: In(periodOfDaysIds) },
+        where: { id: In(periodOfDayIds) },
       });
       const instructorsPeriodOfDays = periodOfDays.map((periodOfDay) => ({
         instructor: { id },

@@ -1,8 +1,8 @@
-import { ApiResponse, GetInstructorResponse } from '@/types/_index';
+import { ApiResponse, GetCoursesResponse } from '@/types/_index';
 
-export const getInstructorById = async (id: string): Promise<ApiResponse<GetInstructorResponse>> => {
+export const getCourses = async (): Promise<ApiResponse<GetCoursesResponse[]>> => {
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/courses`;
 
     const response = await fetch(baseUrl, {
       method: 'GET',

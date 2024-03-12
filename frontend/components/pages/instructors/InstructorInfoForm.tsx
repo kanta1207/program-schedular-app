@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import {
@@ -19,16 +19,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
+import { GetCoursesResponse, GetInstructorResponse } from '@/types/_index';
 
 type FormValues = {
   name: string;
   contractTypeId: number;
-  desiredWorkingHours: number;
+  desiredWorkingHours: number | null;
   weekdaysRangeId: number;
   periodOfDayIds: number[];
   isActive: boolean;
@@ -37,23 +37,24 @@ type FormValues = {
 };
 
 interface InstructorInfoFormProps {
-  instructor?: Instructor;
+  instructor?: GetInstructorResponse;
+  courses: GetCoursesResponse[];
 }
-const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) => {
+const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses }) => {
   const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (instructor) {
       reset({
-        name: instructor?.name,
-        contractTypeId: instructor?.contractType.id,
-        desiredWorkingHours: instructor?.desiredWorkingHours,
-        weekdaysRangeId: instructor?.weekdaysRange.id,
-        periodOfDayIds: instructor?.periodOfDays.map(({ id }) => id),
-        isActive: instructor?.isActive,
-        courseIds: instructor?.courses.map(({ id }) => id),
-        note: instructor?.note ?? '',
+        name: instructor.name,
+        contractTypeId: instructor.contractType.id,
+        desiredWorkingHours: instructor.desiredWorkingHours ?? 10,
+        weekdaysRangeId: instructor.weekdaysRange.id,
+        periodOfDayIds: instructor.periodOfDays.map(({ id }) => id),
+        isActive: instructor.isActive,
+        courseIds: instructor.courses.map(({ id }) => id),
+        note: instructor.note ?? '',
       });
     } else {
       setIsEditMode(true);
@@ -68,7 +69,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         reset({
           name: instructor.name,
           contractTypeId: instructor.contractType.id,
-          desiredWorkingHours: instructor.desiredWorkingHours,
+          desiredWorkingHours: instructor.desiredWorkingHours ?? 10,
           weekdaysRangeId: instructor.weekdaysRange.id,
           periodOfDayIds: instructor.periodOfDays?.map(({ id }) => id),
           isActive: instructor.isActive,
@@ -89,7 +90,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   };
 
-  const { control, handleSubmit, reset, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       name: '',
       contractTypeId: 1,
@@ -102,36 +103,53 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     },
   });
 
+  const contractTypeId = watch('contractTypeId');
+  // Needed to be cast as the type changes string when user selects an item in form
+  const contractTypeIdNumber = Number(contractTypeId);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // The value of the input from the radio button must be cast to a numeric type
     try {
-      const payload = {
+      let payload = {
         name: data.name,
-        contractTypeId: data.contractTypeId,
+        contractTypeId: +data.contractTypeId,
         desiredWorkingHours: data.desiredWorkingHours,
-        weekdaysRangeId: data.weekdaysRangeId,
+        weekdaysRangeId: +data.weekdaysRangeId,
         periodOfDayIds: data.periodOfDayIds,
         isActive: data.isActive,
         courseIds: data.courseIds,
         note: data.note || null,
       };
 
+      const contractType = CONTRACT_TYPES.find(({ id }) => id === payload.contractTypeId)?.name;
+      if (contractType === 'Contract' && data.desiredWorkingHours) {
+        payload = {
+          ...payload,
+          desiredWorkingHours: +data.desiredWorkingHours,
+        };
+      } else {
+        payload = {
+          ...payload,
+          desiredWorkingHours: null,
+        };
+      }
+
       if (instructor) {
-        const updatedInstructor = await updateInstructor(instructor.id, payload);
-        console.log('updated cohort:', updatedInstructor);
-        // TODO: reset form by updatedInstructor
+        const { data: updatedInstructor } = await updateInstructor(instructor.id, payload);
         reset({
-          // name: updatedInstructor.name,
-          // contractTypeId: updatedInstructor.contractTypeId,
-          // desiredWorkingHours: updatedInstructor.desiredWorkingHours,
-          // weekdaysRangeId: updatedInstructor.weekdaysRangeId,
-          // periodOfDayIds: updatedInstructor.periodOfDayIds,
-          // isActive: updatedInstructor.isActive,
-          // courseIds: updatedInstructor.courseIds,
-          // note: updatedInstructor.note,
+          name: updatedInstructor.name,
+          contractTypeId: updatedInstructor.contractType.id,
+          desiredWorkingHours: updatedInstructor.desiredWorkingHours ?? 10,
+          weekdaysRangeId: updatedInstructor.weekdaysRange.id,
+          periodOfDayIds: updatedInstructor.periodOfDays.map(({ id }) => id),
+          isActive: updatedInstructor.isActive,
+          courseIds: updatedInstructor.courses.map(({ id }) => id),
+          note: updatedInstructor.note ?? '',
         });
         setIsEditMode(false);
       } else {
-        const newInstructor = await createInstructor(payload);
+        const { data: newInstructor } = await createInstructor(payload);
+        router.push(`/instructors/${newInstructor.id}`);
       }
     } catch (error) {
       console.error(error);
@@ -156,8 +174,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                       <TextField
                         sx={{ width: '20rem' }}
                         size="small"
-                        value={field.value ?? ''}
-                        inputRef={field.ref}
+                        value={field.value}
                         onChange={(name) => field.onChange(name)}
                         disabled={!isEditable}
                       />
@@ -191,28 +208,30 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
               </TableCell>
             </TableRow>
             {/* Desired Working Hours */}
-            <TableRow>
-              <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
-                <Controller
-                  name="desiredWorkingHours"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup {...field} row>
-                      {DESIRED_WORKING_HOURS.map((hour) => (
-                        <FormControlLabel
-                          key={hour}
-                          value={hour}
-                          control={<Radio />}
-                          label={`${hour}`}
-                          disabled={!isEditable}
-                        />
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-              </TableCell>
-            </TableRow>
+            {contractTypeIdNumber === 3 && (
+              <TableRow>
+                <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
+                <TableCell sx={{ border: 'none' }}>
+                  <Controller
+                    name="desiredWorkingHours"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup {...field} row>
+                        {DESIRED_WORKING_HOURS.map((hour) => (
+                          <FormControlLabel
+                            key={hour}
+                            value={hour}
+                            control={<Radio />}
+                            label={`${hour}`}
+                            disabled={!isEditable}
+                          />
+                        ))}
+                      </RadioGroup>
+                    )}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
             {/* Weekdays Range */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Days:</TableCell>

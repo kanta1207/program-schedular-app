@@ -1,9 +1,9 @@
-import { Instructor } from '@/types/_index';
+import { GetInstructorsResponse } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { InstructorListTableRow } from './InstructorListTableRow';
 
 interface InstructorListTableProps {
-  instructors: Instructor[];
+  instructors: GetInstructorsResponse[];
 }
 
 export const InstructorListTable: React.FC<InstructorListTableProps> = ({ instructors }) => {

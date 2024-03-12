@@ -1,10 +1,9 @@
-import { instructors } from '@/mock/_index';
-import { Instructor } from '@/types/_index';
+import { ApiResponse, CreateInstructorResponse } from '@/types/_index';
 
 interface CreateInstructorPayload {
   name: string;
   isActive: boolean;
-  desiredWorkingHours: number;
+  desiredWorkingHours: number | null;
   contractTypeId: number;
   weekdaysRangeId: number;
   periodOfDayIds: number[];
@@ -12,26 +11,17 @@ interface CreateInstructorPayload {
   note: string | null;
 }
 
-export const createInstructor = async (payload: CreateInstructorPayload): Promise<Instructor> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
-    payload;
-
-  console.log(name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note);
-  return instructors[0];
+export const createInstructor = async (
+  payload: CreateInstructorPayload,
+): Promise<ApiResponse<CreateInstructorResponse>> => {
+  const { name, contractTypeId, weekdaysRangeId } = payload;
 
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
+    if (!name || !contractTypeId || !contractTypeId || !weekdaysRangeId) {
+      throw new Error("Something's wrong in the input data");
+    }
 
-    const payload = {
-      name: name,
-      contractType: contractTypeId,
-      desiredWorkingHours: desiredWorkingHours,
-      weekdaysRange: weekdaysRangeId,
-      periodOfDayIds: periodOfDayIds,
-      isActive: isActive,
-      courses: courseIds,
-      note: note,
-    };
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
     const response = await fetch(baseUrl, {
       method: 'POST',

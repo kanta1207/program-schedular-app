@@ -1,16 +1,14 @@
-import { classes } from '@/mock/_index';
-import { Instructor } from '@/types/_index';
+import { GetInstructorsResponse } from '@/types/_index';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import React from 'react';
 import { InstructorScheduleTableRow } from './InstructorScheduleTableRow';
+import React from 'react';
 
 interface InstructorScheduleTableProps {
-  instructor: Instructor;
+  instructor: GetInstructorsResponse;
 }
 
 export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = ({ instructor }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-  const instructorSchedule = classes.filter((classData) => classData.instructor?.id === instructor?.id);
 
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -27,7 +25,7 @@ export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = (
         </TableRow>
       </TableHead>
       <TableBody>
-        {instructorSchedule.map((classData) => (
+        {instructor.classes.map((classData) => (
           <TableRow key={classData.id}>
             <InstructorScheduleTableRow classData={classData} />
           </TableRow>

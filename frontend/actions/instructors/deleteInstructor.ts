@@ -1,9 +1,6 @@
-export const deleteInstructor = async (id: number): Promise<null> => {
-  console.log(`Deleting ${id}...`);
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  console.log(`Deleted ${id}!`);
-  return null;
+import { ApiResponse } from '@/types/_index';
 
+export const deleteInstructor = async (id: number): Promise<ApiResponse<null>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
 
