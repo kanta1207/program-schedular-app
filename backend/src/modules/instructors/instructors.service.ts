@@ -9,13 +9,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 
-import { Instructor } from 'src/entity/instructors.entity';
-import { CoursesInstructors } from 'src/entity/coursesInstructors.entity';
-import { MasterContractType } from 'src/entity/masterContractTypes.entity';
-import { MasterWeekdaysRange } from 'src/entity/masterWeekdaysRanges.entity';
-import { MasterPeriodOfDay } from 'src/entity/masterPeriodOfDays.entity';
-import { InstructorsPeriodOfDays } from 'src/entity/instructorsPeriodOfDays.entity';
-import { Course } from 'src/entity/courses.entity';
+import {
+  Instructor,
+  CoursesInstructors,
+  MasterContractType,
+  MasterWeekdaysRange,
+  MasterPeriodOfDay,
+  InstructorsPeriodOfDays,
+  Course,
+} from 'src/entity';
 
 import { CONTRACTOR_CONTRACT_TYPE_ID } from './instructor.constant';
 
@@ -171,6 +173,10 @@ export class InstructorsService {
         },
       },
     });
+
+    if (!instructor) {
+      throw new NotFoundException('Instructor not found');
+    }
 
     // Get all the period of days associated with the instructor
     const instructorsPeriodOfDays =

@@ -10,6 +10,10 @@ export const updateProgram = async (
 ): Promise<ApiResponse<UpdateProgramResponse>> => {
   const { name } = payload;
   try {
+    if (name === '') {
+      throw new Error('Name cannot be empty');
+    }
+
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/programs/${id}`;
 
     const payload = { name };

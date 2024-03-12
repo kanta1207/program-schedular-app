@@ -14,14 +14,23 @@ interface GetClassResponseCohort extends CohortBase {
 }
 
 export interface GetClassResponse extends ClassBase {
-  cohort: GetClassResponseCohort;
-  weekdaysRange: WeekdaysRange;
-  course: CourseBase;
-  classroom: Classroom;
   instructor: InstructorBase;
+  classroom: Classroom;
+  course: CourseBase;
+  weekdaysRange: WeekdaysRange;
+  cohort: GetClassResponseCohort;
 }
 
-export interface GetClassesResponse extends GetClassResponse {}
+export interface GetClassesGroupByCohort extends CohortBase {
+  intake: IntakeBase;
+  classes: GetClassResponse[];
+}
+
+export interface GetClassesGroupByInstructor extends InstructorBase {
+  classes: GetClassResponse[];
+}
+
+export type GetClassesResponse = GetClassesGroupByCohort | GetClassesGroupByInstructor;
 
 export interface CreateClassResponse extends GetClassResponse {}
 

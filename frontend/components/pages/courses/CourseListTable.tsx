@@ -1,18 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import TableMenu from '@/components/partials/TableMenu';
+import { PROGRAMS } from '@/constants/_index';
+import { courses } from '@/mock/_index';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { courses } from '@/mock/_index';
-import { PROGRAMS } from '@/constants/_index';
-import TableMenu from '@/components/partials/TableMenu';
+import React, { useState } from 'react';
 
-const CourseTableList = () => {
+const CourseListTable = () => {
   const [hours, setHours] = useState('');
   const [editCourseId, setEditCourseId] = useState<number | null>(null);
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -133,4 +133,4 @@ const CourseTableList = () => {
   );
 };
 
-export default CourseTableList;
+export default CourseListTable;

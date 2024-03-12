@@ -14,6 +14,10 @@ export interface PeriodOfDay {
   time: TimeName;
 }
 
+export interface ClientPeriodOfDay extends PeriodOfDay {
+  icon: string;
+}
+
 export type PeriodOfDayName = 'Morning' | 'Afternoon' | 'Evening';
 
 export type TimeName = '8:30 - 12:30' | '1:00 - 5:00' | '5:30 - 9:30';
@@ -28,6 +32,13 @@ export type ContractName = 'Full time' | 'Part time' | 'Contract';
 export interface WeekdaysRange {
   id: number;
   name: WeekdaysRangeName;
+}
+
+export interface ClientWeekdaysRange extends WeekdaysRange {
+  color: {
+    primary: string;
+    secondary: string;
+  };
 }
 
 export type WeekdaysRangeName = 'Mon - Fri' | 'Mon - Wed' | 'Wed - Fri';

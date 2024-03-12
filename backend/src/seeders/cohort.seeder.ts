@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { Cohort } from '../entity/cohorts.entity';
+import { Cohort } from 'src/entity';
 import { seederWrapper } from './utils';
 
 const cohorts = [

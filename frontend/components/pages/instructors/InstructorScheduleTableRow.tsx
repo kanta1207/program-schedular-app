@@ -20,7 +20,7 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
       <TableCell>{classData.course.name}</TableCell>
       <TableCell>{classData.cohort.name}</TableCell>
       <TableCell>
-        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
+        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />
       </TableCell>
       <TableCell>{classData.cohort.periodOfDay.time}</TableCell>
       <TableCell>{classData.cohort.program.name}</TableCell>

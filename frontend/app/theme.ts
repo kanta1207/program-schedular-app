@@ -4,17 +4,13 @@ import { Roboto } from 'next/font/google';
 
 declare module '@mui/material/styles' {
   interface Palette {
-    daysOfWeek: {
-      monfri: string;
-      monwed: string;
-      wedfri: string;
+    gantt: {
+      project: string;
     };
   }
   interface PaletteOptions {
-    daysOfWeek?: {
-      monfri?: string;
-      monwed?: string;
-      wedfri?: string;
+    gantt?: {
+      project?: string;
     };
   }
 }
@@ -44,10 +40,8 @@ const theme = createTheme({
     success: {
       main: '#19B571',
     },
-    daysOfWeek: {
-      monfri: '#662d91',
-      monwed: '#0047AB',
-      wedfri: '#BA0021',
+    gantt: {
+      project: '#264d67',
     },
   },
   typography: {
