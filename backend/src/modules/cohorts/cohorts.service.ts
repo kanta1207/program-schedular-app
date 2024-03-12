@@ -197,6 +197,10 @@ export class CohortsService {
         classroom: true,
         instructor: true,
       },
+      order: {
+        startAt: 'ASC',
+        endAt: 'ASC',
+      },
     });
   }
 
