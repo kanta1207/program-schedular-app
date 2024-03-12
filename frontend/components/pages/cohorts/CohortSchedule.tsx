@@ -190,7 +190,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                               <DatePicker
                                 slotProps={{ textField: { size: 'small' } }}
                                 value={dayjs(field.value)}
-                                inputRef={field.ref}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}
@@ -211,7 +210,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                               <DatePicker
                                 slotProps={{ textField: { size: 'small' } }}
                                 value={dayjs(field.value)}
-                                inputRef={field.ref}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}

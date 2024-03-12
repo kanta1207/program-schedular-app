@@ -100,7 +100,6 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                             <DatePicker
                               label="Start Date"
                               value={field.value}
-                              inputRef={field.ref}
                               onChange={(date) => field.onChange(date)}
                             />
                           );
@@ -117,7 +116,6 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                             <DatePicker
                               label="End Date"
                               value={field.value}
-                              inputRef={field.ref}
                               onChange={(date) => field.onChange(date)}
                             />
                           );
