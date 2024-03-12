@@ -1,14 +1,16 @@
+import { Repository } from 'typeorm';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Break } from '../../entity/breaks.entity';
-import { Repository } from 'typeorm';
+
+import { Break } from 'src/entity';
+import checkDateOrder from 'src/common/utils/check-date-order.util';
+
 import { CreateBreakDto } from './dto/create-break.dto';
 import { UpdateBreakDto } from './dto/update-break.dto';
-import checkDateOrder from 'src/common/utils/check-date-order.util';
 
 @Injectable()
 export class BreaksService {

@@ -1,12 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Cohort } from '../../entity/cohorts.entity';
-import { Repository } from 'typeorm';
-import { Intake } from '../../entity/intakes.entity';
-import { MasterPeriodOfDay } from '../../entity/masterPeriodOfDays.entity';
-import { Program } from '../../entity/programs.entity';
+import { UpdateClassesDto } from './dto/update-classes.dto';
+
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 
 @Injectable()
 export class CohortsService {
@@ -19,6 +23,8 @@ export class CohortsService {
     private readonly periodOfDayRepository: Repository<MasterPeriodOfDay>,
     @InjectRepository(Program)
     private readonly programRepository: Repository<Program>,
+    @InjectRepository(Class)
+    private readonly classRepository: Repository<Class>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -65,7 +71,6 @@ export class CohortsService {
     const cohort = await this.cohortRepository.findOne({
       where: { id },
       order: {
-        id: 'DESC',
         classes: { startAt: 'ASC', endAt: 'ASC' },
       },
       relations: {
@@ -133,5 +138,66 @@ export class CohortsService {
 
   async remove(id: number) {
     await this.cohortRepository.delete(id);
+  }
+
+  async updateClasses(id: number, updateClassesDto: UpdateClassesDto) {
+    const cohort = await this.cohortRepository.findOneBy({ id });
+    if (!cohort) {
+      throw new NotFoundException(`Cohort with ID "${id}" not found`);
+    }
+
+    const queryRunner =
+      this.classRepository.manager.connection.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.delete(Class, { cohort: { id } });
+
+      const { classes } = updateClassesDto;
+
+      const newClasses = classes.map((clazz) => {
+        const {
+          startAt,
+          endAt,
+          weekdaysRangeId,
+          courseId,
+          classroomId,
+          instructorId,
+        } = clazz;
+
+        return this.classRepository.create({
+          startAt,
+          endAt,
+          weekdaysRange: { id: weekdaysRangeId },
+          course: { id: courseId },
+          classroom: { id: classroomId },
+          instructor: { id: instructorId },
+          cohort,
+        });
+      });
+
+      await queryRunner.manager.save(newClasses);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException(error.message);
+    } finally {
+      queryRunner.release();
+    }
+    return await this.classRepository.find({
+      where: { cohort: { id } },
+      relations: {
+        cohort: true,
+        weekdaysRange: true,
+        course: true,
+        classroom: true,
+        instructor: true,
+      },
+      order: {
+        startAt: 'ASC',
+        endAt: 'ASC',
+      },
+    });
   }
 }

@@ -2,14 +2,18 @@ import { Module } from '@nestjs/common';
 import { CohortsService } from './cohorts.service';
 import { CohortsController } from './cohorts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cohort } from '../../entity/cohorts.entity';
-import { Intake } from '../../entity/intakes.entity';
-import { MasterPeriodOfDay } from '../../entity/masterPeriodOfDays.entity';
-import { Program } from '../../entity/programs.entity';
+
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Cohort, Intake, MasterPeriodOfDay, Program]),
+    TypeOrmModule.forFeature([
+      Cohort,
+      Intake,
+      MasterPeriodOfDay,
+      Program,
+      Class,
+    ]),
   ],
   controllers: [CohortsController],
   providers: [CohortsService],

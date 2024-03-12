@@ -1,10 +1,11 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
+
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { Instructor } from 'src/entity/instructors.entity';
-import { Cohort } from 'src/entity/cohorts.entity';
+
+import { Instructor, Cohort } from 'src/entity';
 
 @Injectable()
 export class ClassesService {
