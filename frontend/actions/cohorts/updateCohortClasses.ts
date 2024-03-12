@@ -1,5 +1,4 @@
-import { ApiResponse } from '@/types/apiResponse';
-import { UpdateCohortResponse } from '@/types/cohort';
+import { ApiResponse, UpdateCohortResponse } from '@/types/_index';
 import { Dayjs } from 'dayjs';
 
 interface UpdateCohortClassesPayload {

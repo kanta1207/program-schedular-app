@@ -16,9 +16,6 @@ export const updateIntake = async (
     if (name === '') {
       throw new Error('Name cannot be empty');
     }
-    if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
-    }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes/${id}`;
 

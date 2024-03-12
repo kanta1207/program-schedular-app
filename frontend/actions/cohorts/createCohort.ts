@@ -10,7 +10,7 @@ interface CreateCohortPayload {
 export const createCohort = async (payload: CreateCohortPayload): Promise<ApiResponse<CreateCohortResponse>> => {
   const { name, intakeId, periodOfDayId, programId } = payload;
   try {
-    if (!name && !intakeId && !periodOfDayId && !programId) {
+    if (!name || !intakeId || !periodOfDayId || !programId) {
       throw new Error("Something's wrong in the input data");
     }
 

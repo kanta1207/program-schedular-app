@@ -10,7 +10,7 @@ export const createBreak = async (payload: CreateBreakPayload): Promise<ApiRespo
   const { startAt, endAt } = payload;
   try {
     if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
+      throw new Error('Both startAt and endAt are required');
     }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks`;
