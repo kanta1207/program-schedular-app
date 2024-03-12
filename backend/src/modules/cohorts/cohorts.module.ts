@@ -11,7 +11,6 @@ import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
       Cohort,
       Intake,
       MasterPeriodOfDay,
-
       Program,
       Class,
     ]),
