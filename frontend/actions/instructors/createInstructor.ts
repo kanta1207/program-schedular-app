@@ -14,27 +14,14 @@ interface CreateInstructorPayload {
 export const createInstructor = async (
   payload: CreateInstructorPayload,
 ): Promise<ApiResponse<CreateInstructorResponse>> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
-    payload;
+  const { name, contractTypeId, weekdaysRangeId } = payload;
 
   try {
-    if (!name && !contractTypeId) {
-      throw new Error('Either name or contract type is required'); // we can add other required sections in here later.
+    if (!name || !contractTypeId || !contractTypeId || !weekdaysRangeId) {
+      throw new Error("Something's wrong in the input data");
     }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
-
-    const payload = {
-      name: name,
-      contractTypeId: contractTypeId,
-      desiredWorkingHours: desiredWorkingHours,
-      weekdaysRangeId: weekdaysRangeId,
-      periodOfDayIds: periodOfDayIds,
-      isActive: isActive,
-      courseIds: courseIds,
-      note: note,
-    };
-    console.log(payload);
 
     const response = await fetch(baseUrl, {
       method: 'POST',

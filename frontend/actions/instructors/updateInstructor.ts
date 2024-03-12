@@ -15,27 +15,8 @@ export const updateInstructor = async (
   id: number,
   payload: UpdateInstructorPayload,
 ): Promise<ApiResponse<UpdateInstructorResponse>> => {
-  const { name, isActive, desiredWorkingHours, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds, note } =
-    payload;
-
   try {
-    if (!name && !contractTypeId) {
-      throw new Error('Either name or contract type is required'); // we can add other required sections in here later.
-    }
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/${id}`;
-
-    const payload = {
-      name,
-      isActive,
-      desiredWorkingHours,
-      contractTypeId,
-      weekdaysRangeId,
-      periodOfDayIds,
-      courseIds,
-      note,
-    };
-
-    console.log(payload);
 
     const response = await fetch(baseUrl, {
       method: 'PATCH',

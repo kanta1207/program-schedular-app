@@ -1,6 +1,6 @@
-import { ApiResponse, GetInstructorResponse } from '@/types/_index';
+import { ApiResponse, GetInstructorsResponse } from '@/types/_index';
 
-export const getInstructors = async (): Promise<ApiResponse<GetInstructorResponse[]>> => {
+export const getInstructors = async (): Promise<ApiResponse<GetInstructorsResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
 
@@ -9,7 +9,7 @@ export const getInstructors = async (): Promise<ApiResponse<GetInstructorRespons
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['instructor'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {

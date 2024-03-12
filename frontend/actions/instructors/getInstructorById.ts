@@ -9,7 +9,7 @@ export const getInstructorById = async (id: string): Promise<ApiResponse<GetInst
       headers: {
         'Content-Type': 'application/json',
       },
-      next: { tags: ['instructor'] },
+      cache: 'no-store',
     });
 
     if (!response.ok) {
