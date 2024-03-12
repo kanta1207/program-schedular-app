@@ -29,7 +29,7 @@ import { GetInstructorResponse } from '@/types/_index';
 type FormValues = {
   name: string;
   contractTypeId: number;
-  desiredWorkingHours: number;
+  desiredWorkingHours?: number;
   weekdaysRangeId: number;
   periodOfDayIds: number[];
   isActive: boolean;
@@ -106,17 +106,24 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
   const contractTypeIdNumber = Number(contractTypeId);
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const payload = {
+      let payload: Partial<FormValues> & { contractTypeId: number } = {
         name: data.name,
         contractTypeId: +data.contractTypeId,
-        desiredWorkingHours: +data.desiredWorkingHours,
         weekdaysRangeId: +data.weekdaysRangeId,
         periodOfDayIds: data.periodOfDayIds,
         isActive: data.isActive,
         courseIds: data.courseIds,
         note: data.note || null,
       };
-      console.log(payload);
+
+      // Conditionally add desiredWorkingHours if not Full-Time or Part-Time
+      if (payload.contractTypeId !== 1 && payload.contractTypeId !== 2) {
+        payload = {
+          ...payload,
+          desiredWorkingHours: +data.desiredWorkingHours,
+        };
+      }
+
       if (instructor) {
         const { data: updatedInstructor } = await updateInstructor(instructor.id, payload);
         reset({
