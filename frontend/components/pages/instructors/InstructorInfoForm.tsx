@@ -90,7 +90,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
     }
   };
 
-  const { control, handleSubmit, reset, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, reset, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       name: '',
       contractTypeId: 1,
@@ -102,7 +102,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       note: '',
     },
   });
-
+  const contractTypeId = watch('contractTypeId');
+  const contractTypeIdNumber = Number(contractTypeId);
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const payload = {
@@ -191,28 +192,30 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
               </TableCell>
             </TableRow>
             {/* Desired Working Hours */}
-            <TableRow>
-              <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
-                <Controller
-                  name="desiredWorkingHours"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup {...field} row>
-                      {DESIRED_WORKING_HOURS.map((hour) => (
-                        <FormControlLabel
-                          key={hour}
-                          value={hour}
-                          control={<Radio />}
-                          label={`${hour}`}
-                          disabled={!isEditable}
-                        />
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-              </TableCell>
-            </TableRow>
+            {contractTypeIdNumber === 3 && (
+              <TableRow>
+                <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
+                <TableCell sx={{ border: 'none' }}>
+                  <Controller
+                    name="desiredWorkingHours"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup {...field} row>
+                        {DESIRED_WORKING_HOURS.map((hour) => (
+                          <FormControlLabel
+                            key={hour}
+                            value={hour}
+                            control={<Radio />}
+                            label={`${hour}`}
+                            disabled={!isEditable}
+                          />
+                        ))}
+                      </RadioGroup>
+                    )}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
             {/* Weekdays Range */}
             <TableRow>
               <TableCell sx={{ border: 'none' }}>Days:</TableCell>
