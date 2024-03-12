@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { MasterContractType } from 'src/entity';
+import { MasterContractType } from '../entity';
 import { seederWrapper } from './utils';
 
 const contractTypes = [

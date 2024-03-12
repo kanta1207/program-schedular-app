@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { Intake } from 'src/entity';
+import { Intake } from '../entity';
 import { seederWrapper } from './utils';
 
 const intakes = [

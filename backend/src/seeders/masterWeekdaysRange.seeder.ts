@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { MasterWeekdaysRange } from 'src/entity';
+import { MasterWeekdaysRange } from '../entity';
 import { seederWrapper } from './utils';
 
 const weekdaysRanges = [
