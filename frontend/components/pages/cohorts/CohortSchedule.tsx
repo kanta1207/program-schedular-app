@@ -25,6 +25,8 @@ import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { GetCohortResponse } from '@/types/cohort';
 import IconButton from '@mui/material/IconButton';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
+import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
   schedule: {
@@ -44,6 +46,7 @@ interface CohortScheduleProps {
 
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
+  const router = useRouter();
   const now = dayjs();
 
   const { control, handleSubmit, reset, watch } = useForm<FormValues>({
@@ -80,20 +83,23 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
     });
   }, []);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // TODO: Validation startAt < endAt
-    // TODO: ids except instructorId are not null
-    const payload = data.schedule.map((classData) => ({
-      startAt: classData.startAt.toISOString(),
-      endAt: classData.endAt.toISOString(),
-      cohortId: cohort.id,
-      weekdaysRangeId: classData.weekdaysRangeId,
-      courseId: classData.courseId,
-      classroomId: classData.classroomId,
-      instructorId: classData.instructorId || null,
-    }));
-    console.log(payload);
-    return;
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const payload = data.schedule.map((classData) => ({
+        startAt: classData.startAt,
+        endAt: classData.endAt,
+        cohortId: cohort.id,
+        weekdaysRangeId: classData.weekdaysRangeId,
+        courseId: classData.courseId,
+        classroomId: classData.classroomId,
+        instructorId: classData.instructorId || undefined,
+      }));
+      await updateCohortClasses(cohort.id, payload);
+      setIsScheduleEditable(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCancelClick = () => {
