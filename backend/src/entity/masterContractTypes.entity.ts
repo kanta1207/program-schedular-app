@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Instructor } from './instructors.entity';
+import { Instructor } from './';
 
 @Entity('master_contract_types')
 export class MasterContractType {

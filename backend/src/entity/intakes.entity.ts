@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Cohort } from './cohorts.entity';
+import { Cohort } from './';
 
 @Entity('intakes')
 export class Intake {

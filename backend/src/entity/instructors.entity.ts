@@ -9,11 +9,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { MasterContractType } from './masterContractTypes.entity';
-import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
-import { CoursesInstructors } from './coursesInstructors.entity';
-import { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
-import { Class } from './classes.entity';
+import {
+  Class,
+  InstructorsPeriodOfDays,
+  CoursesInstructors,
+  MasterContractType,
+  MasterWeekdaysRange,
+} from './';
 
 @Entity('instructors')
 export class Instructor {
