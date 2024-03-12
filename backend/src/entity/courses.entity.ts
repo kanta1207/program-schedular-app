@@ -9,9 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Program } from './programs.entity';
-import { Class } from './classes.entity';
-import { CoursesInstructors } from './coursesInstructors.entity';
+import { CoursesInstructors, Class, Program } from './';
 
 @Entity('courses')
 export class Course {

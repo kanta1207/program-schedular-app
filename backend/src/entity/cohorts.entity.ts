@@ -8,10 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Intake } from './intakes.entity';
-import { Program } from './programs.entity';
-import { MasterPeriodOfDay } from './masterPeriodOfDays.entity';
-import { Class } from './classes.entity';
+import { Class, MasterPeriodOfDay, Program, Intake } from './';
 
 @Entity('cohorts')
 export class Cohort {

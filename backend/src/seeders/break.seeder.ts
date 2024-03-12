@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { Break } from 'src/entity';
+import { Break } from '../entity';
 import { seederWrapper } from './utils';
 
 const breaks = [

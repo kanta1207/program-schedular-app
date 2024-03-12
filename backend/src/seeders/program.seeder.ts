@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { Program } from 'src/entity';
+import { Program } from '../entity';
 import { seederWrapper } from './utils';
 
 const programs = [

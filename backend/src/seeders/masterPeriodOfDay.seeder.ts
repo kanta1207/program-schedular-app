@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { MasterPeriodOfDay } from 'src/entity';
+import { MasterPeriodOfDay } from '../entity';
 import { seederWrapper } from './utils';
 
 const periodOfDays = [

@@ -1,5 +1,5 @@
 import dataSource from '../data-source';
-import { InstructorsPeriodOfDays } from 'src/entity';
+import { InstructorsPeriodOfDays } from '../entity';
 import { seederWrapper } from './utils';
 
 const instructorsPeriodOfDays = [

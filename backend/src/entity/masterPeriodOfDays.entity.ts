@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Cohort } from './cohorts.entity';
-import { InstructorsPeriodOfDays } from './instructorsPeriodOfDays.entity';
+import { Cohort, InstructorsPeriodOfDays } from './';
 
 @Entity('master_period_of_days')
 export class MasterPeriodOfDay {

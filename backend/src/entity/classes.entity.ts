@@ -7,12 +7,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Cohort } from './cohorts.entity';
-
-import { Course } from './courses.entity';
-import { MasterClassroom } from './masterClassrooms.entity';
-import { MasterWeekdaysRange } from './masterWeekdaysRanges.entity';
-import { Instructor } from './instructors.entity';
+import {
+  Instructor,
+  Cohort,
+  Course,
+  MasterClassroom,
+  MasterWeekdaysRange,
+} from './';
 
 @Entity('classes')
 export class Class {
