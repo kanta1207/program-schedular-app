@@ -7,6 +7,7 @@ export * from './intakes.entity';
 export * from './masterClassrooms.entity';
 export * from './masterPeriodOfDays.entity';
 export * from './masterWeekdaysRanges.entity';
+export * from './masterContractTypes.entity';
 export * from './programs.entity';
 export * from './instructorsPeriodOfDays.entity';
 export * from './coursesInstructors.entity';
