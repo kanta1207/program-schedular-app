@@ -50,6 +50,16 @@ export class CohortsController {
     return ApiResponse.new(updatedCohort);
   }
 
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    await this.cohortsService.remove(id);
+    return ApiResponse.new(
+      null,
+      StatusCodes.STATUS_NO_CONTENT.code,
+      StatusCodes.STATUS_NO_CONTENT.message,
+    );
+  }
+
   @Put(':id/classes')
   async updateClasses(
     @Param('id') id: number,
@@ -60,15 +70,5 @@ export class CohortsController {
       updateCohortDto,
     );
     return ApiResponse.new(updatedCohort);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: number) {
-    await this.cohortsService.remove(id);
-    return ApiResponse.new(
-      null,
-      StatusCodes.STATUS_NO_CONTENT.code,
-      StatusCodes.STATUS_NO_CONTENT.message,
-    );
   }
 }
