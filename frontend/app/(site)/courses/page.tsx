@@ -1,5 +1,5 @@
+import CourseListTable from '@/components/pages/courses/CourseListTable';
 import CreateCourse from '@/components/pages/courses/CreateCourse';
-import CourseTableList from '@/components/pages/courses/CourseTableList';
 import Headline from '@/components/partials/Headline';
 
 const CourseList = () => {
@@ -7,7 +7,7 @@ const CourseList = () => {
     <div className="w-full">
       <Headline name="Courses" />
       <CreateCourse />
-      <CourseTableList />
+      <CourseListTable />
     </div>
   );
 };
