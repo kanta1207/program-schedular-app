@@ -19,55 +19,56 @@ put:
               - $ref: '../../schemas/class/classDynamicProps.yml'
               - $ref: '../../schemas/class/classDynamicForeignProps.yml'
         example:
-          - startAt: '2022-09-01T08:00:00.000Z'
-            endAt: '2022-09-22T08:00:00.000Z'
-            cohortId: 1
-            weekdaysRangeId: 1
-            courseId: 1
-            classroomId: 1
-            instructorId: 1
-          - startAt: '2022-09-23T08:00:00.000Z'
-            endAt: '2022-10-14T08:00:00.000Z'
-            cohortId: 2
-            weekdaysRangeId: 2
-            courseId: 2
-            classroomId: 2
-            instructorId: 2
-          - startAt: '2022-10-15T08:00:00.000Z'
-            endAt: '2022-11-05T08:00:00.000Z'
-            cohortId: 3
-            weekdaysRangeId: 3
-            courseId: 3
-            classroomId: 3
-            instructorId: 3
-          - startAt: '2022-11-06T08:00:00.000Z'
-            endAt: '2022-11-27T08:00:00.000Z'
-            cohortId: 4
-            weekdaysRangeId: 4
-            courseId: 4
-            classroomId: 4
-            instructorId: 4
-          - startAt: '2022-11-28T08:00:00.000Z'
-            endAt: '2022-12-19T08:00:00.000Z'
-            cohortId: 5
-            weekdaysRangeId: 5
-            courseId: 5
-            classroomId: 5
-            instructorId: 5
-          - startAt: '2022-12-20T08:00:00.000Z'
-            endAt: '2023-01-10T08:00:00.000Z'
-            cohortId: 6
-            weekdaysRangeId: 6
-            courseId: 6
-            classroomId: 6
-            instructorId: 6
-          - startAt: '2023-01-11T08:00:00.000Z'
-            endAt: '2023-02-01T08:00:00.000Z'
-            cohortId: 7
-            weekdaysRangeId: 7
-            courseId: 7
-            classroomId: 7
-            instructorId: 7
+          classes:
+            - startAt: '2022-09-01T08:00:00.000Z'
+              endAt: '2022-09-22T08:00:00.000Z'
+              cohortId: 1
+              weekdaysRangeId: 1
+              courseId: 1
+              classroomId: 1
+              instructorId: 1
+            - startAt: '2022-09-23T08:00:00.000Z'
+              endAt: '2022-10-14T08:00:00.000Z'
+              cohortId: 2
+              weekdaysRangeId: 2
+              courseId: 2
+              classroomId: 2
+              instructorId: 2
+            - startAt: '2022-10-15T08:00:00.000Z'
+              endAt: '2022-11-05T08:00:00.000Z'
+              cohortId: 3
+              weekdaysRangeId: 3
+              courseId: 3
+              classroomId: 3
+              instructorId: 3
+            - startAt: '2022-11-06T08:00:00.000Z'
+              endAt: '2022-11-27T08:00:00.000Z'
+              cohortId: 4
+              weekdaysRangeId: 4
+              courseId: 4
+              classroomId: 4
+              instructorId: 4
+            - startAt: '2022-11-28T08:00:00.000Z'
+              endAt: '2022-12-19T08:00:00.000Z'
+              cohortId: 5
+              weekdaysRangeId: 5
+              courseId: 5
+              classroomId: 5
+              instructorId: 5
+            - startAt: '2022-12-20T08:00:00.000Z'
+              endAt: '2023-01-10T08:00:00.000Z'
+              cohortId: 6
+              weekdaysRangeId: 6
+              courseId: 6
+              classroomId: 6
+              instructorId: 6
+            - startAt: '2023-01-11T08:00:00.000Z'
+              endAt: '2023-02-01T08:00:00.000Z'
+              cohortId: 7
+              weekdaysRangeId: 7
+              courseId: 7
+              classroomId: 7
+              instructorId: 7
   responses:
     '200':
       description: Returns the updated class
