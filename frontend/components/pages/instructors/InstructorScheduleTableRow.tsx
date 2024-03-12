@@ -1,10 +1,10 @@
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { Class } from '@/types/_index';
+import { GetClassResponse } from '@/types/_index';
 import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
 
 interface InstructorScheduleTableRowProps {
-  classData: Class;
+  classData: GetClassResponse;
 }
 
 export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProps> = ({ classData }) => {
@@ -23,7 +23,7 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
         <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.name} />
       </TableCell>
       <TableCell>{classData.cohort.periodOfDay.time}</TableCell>
-      <TableCell>{classData.course.program.name}</TableCell>
+      <TableCell>{classData.cohort.program.name}</TableCell>
       <TableCell>
         {classData.classroom.name}, {classData.classroom.floor} floor
       </TableCell>

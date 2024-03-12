@@ -1,11 +1,11 @@
 'use client';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { Instructor } from '@/types/_index';
+import { GetInstructorsResponse } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 interface InstructorListTableRowProps {
-  instructor: Instructor;
+  instructor: GetInstructorsResponse;
 }
 
 export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ instructor }) => {

@@ -1,4 +1,4 @@
-import { ContractType, CourseBase, GetClassResponse, PeriodOfDay, WeekdaysRange } from './_index';
+import { ContractType, CourseBase, GetClassesResponse, PeriodOfDay, WeekdaysRange } from './_index';
 
 export interface InstructorBase {
   id: number;
@@ -14,7 +14,7 @@ export interface GetInstructorResponse extends InstructorBase {
   contractType: ContractType;
   weekdaysRange: WeekdaysRange;
   periodOfDays: PeriodOfDay[];
-  classes: GetClassResponse;
+  classes: GetClassesResponse[];
   courses: CourseBase[];
 }
 

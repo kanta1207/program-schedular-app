@@ -1,4 +1,4 @@
-import { Classroom, CohortBase, CourseBase, InstructorBase, IntakeBase, ProgramBase, WeekdaysRange } from './_index';
+import { Classroom, CohortBase, CourseBase, InstructorBase, PeriodOfDay, ProgramBase, WeekdaysRange } from './_index';
 
 export interface ClassBase {
   id: number;
@@ -9,8 +9,8 @@ export interface ClassBase {
 }
 
 interface GetClassResponseCohort extends CohortBase {
-  intake: IntakeBase;
   program: ProgramBase;
+  periodOfDay: PeriodOfDay;
 }
 
 export interface GetClassResponse extends ClassBase {

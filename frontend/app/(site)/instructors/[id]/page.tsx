@@ -1,8 +1,9 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { getInstructorById } from '@/actions/instructors/getInstructorById';
 import InstructorInfoForm from '@/components/pages/instructors/InstructorInfoForm';
 import { InstructorScheduleTable } from '@/components/pages/instructors/InstructorScheduleTable';
 import Headline from '@/components/partials/Headline';
+import { getInstructorById } from '@/actions/instructors/getInstructorById';
+import { getCourses } from '@/actions/courses/getCourses';
 
 interface PageProps {
   params: { id: string };
@@ -10,14 +11,14 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const { data: instructor } = await getInstructorById(id);
+  const [{ data: instructor }, { data: courses }] = await Promise.all([getInstructorById(id), getCourses()]);
 
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
         <Headline name="Instructor" />
       </Box>
-      <InstructorInfoForm instructor={instructor} />
+      <InstructorInfoForm instructor={instructor} courses={courses} />
       <br />
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>

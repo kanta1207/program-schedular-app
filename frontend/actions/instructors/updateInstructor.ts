@@ -3,7 +3,7 @@ import { ApiResponse, UpdateInstructorResponse } from '@/types/_index';
 interface UpdateInstructorPayload {
   name: string;
   isActive: boolean;
-  desiredWorkingHours: number;
+  desiredWorkingHours: number | null;
   contractTypeId: number;
   weekdaysRangeId: number;
   periodOfDayIds: number[];

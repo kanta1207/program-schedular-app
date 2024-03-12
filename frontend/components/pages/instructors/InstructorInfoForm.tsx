@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import {
@@ -19,17 +19,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { courses } from '@/mock/_index';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
-import { GetInstructorResponse } from '@/types/_index';
+import { GetCoursesResponse, GetInstructorResponse } from '@/types/_index';
 
 type FormValues = {
   name: string;
   contractTypeId: number;
-  desiredWorkingHours?: number;
+  desiredWorkingHours: number | null;
   weekdaysRangeId: number;
   periodOfDayIds: number[];
   isActive: boolean;
@@ -39,8 +38,9 @@ type FormValues = {
 
 interface InstructorInfoFormProps {
   instructor?: GetInstructorResponse;
+  courses: GetCoursesResponse[];
 }
-const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) => {
+const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses }) => {
   const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
@@ -69,7 +69,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         reset({
           name: instructor.name,
           contractTypeId: instructor.contractType.id,
-          desiredWorkingHours: instructor.desiredWorkingHours,
+          desiredWorkingHours: instructor.desiredWorkingHours ?? 10,
           weekdaysRangeId: instructor.weekdaysRange.id,
           periodOfDayIds: instructor.periodOfDays?.map(({ id }) => id),
           isActive: instructor.isActive,
@@ -102,13 +102,18 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
       note: '',
     },
   });
+
   const contractTypeId = watch('contractTypeId');
+  // Needed to be cast as the type changes string when user selects an item in form
   const contractTypeIdNumber = Number(contractTypeId);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // The value of the input from the radio button must be cast to a numeric type
     try {
-      let payload: Partial<FormValues> & { contractTypeId: number } = {
+      let payload = {
         name: data.name,
         contractTypeId: +data.contractTypeId,
+        desiredWorkingHours: data.desiredWorkingHours,
         weekdaysRangeId: +data.weekdaysRangeId,
         periodOfDayIds: data.periodOfDayIds,
         isActive: data.isActive,
@@ -116,11 +121,16 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         note: data.note || null,
       };
 
-      // Conditionally add desiredWorkingHours if not Full-Time or Part-Time
-      if (payload.contractTypeId !== 1 && payload.contractTypeId !== 2) {
+      const contractType = CONTRACT_TYPES.find(({ id }) => id === payload.contractTypeId)?.name;
+      if (contractType === 'Contract' && data.desiredWorkingHours) {
         payload = {
           ...payload,
           desiredWorkingHours: +data.desiredWorkingHours,
+        };
+      } else {
+        payload = {
+          ...payload,
+          desiredWorkingHours: null,
         };
       }
 
@@ -129,7 +139,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
         reset({
           name: updatedInstructor.name,
           contractTypeId: updatedInstructor.contractType.id,
-          desiredWorkingHours: updatedInstructor.desiredWorkingHours,
+          desiredWorkingHours: updatedInstructor.desiredWorkingHours ?? 10,
           weekdaysRangeId: updatedInstructor.weekdaysRange.id,
           periodOfDayIds: updatedInstructor.periodOfDays.map(({ id }) => id),
           isActive: updatedInstructor.isActive,
@@ -164,8 +174,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor }) =
                       <TextField
                         sx={{ width: '20rem' }}
                         size="small"
-                        value={field.value ?? ''}
-                        inputRef={field.ref}
+                        value={field.value}
                         onChange={(name) => field.onChange(name)}
                         disabled={!isEditable}
                       />
