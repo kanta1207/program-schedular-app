@@ -3,18 +3,11 @@ name: Task
 about: Create a task
 ---
 
-## Description
+# Overview
 
-<!-- Provide a detailed description of the task -->
+# Goal
 
-## Criteria
+# Requirements
 
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Notes
-
-<!-- Write any note or comment. You can share your thoughts or ideas. -->
-<!-- Delete this section if not needed -->
-
--
+- [ ]
+- [ ]
