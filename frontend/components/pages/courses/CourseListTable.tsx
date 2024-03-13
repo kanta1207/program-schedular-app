@@ -1,5 +1,6 @@
 'use client';
 import TableMenu from '@/components/partials/TableMenu';
+import { GetCoursesResponse } from '@/types/course';
 import { GetProgramsResponse } from '@/types/program';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -12,10 +13,11 @@ import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 
 interface CourseListTableProps {
+  courses: GetCoursesResponse[];
   programs: GetProgramsResponse[];
 }
 
-const CourseListTable: React.FC<CourseListTableProps> = ({ programs }) => {
+const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) => {
   const [hours, setHours] = useState('');
   const [editCourseId, setEditCourseId] = useState<number | null>(null);
   const [selectedProgram, setSelectedProgram] = useState('');
