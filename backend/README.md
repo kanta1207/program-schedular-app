@@ -1,4 +1,4 @@
-# Project Scheduler API
+# Program Scheduler API
 
 ## Project Setup Guide
 
