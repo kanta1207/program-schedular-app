@@ -1,4 +1,6 @@
 import { getCohortById } from '@/actions/cohorts/getCohortById';
+import { getCourses } from '@/actions/courses/getCourses';
+import { getInstructors } from '@/actions/instructors/getInstructors';
 import { getIntakes } from '@/actions/intakes/getIntakes';
 import { getPrograms } from '@/actions/programs/getPrograms';
 import { CohortInfoForm } from '@/components/pages/cohorts/CohortInfoForm';
@@ -12,11 +14,8 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const [{ data: cohort }, { data: intakes }, { data: programs }] = await Promise.all([
-    getCohortById(id),
-    getIntakes(),
-    getPrograms(),
-  ]);
+  const [{ data: cohort }, { data: intakes }, { data: programs }, { data: courses }, { data: instructors }] =
+    await Promise.all([getCohortById(id), getIntakes(), getPrograms(), getCourses(), getInstructors({})]);
 
   return (
     <>
@@ -24,7 +23,7 @@ const page = async ({ params }: PageProps) => {
         <Headline name="Cohorts" />
       </Box>
       <CohortInfoForm cohort={cohort} intakes={intakes} programs={programs} />
-      <CohortSchedule cohort={cohort} />
+      <CohortSchedule cohort={cohort} courses={courses} instructors={instructors} />
     </>
   );
 };

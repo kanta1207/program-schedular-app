@@ -20,12 +20,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { courses, instructors } from '@/mock/_index';
-import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { GetCohortResponse } from '@/types/cohort';
 import IconButton from '@mui/material/IconButton';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
+import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { GetCoursesResponse, GetCohortResponse, GetInstructorsResponse } from '@/types/_index';
 import { useRouter } from 'next/navigation';
 
 type FormValues = {
@@ -42,9 +41,11 @@ type FormValues = {
 
 interface CohortScheduleProps {
   cohort: GetCohortResponse;
+  courses: GetCoursesResponse[];
+  instructors: GetInstructorsResponse[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const router = useRouter();
   const now = dayjs();
@@ -335,15 +336,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                             return (
                               <FormControl fullWidth>
                                 <Select size="small" value={field.value} required {...field}>
-                                  {instructors
-                                    .filter((instructor) => instructor.isActive)
-                                    .map((instructor) => {
-                                      return (
-                                        <MenuItem key={instructor.id} value={instructor.id}>
-                                          {instructor.name}
-                                        </MenuItem>
-                                      );
-                                    })}
+                                  {instructors.map((instructor) => (
+                                    <MenuItem key={instructor.id} value={instructor.id} disabled={!instructor.isActive}>
+                                      {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                    </MenuItem>
+                                  ))}
                                 </Select>
                               </FormControl>
                             );

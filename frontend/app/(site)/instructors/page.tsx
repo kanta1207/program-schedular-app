@@ -3,7 +3,7 @@ import { InstructorListTable } from '@/components/pages/instructors/InstructorLi
 import Headline from '@/components/partials/Headline';
 import { Button } from '@mui/material';
 const page = async () => {
-  const { data: instructors } = await getInstructors();
+  const { data: instructors } = await getInstructors({});
   return (
     <>
       <Headline name="Instructors" />
