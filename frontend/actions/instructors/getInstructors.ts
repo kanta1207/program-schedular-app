@@ -1,10 +1,26 @@
 import { ApiResponse, GetInstructorsResponse } from '@/types/_index';
+import qs from 'qs';
 
-export const getInstructors = async (): Promise<ApiResponse<GetInstructorsResponse[]>> => {
+interface getInstructorsProps {
+  courseId?: number;
+  rangeId?: number;
+}
+
+export const getInstructors = async ({
+  courseId,
+  rangeId,
+}: getInstructorsProps): Promise<ApiResponse<GetInstructorsResponse[]>> => {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
+    let url = baseUrl;
 
-    const response = await fetch(baseUrl, {
+    const queryParams = qs.stringify({ courseId, rangeId });
+
+    if (queryParams) {
+      url += `?${queryParams}`;
+    }
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

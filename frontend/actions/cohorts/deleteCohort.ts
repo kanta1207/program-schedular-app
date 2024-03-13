@@ -1,4 +1,4 @@
-import { ApiResponse } from '@/types/apiResponse';
+import { ApiResponse } from '@/types/_index';
 
 export const deleteCohort = async (id: number): Promise<ApiResponse<null>> => {
   try {

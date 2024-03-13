@@ -12,7 +12,7 @@ import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/ty
 interface CohortInfoFormProps {
   cohort?: GetCohortResponse;
   intakes: GetIntakesResponse[];
-  programs: GetProgramsResponse;
+  programs: GetProgramsResponse[];
 }
 
 export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes, programs }) => {
@@ -50,7 +50,10 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
   };
 
   const handleDelete = async () => {
-    const message = 'Do you really want to delete?';
+    const message = `
+    Are you sure you want to delete this item?
+    This action cannot be undone.
+    `;
     if (confirm(message) && cohort) {
       await deleteCohort(cohort.id);
       router.push('/cohorts');
@@ -108,8 +111,8 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
                 <TextField
                   sx={{ width: '14rem' }}
                   size="small"
+                  required
                   value={field.value}
-                  inputRef={field.ref}
                   onChange={(name) => field.onChange(name)}
                   disabled={!isEditable}
                 />

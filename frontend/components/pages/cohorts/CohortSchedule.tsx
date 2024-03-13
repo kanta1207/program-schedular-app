@@ -20,11 +20,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { courses, instructors } from '@/mock/_index';
-import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { GetCohortResponse } from '@/types/cohort';
 import IconButton from '@mui/material/IconButton';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
+import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
+import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { GetCoursesResponse, GetCohortResponse, GetInstructorsResponse } from '@/types/_index';
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
   schedule: {
@@ -40,10 +41,13 @@ type FormValues = {
 
 interface CohortScheduleProps {
   cohort: GetCohortResponse;
+  courses: GetCoursesResponse[];
+  instructors: GetInstructorsResponse[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
+  const router = useRouter();
   const now = dayjs();
 
   const { control, handleSubmit, reset, watch } = useForm<FormValues>({
@@ -80,20 +84,34 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
     });
   }, []);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // TODO: Validation startAt < endAt
-    // TODO: ids except instructorId are not null
-    const payload = data.schedule.map((classData) => ({
-      startAt: classData.startAt.toISOString(),
-      endAt: classData.endAt.toISOString(),
-      cohortId: cohort.id,
-      weekdaysRangeId: classData.weekdaysRangeId,
-      courseId: classData.courseId,
-      classroomId: classData.classroomId,
-      instructorId: classData.instructorId || null,
-    }));
-    console.log(payload);
-    return;
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const payload = data.schedule.map((classData) => ({
+        startAt: classData.startAt,
+        endAt: classData.endAt,
+        cohortId: cohort.id,
+        weekdaysRangeId: classData.weekdaysRangeId,
+        courseId: classData.courseId,
+        classroomId: classData.classroomId,
+        instructorId: classData.instructorId || undefined,
+      }));
+      const { data: classes } = await updateCohortClasses(cohort.id, payload);
+      setIsScheduleEditable(false);
+      reset({
+        schedule: classes.map((classData) => ({
+          startAt: dayjs(classData.startAt),
+          endAt: dayjs(classData.endAt),
+          cohortId: cohort.id,
+          weekdaysRangeId: classData.weekdaysRange.id,
+          courseId: classData.course.id,
+          classroomId: classData.classroom.id,
+          instructorId: classData.instructor?.id,
+        })),
+      });
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCancelClick = () => {
@@ -184,7 +202,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                               <DatePicker
                                 slotProps={{ textField: { size: 'small' } }}
                                 value={dayjs(field.value)}
-                                inputRef={field.ref}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}
@@ -205,7 +222,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                               <DatePicker
                                 slotProps={{ textField: { size: 'small' } }}
                                 value={dayjs(field.value)}
-                                inputRef={field.ref}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}
@@ -331,15 +347,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort }) => {
                             return (
                               <FormControl fullWidth>
                                 <Select size="small" value={field.value} required {...field}>
-                                  {instructors
-                                    .filter((instructor) => instructor.isActive)
-                                    .map((instructor) => {
-                                      return (
-                                        <MenuItem key={instructor.id} value={instructor.id}>
-                                          {instructor.name}
-                                        </MenuItem>
-                                      );
-                                    })}
+                                  {instructors.map((instructor) => (
+                                    <MenuItem key={instructor.id} value={instructor.id} disabled={!instructor.isActive}>
+                                      {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                    </MenuItem>
+                                  ))}
                                 </Select>
                               </FormControl>
                             );

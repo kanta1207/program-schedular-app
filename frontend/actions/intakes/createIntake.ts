@@ -13,8 +13,8 @@ export const createIntake = async (payload: CreateIntakePayload): Promise<ApiRes
     if (name === '') {
       throw new Error('Name cannot be empty');
     }
-    if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
+    if (!startAt || !endAt) {
+      throw new Error('Both startAt or endAt are required');
     }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes`;

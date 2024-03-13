@@ -17,6 +17,7 @@ export interface CohortBase {
 }
 
 interface GetCohortClass extends ClassBase {
+  cohort: CohortBase;
   weekdaysRange: WeekdaysRange;
   course: CourseBase;
   instructor?: InstructorBase;
@@ -35,3 +36,5 @@ export interface GetCohortsResponse extends GetCohortResponse {}
 export interface CreateCohortResponse extends GetCohortResponse {}
 
 export interface UpdateCohortResponse extends GetCohortResponse {}
+
+export interface UpdateCohortClassesResponse extends GetCohortClass {}

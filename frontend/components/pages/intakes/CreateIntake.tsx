@@ -69,7 +69,6 @@ const CreateIntake = () => {
                     id="name"
                     sx={{ width: '20rem' }}
                     value={field.value}
-                    inputRef={field.ref}
                     onChange={(name) => field.onChange(name)}
                   />
                 );
@@ -81,14 +80,7 @@ const CreateIntake = () => {
               name="startAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return (
-                  <DatePicker
-                    label="Start Date"
-                    value={field.value}
-                    inputRef={field.ref}
-                    onChange={(date) => field.onChange(date)}
-                  />
-                );
+                return <DatePicker label="Start Date" value={field.value} onChange={(date) => field.onChange(date)} />;
               }}
             />
             {/* End Date */}
@@ -97,14 +89,7 @@ const CreateIntake = () => {
               name="endAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return (
-                  <DatePicker
-                    label="End Date"
-                    value={field.value}
-                    inputRef={field.ref}
-                    onChange={(date) => field.onChange(date)}
-                  />
-                );
+                return <DatePicker label="End Date" value={field.value} onChange={(date) => field.onChange(date)} />;
               }}
             />
             <div className="flex items-end gap-4 ml-auto">
