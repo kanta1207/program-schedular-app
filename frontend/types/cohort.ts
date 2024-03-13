@@ -35,4 +35,6 @@ export interface GetCohortsResponse extends GetCohortResponse {}
 
 export interface CreateCohortResponse extends GetCohortResponse {}
 
-export interface UpdateCohortResponse extends GetCohortClass {}
+export interface UpdateCohortResponse extends GetCohortResponse {}
+
+export interface UpdateCohortClassesResponse extends GetCohortClass {}

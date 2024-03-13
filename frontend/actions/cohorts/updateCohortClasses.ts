@@ -1,4 +1,4 @@
-import { ApiResponse, UpdateCohortResponse } from '@/types/_index';
+import { ApiResponse, UpdateCohortClassesResponse } from '@/types/_index';
 import { Dayjs } from 'dayjs';
 
 interface UpdateCohortClassesPayload {
@@ -14,7 +14,7 @@ interface UpdateCohortClassesPayload {
 export const updateCohortClasses = async (
   id: number,
   payload: UpdateCohortClassesPayload[],
-): Promise<ApiResponse<UpdateCohortResponse[]>> => {
+): Promise<ApiResponse<UpdateCohortClassesResponse[]>> => {
   try {
     payload.forEach((value) => {
       const { startAt, endAt, cohortId, weekdaysRangeId, courseId, classroomId } = value;
