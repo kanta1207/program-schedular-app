@@ -95,8 +95,19 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         classroomId: classData.classroomId,
         instructorId: classData.instructorId || undefined,
       }));
-      await updateCohortClasses(cohort.id, payload);
+      const { data: classes } = await updateCohortClasses(cohort.id, payload);
       setIsScheduleEditable(false);
+      reset({
+        schedule: classes.map((classData) => ({
+          startAt: dayjs(classData.startAt),
+          endAt: dayjs(classData.endAt),
+          cohortId: cohort.id,
+          weekdaysRangeId: classData.weekdaysRange.id,
+          courseId: classData.course.id,
+          classroomId: classData.classroom.id,
+          instructorId: classData.instructor?.id,
+        })),
+      });
       router.refresh();
     } catch (error) {
       console.error(error);
