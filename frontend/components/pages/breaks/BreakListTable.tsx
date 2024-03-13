@@ -15,10 +15,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TableMenu from '@/components/partials/TableMenu';
 import { deleteBreak } from '@/actions/breaks/deleteBreak';
 import { updateBreak } from '@/actions/breaks/updateBreak';
-import { Break } from '@/types/_index';
+import { GetBreaksResponse } from '@/types/_index';
 
 interface BreakListTableProps {
-  breaks: Break[];
+  breaks: GetBreaksResponse[];
 }
 
 const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {

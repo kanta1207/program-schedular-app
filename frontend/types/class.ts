@@ -1,4 +1,13 @@
-import { Classroom, CohortBase, CourseBase, InstructorBase, PeriodOfDay, ProgramBase, WeekdaysRange } from './_index';
+import {
+  Classroom,
+  CohortBase,
+  CourseBase,
+  InstructorBase,
+  IntakeBase,
+  PeriodOfDay,
+  ProgramBase,
+  WeekdaysRange,
+} from './_index';
 
 export interface ClassBase {
   id: number;
