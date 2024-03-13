@@ -6,4 +6,3 @@ properties:
     allOf:
       - $ref: '../program/programStaticProps.yml'
       - $ref: '../program/programDynamicProps.yml'
-      - $ref: '../program/programStaticForeignProps.yml'

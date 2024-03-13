@@ -42,31 +42,7 @@ export class CoursesService {
         },
       },
       relations: {
-        program: {
-          cohorts: {
-            intake: true,
-            periodOfDay: true,
-            program: true,
-            classes: {
-              cohort: {
-                intake: true,
-                periodOfDay: true,
-                program: true,
-                classes: {
-                  cohort: {
-                    intake: true,
-                    program: true,
-                  },
-                  weekdaysRange: true,
-                  course: true,
-                  classroom: true,
-                  instructor: true,
-                },
-              },
-            },
-          },
-          courses: true,
-        },
+        program: true,
       },
     });
   }
