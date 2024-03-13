@@ -1,7 +1,6 @@
 'use client';
 import TableMenu from '@/components/partials/TableMenu';
-import { PROGRAMS } from '@/constants/_index';
-import { courses } from '@/mock/_index';
+import { GetProgramsResponse } from '@/types/program';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -12,7 +11,11 @@ import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 
-const CourseListTable = () => {
+interface CourseListTableProps {
+  programs: GetProgramsResponse[];
+}
+
+const CourseListTable: React.FC<CourseListTableProps> = ({ programs }) => {
   const [hours, setHours] = useState('');
   const [editCourseId, setEditCourseId] = useState<number | null>(null);
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -73,7 +76,7 @@ const CourseListTable = () => {
                       sx={{ width: '100%' }}
                       required
                     >
-                      {PROGRAMS.map((program) => (
+                      {programs.map((program) => (
                         <MenuItem key={program.id} value={program.name}>
                           {program.name}
                         </MenuItem>

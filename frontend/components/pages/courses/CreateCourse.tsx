@@ -3,9 +3,13 @@
 import { useState } from 'react';
 import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PROGRAMS } from '@/constants/_index';
+import { GetProgramsResponse } from '@/types/program';
 
-const CreateCourse = () => {
+interface CreateCourseProps {
+  programs: GetProgramsResponse[];
+}
+
+const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   const [isCreating, setIsCreating] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState('');
   const [hours, setHours] = useState('');
@@ -57,7 +61,7 @@ const CreateCourse = () => {
               sx={{ width: '20rem' }}
               required
             >
-              {PROGRAMS.map((program) => (
+              {programs.map((program) => (
                 <MenuItem key={program.id} value={program.name}>
                   {program.name}
                 </MenuItem>

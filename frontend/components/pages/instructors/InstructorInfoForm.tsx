@@ -20,10 +20,10 @@ import {
   Typography,
 } from '@mui/material';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
-import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, PROGRAMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
-import { GetCoursesResponse, GetInstructorResponse } from '@/types/_index';
+import { GetCoursesResponse, GetInstructorResponse, GetProgramsResponse } from '@/types/_index';
 
 type FormValues = {
   name: string;
@@ -39,8 +39,10 @@ type FormValues = {
 interface InstructorInfoFormProps {
   instructor?: GetInstructorResponse;
   courses: GetCoursesResponse[];
+  programs: GetProgramsResponse[];
 }
-const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses }) => {
+
+const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses, programs }) => {
   const [isEditable, setIsEditMode] = useState(false);
   const router = useRouter();
 
@@ -318,7 +320,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                   control={control}
                   render={({ field }) => (
                     <FormGroup row>
-                      {PROGRAMS.map((program) => (
+                      {programs.map((program) => (
                         <Box key={program.id}>
                           <Typography variant="subtitle1">{program.name}</Typography>
                           {courses
