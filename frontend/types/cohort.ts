@@ -16,12 +16,17 @@ export interface CohortBase {
   updatedAt: Date;
 }
 
+interface FormattedClassField<T> {
+  data: T;
+  messages: string[];
+}
+
 interface GetCohortClass extends ClassBase {
   cohort: CohortBase;
-  weekdaysRange: WeekdaysRange;
   course: CourseBase;
-  instructor?: InstructorBase;
-  classroom: Classroom;
+  weekdaysRange: FormattedClassField<WeekdaysRange>;
+  instructor: FormattedClassField<InstructorBase | null>;
+  classroom: FormattedClassField<Classroom>;
 }
 
 export interface GetCohortResponse extends CohortBase {

@@ -76,10 +76,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         startAt: dayjs(classData.startAt),
         endAt: dayjs(classData.endAt),
         cohortId: cohort.id,
-        weekdaysRangeId: classData.weekdaysRange.id,
         courseId: classData.course.id,
-        classroomId: classData.classroom.id,
-        instructorId: classData.instructor?.id,
+        weekdaysRangeId: classData.weekdaysRange.data.id,
+        classroomId: classData.classroom.data.id,
+        instructorId: classData.instructor.data?.id,
       })),
     });
   }, []);
@@ -102,10 +102,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           startAt: dayjs(classData.startAt),
           endAt: dayjs(classData.endAt),
           cohortId: cohort.id,
-          weekdaysRangeId: classData.weekdaysRange.id,
+          weekdaysRangeId: classData.weekdaysRange.data.id,
           courseId: classData.course.id,
-          classroomId: classData.classroom.id,
-          instructorId: classData.instructor?.id,
+          classroomId: classData.classroom.data.id,
+          instructorId: classData.instructor.data?.id,
         })),
       });
       router.refresh();
@@ -376,7 +376,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             ) : (
               <>
                 {cohort.classes.map((classData) => {
-                  const plannedHours = getPlannedHours(classData.startAt, classData.endAt, classData.weekdaysRange.id);
+                  const plannedHours = getPlannedHours(
+                    classData.startAt,
+                    classData.endAt,
+                    classData.weekdaysRange.data.id,
+                  );
                   const requiredHours = classData.course.requiredHours;
                   return (
                     <TableRow key={classData.id}>
@@ -386,7 +390,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                       <TableCell>{classData.course.name}</TableCell>
                       <TableCell>
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />
+                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
                       </TableCell>
                       <TableCell>
                         <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
@@ -395,9 +399,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         / {requiredHours}
                       </TableCell>
                       <TableCell>
-                        {classData.classroom.name} ({classData.classroom.floor} floor)
+                        {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
                       </TableCell>
-                      <TableCell>{classData.instructor?.name}</TableCell>
+                      <TableCell>{classData.instructor.data?.name}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   );
