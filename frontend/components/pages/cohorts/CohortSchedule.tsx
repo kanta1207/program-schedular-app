@@ -404,18 +404,19 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
                       </TableCell>
 
-                      <TableCell>
-                        {classData.instructor.messages.length > 0 && (
-                          <Tooltip title={classData.instructor.messages.join(',')}>
-                            <WarningIcon
-                              fontSize="small"
-                              color="warning"
-                              sx={{ marginRight: '4px', cursor: 'pointer' }}
-                            />
-                          </Tooltip>
-                        )}
-
-                        {classData.instructor.data?.name}
+                      <TableCell sx={{ alignItems: 'center' }}>
+                        <Box display="flex" alignItems="center">
+                          {classData.instructor.messages.length > 0 && (
+                            <Tooltip title={classData.instructor.messages.join(',')}>
+                              <WarningIcon
+                                fontSize="small"
+                                color="warning"
+                                sx={{ marginRight: '4px', cursor: 'pointer' }}
+                              />
+                            </Tooltip>
+                          )}
+                          {classData.instructor.data?.name}
+                        </Box>
                       </TableCell>
                       <TableCell></TableCell>
                     </TableRow>
