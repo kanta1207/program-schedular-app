@@ -17,6 +17,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
+import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
@@ -26,6 +27,7 @@ import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
 import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { GetCoursesResponse, GetCohortResponse, GetInstructorsResponse } from '@/types/_index';
 import { useRouter } from 'next/navigation';
+import { Tooltip } from '@mui/material';
 
 type FormValues = {
   schedule: {
@@ -401,7 +403,20 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       <TableCell>
                         {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
                       </TableCell>
-                      <TableCell>{classData.instructor.data?.name}</TableCell>
+
+                      <TableCell>
+                        {classData.instructor.messages.length > 0 && (
+                          <Tooltip title={classData.instructor.messages.join(',')}>
+                            <WarningIcon
+                              fontSize="small"
+                              color="warning"
+                              sx={{ marginRight: '4px', cursor: 'pointer' }}
+                            />
+                          </Tooltip>
+                        )}
+
+                        {classData.instructor.data?.name}
+                      </TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   );
