@@ -21,8 +21,6 @@ interface CourseFormValues {
 
 const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState('');
-  const [hours, setHours] = useState('');
   const router = useRouter();
 
   const { control, handleSubmit, reset } = useForm<CourseFormValues>({
@@ -32,18 +30,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
       requiredHours: '',
     },
   });
-
-  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    // Check if the value is a non-negative integer number
-    if (/^\d+$/.test(value) || value === '') {
-      setHours(value);
-    }
-  };
-
-  const handleSelectProgram = (event: SelectChangeEvent) => {
-    setSelectedProgram(event.target.value);
-  };
 
   const onSubmit: SubmitHandler<CourseFormValues> = async (data) => {
     const payload = {
@@ -111,7 +97,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
                     name="programId"
                     value={field.value}
                     label="Program"
-                    onChange={handleSelectProgram}
                     sx={{ width: '20rem' }}
                     required
                     {...field}

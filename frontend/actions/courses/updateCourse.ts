@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types/apiResponse';
-import { CreateCourseResponse } from '@/types/course';
+import { UpdateCourseResponse } from '@/types/course';
 
 interface CreateCoursePayload {
   name: string;
@@ -7,16 +7,19 @@ interface CreateCoursePayload {
   requiredHours: number;
 }
 
-export const createCourse = async (payload: CreateCoursePayload): Promise<ApiResponse<CreateCourseResponse>> => {
+export const updateCourse = async (
+  id: number,
+  payload: CreateCoursePayload,
+): Promise<ApiResponse<UpdateCourseResponse>> => {
   try {
     if (!payload.name || !payload.programId || payload.requiredHours < 0) {
       throw new Error("Something's wrong in the input data");
     }
 
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/courses`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/courses/${id}`;
 
     const response = await fetch(baseUrl, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -28,6 +31,7 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<ApiRes
     }
 
     const data = await response.json();
+    console.log(data);
 
     return data;
   } catch (error: any) {

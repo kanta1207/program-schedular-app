@@ -1,10 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import TableMenu from '@/components/partials/TableMenu';
-import { PROGRAMS } from '@/constants/_index';
-import { courses } from '@/mock/_index';
 import { GetCoursesResponse } from '@/types/course';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,22 +10,60 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { updateCourse } from '@/actions/courses/updateCourse';
+import { useRouter } from 'next/navigation';
+import { GetProgramsResponse } from '@/types/program';
 
 interface CourseListTableProps {
   courses: GetCoursesResponse[];
+  programs: GetProgramsResponse[];
 }
 
-const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
-  const [hours, setHours] = useState('');
-  const [editCourseId, setEditCourseId] = useState<number | null>(null);
-  const [selectedProgram, setSelectedProgram] = useState('');
+interface CourseFormValues {
+  name: string;
+  programId: number;
+  requiredHours: string;
+}
 
-  // Function to enter edit mode for a specific row
-  const handleEditClick = (id: number) => {
-    setEditCourseId(id);
+const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) => {
+  const [editCourseId, setEditCourseId] = useState<number | null>(null);
+  const router = useRouter();
+
+  const { control, handleSubmit, reset } = useForm<CourseFormValues>({
+    defaultValues: {},
+  });
+
+  const onSubmit: SubmitHandler<CourseFormValues> = async (data) => {
+    const payload = {
+      ...data,
+      requiredHours: Number(data.requiredHours),
+    };
+
+    console.log(payload);
+
+    try {
+      if (!editCourseId) {
+        throw new Error('Unexpected Error: id is not selected');
+      }
+
+      await updateCourse(editCourseId, payload);
+      setEditCourseId(null);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleSaveClick = (id: number) => {};
+  // Function to enter edit mode for a specific row
+  const handleEditClick = (course: GetCoursesResponse) => {
+    setEditCourseId(course.id);
+    reset({
+      name: course.name,
+      programId: course.program.id, // Selectのvalueが文字列であるため、数値を文字列に変換
+      requiredHours: course.requiredHours.toString(),
+    });
+  };
 
   const handleDeleteClick = (id: number) => {};
 
@@ -36,20 +72,8 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
     setEditCourseId(null); // Reset the edit state to exit edit mode
   };
 
-  const handleSelectProgram = (event: SelectChangeEvent) => {
-    setSelectedProgram(event.target.value);
-  };
-
-  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    // Check if the value is a non-negative integer number
-    if (/^\d+$/.test(value) || value === '') {
-      setHours(value);
-    }
-  };
-
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Table>
         <TableHead>
           <TableRow sx={{ bgcolor: 'primary.main' }}>
@@ -61,50 +85,85 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {courses?.map((course) => (
+          {courses.map((course) => (
             <TableRow key={course.id}>
               {editCourseId === course.id ? (
                 // Edit mode
                 <>
                   <TableCell>
-                    <TextField defaultValue={course.name} variant="outlined" sx={{ width: '100%' }} />
+                    <Controller
+                      control={control}
+                      name="name"
+                      rules={{ required: true }}
+                      render={({ field }: any) => {
+                        return (
+                          <TextField
+                            value={field.value}
+                            onChange={(name) => field.onChange(name)}
+                            variant="outlined"
+                            sx={{ width: '100%' }}
+                          />
+                        );
+                      }}
+                    />
                   </TableCell>
                   <TableCell>
-                    <Select
-                      labelId="select-program"
-                      id="select-program"
-                      defaultValue={course.program.name}
-                      onChange={handleSelectProgram}
-                      sx={{ width: '100%' }}
-                      required
-                    >
-                      {PROGRAMS.map((program) => (
-                        <MenuItem key={program.id} value={program.name}>
-                          {program.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Controller
+                      control={control}
+                      name="programId"
+                      rules={{
+                        required: true,
+                        pattern: { value: /^\d+$/, message: '' },
+                      }}
+                      render={({ field }: any) => {
+                        return (
+                          <Select
+                            labelId="select-program"
+                            id="select-program"
+                            defaultValue={String(course.program.id)}
+                            onChange={(programId) => field.onChange(programId)}
+                            sx={{ width: '100%' }}
+                            required
+                          >
+                            {programs.map((program) => (
+                              <MenuItem key={program.id} value={program.id}>
+                                {program.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        );
+                      }}
+                    />
                   </TableCell>
 
                   <TableCell>
-                    <TextField
-                      required
-                      id="requiredHours"
-                      placeholder="60"
-                      type="number"
-                      defaultValue={course.requiredHours}
-                      sx={{ width: '100%' }}
-                      onChange={handleHoursChange}
-                      inputProps={{
-                        type: 'number',
-                        min: 0,
-                        max: 999,
-                        maxLength: 3,
-                        onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-                          e.target.value = Math.max(0, parseInt(e.target.value))
-                            .toString()
-                            .slice(0, e.target.maxLength);
-                        },
+                    <Controller
+                      control={control}
+                      name="requiredHours"
+                      rules={{ required: true }}
+                      render={({ field }: any) => {
+                        return (
+                          <TextField
+                            required
+                            id="requiredHours"
+                            placeholder="60"
+                            type="number"
+                            value={field.value}
+                            sx={{ width: '100%' }}
+                            onChange={(requiredHours) => field.onChange(requiredHours)}
+                            inputProps={{
+                              type: 'number',
+                              min: 0,
+                              max: 999,
+                              maxLength: 3,
+                              onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                e.target.value = Math.max(0, parseInt(e.target.value))
+                                  .toString()
+                                  .slice(0, e.target.maxLength);
+                              },
+                            }}
+                          />
+                        );
                       }}
                     />
                   </TableCell>
@@ -113,7 +172,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
                       <Button variant="outlined" onClick={() => handleCancelClick()}>
                         Cancel
                       </Button>
-                      <Button variant="contained" onClick={() => handleSaveClick(course.id)}>
+                      <Button type="submit" variant="contained">
                         Save
                       </Button>
                     </div>
@@ -126,7 +185,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
                   <TableCell>{course.program.name}</TableCell>
                   <TableCell>{course.requiredHours}</TableCell>
                   <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <TableMenu id={course.id} onEdit={handleEditClick} onDelete={handleDeleteClick} />
+                    <TableMenu id={course.id} onEdit={() => handleEditClick(course)} onDelete={handleDeleteClick} />
                   </TableCell>
                 </>
               )}
@@ -134,7 +193,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </form>
   );
 };
 

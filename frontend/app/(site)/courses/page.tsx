@@ -11,7 +11,7 @@ const CourseList = async () => {
     <div className="w-full">
       <Headline name="Courses" />
       <CreateCourse programs={programs} />
-      <CourseListTable courses={courses} />
+      <CourseListTable courses={courses} programs={programs} />
     </div>
   );
 };
