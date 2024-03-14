@@ -110,7 +110,6 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                               id="name"
                               sx={{ width: '100%' }}
                               value={field.value}
-                              inputRef={field.ref}
                               onChange={(name) => field.onChange(name)}
                             />
                           );
@@ -127,7 +126,6 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                             <DatePicker
                               label="Start Date"
                               value={field.value}
-                              inputRef={field.ref}
                               onChange={(date) => field.onChange(date)}
                             />
                           );
@@ -144,7 +142,6 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                             <DatePicker
                               label="End Date"
                               value={field.value}
-                              inputRef={field.ref}
                               onChange={(date) => field.onChange(date)}
                             />
                           );

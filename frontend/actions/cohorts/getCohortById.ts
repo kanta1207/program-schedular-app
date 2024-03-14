@@ -1,4 +1,3 @@
-import { cohorts } from '@/mock/_index';
 import { ApiResponse, GetCohortResponse } from '@/types/_index';
 
 export const getCohortById = async (id: string): Promise<ApiResponse<GetCohortResponse>> => {

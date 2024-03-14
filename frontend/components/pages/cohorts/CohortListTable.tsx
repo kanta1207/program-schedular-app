@@ -1,9 +1,9 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { CohortListTableRow } from './CohortListTableRow';
-import { CohortBase } from '@/types/cohort';
+import { GetCohortsResponse } from '@/types/_index';
 
 interface CohortListTableProps {
-  cohorts: CohortBase[];
+  cohorts: GetCohortsResponse[];
 }
 
 export const CohortListTable: React.FC<CohortListTableProps> = ({ cohorts }) => {
@@ -14,10 +14,10 @@ export const CohortListTable: React.FC<CohortListTableProps> = ({ cohorts }) => 
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow sx={thRowStyle}>
-          <TableCell>Name</TableCell>
-          <TableCell>Intake</TableCell>
-          <TableCell>Program</TableCell>
-          <TableCell>Period</TableCell>
+          <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Intake</TableCell>
+          <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Name</TableCell>
+          <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Program</TableCell>
+          <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Period</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

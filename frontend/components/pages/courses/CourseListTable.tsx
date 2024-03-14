@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import TableMenu from '@/components/partials/TableMenu';
-import { GetCoursesResponse } from '@/types/course';
+import { GetCoursesResponse, GetProgramsResponse } from '@/types/_index';
 import { MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -13,7 +13,6 @@ import TextField from '@mui/material/TextField';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { updateCourse } from '@/actions/courses/updateCourse';
 import { useRouter } from 'next/navigation';
-import { GetProgramsResponse } from '@/types/program';
 import { deleteCourse } from '@/actions/courses/deleteCourse';
 
 interface CourseListTableProps {

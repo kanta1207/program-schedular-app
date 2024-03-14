@@ -1,5 +1,4 @@
-import { ApiResponse } from '@/types/apiResponse';
-import { GetCohortsResponse } from '@/types/cohort';
+import { ApiResponse, GetCohortsResponse } from '@/types/_index';
 
 export const getCohorts = async (): Promise<ApiResponse<GetCohortsResponse[]>> => {
   try {

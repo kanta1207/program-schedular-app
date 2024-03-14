@@ -49,8 +49,9 @@ export class CohortsService {
   async findAll() {
     return await this.cohortRepository.find({
       order: {
-        id: 'DESC',
+        intake: { startAt: 'DESC' },
         classes: { startAt: 'ASC', endAt: 'ASC' },
+        id: 'DESC',
       },
       relations: {
         intake: true,

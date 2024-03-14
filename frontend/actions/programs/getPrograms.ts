@@ -1,5 +1,4 @@
-import { GetProgramsResponse } from '@/types/_index';
-import { ApiResponse } from '@/types/_index';
+import { ApiResponse, GetProgramsResponse } from '@/types/_index';
 
 export const getPrograms = async (): Promise<ApiResponse<GetProgramsResponse[]>> => {
   try {
