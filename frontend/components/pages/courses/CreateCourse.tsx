@@ -2,28 +2,48 @@
 
 import { useState } from 'react';
 import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { GetProgramsResponse } from '@/types/program';
+import Select from '@mui/material/Select';
+import { GetProgramsResponse } from '@/types/_index';
+import { createCourse } from '@/actions/courses/createCourse';
+import { useRouter } from 'next/navigation';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface CreateCourseProps {
-  programs: GetProgramsResponse[];
+  programs?: GetProgramsResponse[];
+}
+
+interface CourseFormValues {
+  name: string;
+  programId: number;
+  requiredHours: string;
 }
 
 const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState('');
-  const [hours, setHours] = useState('');
+  const router = useRouter();
 
-  const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    // Check if the value is a non-negative integer number
-    if (/^\d+$/.test(value) || value === '') {
-      setHours(value);
+  const { control, handleSubmit, reset } = useForm<CourseFormValues>({
+    defaultValues: {
+      name: '',
+      programId: 0,
+      requiredHours: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<CourseFormValues> = async (data) => {
+    const payload = {
+      ...data,
+      requiredHours: Number(data.requiredHours),
+    };
+
+    try {
+      await createCourse(payload);
+      reset();
+      setIsCreating(false);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
     }
-  };
-
-  const handleSelectProgram = (event: SelectChangeEvent) => {
-    setSelectedProgram(event.target.value);
   };
 
   return (
@@ -37,14 +57,25 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
       </div>
 
       {isCreating && (
-        <div className="flex gap-4 items-end p-4 border my-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 items-end p-4 border my-4">
           <div>
-            <TextField
-              required
-              id="courseName"
-              label="Course Name"
-              placeholder="Enter course name"
-              sx={{ width: '20rem' }}
+            <Controller
+              control={control}
+              name="name"
+              rules={{ required: true }}
+              render={({ field }: any) => {
+                return (
+                  <TextField
+                    required
+                    id="courseName"
+                    label="Course Name"
+                    placeholder="Enter course name"
+                    sx={{ width: '20rem' }}
+                    value={field.value}
+                    onChange={(name) => field.onChange(name)}
+                  />
+                );
+              }}
             />
           </div>
 
@@ -52,41 +83,63 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
             <InputLabel id="select-program" required>
               Program
             </InputLabel>
-            <Select
-              labelId="select-program"
-              id="select-program"
-              value={selectedProgram}
-              label="Program"
-              onChange={handleSelectProgram}
-              sx={{ width: '20rem' }}
-              required
-            >
-              {programs.map((program) => (
-                <MenuItem key={program.id} value={program.name}>
-                  {program.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name="programId"
+              rules={{ required: true }}
+              render={({ field }: any) => {
+                return (
+                  <Select
+                    labelId="select-program"
+                    id="select-program"
+                    name="programId"
+                    value={field.value}
+                    label="Program"
+                    sx={{ width: '20rem' }}
+                    required
+                    {...field}
+                  >
+                    {programs?.map((program) => (
+                      <MenuItem key={program.id} value={program.id}>
+                        {program.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                );
+              }}
+            />
           </FormControl>
 
           <div>
-            <TextField
-              required
-              id="requiredHours"
-              label="Required Hours"
-              placeholder="60"
-              type="number"
-              value={hours}
-              sx={{ width: '20rem' }}
-              onChange={handleHoursChange}
-              inputProps={{
-                type: 'number',
-                min: 0,
-                max: 999,
-                maxLength: 3,
-                onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-                  e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
-                },
+            <Controller
+              control={control}
+              name="requiredHours"
+              rules={{
+                required: true,
+                pattern: { value: /^\d+$/, message: '' },
+              }}
+              render={({ field }: any) => {
+                return (
+                  <TextField
+                    required
+                    id="requiredHours"
+                    label="Required Hours"
+                    placeholder="60"
+                    type="number"
+                    value={field.value}
+                    sx={{ width: '20rem' }}
+                    onChange={(requiredHours) => field.onChange(requiredHours)}
+                    inputProps={{
+                      type: 'number',
+                      min: 0,
+                      max: 999,
+                      maxLength: 3,
+                      onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+                        e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
+                      },
+                    }}
+                  />
+                );
               }}
             />
           </div>
@@ -98,9 +151,11 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
             >
               Cancel
             </Button>
-            <Button variant={'contained'}>Create</Button>
+            <Button type="submit" variant={'contained'}>
+              Create
+            </Button>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );

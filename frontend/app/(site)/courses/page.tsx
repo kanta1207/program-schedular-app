@@ -6,6 +6,7 @@ import Headline from '@/components/partials/Headline';
 
 const CourseList = async () => {
   const [{ data: programs }, { data: courses }] = await Promise.all([getPrograms(), getCourses()]);
+
   return (
     <div className="w-full">
       <Headline name="Courses" />
