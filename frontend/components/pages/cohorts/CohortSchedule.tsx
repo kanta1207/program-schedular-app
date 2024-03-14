@@ -120,7 +120,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     const message = 'Do you really want to cancel?';
     if (confirm(message)) {
       setIsScheduleEditable(false);
-      reset();
+      remove();
+      if (cohort.classes.length !== 0) {
+        reset();
+      }
     }
   };
 
@@ -144,22 +147,25 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
   // copy dialog
-  const [open, setOpen] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilterdCohorts] = useState<GetCohortResponse[]>(cohorts);
 
   useEffect(() => {
     const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id);
     setFilterdCohorts(filteredCohorts);
+
+    cohort.classes.length === 0 && setDialogOpen(true);
   }, []);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setDialogOpen(true);
   };
 
   const handleClose = (createType: string, cohort?: GetCohortResponse) => {
-    setOpen(false);
+    setDialogOpen(false);
 
     if (createType === 'create') {
+      remove();
       setIsScheduleEditable(true);
     }
 
@@ -182,20 +188,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleClose} cohorts={filteredCohorts} />
         {/* Schedule Edit Actions */}
-        {cohort.classes.length === 0 && (
-          <>
-            <Button variant="outlined" onClick={handleClickOpen}>
-              Open dialog
-            </Button>
-            <CreateScheduleDialog open={open} onClose={handleClose} cohorts={filteredCohorts} />
-          </>
-        )}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
           <Box>
             {isScheduleEditable ? (
               <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
+                <Button variant="outlined" onClick={handleClickOpen}>
+                  Copy Schedule From Other Cohort
+                </Button>
                 <Button variant="outlined" type="button" onClick={handleCancelClick}>
                   Cancel
                 </Button>
@@ -204,9 +206,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 </Button>
               </Box>
             ) : (
-              <Button onClick={() => setIsScheduleEditable(true)} variant="contained">
-                Edit Schedule
-              </Button>
+              <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
+                <Button onClick={() => setIsScheduleEditable(true)} variant="contained">
+                  Edit Schedule
+                </Button>
+              </Box>
             )}
           </Box>
         </Box>

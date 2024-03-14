@@ -18,12 +18,12 @@ import {
 import { useState } from 'react';
 
 export interface CreateScheduleDialogProps {
-  open: boolean;
+  dialogOpen: boolean;
   onClose: (value: string, cohort?: GetCohortResponse) => void;
   cohorts: GetCohortResponse[];
 }
 
-export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onClose, open, cohorts }) => {
+export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onClose, dialogOpen: open, cohorts }) => {
   const [selectedCreateType, setSelectedCreateType] = useState('');
   const [selectedCohortIds, setSelectedCohortIds] = useState<string[]>([]);
   const [selectedCohort, setSelectedCohort] = useState<GetCohortResponse>();
@@ -127,6 +127,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                 }}
               >
                 {selectedCohort &&
+                  selectedCreateType === 'copy' &&
                   selectedCohort.classes.map((item) => {
                     return (
                       <Box key={item.id} sx={{ display: 'flex', alignItems: 'center' }}>
