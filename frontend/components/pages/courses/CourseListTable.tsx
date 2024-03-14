@@ -1,7 +1,9 @@
 'use client';
+import React, { useState } from 'react';
 import TableMenu from '@/components/partials/TableMenu';
 import { PROGRAMS } from '@/constants/_index';
 import { courses } from '@/mock/_index';
+import { GetCoursesResponse } from '@/types/course';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -10,9 +12,12 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
 
-const CourseListTable = () => {
+interface CourseListTableProps {
+  courses: GetCoursesResponse[];
+}
+
+const CourseListTable: React.FC<CourseListTableProps> = ({ courses }) => {
   const [hours, setHours] = useState('');
   const [editCourseId, setEditCourseId] = useState<number | null>(null);
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -56,7 +61,7 @@ const CourseListTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {courses.map((course) => (
+          {courses?.map((course) => (
             <TableRow key={course.id}>
               {editCourseId === course.id ? (
                 // Edit mode
