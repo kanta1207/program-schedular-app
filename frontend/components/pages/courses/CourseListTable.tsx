@@ -14,6 +14,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { updateCourse } from '@/actions/courses/updateCourse';
 import { useRouter } from 'next/navigation';
 import { GetProgramsResponse } from '@/types/program';
+import { deleteCourse } from '@/actions/courses/deleteCourse';
 
 interface CourseListTableProps {
   courses: GetCoursesResponse[];
@@ -185,7 +186,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
                   <TableCell>{course.program.name}</TableCell>
                   <TableCell>{course.requiredHours}</TableCell>
                   <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <TableMenu id={course.id} onEdit={() => handleEditClick(course)} onDelete={handleDeleteClick} />
+                    <TableMenu id={course.id} onEdit={() => handleEditClick(course)} onDelete={deleteCourse} />
                   </TableCell>
                 </>
               )}
