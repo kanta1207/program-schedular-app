@@ -32,11 +32,25 @@ export class BreaksService {
   }
 
   async create(createBreakDto: CreateBreakDto) {
+    const { startAt, endAt } = createBreakDto;
+
+    const query = this.breakRepository
+      .createQueryBuilder('break')
+      .where('break.startAt < :endAt', { endAt })
+      .andWhere('break.endAt > :startAt', { startAt });
+
+    const overlappingBreak = await query.getOne();
+
+    if (overlappingBreak) {
+      throw new BadRequestException('Break overlaps with an existing break');
+    }
+
     return this.breakRepository.save(createBreakDto);
   }
 
   async update(id: number, updateBreakDto: UpdateBreakDto) {
     const { startAt, endAt } = updateBreakDto;
+
     const existingBreak = await this.breakRepository.findOneBy({ id });
 
     const isValidDateOrder = checkDateOrder({
@@ -47,6 +61,17 @@ export class BreaksService {
     });
     if (!isValidDateOrder) {
       throw new BadRequestException('endAt must be after startAt');
+    }
+
+    const query = this.breakRepository
+      .createQueryBuilder('break')
+      .where('break.startAt < :endAt', { endAt })
+      .andWhere('break.endAt > :startAt', { startAt });
+
+    const overlappingBreak = await query.getOne();
+
+    if (overlappingBreak) {
+      throw new BadRequestException('Break overlaps with an existing break');
     }
 
     const updatedResult = await this.breakRepository.update(id, updateBreakDto);
