@@ -1,7 +1,6 @@
-import { ApiResponse } from '@/types/apiResponse';
-import { UpdateCourseResponse } from '@/types/course';
+import { ApiResponse, UpdateCourseResponse } from '@/types/_index';
 
-interface CreateCoursePayload {
+interface UpdateCoursePayload {
   name: string;
   programId: number;
   requiredHours: number;
@@ -9,10 +8,10 @@ interface CreateCoursePayload {
 
 export const updateCourse = async (
   id: number,
-  payload: CreateCoursePayload,
+  payload: UpdateCoursePayload,
 ): Promise<ApiResponse<UpdateCourseResponse>> => {
   try {
-    if (!payload.name || !payload.programId || payload.requiredHours < 0) {
+    if (!payload.name && !payload.programId && payload.requiredHours < 0) {
       throw new Error("Something's wrong in the input data");
     }
 
@@ -31,7 +30,6 @@ export const updateCourse = async (
     }
 
     const data = await response.json();
-    console.log(data);
 
     return data;
   } catch (error: any) {

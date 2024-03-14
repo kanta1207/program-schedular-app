@@ -1,5 +1,4 @@
-import { ApiResponse } from '@/types/apiResponse';
-import { CreateCourseResponse } from '@/types/course';
+import { ApiResponse, CreateCourseResponse } from '@/types/_index';
 
 interface CreateCoursePayload {
   name: string;

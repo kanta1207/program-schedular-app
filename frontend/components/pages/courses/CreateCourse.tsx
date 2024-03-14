@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PROGRAMS } from '@/constants/_index';
-import { GetProgramsResponse } from '@/types/program';
+import Select from '@mui/material/Select';
+import { GetProgramsResponse } from '@/types/_index';
 import { createCourse } from '@/actions/courses/createCourse';
 import { useRouter } from 'next/navigation';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface CreateCourseProps {
   programs?: GetProgramsResponse[];
@@ -72,7 +72,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
                     placeholder="Enter course name"
                     sx={{ width: '20rem' }}
                     value={field.value}
-                    inputRef={field.ref}
                     onChange={(name) => field.onChange(name)}
                   />
                 );
@@ -128,7 +127,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
                     placeholder="60"
                     type="number"
                     value={field.value}
-                    inputRef={field.ref}
                     sx={{ width: '20rem' }}
                     onChange={(requiredHours) => field.onChange(requiredHours)}
                     inputProps={{

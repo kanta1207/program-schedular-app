@@ -40,8 +40,6 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
       requiredHours: Number(data.requiredHours),
     };
 
-    console.log(payload);
-
     try {
       if (!editCourseId) {
         throw new Error('Unexpected Error: id is not selected');
@@ -60,12 +58,10 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
     setEditCourseId(course.id);
     reset({
       name: course.name,
-      programId: course.program.id, // Selectのvalueが文字列であるため、数値を文字列に変換
+      programId: course.program.id,
       requiredHours: course.requiredHours.toString(),
     });
   };
-
-  const handleDeleteClick = (id: number) => {};
 
   // Function to cancel editing and exit edit mode
   const handleCancelClick = () => {
