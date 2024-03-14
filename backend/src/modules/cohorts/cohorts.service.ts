@@ -10,7 +10,15 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+  Instructor,
+} from 'src/entity';
+import { FormattedClass } from './types';
 
 @Injectable()
 export class CohortsService {
@@ -25,6 +33,8 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
+    @InjectRepository(Instructor)
+    private readonly instructorRepository: Repository<Instructor>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -91,7 +101,40 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    return cohort;
+    const formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
+      const { instructor } = clazz;
+      const instructorMessage: string[] = [];
+
+      if (instructor) {
+        const msgIsActive = this.checkInstructorIsActive(instructor);
+        if (msgIsActive) {
+          instructorMessage.push(msgIsActive);
+        }
+      }
+
+      return {
+        startAt: clazz.startAt,
+        endAt: clazz.endAt,
+        cohort: clazz.cohort,
+        course: clazz.course,
+        weekdaysRange: {
+          data: clazz.weekdaysRange,
+          message: [],
+        },
+        classroom: {
+          data: clazz.classroom,
+          message: [],
+        },
+        instructor: {
+          data: clazz.instructor,
+          message: instructorMessage,
+        },
+      };
+    });
+
+    const formattedResponse = { ...cohort, classes: formattedClasses };
+
+    return formattedResponse;
   }
 
   async update(id: number, updateCohortDto: UpdateCohortDto) {
@@ -200,5 +243,12 @@ export class CohortsService {
         endAt: 'ASC',
       },
     });
+  }
+
+  checkInstructorIsActive(instructor: Instructor): string | null {
+    if (!instructor.isActive) {
+      return 'Instructor is not active';
+    }
+    return null;
   }
 }
