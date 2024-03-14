@@ -140,6 +140,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
   };
 
+  const tooltipTitle = (messages: string[]) => {
+    return (
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>&bull; {message}</li>
+        ))}
+      </ul>
+    );
+  };
+
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
@@ -407,7 +417,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       <TableCell sx={{ alignItems: 'center' }}>
                         <Box display="flex" alignItems="center">
                           {classData.instructor.messages.length > 0 && (
-                            <Tooltip title={classData.instructor.messages.join(',')}>
+                            <Tooltip title={tooltipTitle(classData.instructor.messages)}>
                               <WarningIcon
                                 fontSize="small"
                                 color="warning"
