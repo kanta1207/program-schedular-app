@@ -8,7 +8,7 @@ import {
 
 interface FormattedClassField<T> {
   data: T;
-  message: string[];
+  messages: string[];
 }
 
 export interface FormattedClass {

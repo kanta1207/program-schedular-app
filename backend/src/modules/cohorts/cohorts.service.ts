@@ -119,15 +119,15 @@ export class CohortsService {
         course: clazz.course,
         weekdaysRange: {
           data: clazz.weekdaysRange,
-          message: [],
+          messages: [],
         },
         classroom: {
           data: clazz.classroom,
-          message: [],
+          messages: [],
         },
         instructor: {
           data: clazz.instructor,
-          message: instructorMessage,
+          messages: instructorMessage,
         },
       };
     });
