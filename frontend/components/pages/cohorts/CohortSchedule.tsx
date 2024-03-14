@@ -1,31 +1,32 @@
 'use client';
 
-import dayjs, { Dayjs } from 'dayjs';
-import { useEffect, useState } from 'react';
-import { useForm, useFieldArray, SubmitHandler, Controller } from 'react-hook-form';
+import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
+import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
+import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import Headline from '@/components/partials/Headline';
+import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import getWeeklyHours from '@/helpers/getWeeklyHours';
+import { GetCohortResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Headline from '@/components/partials/Headline';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import IconButton from '@mui/material/IconButton';
-import getWeeklyHours from '@/helpers/getWeeklyHours';
-import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
-import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
-import { GetCoursesResponse, GetCohortResponse, GetInstructorsResponse } from '@/types/_index';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 type FormValues = {
   schedule: {
@@ -43,9 +44,10 @@ interface CohortScheduleProps {
   cohort: GetCohortResponse;
   courses: GetCoursesResponse[];
   instructors: GetInstructorsResponse[];
+  cohorts: GetCohortResponse[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const router = useRouter();
   const now = dayjs();
@@ -141,10 +143,54 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
+  // copy dialog
+  const [open, setOpen] = useState(true);
+  const [filteredCohorts, setFilterdCohorts] = useState<GetCohortResponse[]>(cohorts);
+
+  useEffect(() => {
+    const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id);
+    setFilterdCohorts(filteredCohorts);
+  }, []);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (createType: string, cohort?: GetCohortResponse) => {
+    setOpen(false);
+
+    if (createType === 'create') {
+      setIsScheduleEditable(true);
+    }
+
+    if (createType === 'copy' && cohort) {
+      setIsScheduleEditable(true);
+      reset({
+        schedule: cohort.classes.map((classData) => ({
+          startAt: dayjs(classData.startAt),
+          endAt: dayjs(classData.endAt),
+          cohortId: cohort.id,
+          weekdaysRangeId: classData.weekdaysRange.id,
+          courseId: classData.course.id,
+          classroomId: classData.classroom.id,
+          instructorId: classData.instructor?.id,
+        })),
+      });
+    }
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Schedule Edit Actions */}
+        {cohort.classes.length === 0 && (
+          <>
+            <Button variant="outlined" onClick={handleClickOpen}>
+              Open dialog
+            </Button>
+            <CreateScheduleDialog open={open} onClose={handleClose} cohorts={filteredCohorts} />
+          </>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
           <Box>
