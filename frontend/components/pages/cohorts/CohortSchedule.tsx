@@ -17,6 +17,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
+import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
@@ -26,6 +27,7 @@ import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
 import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { GetCoursesResponse, GetCohortResponse, GetInstructorsResponse } from '@/types/_index';
 import { useRouter } from 'next/navigation';
+import { Tooltip } from '@mui/material';
 
 type FormValues = {
   schedule: {
@@ -76,10 +78,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         startAt: dayjs(classData.startAt),
         endAt: dayjs(classData.endAt),
         cohortId: cohort.id,
-        weekdaysRangeId: classData.weekdaysRange.id,
         courseId: classData.course.id,
-        classroomId: classData.classroom.id,
-        instructorId: classData.instructor?.id,
+        weekdaysRangeId: classData.weekdaysRange.data.id,
+        classroomId: classData.classroom.data.id,
+        instructorId: classData.instructor.data?.id,
       })),
     });
   }, []);
@@ -102,10 +104,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           startAt: dayjs(classData.startAt),
           endAt: dayjs(classData.endAt),
           cohortId: cohort.id,
-          weekdaysRangeId: classData.weekdaysRange.id,
+          weekdaysRangeId: classData.weekdaysRange.data.id,
           courseId: classData.course.id,
-          classroomId: classData.classroom.id,
-          instructorId: classData.instructor?.id,
+          classroomId: classData.classroom.data.id,
+          instructorId: classData.instructor.data?.id,
         })),
       });
       router.refresh();
@@ -136,6 +138,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   const getRequiredHours = (courseId: number): number => {
     return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
+  };
+
+  const tooltipTitle = (messages: string[]) => {
+    return (
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>&bull; {message}</li>
+        ))}
+      </ul>
+    );
   };
 
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
@@ -376,7 +388,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             ) : (
               <>
                 {cohort.classes.map((classData) => {
-                  const plannedHours = getPlannedHours(classData.startAt, classData.endAt, classData.weekdaysRange.id);
+                  const plannedHours = getPlannedHours(
+                    classData.startAt,
+                    classData.endAt,
+                    classData.weekdaysRange.data.id,
+                  );
                   const requiredHours = classData.course.requiredHours;
                   return (
                     <TableRow key={classData.id}>
@@ -386,7 +402,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                       <TableCell>{classData.course.name}</TableCell>
                       <TableCell>
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />
+                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
                       </TableCell>
                       <TableCell>
                         <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
@@ -395,9 +411,23 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         / {requiredHours}
                       </TableCell>
                       <TableCell>
-                        {classData.classroom.name} ({classData.classroom.floor} floor)
+                        {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
                       </TableCell>
-                      <TableCell>{classData.instructor?.name}</TableCell>
+
+                      <TableCell sx={{ alignItems: 'center' }}>
+                        <Box display="flex" alignItems="center">
+                          {classData.instructor.messages.length > 0 && (
+                            <Tooltip title={tooltipTitle(classData.instructor.messages)}>
+                              <WarningIcon
+                                fontSize="small"
+                                color="warning"
+                                sx={{ marginRight: '4px', cursor: 'pointer' }}
+                              />
+                            </Tooltip>
+                          )}
+                          {classData.instructor.data?.name}
+                        </Box>
+                      </TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   );

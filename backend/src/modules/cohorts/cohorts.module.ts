@@ -3,7 +3,14 @@ import { CohortsService } from './cohorts.service';
 import { CohortsController } from './cohorts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+  Instructor,
+} from 'src/entity';
 
 @Module({
   imports: [
@@ -13,6 +20,7 @@ import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
       MasterPeriodOfDay,
       Program,
       Class,
+      Instructor,
     ]),
   ],
   controllers: [CohortsController],
