@@ -48,13 +48,13 @@ interface CohortScheduleProps {
   cohort: GetCohortResponse;
   courses: GetCoursesResponse[];
   instructors: GetInstructorsResponse[];
-  cohorts: GetCohortResponse[];
+  cohorts: GetCohortsResponse[];
 }
 
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [filteredCohorts, setFilterdCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const router = useRouter();
   const now = dayjs();
 
@@ -168,7 +168,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       const filteredCohorts = cohorts
         .filter((item) => item.program.id === cohort.program.id)
         .filter((item) => item.id !== cohort.id);
-      setFilterdCohorts(filteredCohorts);
+      setFilteredCohorts(filteredCohorts);
     }
   }, [dialogOpen]);
 
@@ -177,14 +177,14 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
     // Filter cohorts by the same program ID but excluding their own cohort ID.
     const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id && item.id !== cohort.id);
-    setFilterdCohorts(filteredCohorts);
+    setFilteredCohorts(filteredCohorts);
   }, []);
 
   const handleOpen = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = (createType?: string, selectedCohort?: GetCohortResponse) => {
+  const handleClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
     if (createType === 'new') {
       remove();
       append({
@@ -198,27 +198,24 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       });
       setIsScheduleEditable(true);
     } else if (createType === 'copy' && selectedCohort) {
-      setIsScheduleEditable(true);
-
-      // preparation for the date caluclation
       const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
-      const selectedCohortIntakeStartAt = dayjs(selectedCohort.intake.startAt);
-
+      const copiedCohortIntakeStartAt = dayjs(selectedCohort.intake.startAt);
+      // Reset form with copied cohort schedule
       reset({
-        schedule: selectedCohort.classes.map((classData) => ({
-          // calculate start and end date by adding daysdiff from intake start date
-          // (dayjs(classData.startAt).diff(selectedCohortIntakeStartAt, 'day')
-          //  -> the result will be daysdiff of class start date and intake start date
-          // cohortIntakeStartAt.add(
-          //  -> then add daysdiff to new cohort(intake) start date.
-          startAt: cohortIntakeStartAt.add(dayjs(classData.startAt).diff(selectedCohortIntakeStartAt, 'day'), 'day'),
-          endAt: cohortIntakeStartAt.add(dayjs(classData.endAt).diff(selectedCohortIntakeStartAt, 'day'), 'day'),
-          cohortId: selectedCohort.id,
-          weekdaysRangeId: classData.weekdaysRange.id,
-          courseId: classData.course.id,
-          classroomId: classData.classroom.id,
-          instructorId: classData.instructor?.id,
-        })),
+        schedule: selectedCohort.classes.map((copiedClass) => {
+          const startDaysDiffFromIntakeStart = dayjs(copiedClass.startAt).diff(copiedCohortIntakeStartAt, 'day');
+          const endDaysDiffFromIntakeStart = dayjs(copiedClass.endAt).diff(copiedCohortIntakeStartAt, 'day');
+          return {
+            // Adjust startAt and endAt to appropriate periods for the intake of the cohort under editing.
+            startAt: cohortIntakeStartAt.add(startDaysDiffFromIntakeStart, 'day'),
+            endAt: cohortIntakeStartAt.add(endDaysDiffFromIntakeStart, 'day'),
+            cohortId: selectedCohort.id,
+            weekdaysRangeId: copiedClass.weekdaysRange.id,
+            courseId: copiedClass.course.id,
+            classroomId: copiedClass.classroom.id,
+            instructorId: copiedClass.instructor?.id,
+          };
+        }),
       });
       setIsScheduleEditable(true);
     }

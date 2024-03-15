@@ -134,20 +134,16 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                 <>
                   {selectedCohort.classes.length > 0 ? (
                     <>
-                      {selectedCohort.classes.map((item) => {
-                        return (
-                          <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
-                            <Typography sx={{ width: '25%' }}>
-                              {dayjs(item.startAt).format('YYYY-MM-DD (ddd)')}
-                            </Typography>
-                            <Typography sx={{ width: '25%' }}>
-                              {dayjs(item.endAt).format('YYYY-MM-DD (ddd)')}
-                            </Typography>
-                            <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
-                            <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
-                          </Box>
-                        );
-                      })}
+                      {selectedCohort.classes.map((item) => (
+                        <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
+                          <Typography sx={{ width: '25%' }}>
+                            {dayjs(item.startAt).format('YYYY-MM-DD (ddd)')}
+                          </Typography>
+                          <Typography sx={{ width: '25%' }}>{dayjs(item.endAt).format('YYYY-MM-DD (ddd)')}</Typography>
+                          <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
+                          <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+                        </Box>
+                      ))}
                     </>
                   ) : (
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
