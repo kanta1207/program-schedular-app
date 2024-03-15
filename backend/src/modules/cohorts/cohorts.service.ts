@@ -103,12 +103,12 @@ export class CohortsService {
 
     const formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
       const { instructor } = clazz;
-      const instructorMessage: string[] = [];
+      const instructorMessages: string[] = [];
 
       if (instructor) {
         const msgIsActive = this.checkInstructorIsActive(instructor);
         if (msgIsActive) {
-          instructorMessage.push(msgIsActive);
+          instructorMessages.push(msgIsActive);
         }
       }
 
@@ -127,7 +127,7 @@ export class CohortsService {
         },
         instructor: {
           data: clazz.instructor,
-          messages: instructorMessage,
+          messages: instructorMessages,
         },
       };
     });
