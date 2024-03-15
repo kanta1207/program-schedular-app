@@ -1,13 +1,13 @@
 'use client';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
 import { PERIOD_OF_DAYS } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
+import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
 interface CohortInfoFormProps {
   cohort?: GetCohortResponse;
@@ -88,6 +88,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
           programId: updatedCohort.program.id,
         });
         setIsEditable(false);
+        router.refresh();
       } else {
         const { data: newCohort } = await createCohort(payload);
         router.push(`/cohorts/${newCohort.id}`);

@@ -9,6 +9,8 @@ import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { GetCohortResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -122,7 +124,17 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       setIsScheduleEditable(false);
       remove();
       if (cohort.classes.length !== 0) {
-        reset();
+        reset({
+          schedule: cohort.classes.map((classData) => ({
+            startAt: dayjs(classData.startAt),
+            endAt: dayjs(classData.endAt),
+            cohortId: cohort.id,
+            weekdaysRangeId: classData.weekdaysRange.id,
+            courseId: classData.course.id,
+            classroomId: classData.classroom.id,
+            instructorId: classData.instructor?.id,
+          })),
+        });
       }
     }
   };
@@ -146,36 +158,47 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
-  // copy dialog
+  // dialog
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilterdCohorts] = useState<GetCohortResponse[]>(cohorts);
 
   useEffect(() => {
-    const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id);
-    setFilterdCohorts(filteredCohorts);
+    if (dialogOpen) {
+      const filteredCohorts = cohorts
+        .filter((item) => item.program.id === cohort.program.id)
+        .filter((item) => item.id !== cohort.id);
+      setFilterdCohorts(filteredCohorts);
+    }
+  }, [dialogOpen]);
 
+  useEffect(() => {
     cohort.classes.length === 0 && setDialogOpen(true);
+
+    const filteredCohorts = cohorts
+      .filter((item) => item.program.id === cohort.program.id)
+      .filter((item) => item.id !== cohort.id);
+    setFilterdCohorts(filteredCohorts);
   }, []);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = (createType: string, cohort?: GetCohortResponse) => {
+  const handleClose = (createType: string, selectedCohort?: GetCohortResponse) => {
     setDialogOpen(false);
 
-    if (createType === 'create') {
+    if (createType === 'new') {
       remove();
       setIsScheduleEditable(true);
     }
 
-    if (createType === 'copy' && cohort) {
+    if (createType === 'copy' && selectedCohort) {
       setIsScheduleEditable(true);
       reset({
-        schedule: cohort.classes.map((classData) => ({
+        schedule: selectedCohort.classes.map((classData) => ({
           startAt: dayjs(classData.startAt),
           endAt: dayjs(classData.endAt),
-          cohortId: cohort.id,
+          cohortId: selectedCohort.id,
           weekdaysRangeId: classData.weekdaysRange.id,
           courseId: classData.course.id,
           classroomId: classData.classroom.id,
@@ -195,9 +218,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           <Box>
             {isScheduleEditable ? (
               <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
-                <Button variant="outlined" onClick={handleClickOpen}>
-                  Copy Schedule From Other Cohort
+                <Button startIcon={<RefreshIcon />} variant="outlined" onClick={handleOpen}>
+                  Reset
                 </Button>
+                <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: 'primary.main' }} />
                 <Button variant="outlined" type="button" onClick={handleCancelClick}>
                   Cancel
                 </Button>
@@ -206,11 +230,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 </Button>
               </Box>
             ) : (
-              <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
-                <Button onClick={() => setIsScheduleEditable(true)} variant="contained">
-                  Edit Schedule
-                </Button>
-              </Box>
+              <Button onClick={() => setIsScheduleEditable(true)} variant="contained">
+                Edit Schedule
+              </Button>
             )}
           </Box>
         </Box>
