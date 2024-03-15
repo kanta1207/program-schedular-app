@@ -20,6 +20,8 @@ import {
 } from 'src/entity';
 import { FormattedClass } from './types';
 
+import { formatDate } from 'src/common/utils/format-date.util';
+
 @Injectable()
 export class CohortsService {
   constructor(
@@ -109,6 +111,16 @@ export class CohortsService {
         const msgIsActive = this.checkInstructorIsActive(instructor);
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
+        }
+
+        const msgSpanningAssignment = this.checkSpanningAssignmentOfInstructor(
+          cohort.periodOfDay,
+          clazz.startAt,
+          clazz.endAt,
+          instructor,
+        );
+        if (msgSpanningAssignment) {
+          instructorMessages.push(msgSpanningAssignment);
         }
       }
 
@@ -248,6 +260,43 @@ export class CohortsService {
   checkInstructorIsActive(instructor: Instructor): string | null {
     if (!instructor.isActive) {
       return 'Instructor is not active';
+    }
+    return null;
+  }
+
+  checkSpanningAssignmentOfInstructor(
+    periodOfDayOfCohort: MasterPeriodOfDay,
+    startAtOfClass: Date,
+    endAtOfClass: Date,
+    instructor: Instructor,
+  ): string | null {
+    const { classes } = instructor;
+    let alreadyAssignedPeriodOfDay: 'Morning' | 'Evening';
+
+    const relevantClasses = classes.filter((clazz) => {
+      if (periodOfDayOfCohort.name === 'Morning') {
+        alreadyAssignedPeriodOfDay = 'Evening';
+        return clazz.cohort.periodOfDay.name === 'Evening';
+      }
+      if (periodOfDayOfCohort.name === 'Evening') {
+        alreadyAssignedPeriodOfDay = 'Morning';
+        return clazz.cohort.periodOfDay.name === 'Morning';
+      }
+      return false;
+    });
+
+    const overlappingClasses = relevantClasses.filter((clazz) => {
+      const { startAt, endAt } = clazz;
+      return (
+        (startAt >= startAtOfClass && startAt <= endAtOfClass) ||
+        (endAt >= startAtOfClass && endAt <= endAtOfClass) ||
+        (startAt <= startAtOfClass && endAt >= endAtOfClass)
+      );
+    });
+    if (overlappingClasses.length > 0) {
+      const overlappingStart = formatDate(overlappingClasses[0].startAt);
+      const overlappingEnd = formatDate(overlappingClasses[0].endAt);
+      return `Instructor is already assigned to ${alreadyAssignedPeriodOfDay} class from ${overlappingStart} to ${overlappingEnd}`;
     }
     return null;
   }
