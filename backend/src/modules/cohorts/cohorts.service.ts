@@ -20,8 +20,6 @@ import {
 } from 'src/entity';
 import { FormattedClass } from './types';
 
-import { formatDate } from 'src/common/utils/format-date.util';
-
 @Injectable()
 export class CohortsService {
   constructor(
@@ -95,7 +93,13 @@ export class CohortsService {
           weekdaysRange: true,
           course: true,
           classroom: true,
-          instructor: true,
+          instructor: {
+            classes: {
+              cohort: {
+                periodOfDay: true,
+              },
+            },
+          },
         },
       },
     });
@@ -119,6 +123,8 @@ export class CohortsService {
           clazz.endAt,
           instructor,
         );
+        console.log('msgSpanningAssignment', msgSpanningAssignment);
+
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
         }
@@ -271,15 +277,12 @@ export class CohortsService {
     instructor: Instructor,
   ): string | null {
     const { classes } = instructor;
-    let alreadyAssignedPeriodOfDay: 'Morning' | 'Evening';
 
     const relevantClasses = classes.filter((clazz) => {
       if (periodOfDayOfCohort.name === 'Morning') {
-        alreadyAssignedPeriodOfDay = 'Evening';
         return clazz.cohort.periodOfDay.name === 'Evening';
       }
       if (periodOfDayOfCohort.name === 'Evening') {
-        alreadyAssignedPeriodOfDay = 'Morning';
         return clazz.cohort.periodOfDay.name === 'Morning';
       }
       return false;
@@ -294,9 +297,7 @@ export class CohortsService {
       );
     });
     if (overlappingClasses.length > 0) {
-      const overlappingStart = formatDate(overlappingClasses[0].startAt);
-      const overlappingEnd = formatDate(overlappingClasses[0].endAt);
-      return `Instructor is already assigned to ${alreadyAssignedPeriodOfDay} class from ${overlappingStart} to ${overlappingEnd}`;
+      return `Instructor is assigned to both Morning and Evening class in the same term`;
     }
     return null;
   }
