@@ -6,7 +6,7 @@ import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
 import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
-import { GetCohortResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
+import { GetCohortResponse, GetCohortsResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -30,6 +30,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
+export type CreateType = 'new' | 'copy';
+
 type FormValues = {
   schedule: {
     startAt: Dayjs;
@@ -51,6 +53,8 @@ interface CohortScheduleProps {
 
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [filteredCohorts, setFilterdCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const router = useRouter();
   const now = dayjs();
 
@@ -123,7 +127,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     if (confirm(message)) {
       setIsScheduleEditable(false);
       remove();
-      if (cohort.classes.length !== 0) {
+      if (cohort.classes.length > 0) {
         reset({
           schedule: cohort.classes.map((classData) => ({
             startAt: dayjs(classData.startAt),
@@ -159,9 +163,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
   // dialog
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [filteredCohorts, setFilterdCohorts] = useState<GetCohortResponse[]>(cohorts);
-
   useEffect(() => {
     if (dialogOpen) {
       const filteredCohorts = cohorts
@@ -174,9 +175,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   useEffect(() => {
     cohort.classes.length === 0 && setDialogOpen(true);
 
-    const filteredCohorts = cohorts
-      .filter((item) => item.program.id === cohort.program.id)
-      .filter((item) => item.id !== cohort.id);
+    // Filter cohorts by the same program ID but excluding their own cohort ID.
+    const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id && item.id !== cohort.id);
     setFilterdCohorts(filteredCohorts);
   }, []);
 
@@ -184,20 +184,35 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     setDialogOpen(true);
   };
 
-  const handleClose = (createType: string, selectedCohort?: GetCohortResponse) => {
-    setDialogOpen(false);
-
+  const handleClose = (createType?: string, selectedCohort?: GetCohortResponse) => {
     if (createType === 'new') {
       remove();
+      append({
+        startAt: now.startOf('day'),
+        endAt: now.startOf('day'),
+        cohortId: cohort.id,
+        weekdaysRangeId: 1,
+        courseId: 0,
+        classroomId: 0,
+        instructorId: 0,
+      });
       setIsScheduleEditable(true);
-    }
+    } else if (createType === 'copy' && selectedCohort) {
+      setIsScheduleEditable(true);
 
-    if (createType === 'copy' && selectedCohort) {
-      setIsScheduleEditable(true);
+      // preparation for the date caluclation
+      const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
+      const selectedCohortIntakeStartAt = dayjs(selectedCohort.intake.startAt);
+
       reset({
         schedule: selectedCohort.classes.map((classData) => ({
-          startAt: dayjs(classData.startAt),
-          endAt: dayjs(classData.endAt),
+          // calculate start and end date by adding daysdiff from intake start date
+          // (dayjs(classData.startAt).diff(selectedCohortIntakeStartAt, 'day')
+          //  -> the result will be daysdiff of class start date and intake start date
+          // cohortIntakeStartAt.add(
+          //  -> then add daysdiff to new cohort(intake) start date.
+          startAt: cohortIntakeStartAt.add(dayjs(classData.startAt).diff(selectedCohortIntakeStartAt, 'day'), 'day'),
+          endAt: cohortIntakeStartAt.add(dayjs(classData.endAt).diff(selectedCohortIntakeStartAt, 'day'), 'day'),
           cohortId: selectedCohort.id,
           weekdaysRangeId: classData.weekdaysRange.id,
           courseId: classData.course.id,
@@ -205,7 +220,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           instructorId: classData.instructor?.id,
         })),
       });
+      setIsScheduleEditable(true);
     }
+    setDialogOpen(false);
   };
 
   return (

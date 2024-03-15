@@ -17,24 +17,25 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { CreateType } from './CohortSchedule';
 
 export interface CreateScheduleDialogProps {
   dialogOpen: boolean;
-  onClose: (value: string, cohort?: GetCohortResponse) => void;
+  onClose: (value?: string, cohort?: GetCohortResponse) => void;
   cohorts: GetCohortResponse[];
 }
 
 export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onClose, dialogOpen: open, cohorts }) => {
-  const [selectedCreateType, setSelectedCreateType] = useState('copy');
+  const [selectedCreateType, setSelectedCreateType] = useState<CreateType>('copy');
   const [selectedCohortIds, setSelectedCohortIds] = useState<string[]>([]);
   const [selectedCohort, setSelectedCohort] = useState<GetCohortResponse>();
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedCreateType((event.target as HTMLInputElement).value);
+    setSelectedCreateType(event.target.value as CreateType);
   };
 
   const handleCancel = () => {
-    onClose('');
+    onClose();
   };
 
   const handleContinue = () => {
@@ -47,6 +48,9 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
     }
   };
 
+  // Code below is from MUI https://mui.com/material-ui/react-select/
+  // Since it's a multiple select box, selected options need to be handled.
+  // Continue button will be disabled when user selects more than 1 cohort (handled in button component)
   const handleChangeMultiple = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { options } = event.target;
     const value: string[] = [];
@@ -57,6 +61,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
     }
     setSelectedCohortIds(value);
 
+    // no matter how many cohorts are selected, the first one will be set in selectCohort state.
     const selectedCohort = cohorts.find((cohort) => cohort.id === parseInt(value[0]));
     if (selectedCohort) {
       setSelectedCohort(selectedCohort);
@@ -76,7 +81,6 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
           </Box>
           <Box
             sx={{
-              // display: selectedCreateType === 'create' ? 'none' : 'flex',
               display: 'flex',
               gap: '1rem',
               padding: '1rem',
@@ -96,7 +100,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
               <Select<string[]>
                 multiple
                 native
-                disabled={selectedCreateType === 'copy' ? false : true}
+                disabled={selectedCreateType === 'new'}
                 style={{ height: '100%' }}
                 value={selectedCohortIds}
                 // @ts-ignore Typings are not considering `native`
@@ -116,7 +120,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
             </FormControl>
             <Box
               sx={{
-                bgcolor: 'rgba(217,217,217,0.2)',
+                bgcolor: 'grey.100',
                 width: '600px',
                 height: '320px',
                 padding: '1em',
@@ -126,24 +130,34 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                 gap: '0.25rem',
               }}
             >
-              {selectedCreateType === 'copy' && selectedCohort && selectedCohort.classes.length > 0 ? (
-                selectedCohort.classes.map((item) => {
-                  return (
-                    <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
-                      <Typography sx={{ width: '25%' }}>{dayjs(item.startAt).format('YYYY-MM-DD (ddd)')}</Typography>
-                      <Typography sx={{ width: '25%' }}>{dayjs(item.endAt).format('YYYY-MM-DD (ddd)')}</Typography>
-                      <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
-                      <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+              {selectedCohort ? (
+                <>
+                  {selectedCohort.classes.length > 0 ? (
+                    <>
+                      {selectedCohort.classes.map((item) => {
+                        return (
+                          <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
+                            <Typography sx={{ width: '25%' }}>
+                              {dayjs(item.startAt).format('YYYY-MM-DD (ddd)')}
+                            </Typography>
+                            <Typography sx={{ width: '25%' }}>
+                              {dayjs(item.endAt).format('YYYY-MM-DD (ddd)')}
+                            </Typography>
+                            <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
+                            <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+                          </Box>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                      <Typography>No schedule found</Typography>
                     </Box>
-                  );
-                })
+                  )}
+                </>
               ) : (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                  {selectedCohort ? (
-                    <Typography>No schedule found</Typography>
-                  ) : (
-                    <Typography>Select cohort from the list</Typography>
-                  )}
+                  <Typography>Select cohort from the list</Typography>
                 </Box>
               )}
             </Box>
@@ -153,7 +167,8 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
           <Button variant="outlined" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button disabled={selectedCohortIds.length > 1 ? true : false} variant="contained" onClick={handleContinue}>
+          {/* Continue button will be disabled if selected more than 1 cohort */}
+          <Button disabled={selectedCohortIds.length > 1} variant="contained" onClick={handleContinue}>
             Continue
           </Button>
         </Box>
