@@ -6,7 +6,13 @@ import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
 import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
-import { GetCohortResponse, GetCohortsResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
+import {
+  GetBreaksResponse,
+  GetCohortResponse,
+  GetCohortsResponse,
+  GetCoursesResponse,
+  GetInstructorsResponse,
+} from '@/types/_index';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -49,9 +55,10 @@ interface CohortScheduleProps {
   courses: GetCoursesResponse[];
   instructors: GetInstructorsResponse[];
   cohorts: GetCohortsResponse[];
+  breaks: GetBreaksResponse[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
@@ -146,13 +153,27 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const getPlannedHours = (startAt: Date, endAt: Date, weekdaysRangeId: number): number => {
     const startDate = dayjs(startAt);
     const endDate = dayjs(endAt);
-    // TODO: Take break period into consideration
-    const daysDiff = endDate.diff(startDate) / (24 * 60 * 60 * 1000);
-    // As startAt is normally Monday and endAt is Friday, add 2(Saturday and Sunday) to get full week
-    const totalWeeks = Math.round((Math.round(daysDiff) + 2) / 7);
+
+    const totalBreakWeeks = breaks.reduce((accumulator, breakItem) => {
+      const { startAt, endAt } = breakItem;
+      const breakStartDate = dayjs(startAt);
+      const breakEndDate = dayjs(endAt);
+
+      if (startDate <= breakStartDate && breakEndDate <= endDate) {
+        const daysDiff = breakEndDate.diff(breakStartDate, 'day');
+        const breakWeeks = Math.ceil(daysDiff / 7);
+        return accumulator + breakWeeks;
+      }
+
+      return accumulator;
+    }, 0);
+
+    const daysDiff = endDate.diff(startDate, 'day');
+    const totalWeeks = Math.ceil(daysDiff / 7);
+
     const weeklyHours = getWeeklyHours(weekdaysRangeId);
 
-    return weeklyHours * totalWeeks;
+    return (totalWeeks - totalBreakWeeks) * weeklyHours;
   };
 
   const getRequiredHours = (courseId: number): number => {
