@@ -140,14 +140,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
   };
 
-  const generateInstructorMessages = (instructor: GetInstructorsResponse) => {
-    const messages: string[] = [];
-    if (!instructor.isActive) {
-      messages.push('Instructor is inactive.');
-    }
-    return messages;
-  };
-
   const tooltipTitle = (messages: string[]) => {
     return (
       <ul>
@@ -367,27 +359,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                             return (
                               <FormControl fullWidth>
                                 <Select size="small" value={field.value} required {...field}>
-                                  {instructors.map((instructor) => {
-                                    const messages = generateInstructorMessages(instructor);
-                                    return (
-                                      <MenuItem
-                                        key={instructor.id}
-                                        value={instructor.id}
-                                        disabled={!instructor.isActive}
-                                      >
-                                        {messages.length > 0 && (
-                                          <Tooltip title={tooltipTitle(messages)}>
-                                            <WarningIcon
-                                              fontSize="small"
-                                              color="warning"
-                                              sx={{ marginRight: '4px', cursor: 'pointer' }}
-                                            />
-                                          </Tooltip>
-                                        )}
-                                        {instructor.name} {!instructor.isActive && '(Inactive)'}
-                                      </MenuItem>
-                                    );
-                                  })}
+                                  {instructors.map((instructor) => (
+                                    <MenuItem key={instructor.id} value={instructor.id} disabled={!instructor.isActive}>
+                                      {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                    </MenuItem>
+                                  ))}
                                 </Select>
                               </FormControl>
                             );
