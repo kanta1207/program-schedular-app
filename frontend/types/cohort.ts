@@ -16,7 +16,7 @@ export interface CohortBase {
   updatedAt: Date;
 }
 
-interface GetCohortClass extends ClassBase {
+export interface GetCohortClass extends ClassBase {
   cohort: CohortBase;
   weekdaysRange: WeekdaysRange;
   course: CourseBase;
