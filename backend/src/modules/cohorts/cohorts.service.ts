@@ -19,6 +19,10 @@ import {
   Instructor,
 } from 'src/entity';
 import { FormattedClass } from './types';
+import {
+  EVENING_PERIOD_OF_DAY_ID,
+  MORNING_PERIOD_OF_DAY_ID,
+} from './cohort.constant';
 
 @Injectable()
 export class CohortsService {
@@ -279,11 +283,11 @@ export class CohortsService {
     const { classes } = instructor;
 
     const relevantClasses = classes.filter((clazz) => {
-      if (periodOfDayOfCohort.name === 'Morning') {
-        return clazz.cohort.periodOfDay.name === 'Evening';
+      if (periodOfDayOfCohort.id === MORNING_PERIOD_OF_DAY_ID) {
+        return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
       }
-      if (periodOfDayOfCohort.name === 'Evening') {
-        return clazz.cohort.periodOfDay.name === 'Morning';
+      if (periodOfDayOfCohort.id === EVENING_PERIOD_OF_DAY_ID) {
+        return clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID;
       }
       return false;
     });
