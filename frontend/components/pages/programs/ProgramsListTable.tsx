@@ -2,7 +2,9 @@
 import { deleteProgram } from '@/actions/programs/deleteProgram';
 import { updateProgram } from '@/actions/programs/updateProgram';
 import TableMenu from '@/components/partials/TableMenu';
+import { usePagination } from '@/hooks/usePagination';
 import { GetProgramsResponse } from '@/types/program';
+import { TableFooter, TablePagination } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -68,6 +70,21 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
+  const {
+    rowsPerPageOptions,
+    count,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    ActionsComponent,
+    emptyRows,
+  } = usePagination({
+    count: programs.length,
+    rowsPerPage: 10,
+    page: 0,
+  });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Table>
@@ -79,52 +96,68 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {programs.map((program) => (
-            <TableRow key={program.id}>
-              {editProgramId === program.id ? (
-                // Edit mode
-                <>
-                  <TableCell>
-                    <Controller
-                      control={control}
-                      name="name"
-                      rules={{ required: true }}
-                      render={({ field }: any) => {
-                        return (
-                          <TextField
-                            label="Name"
-                            id="name"
-                            sx={{ width: '100%' }}
-                            value={field.value}
-                            onChange={(name) => field.onChange(name)}
-                          />
-                        );
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-x-2.5">
-                      <Button variant="outlined" type="button" onClick={handleCancelClick}>
-                        Cancel
-                      </Button>
-                      <Button variant="contained" type="submit">
-                        Save
-                      </Button>
-                    </div>
-                  </TableCell>
-                </>
-              ) : (
-                // Display mode
-                <>
-                  <TableCell>{program.name}</TableCell>
-                  <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <TableMenu id={program.id} onEdit={handleEditClick} onDelete={deleteProgram} />
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-          ))}
+          {(rowsPerPage > 0 ? programs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : programs).map(
+            (program) => (
+              <TableRow key={program.id}>
+                {editProgramId === program.id ? (
+                  // Edit mode
+                  <>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="name"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <TextField
+                              label="Name"
+                              id="name"
+                              sx={{ width: '100%' }}
+                              value={field.value}
+                              onChange={(name) => field.onChange(name)}
+                            />
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-end gap-x-2.5">
+                        <Button variant="outlined" type="button" onClick={handleCancelClick}>
+                          Cancel
+                        </Button>
+                        <Button variant="contained" type="submit">
+                          Save
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </>
+                ) : (
+                  // Display mode
+                  <>
+                    <TableCell>{program.name}</TableCell>
+                    <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <TableMenu id={program.id} onEdit={handleEditClick} onDelete={deleteProgram} />
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
+            ),
+          )}
+          {emptyRows > 0 && <TableRow style={{ height: 73 * emptyRows }} />}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={rowsPerPageOptions}
+              count={count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              ActionsComponent={ActionsComponent}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </form>
   );
