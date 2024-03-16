@@ -20,11 +20,8 @@
 }
 
 ._3lLk3[title^='🌙'] > div > div,
-._3lLk3[title^='🌙'] ~ *,
 ._3lLk3[title^='🌅'] > div > div,
-._3lLk3[title^='🌅'] ~ *,
-._3lLk3[title^='☀'] > div > div,
-._3lLk3[title^='☀'] ~ * {
+._3lLk3[title^='☀'] > div > div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
