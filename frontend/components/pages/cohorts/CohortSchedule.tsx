@@ -6,7 +6,14 @@ import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
 import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
-import { GetCohortResponse, GetCohortsResponse, GetCoursesResponse, GetInstructorsResponse } from '@/types/_index';
+import {
+  GetBreaksResponse,
+  GetCohortClass,
+  GetCohortResponse,
+  GetCohortsResponse,
+  GetCoursesResponse,
+  GetInstructorsResponse,
+} from '@/types/_index';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -49,14 +56,25 @@ interface CohortScheduleProps {
   courses: GetCoursesResponse[];
   instructors: GetInstructorsResponse[];
   cohorts: GetCohortsResponse[];
+  breaks: GetBreaksResponse[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const router = useRouter();
   const now = dayjs();
+
+  const scheduleItems: Array<GetCohortClass | GetBreaksResponse> = [
+    ...cohort.classes,
+    ...breaks.filter(
+      (breakData) =>
+        dayjs(cohort.intake.startAt) < dayjs(breakData.startAt) && dayjs(breakData.endAt) < dayjs(cohort.intake.endAt),
+    ),
+  ].sort((a, b) => {
+    return dayjs(a.startAt).diff(dayjs(b.startAt));
+  });
 
   const { control, handleSubmit, reset, watch } = useForm<FormValues>({
     defaultValues: {
@@ -146,13 +164,27 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const getPlannedHours = (startAt: Date, endAt: Date, weekdaysRangeId: number): number => {
     const startDate = dayjs(startAt);
     const endDate = dayjs(endAt);
-    // TODO: Take break period into consideration
-    const daysDiff = endDate.diff(startDate) / (24 * 60 * 60 * 1000);
-    // As startAt is normally Monday and endAt is Friday, add 2(Saturday and Sunday) to get full week
-    const totalWeeks = Math.round((Math.round(daysDiff) + 2) / 7);
+
+    const totalBreakWeeks = breaks.reduce((accumulator, breakItem) => {
+      const { startAt, endAt } = breakItem;
+      const breakStartDate = dayjs(startAt);
+      const breakEndDate = dayjs(endAt);
+
+      if (startDate <= breakStartDate && breakEndDate <= endDate) {
+        const daysDiff = breakEndDate.diff(breakStartDate, 'day');
+        const breakWeeks = Math.ceil(daysDiff / 7);
+        return accumulator + breakWeeks;
+      }
+
+      return accumulator;
+    }, 0);
+
+    const daysDiff = endDate.diff(startDate, 'day');
+    const totalWeeks = Math.ceil(daysDiff / 7);
+
     const weeklyHours = getWeeklyHours(weekdaysRangeId);
 
-    return weeklyHours * totalWeeks;
+    return (totalWeeks - totalBreakWeeks) * weeklyHours;
   };
 
   const getRequiredHours = (courseId: number): number => {
@@ -275,6 +307,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                     watchSchedule[index].weekdaysRangeId,
                   );
                   const requiredHours = getRequiredHours(watchSchedule[index].courseId as number);
+                  const isTimeExceeded = plannedHours > requiredHours;
                   return (
                     <TableRow key={field.id}>
                       {/* StartAt */}
@@ -385,10 +418,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
                       {/* Hours met */}
                       <TableCell>
-                        <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
-                          {plannedHours}
-                        </span>{' '}
-                        / {requiredHours}
+                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
+                        {requiredHours}
                       </TableCell>
 
                       {/* ClassroomId */}
@@ -461,32 +492,47 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               </>
             ) : (
               <>
-                {cohort.classes.map((classData) => {
-                  const plannedHours = getPlannedHours(classData.startAt, classData.endAt, classData.weekdaysRange.id);
-                  const requiredHours = classData.course.requiredHours;
-                  return (
-                    <TableRow key={classData.id}>
-                      <TableCell component="th" scope="row">
-                        {dayjs(classData.startAt).format('YYYY-MM-DD (ddd)')}
-                      </TableCell>
-                      <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
-                      <TableCell>{classData.course.name}</TableCell>
-                      <TableCell>
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />
-                      </TableCell>
-                      <TableCell>
-                        <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
-                          {plannedHours}
-                        </span>{' '}
-                        / {requiredHours}
-                      </TableCell>
-                      <TableCell>
-                        {classData.classroom.name} ({classData.classroom.floor} floor)
-                      </TableCell>
-                      <TableCell>{classData.instructor?.name}</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  );
+                {scheduleItems.map((item) => {
+                  const startDate = dayjs(item.startAt).format('YYYY-MM-DD (ddd)');
+                  const endDate = dayjs(item.endAt).format('YYYY-MM-DD (ddd)');
+                  const isClass = 'cohort' in item;
+                  if (isClass) {
+                    const plannedHours = getPlannedHours(item.startAt, item.endAt, item.weekdaysRange.id);
+                    const requiredHours = item.course.requiredHours;
+                    const isTimeExceeded = plannedHours > requiredHours;
+                    return (
+                      <TableRow key={item.id}>
+                        <TableCell component="th" scope="row">
+                          {startDate}
+                        </TableCell>
+                        <TableCell>{endDate}</TableCell>
+                        <TableCell>{item.course.name}</TableCell>
+                        <TableCell>
+                          <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+                        </TableCell>
+                        <TableCell>
+                          <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
+                          {requiredHours}
+                        </TableCell>
+                        <TableCell>
+                          {item.classroom.name} ({item.classroom.floor} floor)
+                        </TableCell>
+                        <TableCell>{item.instructor?.name}</TableCell>
+                        <TableCell />
+                      </TableRow>
+                    );
+                  } else {
+                    return (
+                      <TableRow key={item.id}>
+                        <TableCell component="th" scope="row">
+                          {startDate}
+                        </TableCell>
+                        <TableCell>{endDate}</TableCell>
+                        <TableCell>School Break</TableCell>
+                        <TableCell colSpan={5} />
+                      </TableRow>
+                    );
+                  }
                 })}
               </>
             )}

@@ -1,3 +1,4 @@
+import { getBreaks } from '@/actions/breaks/getBreaks';
 import { getCohortById } from '@/actions/cohorts/getCohortById';
 import { getCohorts } from '@/actions/cohorts/getCohorts';
 import { getCourses } from '@/actions/courses/getCourses';
@@ -22,6 +23,7 @@ const page = async ({ params }: PageProps) => {
     { data: programs },
     { data: courses },
     { data: instructors },
+    { data: breaks },
   ] = await Promise.all([
     getCohortById(id),
     getCohorts(),
@@ -29,6 +31,7 @@ const page = async ({ params }: PageProps) => {
     getPrograms(),
     getCourses(),
     getInstructors({}),
+    getBreaks(),
   ]);
 
   return (
@@ -37,7 +40,7 @@ const page = async ({ params }: PageProps) => {
         <Headline name="Cohorts" />
       </Box>
       <CohortInfoForm cohort={cohort} intakes={intakes} programs={programs} />
-      <CohortSchedule cohort={cohort} courses={courses} instructors={instructors} cohorts={cohorts} />
+      <CohortSchedule cohort={cohort} courses={courses} instructors={instructors} cohorts={cohorts} breaks={breaks} />
     </>
   );
 };
