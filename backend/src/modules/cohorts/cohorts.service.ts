@@ -127,7 +127,6 @@ export class CohortsService {
           clazz.endAt,
           instructor,
         );
-        console.log('msgSpanningAssignment', msgSpanningAssignment);
 
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
