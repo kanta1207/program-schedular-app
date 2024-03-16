@@ -92,7 +92,7 @@ const classes = [
   {
     cohort: { id: 2 },
     startAt: new Date('2023-09-25T08:00:00.000Z'),
-    endAt: new Date('2023-11-03T08:00:00.000Z'),
+    endAt: new Date('2023-10-13T08:00:00.000Z'),
     course: { id: 2 },
     classroom: { id: 2 },
     weekdaysRange: { id: 2 },
