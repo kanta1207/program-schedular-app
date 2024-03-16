@@ -1,0 +1,30 @@
+._3lLk3 {
+  font-size: 1.1em;
+  background-color: #d9d9d9;
+}
+
+._3lLk3:last-child {
+  border-radius: 0 3px 3px 0;
+}
+
+._3lLk3[title^='🌙'],
+._3lLk3[title^='🌙'] ~ *,
+._3lLk3[title^='🌅'],
+._3lLk3[title^='🌅'] ~ *,
+._3lLk3[title^='☀'],
+._3lLk3[title^='☀'] ~ * {
+  font-size: 1em;
+  font-weight: normal;
+  background-color: unset;
+  color: unset;
+}
+
+._3lLk3[title^='🌙'] > div > div,
+._3lLk3[title^='🌙'] ~ *,
+._3lLk3[title^='🌅'] > div > div,
+._3lLk3[title^='🌅'] ~ *,
+._3lLk3[title^='☀'] > div > div,
+._3lLk3[title^='☀'] ~ * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
