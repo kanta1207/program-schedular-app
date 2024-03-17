@@ -23,7 +23,7 @@ export const CohortListTable: React.FC<CohortListTableProps> = ({ cohorts }) => 
     emptyRows,
   } = usePagination({
     count: cohorts.length,
-    rowsPerPage: 10,
+    rowsPerPage: 25,
     page: 0,
   });
 

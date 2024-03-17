@@ -80,7 +80,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
     emptyRows,
   } = usePagination({
     count: courses.length,
-    rowsPerPage: 10,
+    rowsPerPage: 25,
     page: 0,
   });
 

@@ -81,7 +81,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
     emptyRows,
   } = usePagination({
     count: programs.length,
-    rowsPerPage: 10,
+    rowsPerPage: 25,
     page: 0,
   });
 

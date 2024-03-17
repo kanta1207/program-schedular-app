@@ -86,7 +86,7 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
     emptyRows,
   } = usePagination({
     count: breaks.length,
-    rowsPerPage: 10,
+    rowsPerPage: 25,
     page: 0,
   });
 

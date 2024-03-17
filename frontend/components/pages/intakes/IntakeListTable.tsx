@@ -90,7 +90,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
     emptyRows,
   } = usePagination({
     count: intakes.length,
-    rowsPerPage: 10,
+    rowsPerPage: 25,
     page: 0,
   });
 
