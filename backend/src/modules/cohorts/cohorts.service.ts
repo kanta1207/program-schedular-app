@@ -273,6 +273,14 @@ export class CohortsService {
     return null;
   }
 
+  // TODO: We might want to take day of the week into account when new data like `SAT-SUN` is introduced.
+  /**
+   * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
+   * @param startAtOfClass - Start date of the Class the instructor is being assigned to
+   * @param endAtOfClass - End date of the Class the instructor is being assigned to
+   * @param instructor - Instructor being assigned to the class
+   * @returns An alert message when the instructor is assigned to both Morning and Evening class in the same term, else null
+   */
   checkSpanningAssignmentOfInstructor(
     periodOfDayOfCohort: MasterPeriodOfDay,
     startAtOfClass: Date,
