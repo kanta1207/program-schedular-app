@@ -22,7 +22,7 @@ import { FormattedClass } from './types';
 import {
   EVENING_PERIOD_OF_DAY_ID,
   MORNING_PERIOD_OF_DAY_ID,
-} from './cohort.constant';
+} from '../../common/constants/master.constant';
 
 @Injectable()
 export class CohortsService {

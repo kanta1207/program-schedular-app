@@ -1,2 +1,4 @@
 export const MORNING_PERIOD_OF_DAY_ID = 1;
 export const EVENING_PERIOD_OF_DAY_ID = 3;
+
+export const CONTRACTOR_CONTRACT_TYPE_ID = 3;
