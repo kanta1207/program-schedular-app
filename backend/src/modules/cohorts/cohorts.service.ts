@@ -153,7 +153,7 @@ export class CohortsService {
         },
         instructor: {
           // We don't want to include unnecessary classes data in the response
-          data: { ...instructor },
+          data: { ...instructor, classes: undefined },
           messages: instructorMessages,
         },
       };
