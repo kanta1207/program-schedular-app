@@ -116,7 +116,7 @@ export class CohortsService {
       const instructorMessages: string[] = [];
 
       if (instructor) {
-        const msgIsActive = this.checkInstructorIsActive(instructor);
+        const msgIsActive = this.checkInstructorIsActive(instructor.isActive);
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
         }
@@ -125,7 +125,7 @@ export class CohortsService {
           cohort.periodOfDay,
           clazz.startAt,
           clazz.endAt,
-          instructor,
+          instructor.classes,
         );
 
         if (msgSpanningAssignment) {
@@ -266,8 +266,8 @@ export class CohortsService {
     });
   }
 
-  checkInstructorIsActive(instructor: Instructor): string | null {
-    if (!instructor.isActive) {
+  checkInstructorIsActive(isActive: boolean): string | null {
+    if (!isActive) {
       return 'Instructor is not active';
     }
     return null;
@@ -278,18 +278,16 @@ export class CohortsService {
    * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
    * @param startAtOfClass - Start date of the Class the instructor is being assigned to
    * @param endAtOfClass - End date of the Class the instructor is being assigned to
-   * @param instructor - Instructor being assigned to the class
+   * @param classesOfInstructor - Classes the instructor is already assigned to
    * @returns An alert message when the instructor is assigned to both Morning and Evening class in the same term, else null
    */
   checkSpanningAssignmentOfInstructor(
     periodOfDayOfCohort: MasterPeriodOfDay,
     startAtOfClass: Date,
     endAtOfClass: Date,
-    instructor: Instructor,
+    classesOfInstructor: Class[],
   ): string | null {
-    const { classes } = instructor;
-
-    const relevantClasses = classes.filter((clazz) => {
+    const relevantClasses = classesOfInstructor.filter((clazz) => {
       if (periodOfDayOfCohort.id === MORNING_PERIOD_OF_DAY_ID) {
         return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
       }
