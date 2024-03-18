@@ -16,6 +16,7 @@ export interface FormattedClass {
   endAt: Date;
   cohort: Cohort;
   course: Course;
+  messages: string[];
   weekdaysRange: FormattedClassField<MasterWeekdaysRange>;
   classroom: FormattedClassField<MasterClassroom>;
   instructor: FormattedClassField<Instructor | null>;
