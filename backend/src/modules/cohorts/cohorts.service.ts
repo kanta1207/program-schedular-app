@@ -114,6 +114,16 @@ export class CohortsService {
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
         }
+
+        const msgExceedsMaxHours = this.checkInstructorExceedsMaxHours(
+          instructor.contractType.maxHours,
+          instructor.classes,
+          clazz.course.requiredHours,
+        );
+
+        if (msgExceedsMaxHours) {
+          instructorMessages.push(msgExceedsMaxHours);
+        }
         const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
           cohort.periodOfDay.id,
           clazz.startAt,
