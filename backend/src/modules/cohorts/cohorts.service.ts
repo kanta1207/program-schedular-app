@@ -91,10 +91,12 @@ export class CohortsService {
           course: true,
           classroom: true,
           instructor: {
+            contractType: true,
             classes: {
               cohort: {
                 periodOfDay: true,
               },
+              course: true,
             },
             courses: { course: true },
           },
@@ -160,8 +162,7 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          // We don't want to include unnecessary classes data in the response
-          data: { ...instructor, classes: undefined },
+          data: { ...instructor, classes: undefined, contractType: undefined },
           messages: instructorMessages,
         },
       };
