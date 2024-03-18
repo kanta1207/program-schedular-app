@@ -44,11 +44,16 @@ const CreateBreak = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex justify-end mb-4 ">
+        <div className="flex justify-between mb-4 ">
           {!isCreating && (
-            <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
-              New Break
-            </Button>
+            <>
+              <Button variant="outlined" href="https://ciccc.ca/academic-calendar/" target="_blank">
+                Academic Calender
+              </Button>
+              <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
+                New Break
+              </Button>
+            </>
           )}
         </div>
 
