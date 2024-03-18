@@ -14,12 +14,18 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
   const handleRowClick = () => {
     router.push(`/instructors/${instructor.id}`);
   };
-  const periodsWithIcons = instructor.periodOfDays
-    ?.map((period) => {
-      const icon = PERIOD_OF_DAYS.find(({ id }) => id === period.id)?.icon;
-      return `${icon} ${period.name}`;
-    })
-    .join(', ');
+  const isAvailable = (periodId: number) => {
+    return instructor.periodOfDays?.some((period) => period.id === periodId);
+  };
+
+  const periodsWithIcons = PERIOD_OF_DAYS.map((period) => {
+    const opacity = isAvailable(period.id) ? 1 : 0.25;
+    return (
+      <span key={period.id} style={{ opacity }}>
+        {period.icon} {period.name}
+      </span>
+    );
+  });
   return (
     <TableRow
       hover
