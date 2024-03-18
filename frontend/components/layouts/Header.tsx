@@ -84,19 +84,19 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 1, display: 'flex', gap: '1rem', marginLeft: '3rem' }}>
             {navigation.map((navItem) => (
-              <Button
-                key={navItem.path}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  textDecoration: navItem.path === pathname ? 'underline' : 'none',
-                  textUnderlineOffset: '4px',
-                }}
-                onClick={() => router.push(navItem.path)}
-              >
-                {navItem.name}
-              </Button>
+              <Link href={navItem.path} key={navItem.path} passHref>
+                <Button
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'block',
+                    textDecoration: navItem.path === pathname ? 'underline' : 'none',
+                    textUnderlineOffset: '4px',
+                  }}
+                >
+                  {navItem.name}
+                </Button>
+              </Link>
             ))}
           </Box>
 
