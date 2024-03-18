@@ -251,4 +251,36 @@ export class CohortsService {
     }
     return null;
   }
+
+  checkDuplicateAssignmentOfInstructor(
+    periodOfDayOfCohort: MasterPeriodOfDay,
+    startAtOfClass: Date,
+    endAtOfClass: Date,
+    classesOfInstructor: Class[],
+  ): string | null {
+    const classesOfInstructorInPeriodOfDay = classesOfInstructor.filter(
+      (clazz) => clazz.cohort.periodOfDay.id === periodOfDayOfCohort.id,
+    );
+
+    const isDuplicate = classesOfInstructorInPeriodOfDay.some((clazz) => {
+      const isStartAtBetween =
+        startAtOfClass >= clazz.startAt && startAtOfClass <= clazz.endAt;
+      const isEndAtBetween =
+        endAtOfClass >= clazz.startAt && endAtOfClass <= clazz.endAt;
+      const isStartAtLessThan = startAtOfClass <= clazz.startAt;
+      const isEndAtGreaterThan = endAtOfClass >= clazz.endAt;
+
+      return (
+        isStartAtBetween ||
+        isEndAtBetween ||
+        (isStartAtLessThan && isEndAtGreaterThan)
+      );
+    });
+
+    if (isDuplicate) {
+      return 'Instructor is already assigned in this period of day';
+    }
+
+    return null;
+  }
 }
