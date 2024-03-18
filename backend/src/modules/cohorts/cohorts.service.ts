@@ -10,14 +10,7 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import {
-  Cohort,
-  Intake,
-  MasterPeriodOfDay,
-  Program,
-  Class,
-  Instructor,
-} from 'src/entity';
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
@@ -38,8 +31,6 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
-    @InjectRepository(Instructor)
-    private readonly instructorRepository: Repository<Instructor>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -148,7 +139,8 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          data: clazz.instructor,
+          // We don't want to include unnecessary classes data in the response
+          data: { ...instructor, classes: undefined },
           messages: instructorMessages,
         },
       };
