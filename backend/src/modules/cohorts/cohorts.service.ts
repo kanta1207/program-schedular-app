@@ -10,12 +10,21 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+  MasterWeekdaysRange,
+} from 'src/entity';
 import { FormattedClass } from './types';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
+  MON_WED_WEEKDAYS_RANGE_ID,
   MORNING_PERIOD_OF_DAY_ID,
+  WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../common/constants/master.constant';
 
 @Injectable()
@@ -122,6 +131,19 @@ export class CohortsService {
 
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
+        }
+
+        const msgDuplicateAssignment =
+          this.checkDuplicateAssignmentOfInstructor(
+            cohort.periodOfDay,
+            clazz.weekdaysRange,
+            clazz.startAt,
+            clazz.endAt,
+            instructor.classes,
+          );
+
+        if (msgDuplicateAssignment) {
+          instructorMessages.push(msgDuplicateAssignment);
         }
       }
 
@@ -317,35 +339,37 @@ export class CohortsService {
     return null;
   }
 
+  /**
+   * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
+   * @param startAtOfClass - Start date of the Class the instructor is being assigned to
+   * @param endAtOfClass - End date of the Class the instructor is being assigned to
+   * @param classesOfInstructor - Classes the instructor is already assigned to
+   * @returns an alert message when the instructor is already assigned in the same duration, else null
+   */
   checkDuplicateAssignmentOfInstructor(
     periodOfDayOfCohort: MasterPeriodOfDay,
+    weekdaysRangeOfClass: MasterWeekdaysRange,
     startAtOfClass: Date,
     endAtOfClass: Date,
     classesOfInstructor: Class[],
   ): string | null {
-    const classesOfInstructorInPeriodOfDay = classesOfInstructor.filter(
-      (clazz) => clazz.cohort.periodOfDay.id === periodOfDayOfCohort.id,
-    );
-
-    const isDuplicate = classesOfInstructorInPeriodOfDay.some((clazz) => {
-      const isStartAtBetween =
-        startAtOfClass >= clazz.startAt && startAtOfClass <= clazz.endAt;
-      const isEndAtBetween =
-        endAtOfClass >= clazz.startAt && endAtOfClass <= clazz.endAt;
-      const isStartAtLessThan = startAtOfClass <= clazz.startAt;
-      const isEndAtGreaterThan = endAtOfClass >= clazz.endAt;
-
-      return (
-        isStartAtBetween ||
-        isEndAtBetween ||
-        (isStartAtLessThan && isEndAtGreaterThan)
-      );
-    });
-
-    if (isDuplicate) {
-      return 'Instructor is already assigned in this period of day';
+    // If the instructor is assigned to any classes with overlapping duration and the period of day, return an alert message
+    for (const clazz of classesOfInstructor) {
+      if (
+        clazz.startAt <= endAtOfClass &&
+        clazz.endAt >= startAtOfClass &&
+        clazz.cohort.periodOfDay.id === periodOfDayOfCohort.id
+      ) {
+        if (
+          (weekdaysRangeOfClass.id === MON_WED_WEEKDAYS_RANGE_ID &&
+            clazz.weekdaysRange.id === WED_FRI_WEEKDAYS_RANGE_ID) ||
+          (weekdaysRangeOfClass.id === WED_FRI_WEEKDAYS_RANGE_ID &&
+            clazz.weekdaysRange.id === MON_WED_WEEKDAYS_RANGE_ID)
+        ) {
+          continue;
+        } else
+          return `Instructor is already assigned to the other class in the same duration`;
+      }
     }
-
-    return null;
   }
 }
