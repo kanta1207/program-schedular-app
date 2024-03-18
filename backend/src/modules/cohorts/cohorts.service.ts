@@ -299,11 +299,7 @@ export class CohortsService {
 
     const overlappingClasses = relevantClasses.filter((clazz) => {
       const { startAt, endAt } = clazz;
-      return (
-        (startAt >= startAtOfClass && startAt <= endAtOfClass) ||
-        (endAt >= startAtOfClass && endAt <= endAtOfClass) ||
-        (startAt <= startAtOfClass && endAt >= endAtOfClass)
-      );
+      return startAt <= endAtOfClass && endAt >= startAtOfClass;
     });
     if (overlappingClasses.length > 0) {
       return `Instructor is assigned to both Morning and Evening class in the same term`;
