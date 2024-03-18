@@ -1,5 +1,6 @@
 'use client';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import { PERIOD_OF_DAYS } from '@/constants/_index';
 import { GetInstructorsResponse } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -13,7 +14,12 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
   const handleRowClick = () => {
     router.push(`/instructors/${instructor.id}`);
   };
-  const periodNames = instructor.periodOfDays?.map((period) => period.name).join(', ');
+  const periodsWithIcons = instructor.periodOfDays
+    ?.map((period) => {
+      const icon = PERIOD_OF_DAYS.find(({ id }) => id === period.id)?.icon;
+      return `${icon} ${period.name}`;
+    })
+    .join(', ');
   return (
     <TableRow
       hover
@@ -26,7 +32,7 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
       </TableCell>
       <TableCell>{instructor.contractType.name}</TableCell>
       <TableCell>{instructor.desiredWorkingHours}</TableCell>
-      <TableCell>{periodNames}</TableCell>
+      <TableCell>{periodsWithIcons}</TableCell>
       <TableCell>
         <DaysOfTheWeekChip daysOfTheWeek={instructor.weekdaysRange} />
       </TableCell>
