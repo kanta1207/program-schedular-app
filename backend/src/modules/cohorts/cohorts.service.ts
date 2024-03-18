@@ -295,7 +295,7 @@ export class CohortsService {
   ): string | null {
     if (maxHoursOfInstructor) {
       const totalHours = classesOfInstructor.reduce(
-        (acc, curr) => acc + curr.course.requiredHours,
+        (total, curr) => total + curr.course.requiredHours,
         0,
       );
       if (totalHours + newClassRequiredHours > maxHoursOfInstructor) {
