@@ -10,14 +10,7 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import {
-  Cohort,
-  Intake,
-  MasterPeriodOfDay,
-  Program,
-  Class,
-  MasterWeekdaysRange,
-} from 'src/entity';
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
@@ -136,9 +129,7 @@ export class CohortsService {
         const msgDuplicateAssignment =
           this.checkDuplicateAssignmentOfInstructor(
             cohort.periodOfDay,
-            clazz.weekdaysRange,
-            clazz.startAt,
-            clazz.endAt,
+            clazz,
             instructor.classes,
           );
 
@@ -162,7 +153,7 @@ export class CohortsService {
         },
         instructor: {
           // We don't want to include unnecessary classes data in the response
-          data: { ...instructor, classes: undefined },
+          data: { ...instructor },
           messages: instructorMessages,
         },
       };
@@ -341,35 +332,40 @@ export class CohortsService {
 
   /**
    * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
-   * @param startAtOfClass - Start date of the Class the instructor is being assigned to
-   * @param endAtOfClass - End date of the Class the instructor is being assigned to
    * @param classesOfInstructor - Classes the instructor is already assigned to
    * @returns an alert message when the instructor is already assigned in the same duration, else null
    */
   checkDuplicateAssignmentOfInstructor(
     periodOfDayOfCohort: MasterPeriodOfDay,
-    weekdaysRangeOfClass: MasterWeekdaysRange,
-    startAtOfClass: Date,
-    endAtOfClass: Date,
+    classToBeAssigned: Class,
     classesOfInstructor: Class[],
   ): string | null {
+    const {
+      id: idOfClassToBeAssigned,
+      weekdaysRange: weekdaysRangeOfClassToBeAssigned,
+      startAt: startAtOfClassToBeAssigned,
+      endAt: endAtOfClassToBeAssigned,
+    } = classToBeAssigned;
     // If the instructor is assigned to any classes with overlapping duration and the period of day, return an alert message
     for (const clazz of classesOfInstructor) {
       if (
-        clazz.startAt <= endAtOfClass &&
-        clazz.endAt >= startAtOfClass &&
+        clazz.id !== idOfClassToBeAssigned &&
+        clazz.startAt <= endAtOfClassToBeAssigned &&
+        clazz.endAt >= startAtOfClassToBeAssigned &&
         clazz.cohort.periodOfDay.id === periodOfDayOfCohort.id
       ) {
         if (
-          (weekdaysRangeOfClass.id === MON_WED_WEEKDAYS_RANGE_ID &&
+          (weekdaysRangeOfClassToBeAssigned.id === MON_WED_WEEKDAYS_RANGE_ID &&
             clazz.weekdaysRange.id === WED_FRI_WEEKDAYS_RANGE_ID) ||
-          (weekdaysRangeOfClass.id === WED_FRI_WEEKDAYS_RANGE_ID &&
+          (weekdaysRangeOfClassToBeAssigned.id === WED_FRI_WEEKDAYS_RANGE_ID &&
             clazz.weekdaysRange.id === MON_WED_WEEKDAYS_RANGE_ID)
         ) {
           continue;
-        } else
+        } else {
           return `Instructor is already assigned to the other class in the same duration`;
+        }
       }
     }
+    return null;
   }
 }
