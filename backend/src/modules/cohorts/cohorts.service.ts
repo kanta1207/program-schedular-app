@@ -273,7 +273,7 @@ export class CohortsService {
     return null;
   }
 
-  // TODO: We might want to take day of the week into account when new data like `SAT-SUN` is introduced.
+  // TODO: We might want to take `day of the week` into account when new data like `SAT-SUN` is introduced.
   /**
    * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
    * @param startAtOfClass - Start date of the Class the instructor is being assigned to
