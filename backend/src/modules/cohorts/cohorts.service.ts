@@ -281,4 +281,27 @@ export class CohortsService {
     }
     return null;
   }
+
+  /**
+   * @param maxHoursOfInstrtuctor - Maximum hours the instructor can be assigned to
+   * @param classesOfInstructor - Classes the instructor is already assigned to
+   * @param newClassRequiredHours - Required hours for the new class
+   * @returns An alert message when the instructor will exceed the maximum hours if assigned to the new class
+   */
+  checkInstructorExceedsMaxHours(
+    maxHoursOfInstructor: number | null,
+    classesOfInstructor: Class[],
+    newClassRequiredHours: number,
+  ): string | null {
+    if (maxHoursOfInstructor) {
+      const totalHours = classesOfInstructor.reduce(
+        (acc, curr) => acc + curr.course.requiredHours,
+        0,
+      );
+      if (totalHours + newClassRequiredHours > maxHoursOfInstructor) {
+        return 'Instructor will exceed maximum hours';
+      }
+    }
+    return null;
+  }
 }
