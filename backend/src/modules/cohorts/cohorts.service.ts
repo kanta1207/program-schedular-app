@@ -20,6 +20,7 @@ import {
 } from 'src/entity';
 import { FormattedClass } from './types';
 import {
+  AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
   MORNING_PERIOD_OF_DAY_ID,
 } from '../../common/constants/master.constant';
@@ -287,6 +288,23 @@ export class CohortsService {
     endAtOfClass: Date,
     classesOfInstructor: Class[],
   ): string | null {
+    /**
+     * If the instructor is assigned to an afternoon class that overlaps with the new class,
+     * We don't need to check for spanning assignment between morning and evening classes.
+     */
+    const hasOverlappingAfternoonClass = classesOfInstructor.some((clazz) => {
+      const { startAt, endAt } = clazz;
+      return (
+        clazz.cohort.periodOfDay.id === AFTERNOON_PERIOD_OF_DAY_ID &&
+        startAt <= endAtOfClass &&
+        endAt >= startAtOfClass
+      );
+    });
+
+    if (hasOverlappingAfternoonClass) {
+      return null;
+    }
+
     const relevantClasses = classesOfInstructor.filter((clazz) => {
       if (periodOfDayOfCohort.id === MORNING_PERIOD_OF_DAY_ID) {
         return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
