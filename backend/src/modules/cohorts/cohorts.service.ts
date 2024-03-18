@@ -10,15 +10,13 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import {
-  Cohort,
-  Intake,
-  MasterPeriodOfDay,
-  Program,
-  Class,
-  Instructor,
-} from 'src/entity';
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
+import {
+  AFTERNOON_PERIOD_OF_DAY_ID,
+  EVENING_PERIOD_OF_DAY_ID,
+  MORNING_PERIOD_OF_DAY_ID,
+} from '../../common/constants/master.constant';
 
 @Injectable()
 export class CohortsService {
@@ -33,8 +31,6 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
-    @InjectRepository(Instructor)
-    private readonly instructorRepository: Repository<Instructor>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -93,7 +89,13 @@ export class CohortsService {
           weekdaysRange: true,
           course: true,
           classroom: true,
-          instructor: true,
+          instructor: {
+            classes: {
+              cohort: {
+                periodOfDay: true,
+              },
+            },
+          },
         },
       },
     });
@@ -106,9 +108,20 @@ export class CohortsService {
       const instructorMessages: string[] = [];
 
       if (instructor) {
-        const msgIsActive = this.checkInstructorIsActive(instructor);
+        const msgIsActive = this.checkInstructorIsActive(instructor.isActive);
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
+        }
+
+        const msgSpanningAssignment = this.checkSpanningAssignmentOfInstructor(
+          cohort.periodOfDay,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+
+        if (msgSpanningAssignment) {
+          instructorMessages.push(msgSpanningAssignment);
         }
       }
 
@@ -126,7 +139,8 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          data: clazz.instructor,
+          // We don't want to include unnecessary classes data in the response
+          data: { ...instructor, classes: undefined },
           messages: instructorMessages,
         },
       };
@@ -245,9 +259,60 @@ export class CohortsService {
     });
   }
 
-  checkInstructorIsActive(instructor: Instructor): string | null {
-    if (!instructor.isActive) {
+  checkInstructorIsActive(isActive: boolean): string | null {
+    if (!isActive) {
       return 'Instructor is not active';
+    }
+    return null;
+  }
+
+  // TODO: We might want to take `day of the week` into account when new data like `SAT-SUN` is introduced.
+  /**
+   * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
+   * @param startAtOfClass - Start date of the Class the instructor is being assigned to
+   * @param endAtOfClass - End date of the Class the instructor is being assigned to
+   * @param classesOfInstructor - Classes the instructor is already assigned to
+   * @returns An alert message when the instructor is assigned to both Morning and Evening class in the same term, else null
+   */
+  checkSpanningAssignmentOfInstructor(
+    periodOfDayOfCohort: MasterPeriodOfDay,
+    startAtOfClass: Date,
+    endAtOfClass: Date,
+    classesOfInstructor: Class[],
+  ): string | null {
+    /**
+     * If the instructor is assigned to an afternoon class that overlaps with the new class,
+     * We don't need to check for spanning assignment between morning and evening classes.
+     */
+    const hasOverlappingAfternoonClass = classesOfInstructor.some((clazz) => {
+      const { startAt, endAt } = clazz;
+      return (
+        clazz.cohort.periodOfDay.id === AFTERNOON_PERIOD_OF_DAY_ID &&
+        startAt <= endAtOfClass &&
+        endAt >= startAtOfClass
+      );
+    });
+
+    if (hasOverlappingAfternoonClass) {
+      return null;
+    }
+
+    const relevantClasses = classesOfInstructor.filter((clazz) => {
+      if (periodOfDayOfCohort.id === MORNING_PERIOD_OF_DAY_ID) {
+        return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
+      }
+      if (periodOfDayOfCohort.id === EVENING_PERIOD_OF_DAY_ID) {
+        return clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID;
+      }
+      return false;
+    });
+
+    const overlappingClasses = relevantClasses.filter((clazz) => {
+      const { startAt, endAt } = clazz;
+      return startAt <= endAtOfClass && endAt >= startAtOfClass;
+    });
+    if (overlappingClasses.length > 0) {
+      return `Instructor is assigned to both Morning and Evening class in the same term`;
     }
     return null;
   }
