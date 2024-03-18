@@ -294,7 +294,7 @@ export class CohortsService {
   }
 
   /**
-   * @param maxHoursOfInstrtuctor - Maximum hours the instructor can be assigned to
+   * @param maxHoursOfInstructor - Maximum hours the instructor can be assigned to
    * @param classesOfInstructor - Classes the instructor is already assigned to
    * @param newClassRequiredHours - Required hours for the new class
    * @returns An alert message when the instructor will exceed the maximum hours if assigned to the new class
