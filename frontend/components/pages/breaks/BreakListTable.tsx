@@ -4,13 +4,14 @@ import { updateBreak } from '@/actions/breaks/updateBreak';
 import TableMenu from '@/components/partials/TableMenu';
 import { usePagination } from '@/hooks/usePagination';
 import { GetBreaksResponse } from '@/types/_index';
-import { TableFooter, TablePagination } from '@mui/material';
+import { Box, TableFooter, TablePagination } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -92,6 +93,12 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box className="flex items-center gap-1 text-blue-500">
+        <OpenInNewIcon fontSize="small" />
+        <a href="https://ciccc.ca/academic-calendar/" target="_blank">
+          Academic Calender
+        </a>
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Table>
           <TableHead>
