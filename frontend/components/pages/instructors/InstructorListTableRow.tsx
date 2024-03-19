@@ -21,9 +21,9 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
   const periodsWithIcons = PERIOD_OF_DAYS.map((period) => {
     const opacity = isAvailable(period.id) ? 1 : 0.1;
     return (
-      <span key={period.id} style={{ opacity }}>
+      <li key={period.id} style={{ opacity }}>
         {period.icon} {period.name}
-      </span>
+      </li>
     );
   });
   return (
