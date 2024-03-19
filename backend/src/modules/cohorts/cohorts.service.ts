@@ -88,7 +88,7 @@ export class CohortsService {
           instructor: {
             classes: {
               cohort: {
-                periodOfDay: true,
+                periodOfDay: { courses: { course: true } },
               },
             },
           },
@@ -118,6 +118,13 @@ export class CohortsService {
 
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
+        }
+        const msgEnableCourse = this.checkInstructorTeachableCourse(
+          clazz.instructor,
+          clazz.course.id,
+        );
+        if (msgEnableCourse) {
+          instructorMessages.push(msgEnableCourse);
         }
       }
 
@@ -258,6 +265,18 @@ export class CohortsService {
   checkInstructorIsActive(isActive: boolean): string | null {
     if (!isActive) {
       return 'Instructor is not active';
+    }
+    return null;
+  }
+  checkInstructorTeachableCourse(
+    instructor: Instructor,
+    courseId: number,
+  ): string | null {
+    const canTeach = instructor.courses.some(
+      (coursesInstructor) => coursesInstructor.course.id === courseId,
+    );
+    if (!canTeach) {
+      return `Instructor is not able to teach this course`;
     }
     return null;
   }
