@@ -86,6 +86,7 @@ const Header = () => {
             {navigation.map((navItem) => (
               <Link href={navItem.path} key={navItem.path} passHref>
                 <Button
+                  component="a"
                   sx={{
                     my: 2,
                     color: 'white',
