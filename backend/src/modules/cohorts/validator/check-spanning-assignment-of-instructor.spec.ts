@@ -56,9 +56,26 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     expect(result).toBeNull();
   });
 
-  it('should return "Instructor is assigned to both Morning and Evening class in the same term" when the instructor is assigned to both Morning and Evening classes in the same term ,without being assigned to afternoon class', () => {
+  it('should return message when the new class is in Morning, and the instructor is already assigned to Evening classes in the same term', () => {
     const periodOfDayOfCohort: MasterPeriodOfDay = morningPeriodOfDay;
-    const startAtOfClass = new Date('2022-01-15');
+    const startAtOfClass = new Date('2022-02-01');
+    const endAtOfClass = new Date('2022-02-15');
+
+    const result = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohort,
+      startAtOfClass,
+      endAtOfClass,
+      classesOfInstructor,
+    );
+
+    expect(result).toBe(
+      'Instructor is assigned to both Morning and Evening class in the same term',
+    );
+  });
+
+  it('should return message when the new class is in Evening, and the instructor is already assigned to Morning classes in the same term', () => {
+    const periodOfDayOfCohort: MasterPeriodOfDay = eveningPeriodOfDay;
+    const startAtOfClass = new Date('2022-02-01');
     const endAtOfClass = new Date('2022-02-15');
 
     const result = checkSpanningAssignmentOfInstructor(
