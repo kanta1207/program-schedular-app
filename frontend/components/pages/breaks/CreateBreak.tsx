@@ -46,14 +46,9 @@ const CreateBreak = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex justify-between mb-4 ">
           {!isCreating && (
-            <>
-              <Button variant="outlined" href="https://ciccc.ca/academic-calendar/" target="_blank">
-                Academic Calender
-              </Button>
-              <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
-                New Break
-              </Button>
-            </>
+            <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
+              New Break
+            </Button>
           )}
         </div>
 
