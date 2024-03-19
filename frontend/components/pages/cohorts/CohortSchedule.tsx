@@ -1,6 +1,7 @@
 'use client';
 
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
+import { getHolidays } from '@/actions/common/getHolidays';
 import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
@@ -14,6 +15,7 @@ import {
   GetCoursesResponse,
   GetInstructorsResponse,
 } from '@/types/_index';
+import { Holiday } from '@/types/holiday';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -63,6 +65,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [holidays, setHolidays] = useState<Holiday[]>();
   const router = useRouter();
   const now = dayjs();
 
@@ -255,42 +258,28 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   };
 
   // DatePicker Break/Holiday disabled
-  // Call holidays from the API https://canada-holidays.ca/api
-  interface Holiday {
-    id: number;
-    date: string;
-    nameEn: string;
-    nameFr: string;
-    federal: number;
-    observedDate: string;
-  }
-
-  // Going to move this part to the top of the function IF we are going to use them
-  // otherwise delete them
-  const [holidays, setHolidays] = useState<Holiday[]>();
   useEffect(() => {
     if (isScheduleEditable) {
       const fetchHolidays = async () => {
-        const res = await fetch('https://canada-holidays.ca/api/v1/provinces/BC');
-        const data = await res.json();
-        const holidays = data.province.holidays;
-        setHolidays(holidays);
+        const holidays = await getHolidays();
+        if (holidays) {
+          setHolidays(holidays);
+        }
       };
       fetchHolidays();
     }
   }, [isScheduleEditable]);
 
-  const checkIsBreak = (date: Dayjs) =>
+  const isBreak = (date: Dayjs) =>
     breaks.some(
       (breakItem) =>
-        dayjs(breakItem.startAt).subtract(1, 'day').isBefore(dayjs(date), 'day') &&
-        dayjs(breakItem.endAt).add(1, 'day').isAfter(dayjs(date), 'day'),
+        dayjs(breakItem.startAt).subtract(1, 'day').isBefore(date, 'day') &&
+        dayjs(breakItem.endAt).add(1, 'day').isAfter(date, 'day'),
     );
 
-  const checkIsHoliday = (date: Dayjs) =>
-    !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(dayjs(date)));
+  const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
 
-  const isDateDisable = (date: Dayjs) => checkIsBreak(date) || checkIsHoliday(date);
+  const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
