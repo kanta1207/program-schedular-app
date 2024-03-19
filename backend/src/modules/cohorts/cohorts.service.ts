@@ -15,10 +15,10 @@ import { FormattedClass } from './types';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
-  MON_WED_WEEKDAYS_RANGE_ID,
   MORNING_PERIOD_OF_DAY_ID,
-  WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../common/constants/master.constant';
+
+import { checkDuplicateAssignmentOfInstructor } from './validator';
 
 @Injectable()
 export class CohortsService {
@@ -126,12 +126,11 @@ export class CohortsService {
           instructorMessages.push(msgSpanningAssignment);
         }
 
-        const msgDuplicateAssignment =
-          this.checkDuplicateAssignmentOfInstructor(
-            cohort.periodOfDay,
-            clazz,
-            instructor.classes,
-          );
+        const msgDuplicateAssignment = checkDuplicateAssignmentOfInstructor(
+          cohort.periodOfDay,
+          clazz,
+          instructor.classes,
+        );
 
         if (msgDuplicateAssignment) {
           instructorMessages.push(msgDuplicateAssignment);
@@ -326,45 +325,6 @@ export class CohortsService {
     });
     if (overlappingClasses.length > 0) {
       return `Instructor is assigned to both Morning and Evening class in the same term`;
-    }
-    return null;
-  }
-
-  /**
-   * @param periodOfDayOfCohort - Period of Day of the Cohort the instructor is being assigned to
-   * @param classesOfInstructor - Classes the instructor is already assigned to
-   * @returns an alert message when the instructor is already assigned in the same duration, else null
-   */
-  checkDuplicateAssignmentOfInstructor(
-    periodOfDayOfCohort: MasterPeriodOfDay,
-    classToBeAssigned: Class,
-    classesOfInstructor: Class[],
-  ): string | null {
-    const {
-      id: idOfClassToBeAssigned,
-      weekdaysRange: weekdaysRangeOfClassToBeAssigned,
-      startAt: startAtOfClassToBeAssigned,
-      endAt: endAtOfClassToBeAssigned,
-    } = classToBeAssigned;
-    // If the instructor is assigned to any classes with overlapping duration and the period of day, return an alert message
-    for (const clazz of classesOfInstructor) {
-      if (
-        clazz.id !== idOfClassToBeAssigned &&
-        clazz.startAt <= endAtOfClassToBeAssigned &&
-        clazz.endAt >= startAtOfClassToBeAssigned &&
-        clazz.cohort.periodOfDay.id === periodOfDayOfCohort.id
-      ) {
-        if (
-          (weekdaysRangeOfClassToBeAssigned.id === MON_WED_WEEKDAYS_RANGE_ID &&
-            clazz.weekdaysRange.id === WED_FRI_WEEKDAYS_RANGE_ID) ||
-          (weekdaysRangeOfClassToBeAssigned.id === WED_FRI_WEEKDAYS_RANGE_ID &&
-            clazz.weekdaysRange.id === MON_WED_WEEKDAYS_RANGE_ID)
-        ) {
-          continue;
-        } else {
-          return `Instructor is already assigned to the other class in the same duration`;
-        }
-      }
     }
     return null;
   }
