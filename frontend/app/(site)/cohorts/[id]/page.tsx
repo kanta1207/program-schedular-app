@@ -25,6 +25,7 @@ const page = async ({ params }: PageProps) => {
     { data: courses },
     { data: instructors },
     { data: breaks },
+    holidays,
   ] = await Promise.all([
     getCohortById(id),
     getCohorts(),
@@ -33,8 +34,8 @@ const page = async ({ params }: PageProps) => {
     getCourses(),
     getInstructors({}),
     getBreaks(),
+    getHolidays(),
   ]);
-  const holidays = await getHolidays();
 
   return (
     <>
