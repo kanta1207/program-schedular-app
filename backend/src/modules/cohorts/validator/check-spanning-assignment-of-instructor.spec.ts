@@ -75,8 +75,8 @@ describe('checkSpanningAssignmentOfInstructor', () => {
 
   it('should return message when the new class is in Evening, and the instructor is already assigned to Morning classes in the same term', () => {
     const periodOfDayOfCohort: MasterPeriodOfDay = eveningPeriodOfDay;
-    const startAtOfClass = new Date('2022-02-01');
-    const endAtOfClass = new Date('2022-02-15');
+    const startAtOfClass = new Date('2022-01-01');
+    const endAtOfClass = new Date('2022-01-15');
 
     const result = checkSpanningAssignmentOfInstructor(
       periodOfDayOfCohort,
