@@ -1,7 +1,6 @@
 'use client';
 
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
-import { getHolidays } from '@/actions/common/getHolidays';
 import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
@@ -59,13 +58,13 @@ interface CohortScheduleProps {
   instructors: GetInstructorsResponse[];
   cohorts: GetCohortsResponse[];
   breaks: GetBreaksResponse[];
+  holidays: Holiday[];
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks, holidays }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
-  const [holidays, setHolidays] = useState<Holiday[]>();
   const router = useRouter();
   const now = dayjs();
 
@@ -258,27 +257,13 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   };
 
   // DatePicker Break/Holiday disabled
-  useEffect(() => {
-    if (isScheduleEditable) {
-      const fetchHolidays = async () => {
-        const holidays = await getHolidays();
-        if (holidays) {
-          setHolidays(holidays);
-        }
-      };
-      fetchHolidays();
-    }
-  }, [isScheduleEditable]);
-
   const isBreak = (date: Dayjs) =>
     breaks.some(
       (breakItem) =>
         dayjs(breakItem.startAt).subtract(1, 'day').isBefore(date, 'day') &&
         dayjs(breakItem.endAt).add(1, 'day').isAfter(date, 'day'),
     );
-
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
-
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
   return (
