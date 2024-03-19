@@ -13,6 +13,7 @@ import {
   GetCohortsResponse,
   GetCoursesResponse,
   GetInstructorsResponse,
+  Holiday,
 } from '@/types/_index';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -57,9 +58,10 @@ interface CohortScheduleProps {
   instructors: GetInstructorsResponse[];
   cohorts: GetCohortsResponse[];
   breaks: GetBreaksResponse[];
+  holidays: Holiday[] | undefined;
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks }) => {
+const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks, holidays }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
@@ -254,6 +256,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     setDialogOpen(false);
   };
 
+  // DatePicker Break/Holiday disabled
+  const isBreak = (date: Dayjs) =>
+    breaks.some(
+      (breakItem) =>
+        dayjs(breakItem.startAt).subtract(1, 'day').isBefore(date, 'day') &&
+        dayjs(breakItem.endAt).add(1, 'day').isAfter(date, 'day'),
+    );
+  const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
+  const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -319,7 +331,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           render={({ field }: any) => {
                             return (
                               <DatePicker
-                                slotProps={{ textField: { size: 'small' } }}
+                                slotProps={{
+                                  textField: { size: 'small' },
+                                  day: (ownerState) => {
+                                    if (isDateDisable(ownerState.day)) {
+                                      return { sx: { bgcolor: 'grey.200' } };
+                                    }
+                                    return {};
+                                  },
+                                }}
+                                shouldDisableDate={isDateDisable}
                                 value={dayjs(field.value)}
                                 onChange={(date) => {
                                   field.onChange(date);
@@ -339,7 +360,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           render={({ field }: any) => {
                             return (
                               <DatePicker
-                                slotProps={{ textField: { size: 'small' } }}
+                                slotProps={{
+                                  textField: { size: 'small' },
+                                  day: (ownerState) => {
+                                    if (isDateDisable(ownerState.day)) {
+                                      return { sx: { bgcolor: 'grey.200' } };
+                                    }
+                                    return {};
+                                  },
+                                }}
+                                shouldDisableDate={isDateDisable}
                                 value={dayjs(field.value)}
                                 onChange={(date) => {
                                   field.onChange(date);
