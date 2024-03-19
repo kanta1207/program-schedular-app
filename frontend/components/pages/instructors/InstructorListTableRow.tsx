@@ -19,7 +19,7 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
   };
 
   const periodsWithIcons = PERIOD_OF_DAYS.map((period) => {
-    const opacity = isAvailable(period.id) ? 1 : 0.25;
+    const opacity = isAvailable(period.id) ? 1 : 0.1;
     return (
       <span key={period.id} style={{ opacity }}>
         {period.icon} {period.name}
@@ -38,7 +38,9 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
       </TableCell>
       <TableCell>{instructor.contractType.name}</TableCell>
       <TableCell>{instructor.desiredWorkingHours}</TableCell>
-      <TableCell>{periodsWithIcons}</TableCell>
+      <TableCell>
+        <ul className="flex gap-2">{periodsWithIcons}</ul>
+      </TableCell>
       <TableCell>
         <DaysOfTheWeekChip daysOfTheWeek={instructor.weekdaysRange} />
       </TableCell>
