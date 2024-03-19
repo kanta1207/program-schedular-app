@@ -5,12 +5,21 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as dayjs from 'dayjs';
 
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+  Instructor,
+  MasterWeekdaysRange,
+} from 'src/entity';
 import { FormattedClass } from './types';
 
 import {
@@ -96,6 +105,7 @@ export class CohortsService {
               cohort: {
                 periodOfDay: true,
               },
+              weekdaysRange: true,
               course: true,
             },
             courses: { course: true },
@@ -120,7 +130,9 @@ export class CohortsService {
         const msgExceedsMaxHours = this.checkInstructorExceedsMaxHours(
           instructor.contractType.maxHours,
           instructor.classes,
-          clazz.course.requiredHours,
+          clazz.startAt,
+          clazz.endAt,
+          clazz.weekdaysRange,
         );
 
         if (msgExceedsMaxHours) {
@@ -296,21 +308,103 @@ export class CohortsService {
   /**
    * @param maxHoursOfInstructor - Maximum hours the instructor can be assigned to
    * @param classesOfInstructor - Classes the instructor is already assigned to
-   * @param newClassRequiredHours - Required hours for the new class
+   * @param startAtOfNewClass - Start date of the new class
+   * @param endAtOfNewClass - End date of the new class
+   * @param weekdaysRangeOfNewClass - Weekdays range of the new class
    * @returns An alert message when the instructor will exceed the maximum hours if assigned to the new class
    */
   checkInstructorExceedsMaxHours(
     maxHoursOfInstructor: number | null,
     classesOfInstructor: Class[],
-    newClassRequiredHours: number,
+    startAtOfNewClass: Date,
+    endAtOfNewClass: Date,
+    weekdaysRangeOfNewClass: MasterWeekdaysRange,
   ): string | null {
     if (maxHoursOfInstructor) {
-      const totalHours = classesOfInstructor.reduce(
-        (total, curr) => total + curr.course.requiredHours,
-        0,
+      // Sort all classes by their start date
+      const sortedClasses = classesOfInstructor.sort(
+        (a, b) => a.startAt.getTime() - b.startAt.getTime(),
       );
-      if (totalHours + newClassRequiredHours > maxHoursOfInstructor) {
-        return 'Instructor will exceed maximum hours';
+
+      const overlaps: {
+        overlapStartAt: Date;
+        overlapEndAt: Date;
+        totalWeeklyHours: number;
+        overlappingCohortNames: string[];
+      }[] = [];
+
+      sortedClasses.forEach((currentClass) => {
+        const currentCohortName = currentClass.cohort.name;
+        // Weekly hours of the class is 20 if the weekdays range is Monday to Friday, otherwise 10
+        const weeklyHoursOfCurrentClass =
+          currentClass.weekdaysRange.id === MON_FRI_WEEKDAYS_RANGE_ID ? 20 : 10;
+        // Find the overlapping group for the current class
+        let found = false;
+        for (let i = 0; i < overlaps.length; i++) {
+          // If the currentClass overlaps with the existing overlap group
+          if (
+            currentClass.startAt <= overlaps[i].overlapEndAt &&
+            currentClass.endAt >= overlaps[i].overlapStartAt
+          ) {
+            // Update the overlap period if needed
+            overlaps[i].overlapStartAt = new Date(
+              Math.min(
+                overlaps[i].overlapStartAt.getTime(),
+                currentClass.startAt.getTime(),
+              ),
+            );
+            overlaps[i].overlapEndAt = new Date(
+              Math.max(
+                overlaps[i].overlapEndAt.getTime(),
+                currentClass.endAt.getTime(),
+              ),
+            );
+            // Update the total hours of the overlap group
+            overlaps[i].totalWeeklyHours += weeklyHoursOfCurrentClass;
+            /**
+             * Add the cohort name to the overlapping group
+             * There is a change that instructor has two different classes with the same cohort in the same duration,
+             * when they are MON-WED and WED-FRI classes.
+             * In those cases, the cohort name should be added only once.
+             */
+            if (
+              !overlaps[i].overlappingCohortNames.includes(currentCohortName)
+            ) {
+              overlaps[i].overlappingCohortNames.push(currentCohortName);
+            }
+            found = true;
+            break;
+          }
+        }
+
+        // If no overlapping group is found, create a new one
+        if (!found) {
+          overlaps.push({
+            overlapStartAt: currentClass.startAt,
+            overlapEndAt: currentClass.endAt,
+            totalWeeklyHours: weeklyHoursOfCurrentClass,
+            overlappingCohortNames: [currentCohortName],
+          });
+        }
+      });
+
+      // Check if the new class overlaps with any of the existing classes
+      for (const overlap of overlaps) {
+        if (
+          startAtOfNewClass <= overlap.overlapEndAt &&
+          endAtOfNewClass >= overlap.overlapStartAt
+        ) {
+          // Weekly hours of the class is 20 if the weekdays range is Monday to Friday, otherwise 10
+          const weeklyHoursOfNewClass =
+            weekdaysRangeOfNewClass.id === MON_FRI_WEEKDAYS_RANGE_ID ? 20 : 10;
+          const totalWeeklyHoursInstructorAssigned =
+            overlap.totalWeeklyHours + weeklyHoursOfNewClass;
+          if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
+            return `Instructor will exceed maximum hours if assigned to this class. Overlapping cohort(s): ${overlap.overlappingCohortNames.join(
+              ', ',
+            )} Total weekly working hours will be ${totalWeeklyHoursInstructorAssigned} from ${dayjs(overlap.overlapStartAt).format('YYYY-MM-DD')} to ${dayjs(overlap.overlapEndAt).format('YYYY-MM-DD')}. Instructor's maximum weekly working hour is ${maxHoursOfInstructor}.`;
+          }
+        }
       }
     }
     return null;
