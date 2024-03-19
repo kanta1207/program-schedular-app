@@ -1,6 +1,6 @@
 import { Holiday } from '@/types/holiday';
 
-export const getHolidays = async (): Promise<Holiday[]> => {
+export const getHolidays = async (): Promise<Holiday[] | undefined> => {
   try {
     const response = await fetch('https://canada-holidays.ca/api/v1/provinces/BC', {
       method: 'GET',
@@ -10,7 +10,8 @@ export const getHolidays = async (): Promise<Holiday[]> => {
     });
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      console.error(`Something went wrong while fetching holidays: ${response.status} ${response.statusText}`);
+      return undefined;
     }
 
     const data = await response.json();
@@ -18,6 +19,5 @@ export const getHolidays = async (): Promise<Holiday[]> => {
     return holidays;
   } catch (error: any) {
     console.error(error);
-    throw new Error(`An error occurred: ${error.message}`);
   }
 };

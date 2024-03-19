@@ -58,7 +58,7 @@ interface CohortScheduleProps {
   instructors: GetInstructorsResponse[];
   cohorts: GetCohortsResponse[];
   breaks: GetBreaksResponse[];
-  holidays: Holiday[];
+  holidays: Holiday[] | undefined;
 }
 
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks, holidays }) => {
