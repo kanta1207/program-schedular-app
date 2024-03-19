@@ -44,7 +44,7 @@ const CreateBreak = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex justify-end mb-4 ">
+        <div className="flex justify-end">
           {!isCreating && (
             <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
               New Break

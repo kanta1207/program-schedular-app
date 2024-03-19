@@ -93,9 +93,9 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box className="flex items-center gap-1 text-blue-500">
-        <OpenInNewIcon fontSize="small" />
-        <a href="https://ciccc.ca/academic-calendar/" target="_blank">
+      <Box sx={{ display: 'inline-block', color: 'info.main' }}>
+        <a href="https://ciccc.ca/academic-calendar/" target="_blank" className="flex items-center gap-1">
+          <OpenInNewIcon fontSize="small" />
           Academic Calender
         </a>
       </Box>
