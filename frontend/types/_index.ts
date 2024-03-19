@@ -3,6 +3,7 @@ export * from './break';
 export * from './class';
 export * from './cohort';
 export * from './course';
+export * from './holiday';
 export * from './instructor';
 export * from './intake';
 export * from './master';

@@ -1,4 +1,4 @@
-import { Holiday } from '@/types/holiday';
+import { Holiday } from '@/types/_index';
 
 export const getHolidays = async (): Promise<Holiday[] | undefined> => {
   try {

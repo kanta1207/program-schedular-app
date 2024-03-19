@@ -13,8 +13,8 @@ import {
   GetCohortsResponse,
   GetCoursesResponse,
   GetInstructorsResponse,
+  Holiday,
 } from '@/types/_index';
-import { Holiday } from '@/types/holiday';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
