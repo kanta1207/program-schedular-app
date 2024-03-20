@@ -46,11 +46,11 @@ export const checkSpanningAssignmentOfInstructor = (
     return false;
   });
 
-  const overlappingClasses = relevantClasses.filter((clazz) => {
+  const hasOverlappingClasses = relevantClasses.some((clazz) => {
     const { startAt, endAt } = clazz;
     return startAt <= endAtOfClass && endAt >= startAtOfClass;
   });
-  if (overlappingClasses.length > 0) {
+  if (hasOverlappingClasses) {
     return `Instructor is assigned to both Morning and Evening class in the same term`;
   }
   return null;
