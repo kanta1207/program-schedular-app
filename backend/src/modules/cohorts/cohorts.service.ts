@@ -107,7 +107,7 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    const formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
+    let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
       const { instructor } = clazz;
       const instructorMessages: string[] = [];
 
@@ -123,7 +123,6 @@ export class CohortsService {
         endAt: clazz.endAt,
         cohort: clazz.cohort,
         course: clazz.course,
-        messages: [],
         weekdaysRange: {
           data: clazz.weekdaysRange,
           messages: [],
@@ -139,13 +138,11 @@ export class CohortsService {
       };
     });
 
-    // TODO: fix later
-    const formattedClassesWithErrors = this.checkClassOverlap(formattedClasses);
-    console.log(formattedClassesWithErrors);
+    formattedClasses = this.checkClassOverlap(formattedClasses);
 
     const formattedResponse = {
       ...cohort,
-      classes: formattedClassesWithErrors,
+      classes: formattedClasses,
     };
 
     return formattedResponse;
@@ -267,8 +264,6 @@ export class CohortsService {
   }
 
   checkClassOverlap(classes: FormattedClass[]): FormattedClass[] {
-    // const overlaps: FormattedClass[][] = [];
-
     const checkOverlapAllowed = (rangeAId: number, rangeBId: number) => {
       const allowedCombinations = [
         [WEEKDAYS_RANGE_MON_WED.id, WEEKDAYS_RANGE_WED_FRI.id],
@@ -278,6 +273,14 @@ export class CohortsService {
       return allowedCombinations.some(
         ([a, b]) => rangeAId === a && rangeBId === b,
       );
+    };
+
+    const generateMessage = (clazz: FormattedClass) => {
+      const startAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
+      const endAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
+      const rangeName = clazz.weekdaysRange.data.name;
+
+      return `Overlaps with ${startAt} - ${endAt}(${rangeName})`;
     };
 
     // Compare each classes
@@ -294,26 +297,13 @@ export class CohortsService {
             classB.weekdaysRange.data.id,
           );
           if (!isOverlapAllowed) {
-            // TODO: fix  later
-            // TODO: need to remove duplicate messages
-            const classAStartAt = dayjs(classA.startAt).format('YYYY-MM-DD');
-            const classAEndAt = dayjs(classB.startAt).format('YYYY-MM-DD');
-            const classARangeName = classA.weekdaysRange.data.name;
-            const classBStartAt = dayjs(classB.startAt).format('YYYY-MM-DD');
-            const classBEndAt = dayjs(classB.startAt).format('YYYY-MM-DD');
-            const classBRangeName = classB.weekdaysRange.data.name;
-
-            const msgA = `Overlaps with ${classBStartAt} - ${classBEndAt}(${classBRangeName})`;
-            const msgB = `Overlaps with ${classAStartAt} - ${classAEndAt}(${classARangeName})`;
-            classA.messages.push(msgA);
-            classB.messages.push(msgB);
-            // overlaps.push([classA, classB]);
+            classA.weekdaysRange.messages.push(generateMessage(classA));
+            classB.weekdaysRange.messages.push(generateMessage(classB));
           }
         }
       }
     }
 
-    // return overlaps;
     return classes;
   }
 }
