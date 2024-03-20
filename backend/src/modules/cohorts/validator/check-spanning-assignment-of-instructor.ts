@@ -19,38 +19,69 @@ export const checkSpanningAssignmentOfInstructor = (
   endAtOfClass: Date,
   classesOfInstructor: Class[],
 ): string | null => {
-  /**
-   * If the instructor is assigned to an afternoon class that overlaps with the new class,
-   * We don't need to check for spanning assignment between morning and evening classes.
-   */
-  const hasOverlappingAfternoonClass = classesOfInstructor.some((clazz) => {
-    const { startAt, endAt } = clazz;
-    return (
-      clazz.cohort.periodOfDay.id === AFTERNOON_PERIOD_OF_DAY_ID &&
-      startAt <= endAtOfClass &&
-      endAt >= startAtOfClass
-    );
-  });
+  type DurationOfClass = Pick<Class, 'startAt' | 'endAt'>;
 
-  if (hasOverlappingAfternoonClass) {
-    return null;
+  /**
+   * Array of classes the instructor is already assigned to, and overlaps with the new class.
+   * Array of Morning classes if the new class is an Evening class,
+   * if the new class is a Morning class, it will be an array of Evening classes
+   */
+  const relevantClassesDurations: DurationOfClass[] = [];
+
+  /**
+   * Array of Afternoon classes the instructor is already assigned to, and overlaps with the new class
+   */
+  const afternoonClassesDurations: DurationOfClass[] = [];
+
+  // Loop through the classes of the instructor to find the relevant classes and overlapping afternoon classes
+  for (const clazz of classesOfInstructor) {
+    const { startAt, endAt } = clazz;
+
+    const isOverlapping = startAt <= endAtOfClass && endAt >= startAtOfClass;
+
+    const isOverlappingAfternoonClass =
+      clazz.cohort.periodOfDay.id === AFTERNOON_PERIOD_OF_DAY_ID &&
+      isOverlapping;
+
+    const isRelevantClass =
+      (isOverlapping &&
+        periodOfDayId === MORNING_PERIOD_OF_DAY_ID &&
+        clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID) ||
+      (isOverlapping &&
+        periodOfDayId === EVENING_PERIOD_OF_DAY_ID &&
+        clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID);
+
+    //Push the class to each arrays if it meets the condition
+    if (isOverlappingAfternoonClass) {
+      afternoonClassesDurations.push({ startAt, endAt });
+    } else if (isRelevantClass) {
+      // If the class is relevant, figure out the overlapping duration and push it to the relevantClassesDurations array
+      const overlappingDurationStartAt =
+        startAt <= startAtOfClass ? startAtOfClass : startAt;
+      const overlappingDurationEndAt =
+        endAt >= endAtOfClass ? endAtOfClass : endAt;
+      relevantClassesDurations.push({
+        startAt: overlappingDurationStartAt,
+        endAt: overlappingDurationEndAt,
+      });
+    }
   }
 
-  const relevantClasses = classesOfInstructor.filter((clazz) => {
-    if (periodOfDayId === MORNING_PERIOD_OF_DAY_ID) {
-      return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
+  // Loop through the relevant classes durations to remove the ones that are overlapping with the overlapping afternoon classes durations
+  for (let i = 0; i < relevantClassesDurations.length; i++) {
+    for (const afternoonClassDuration of afternoonClassesDurations) {
+      if (
+        relevantClassesDurations[i].startAt >= afternoonClassDuration.startAt &&
+        relevantClassesDurations[i].endAt <= afternoonClassDuration.endAt
+      ) {
+        relevantClassesDurations.splice(i, 1);
+        i--;
+      }
     }
-    if (periodOfDayId === EVENING_PERIOD_OF_DAY_ID) {
-      return clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID;
-    }
-    return false;
-  });
+  }
 
-  const hasOverlappingClasses = relevantClasses.some((clazz) => {
-    const { startAt, endAt } = clazz;
-    return startAt <= endAtOfClass && endAt >= startAtOfClass;
-  });
-  if (hasOverlappingClasses) {
+  // If there are any relevant classes left, it means the instructor is assigned to both Morning and Evening class in the same term, with no overlapping afternoon classes
+  if (relevantClassesDurations.length > 0) {
     return `Instructor is assigned to both Morning and Evening class in the same term`;
   }
   return null;
