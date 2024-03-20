@@ -86,10 +86,25 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     );
   });
 
-  it('should return null when the instructor is not assigned to both Morning and Evening classes in the same term', () => {
+  it('should return null when the instructor is being assigned to Morning class, and is already assigned to Evening classes in the same term', () => {
     const periodOfDayOfCohort = morningPeriodOfDay;
     const startAtOfClass = new Date('2022-03-15');
     const endAtOfClass = new Date('2022-04-15');
+
+    const result = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohort,
+      startAtOfClass,
+      endAtOfClass,
+      classesOfInstructor,
+    );
+
+    expect(result).toBeNull();
+  });
+
+  it('should return null when the instructor is being assigned to Evening class, and is already assigned to Morning classes in the same term', () => {
+    const periodOfDayOfCohort = eveningPeriodOfDay;
+    const startAtOfClass = new Date('2022-02-01');
+    const endAtOfClass = new Date('2022-02-15');
 
     const result = checkSpanningAssignmentOfInstructor(
       periodOfDayOfCohort,
