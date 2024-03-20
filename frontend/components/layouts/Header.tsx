@@ -86,6 +86,8 @@ const Header = () => {
             {navigation.map((navItem) => (
               <Button
                 key={navItem.path}
+                href={navItem.path}
+                component="a"
                 sx={{
                   my: 2,
                   color: 'white',
@@ -93,7 +95,6 @@ const Header = () => {
                   textDecoration: navItem.path === pathname ? 'underline' : 'none',
                   textUnderlineOffset: '4px',
                 }}
-                onClick={() => router.push(navItem.path)}
               >
                 {navItem.name}
               </Button>
