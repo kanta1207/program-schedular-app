@@ -1,6 +1,7 @@
 import { getBreaks } from '@/actions/breaks/getBreaks';
 import { getCohortById } from '@/actions/cohorts/getCohortById';
 import { getCohorts } from '@/actions/cohorts/getCohorts';
+import { getHolidays } from '@/actions/common/getHolidays';
 import { getCourses } from '@/actions/courses/getCourses';
 import { getInstructors } from '@/actions/instructors/getInstructors';
 import { getIntakes } from '@/actions/intakes/getIntakes';
@@ -24,6 +25,7 @@ const page = async ({ params }: PageProps) => {
     { data: courses },
     { data: instructors },
     { data: breaks },
+    holidays,
   ] = await Promise.all([
     getCohortById(id),
     getCohorts(),
@@ -32,6 +34,7 @@ const page = async ({ params }: PageProps) => {
     getCourses(),
     getInstructors({}),
     getBreaks(),
+    getHolidays(),
   ]);
 
   return (
@@ -40,7 +43,14 @@ const page = async ({ params }: PageProps) => {
         <Headline name="Cohorts" />
       </Box>
       <CohortInfoForm cohort={cohort} intakes={intakes} programs={programs} />
-      <CohortSchedule cohort={cohort} courses={courses} instructors={instructors} cohorts={cohorts} breaks={breaks} />
+      <CohortSchedule
+        cohort={cohort}
+        courses={courses}
+        instructors={instructors}
+        cohorts={cohorts}
+        breaks={breaks}
+        holidays={holidays}
+      />
     </>
   );
 };
