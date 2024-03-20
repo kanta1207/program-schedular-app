@@ -22,14 +22,14 @@ export const checkSpanningAssignmentOfInstructor = (
   type DurationOfClass = Pick<Class, 'startAt' | 'endAt'>;
 
   /**
-   * Array of classes the instructor is already assigned to, and overlaps with the new class.
+   * Array of durationOfClass the instructor is already assigned to, and overlaps with the new class.
    * Array of Morning classes if the new class is an Evening class,
    * if the new class is a Morning class, it will be an array of Evening classes
    */
   const relevantClassesDurations: DurationOfClass[] = [];
 
   /**
-   * Array of Afternoon classes the instructor is already assigned to, and overlaps with the new class
+   * Array of Afternoon classes's durations the instructor is already assigned to, and overlaps with the new class
    */
   const afternoonClassesDurations: DurationOfClass[] = [];
 
@@ -67,15 +67,17 @@ export const checkSpanningAssignmentOfInstructor = (
     }
   }
 
+  console.log('relevant', relevantClassesDurations);
+  console.log('afternoon', afternoonClassesDurations);
+
   // Loop through the relevant classes durations to remove the ones that are overlapping with the overlapping afternoon classes durations
-  for (let i = 0; i < relevantClassesDurations.length; i++) {
-    for (const afternoonClassDuration of afternoonClassesDurations) {
+  for (const afternoonClassDuration of afternoonClassesDurations) {
+    for (let i = 0; i < relevantClassesDurations.length; i++) {
       if (
         relevantClassesDurations[i].startAt >= afternoonClassDuration.startAt &&
         relevantClassesDurations[i].endAt <= afternoonClassDuration.endAt
       ) {
         relevantClassesDurations.splice(i, 1);
-        i--;
       }
     }
   }
