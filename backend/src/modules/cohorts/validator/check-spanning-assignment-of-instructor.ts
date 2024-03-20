@@ -67,9 +67,6 @@ export const checkSpanningAssignmentOfInstructor = (
     }
   }
 
-  console.log('relevant', relevantClassesDurations);
-  console.log('afternoon', afternoonClassesDurations);
-
   // Loop through the relevant classes durations to remove the ones that are overlapping with the overlapping afternoon classes durations
   for (const afternoonClassDuration of afternoonClassesDurations) {
     for (let i = 0; i < relevantClassesDurations.length; i++) {
