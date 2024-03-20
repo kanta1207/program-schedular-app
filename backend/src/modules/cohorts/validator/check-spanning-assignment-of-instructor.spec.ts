@@ -43,7 +43,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     const endAtOfClass = new Date('2022-04-15');
 
     const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort,
+      periodOfDayOfCohort.id,
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,
@@ -58,7 +58,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     const endAtOfClass = new Date('2022-02-15');
 
     const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort,
+      periodOfDayOfCohort.id,
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,
@@ -75,7 +75,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     const endAtOfClass = new Date('2022-01-15');
 
     const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort,
+      periodOfDayOfCohort.id,
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,
@@ -92,7 +92,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     const endAtOfClass = new Date('2022-04-15');
 
     const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort,
+      periodOfDayOfCohort.id,
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,
@@ -107,7 +107,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     const endAtOfClass = new Date('2022-02-15');
 
     const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort,
+      periodOfDayOfCohort.id,
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,

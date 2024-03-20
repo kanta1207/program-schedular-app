@@ -111,7 +111,7 @@ export class CohortsService {
         }
 
         const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
-          cohort.periodOfDay,
+          cohort.periodOfDay.id,
           clazz.startAt,
           clazz.endAt,
           instructor.classes,

@@ -1,4 +1,4 @@
-import { Class, MasterPeriodOfDay } from 'src/entity';
+import { Class } from 'src/entity';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
@@ -14,7 +14,7 @@ import {
  * @returns An alert message when the instructor is assigned to both Morning and Evening class in the same term, else null
  */
 export const checkSpanningAssignmentOfInstructor = (
-  periodOfDayOfCohort: MasterPeriodOfDay,
+  periodOfDayId: number,
   startAtOfClass: Date,
   endAtOfClass: Date,
   classesOfInstructor: Class[],
@@ -37,10 +37,10 @@ export const checkSpanningAssignmentOfInstructor = (
   }
 
   const relevantClasses = classesOfInstructor.filter((clazz) => {
-    if (periodOfDayOfCohort.id === MORNING_PERIOD_OF_DAY_ID) {
+    if (periodOfDayId === MORNING_PERIOD_OF_DAY_ID) {
       return clazz.cohort.periodOfDay.id === EVENING_PERIOD_OF_DAY_ID;
     }
-    if (periodOfDayOfCohort.id === EVENING_PERIOD_OF_DAY_ID) {
+    if (periodOfDayId === EVENING_PERIOD_OF_DAY_ID) {
       return clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID;
     }
     return false;
