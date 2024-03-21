@@ -132,7 +132,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
       afternoonClass,
     ];
 
-    const periodOfDayOfCohort = eveningPeriodOfDay;
+    const periodOfDayOfCohort = morningPeriodOfDay;
     const startAtOfClass = new Date('2022-04-01');
     const endAtOfClass = new Date('2022-04-15');
 
