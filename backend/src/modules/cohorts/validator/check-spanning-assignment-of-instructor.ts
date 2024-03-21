@@ -32,10 +32,14 @@ export const checkSpanningAssignmentOfInstructor = (
   // Loop through the classes of the instructor to find the relevant classes and overlapping afternoon classes
   for (const clazz of classesOfInstructor) {
     const { startAt, endAt } = clazz;
+    // Check if the new class is overlapping with the class the instructor is already assigned to
     const isOverlapping = startAt <= endAtOfClass && endAt >= startAtOfClass;
+
+    // Check if the class is an Afternoon class and overlapping with the new class
     const isOverlappingAfternoonClass =
       clazz.cohort.periodOfDay.id === AFTERNOON_PERIOD_OF_DAY_ID &&
       isOverlapping;
+    // Check if the class is relevant
     const isRelevantClass =
       (isOverlapping &&
         periodOfDayId === MORNING_PERIOD_OF_DAY_ID &&
@@ -43,6 +47,7 @@ export const checkSpanningAssignmentOfInstructor = (
       (isOverlapping &&
         periodOfDayId === EVENING_PERIOD_OF_DAY_ID &&
         clazz.cohort.periodOfDay.id === MORNING_PERIOD_OF_DAY_ID);
+
     //Push the class to each arrays if it meets the condition
     if (isOverlappingAfternoonClass) {
       afternoonClassesDurations.push({ startAt, endAt });
