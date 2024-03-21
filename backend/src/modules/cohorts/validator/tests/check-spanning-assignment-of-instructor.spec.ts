@@ -3,8 +3,8 @@ import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
   MORNING_PERIOD_OF_DAY_ID,
-} from '../../../common/constants/master.constant';
-import { checkSpanningAssignmentOfInstructor } from './check-spanning-assignment-of-instructor';
+} from '../../../../common/constants/master.constant';
+import { checkSpanningAssignmentOfInstructor } from '../check-spanning-assignment-of-instructor';
 
 describe('checkSpanningAssignmentOfInstructor', () => {
   const morningPeriodOfDay = {
@@ -31,38 +31,63 @@ describe('checkSpanningAssignmentOfInstructor', () => {
 
   const classesOfInstructor = [morningClass, eveningClass];
 
-  it('should return message when the new class is in Morning, and the instructor is already assigned to Evening classes in the same term', () => {
-    const periodOfDayOfCohort = morningPeriodOfDay;
-    const startAtOfClass = new Date('2022-02-01');
-    const endAtOfClass = new Date('2022-02-15');
+  const message =
+    'Instructor is assigned to both Morning and Evening class in the same term';
 
-    const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort.id,
-      startAtOfClass,
-      endAtOfClass,
+  it('should return message when the new class is in Morning, and the instructor is already assigned to Evening classes in the same term', () => {
+    // Case A
+    const periodOfDayOfCohortA = morningPeriodOfDay;
+    const startAtOfClassA = new Date('2022-01-15');
+    const endAtOfClassA = new Date('2022-02-01');
+
+    const resultA = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohortA.id,
+      startAtOfClassA,
+      endAtOfClassA,
       classesOfInstructor,
     );
 
-    expect(result).toBe(
-      'Instructor is assigned to both Morning and Evening class in the same term',
+    // Case B
+    const periodOfDayOfCohortB = morningPeriodOfDay;
+    const startAtOfClassB = new Date('2022-02-28');
+    const endAtOfClassB = new Date('2022-03-15');
+
+    const resultB = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohortB.id,
+      startAtOfClassB,
+      endAtOfClassB,
+      classesOfInstructor,
     );
+
+    expect([resultA, resultB]).toEqual([message, message]);
   });
 
   it('should return message when the new class is in Evening, and the instructor is already assigned to Morning classes in the same term', () => {
-    const periodOfDayOfCohort = eveningPeriodOfDay;
-    const startAtOfClass = new Date('2022-01-01');
-    const endAtOfClass = new Date('2022-01-15');
+    // Case A
+    const periodOfDayOfCohortA = eveningPeriodOfDay;
+    const startAtOfClassA = new Date('2022-12-15');
+    const endAtOfClassA = new Date('2022-01-01');
 
-    const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort.id,
-      startAtOfClass,
-      endAtOfClass,
+    const resultA = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohortA.id,
+      startAtOfClassA,
+      endAtOfClassA,
       classesOfInstructor,
     );
 
-    expect(result).toBe(
-      'Instructor is assigned to both Morning and Evening class in the same term',
+    // Case B
+    const periodOfDayOfCohortB = eveningPeriodOfDay;
+    const startAtOfClassB = new Date('2022-01-31');
+    const endAtOfClassB = new Date('2022-02-15');
+
+    const resultB = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohortB.id,
+      startAtOfClassB,
+      endAtOfClassB,
+      classesOfInstructor,
     );
+
+    expect([resultA, resultB]).toEqual([message, message]);
   });
 
   it('should return null when the instructor is being assigned to Morning class, and is not assigned to Evening classes in the same term', () => {
