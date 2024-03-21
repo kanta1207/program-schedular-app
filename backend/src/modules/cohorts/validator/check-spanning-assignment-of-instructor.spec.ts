@@ -29,28 +29,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     endAt: new Date('2022-02-28'),
   } as Class;
 
-  const afternoonClass = {
-    cohort: { periodOfDay: afternoonPeriodOfDay } as Cohort,
-    startAt: new Date('2022-03-01'),
-    endAt: new Date('2022-03-31'),
-  } as Class;
-
-  const classesOfInstructor = [morningClass, eveningClass, afternoonClass];
-
-  it('should return null when the instructor is assigned to an afternoon class that overlaps with the new class', () => {
-    const periodOfDayOfCohort = afternoonPeriodOfDay;
-    const startAtOfClass = new Date('2022-03-15');
-    const endAtOfClass = new Date('2022-04-15');
-
-    const result = checkSpanningAssignmentOfInstructor(
-      periodOfDayOfCohort.id,
-      startAtOfClass,
-      endAtOfClass,
-      classesOfInstructor,
-    );
-
-    expect(result).toBeNull();
-  });
+  const classesOfInstructor = [morningClass, eveningClass];
 
   it('should return message when the new class is in Morning, and the instructor is already assigned to Evening classes in the same term', () => {
     const periodOfDayOfCohort = morningPeriodOfDay;
@@ -86,7 +65,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     );
   });
 
-  it('should return null when the instructor is being assigned to Morning class, and is already assigned to Evening classes in the same term', () => {
+  it('should return null when the instructor is being assigned to Morning class, and is not assigned to Evening classes in the same term', () => {
     const periodOfDayOfCohort = morningPeriodOfDay;
     const startAtOfClass = new Date('2022-03-15');
     const endAtOfClass = new Date('2022-04-15');
@@ -101,7 +80,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
     expect(result).toBeNull();
   });
 
-  it('should return null when the instructor is being assigned to Evening class, and is already assigned to Morning classes in the same term', () => {
+  it('should return null when the instructor is being assigned to Evening class, and is not assigned to Morning classes in the same term', () => {
     const periodOfDayOfCohort = eveningPeriodOfDay;
     const startAtOfClass = new Date('2022-02-01');
     const endAtOfClass = new Date('2022-02-15');
@@ -111,6 +90,32 @@ describe('checkSpanningAssignmentOfInstructor', () => {
       startAtOfClass,
       endAtOfClass,
       classesOfInstructor,
+    );
+
+    expect(result).toBeNull();
+  });
+
+  it('should return null when the instructor is being assigned to Afternoon class which fully overlap with the new class', () => {
+    const afternoonClass = {
+      cohort: { periodOfDay: afternoonPeriodOfDay } as Cohort,
+      startAt: new Date('2022-02-01'),
+      endAt: new Date('2022-02-31'),
+    } as Class;
+
+    const classesOfInstructorWithAfternoonClass = [
+      ...classesOfInstructor,
+      afternoonClass,
+    ];
+
+    const periodOfDayOfCohort = eveningPeriodOfDay;
+    const startAtOfClass = new Date('2022-02-01');
+    const endAtOfClass = new Date('2022-02-15');
+
+    const result = checkSpanningAssignmentOfInstructor(
+      periodOfDayOfCohort.id,
+      startAtOfClass,
+      endAtOfClass,
+      classesOfInstructorWithAfternoonClass,
     );
 
     expect(result).toBeNull();
