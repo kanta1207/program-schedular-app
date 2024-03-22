@@ -10,6 +10,22 @@ get:
         enum: [cohort, instructor]
       required: true
       description: parent group which populates classes
+    - in: query
+      name: cohortId
+      schema:
+        type: array
+        items:
+          type: integer
+      required: false
+      description: Multiple ids of the cohorts to get
+    - in: query
+      name: instructorId
+      schema:
+        type: array
+        items:
+          type: integer
+      required: false
+      description: Multiple ids of the instructors to get
   responses:
     '200':
       description: Returns classes

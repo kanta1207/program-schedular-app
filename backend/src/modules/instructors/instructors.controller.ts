@@ -34,10 +34,12 @@ export class InstructorsController {
   async findAll(
     @Query('rangeId') rangeId: number | undefined,
     @Query('courseId') courseId: number | undefined,
+    @Query('isActive') isActive: boolean | undefined,
   ) {
     const instructors = await this.instructorsService.findAll(
       rangeId,
       courseId,
+      isActive,
     );
     return ApiResponse.new(
       instructors,
