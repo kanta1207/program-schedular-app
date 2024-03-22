@@ -119,12 +119,12 @@ export class CohortsService {
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
         }
-        const msgEnableCourse = this.checkInstructorTeachableCourse(
+        const msgTeachableCourse = this.checkInstructorTeachableCourse(
           clazz.instructor,
           clazz.course.id,
         );
-        if (msgEnableCourse) {
-          instructorMessages.push(msgEnableCourse);
+        if (msgTeachableCourse) {
+          instructorMessages.push(msgTeachableCourse);
         }
       }
 
@@ -273,7 +273,7 @@ export class CohortsService {
     courseId: number,
   ): string | null {
     const canTeach = instructor.courses.some(
-      (coursesInstructor) => coursesInstructor.course.id === courseId,
+      (teachable) => teachable.id === courseId,
     );
     if (!canTeach) {
       return `Instructor is not able to teach this course`;
