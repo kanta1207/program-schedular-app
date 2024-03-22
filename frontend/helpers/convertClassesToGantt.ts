@@ -38,6 +38,7 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
   const periodIcon = PERIOD_OF_DAYS.find(({ id }) => id === classData.cohort.periodOfDay.id)?.icon;
   const startAt = dayjs(classData.startAt).toDate();
   const endAt = dayjs(classData.endAt).toDate();
+
   const displayName = () => {
     if (groupName === 'cohort') {
       return `${periodIcon} ${classData.course.name} ${classData.instructor ? `| ${classData.instructor.name}` : ''} @${
@@ -49,6 +50,17 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
       return '';
     }
   };
+
+  const projectName = () => {
+    if (groupName === 'cohort') {
+      return classData.cohort.name;
+    } else if (groupName === 'instructor') {
+      return classData.instructor.name;
+    } else {
+      return '';
+    }
+  };
+
   return {
     start: startAt,
     end: endAt,
@@ -57,7 +69,7 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
     type: RecordType.Class,
     progress: getProgress(startAt, endAt),
     isDisabled: true,
-    project: groupName === 'cohort' ? (classData.cohort.name ? 'instructor' : classData.instructor.name) : '',
+    project: projectName(),
     styles: {
       progressColor: color?.secondary,
       progressSelectedColor: color?.secondary,
