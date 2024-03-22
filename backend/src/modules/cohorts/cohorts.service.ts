@@ -17,7 +17,6 @@ import {
   MasterPeriodOfDay,
   Program,
   Class,
-  Instructor,
   MasterWeekdaysRange,
 } from 'src/entity';
 import { FormattedClass } from './types';
