@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
@@ -21,7 +21,11 @@ export class ClassesService {
     throw new Error('Not implemented');
   }
 
-  async findAll(groupBy: string) {
+  async findAll(
+    groupBy: string,
+    cohortIds?: string[],
+    instructorIds?: string[],
+  ) {
     // Class attribute must be the same regardless of group by
     const classRelation = {
       instructor: true,
@@ -38,6 +42,12 @@ export class ClassesService {
         relations: {
           intake: true,
           classes: classRelation,
+        },
+        where: {
+          classes: {
+            cohort: cohortIds && { id: In(cohortIds) },
+            instructor: instructorIds && { id: In(instructorIds) },
+          },
         },
         order: {
           intake: {
@@ -58,6 +68,10 @@ export class ClassesService {
         },
         where: {
           isActive: true,
+          classes: {
+            cohort: cohortIds && { id: In(cohortIds) },
+            instructor: instructorIds && { id: In(instructorIds) },
+          },
         },
         order: {
           id: 'DESC',

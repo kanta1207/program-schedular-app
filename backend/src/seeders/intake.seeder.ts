@@ -24,7 +24,7 @@ const intakes = [
     endAt: new Date('2024-06-21T08:00:00.000Z'),
   },
   {
-    name: '2023 March DMA',
+    name: '2024 March DMA',
     startAt: new Date('2024-02-26T08:00:00.000Z'),
     endAt: new Date('2024-08-23T08:00:00.000Z'),
   },
