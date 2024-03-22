@@ -23,8 +23,16 @@ export class ClassesController {
   }
 
   @Get()
-  async findAll(@Query('groupBy') groupBy: string) {
-    const classes = await this.classesService.findAll(groupBy);
+  async findAll(
+    @Query('groupBy') groupBy: string,
+    @Query('cohortId') cohortIds: string[] | undefined,
+    @Query('instructorId') instructorIds: string[] | undefined,
+  ) {
+    const classes = await this.classesService.findAll(
+      groupBy,
+      cohortIds,
+      instructorIds,
+    );
     return ApiResponse.new(classes);
   }
 
