@@ -138,9 +138,11 @@ interface convertClassesToGanttProps {
 }
 
 export const convertClassesToGantt = ({ cohorts, instructors }: convertClassesToGanttProps): Task[] => {
-  if (cohorts) {
+  if (!cohorts && !instructors) return [];
+
+  if (cohorts && cohorts.length > 0) {
     return getGanttGroupByCohort(cohorts);
-  } else if (instructors) {
+  } else if (instructors && instructors.length > 0) {
     return getGanttGroupByInstructor(instructors);
   } else {
     return [];
