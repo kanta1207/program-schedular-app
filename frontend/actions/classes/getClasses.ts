@@ -1,11 +1,29 @@
 import { GanttGroupBy } from '@/helpers/convertClassesToGantt';
 import { ApiResponse, GetClassesResponse } from '@/types/_index';
+import qs from 'qs';
 
-export const getClasses = async (groupBy: GanttGroupBy): Promise<ApiResponse<GetClassesResponse[]>> => {
+export interface getClassesProps {
+  groupBy: GanttGroupBy;
+  cohortId?: number[];
+  instructorId?: number[];
+}
+
+export const getClasses = async ({
+  groupBy,
+  cohortId,
+  instructorId,
+}: getClassesProps): Promise<ApiResponse<GetClassesResponse[]>> => {
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/classes?groupBy=${groupBy}`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/classes`;
+    let url = baseUrl;
 
-    const response = await fetch(baseUrl, {
+    const queryParams = qs.stringify({ groupBy, cohortId, instructorId });
+
+    if (queryParams) {
+      url += `?${queryParams}`;
+    }
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
