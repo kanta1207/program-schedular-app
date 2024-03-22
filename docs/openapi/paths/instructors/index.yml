@@ -15,6 +15,12 @@ get:
         type: integer
       required: false
       description: Range id to get the assignable instructors to the specific range of days.
+    - in: query
+      name: isActive
+      schema:
+        type: boolean
+      required: false
+      description: Active status to get the instructors.
   responses:
     '200':
       description: Returns Instructors
