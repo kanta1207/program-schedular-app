@@ -12,7 +12,10 @@ import { UpdateClassesDto } from './dto/update-classes.dto';
 
 import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
-import { checkSpanningAssignmentOfInstructor } from 'src/common/validator';
+import {
+  checkInstructorTeachableCourse,
+  checkSpanningAssignmentOfInstructor,
+} from 'src/common/validator';
 
 @Injectable()
 export class CohortsService {
@@ -91,6 +94,7 @@ export class CohortsService {
                 periodOfDay: true,
               },
             },
+            courses: { course: true },
           },
         },
       },
@@ -108,16 +112,25 @@ export class CohortsService {
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
         }
-
         const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
           cohort.periodOfDay.id,
           clazz.startAt,
           clazz.endAt,
           instructor.classes,
         );
-
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
+        }
+        const courses = instructor.courses.map(
+          (instructorCourse) => instructorCourse.course,
+        );
+        const msgTeachableCourse = checkInstructorTeachableCourse(
+          courses,
+          clazz.course.id,
+        );
+
+        if (msgTeachableCourse) {
+          instructorMessages.push(msgTeachableCourse);
         }
       }
 
