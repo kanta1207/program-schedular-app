@@ -78,12 +78,17 @@ const FilterScheduleDialog: React.FC<FilterDialogProps> = ({
         const filterSettings: ScheduleFilters = JSON.parse(storedFilterSettings);
         setStoredFilterSettings(filterSettings);
 
+        // If all the options of each are not checked, that case should be regarded as "check all"
         reset({
-          cohortIds: filterSettings.cohortIds,
-          instructorIds: filterSettings.instructorIds,
+          cohortIds: filterSettings.cohortIds.length > 0 ? filterSettings.cohortIds : cohortIds,
+          instructorIds: filterSettings.instructorIds.length > 0 ? filterSettings.instructorIds : instructorIds,
         });
       } else {
-        reset();
+        // All the options are checked by default
+        reset({
+          cohortIds: cohortIds,
+          instructorIds: instructorIds,
+        });
       }
     }
   }, [dialogOpen]);
