@@ -1,19 +1,24 @@
-import { GetBreaksResponse } from '@/types/break';
-import { GetCohortResponse } from '@/types/cohort';
-import { GetCoursesResponse } from '@/types/course';
+import { GetBreaksResponse, GetCohortClass, GetCohortResponse, GetCoursesResponse } from '@/types/_index';
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
-import { NewWatchSchedule } from './CohortSchedule';
+import { WatchSchedule } from './CohortSchedule';
 
 interface SchedulePreviewProps {
   cohort: GetCohortResponse;
-  schedule: NewWatchSchedule[];
+  watchSchedule?: WatchSchedule[];
   courses: GetCoursesResponse[];
   breaks: GetBreaksResponse[];
+  schedule?: GetCohortClass[];
 }
 
-export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ cohort, schedule, courses, breaks }) => {
+export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
+  cohort,
+  watchSchedule,
+  courses,
+  breaks,
+  schedule,
+}) => {
   const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
   const cohortIntakeEndAt = dayjs(cohort.intake.endAt);
   const intakeDaysDiff = cohortIntakeEndAt.diff(cohortIntakeStartAt, 'day');
@@ -24,7 +29,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ cohort, schedu
     intakeWeeks.push(i);
   }
 
-  const caluclateWeeks = (scheduleArray: GetBreaksResponse[]) => {
+  const caluclateWeeks = (scheduleArray: GetBreaksResponse[] | WatchSchedule[] | GetCohortClass[]) => {
     const newArray = scheduleArray.map((item) => {
       // calculate class duration
       const daysDiff = dayjs(item.endAt).diff(dayjs(item.startAt), 'day');
@@ -44,13 +49,54 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ cohort, schedu
     return newArray;
   };
 
+  interface ModifiedWatchSchedule extends WatchSchedule {
+    startWeek: number;
+    totalWeeks: number;
+  }
+  interface ModifiedClasses extends GetCohortClass {
+    startWeek: number;
+    totalWeeks: number;
+  }
+
+  const modifySchedule = () => {
+    if (watchSchedule) {
+      const tempModifiedSchedule = caluclateWeeks(watchSchedule) as ModifiedWatchSchedule[];
+      const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
+        return {
+          name: cohort.name,
+          startWeek: item.startWeek,
+          totalWeeks: item.totalWeeks,
+          courseId: item.courseId,
+          weekdaysRangeId: item.weekdaysRangeId,
+        };
+      });
+      return returnModifiedSchedule;
+    } else if (schedule) {
+      const tempModifiedSchedule = caluclateWeeks(schedule) as ModifiedClasses[];
+      const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
+        return {
+          // ...item,s
+          id: item.id,
+          name: item.cohort.name,
+          startWeek: item.startWeek,
+          totalWeeks: item.totalWeeks,
+          courseId: item.course.id,
+          weekdaysRangeId: item.weekdaysRange.id,
+        };
+      });
+      return returnModifiedSchedule;
+    }
+  };
+
+  const modifiedSchedule = modifySchedule();
+
   const filterdBreaks = breaks
     .filter((item) => dayjs(item.startAt).isAfter(dayjs(cohort.intake.startAt)))
     .filter((item) => dayjs(item.endAt).isBefore(dayjs(cohort.intake.endAt)));
   const newBreaks = caluclateWeeks(filterdBreaks);
 
   return (
-    <Box sx={{ '& p': { textAlign: 'center' } }}>
+    <Box sx={{ '& p': { textAlign: 'center' }, mb: '1rem' }}>
       <Box
         sx={{
           display: 'grid',
@@ -62,6 +108,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ cohort, schedu
           borderColor: '#33333315',
         }}
       >
+        {modifiedSchedule && modifiedSchedule[0].name}
         {/* Column Header */}
         <Box
           sx={{
@@ -133,40 +180,41 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({ cohort, schedu
         })}
 
         {/* Schedule Blocks */}
-        {schedule.map((item, index) => {
-          // add 1 because the first column is table head (MonWed, WedFri)
-          const startCol = item.startWeek + 1;
-          const endCol = item.startWeek + item.totalWeeks + 1;
-          // find course name because the object only has courseId
-          const courseName = courses.find((course) => course.id === item.courseId);
-          return (
-            <Box
-              key={index}
-              sx={{
-                gridColumn: `${startCol.toString()} / span ${item.totalWeeks}`,
-                gridRowStart: item.weekdaysRangeId === 1 ? '2' : item.weekdaysRangeId === 2 ? '2' : '3',
-                gridRowEnd: item.weekdaysRangeId === 1 ? '4' : item.weekdaysRangeId === 2 ? '3' : '4',
-                bgcolor:
-                  item.weekdaysRangeId === 1 ? '#662d9180' : item.weekdaysRangeId === 2 ? '#0047AB80' : '#BA002180',
-                border: '1px solid #FFF',
-                color: '#FFF',
-                display: 'flex',
-                alignItems: 'center',
-                pl: '0.25rem',
-                overflow: 'hidden',
-              }}
-            >
-              <Typography
+        {modifiedSchedule &&
+          modifiedSchedule.map((item, index) => {
+            // add 1 because the first column is table head (MonWed, WedFri)
+            const startCol = item.startWeek + 1;
+            const endCol = item.startWeek + item.totalWeeks + 1;
+            // find course name because the object only has courseId
+            const courseName = courses.find((course) => course.id === item.courseId);
+            return (
+              <Box
+                key={index}
                 sx={{
+                  gridColumn: `${startCol.toString()} / span ${item.totalWeeks}`,
+                  gridRowStart: item.weekdaysRangeId === 1 ? '2' : item.weekdaysRangeId === 2 ? '2' : '3',
+                  gridRowEnd: item.weekdaysRangeId === 1 ? '4' : item.weekdaysRangeId === 2 ? '3' : '4',
+                  bgcolor:
+                    item.weekdaysRangeId === 1 ? '#662d9180' : item.weekdaysRangeId === 2 ? '#0047AB80' : '#BA002180',
+                  border: '1px solid #FFF',
+                  color: '#FFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  pl: '0.25rem',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis',
                 }}
               >
-                {courseName?.name}
-              </Typography>
-            </Box>
-          );
-        })}
+                <Typography
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {courseName?.name}
+                </Typography>
+              </Box>
+            );
+          })}
       </Box>
     </Box>
   );

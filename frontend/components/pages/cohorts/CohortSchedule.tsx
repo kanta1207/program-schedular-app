@@ -53,7 +53,7 @@ type FormValues = {
   }[];
 };
 
-export interface NewWatchSchedule {
+export interface WatchSchedule {
   startAt: Dayjs;
   endAt: Dayjs;
   cohortId: number;
@@ -61,8 +61,6 @@ export interface NewWatchSchedule {
   courseId: number;
   classroomId: number;
   instructorId: number;
-  startWeek: number;
-  totalWeeks: number;
 }
 
 interface CohortScheduleProps {
@@ -108,24 +106,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   });
 
   const watchSchedule = watch('schedule');
-
-  const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
-  const newWatchSchedule = watchSchedule.map((item) => {
-    // calculate class duration
-    const daysDiff = dayjs(item.endAt).diff(dayjs(item.startAt), 'day');
-    const totalWeeks = Math.ceil(daysDiff / 7);
-
-    // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
-    const startAt = dayjs(item.startAt).day() === 2 ? dayjs(item.startAt).subtract(1, 'day') : dayjs(item.startAt);
-    const daysFromIntakeStartDate = startAt.diff(cohortIntakeStartAt, 'day');
-    const startWeekNumber = Math.ceil(daysFromIntakeStartDate / 7);
-
-    return {
-      ...item,
-      startWeek: startWeekNumber + 1, // add 1 to start from 1 (not 0)
-      totalWeeks: totalWeeks,
-    };
-  });
 
   const { fields, append, remove } = useFieldArray<FormValues>({ control, name: 'schedule' });
 
@@ -299,7 +279,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <SchedulePreview cohort={cohort} courses={courses} schedule={newWatchSchedule} breaks={breaks} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleClose} cohorts={filteredCohorts} />
         {/* Schedule Edit Actions */}
@@ -327,6 +306,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </Box>
         </Box>
 
+        <SchedulePreview cohort={cohort} courses={courses} watchSchedule={watchSchedule} breaks={breaks} />
+        {cohorts
+          .filter((item) => {
+            return item.intake.id === cohort.intake.id && item.id !== cohort.id;
+          })
+          .map((item) => {
+            return (
+              <SchedulePreview key={item.id} cohort={item} courses={courses} schedule={item.classes} breaks={breaks} />
+            );
+          })}
         {/* Cohort Schedule */}
         <Table
           sx={{
@@ -488,8 +477,18 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
                       {/* Hours met */}
                       <TableCell>
-                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
-                        {requiredHours}
+                        <span
+                          className={`${
+                            plannedHours > requiredHours
+                              ? 'text-red-500 font-semibold'
+                              : plannedHours < requiredHours
+                              ? 'text-blue-500 font-semibold'
+                              : ''
+                          }`}
+                        >
+                          {plannedHours}
+                        </span>
+                        / {requiredHours}
                       </TableCell>
 
                       {/* ClassroomId */}
