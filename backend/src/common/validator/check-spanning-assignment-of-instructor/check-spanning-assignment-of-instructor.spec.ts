@@ -3,8 +3,8 @@ import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,
   MORNING_PERIOD_OF_DAY_ID,
-} from '../../../../common/constants/master.constant';
-import { checkSpanningAssignmentOfInstructor } from '../check-spanning-assignment-of-instructor';
+} from '../../constants/master.constant';
+import { checkSpanningAssignmentOfInstructor } from './check-spanning-assignment-of-instructor';
 
 describe('checkSpanningAssignmentOfInstructor', () => {
   const morningPeriodOfDay = {

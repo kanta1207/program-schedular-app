@@ -12,8 +12,7 @@ import { UpdateClassesDto } from './dto/update-classes.dto';
 
 import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
-
-import { checkSpanningAssignmentOfInstructor } from './validator';
+import { checkSpanningAssignmentOfInstructor } from 'src/common/validator';
 
 @Injectable()
 export class CohortsService {
