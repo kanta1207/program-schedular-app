@@ -125,8 +125,11 @@ export class CohortsService {
         }
 
         const msgDuplicateAssignment = checkDuplicateAssignmentOfInstructor(
-          cohort.periodOfDay,
-          clazz,
+          cohort.periodOfDay.id,
+          clazz.id,
+          clazz.weekdaysRange.id,
+          clazz.startAt,
+          clazz.endAt,
           instructor.classes,
         );
 
