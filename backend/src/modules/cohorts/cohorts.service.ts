@@ -14,6 +14,7 @@ import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
 import {
   checkInstructorTeachableCourse,
+  checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
 } from 'src/common/validator';
 
@@ -131,6 +132,16 @@ export class CohortsService {
 
         if (msgTeachableCourse) {
           instructorMessages.push(msgTeachableCourse);
+        }
+        const periodOfDays = instructor.periodOfDays.map(
+          (InstructorsPeriodOfDays) => InstructorsPeriodOfDays.periodOfDay,
+        );
+        const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
+          periodOfDays,
+          cohort.periodOfDay.id,
+        );
+        if (msgIsAvailablePeriod) {
+          instructorMessages.push(msgIsAvailablePeriod);
         }
       }
 
