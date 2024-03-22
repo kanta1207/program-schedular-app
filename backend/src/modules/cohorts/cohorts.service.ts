@@ -161,7 +161,12 @@ export class CohortsService {
         },
         instructor: {
           // We don't want to include unnecessary classes data in the response
-          data: { ...instructor, classes: undefined },
+          data: {
+            ...instructor,
+            classes: undefined,
+            periodOfDays: undefined,
+            courses: undefined,
+          },
           messages: instructorMessages,
         },
       };
