@@ -112,6 +112,15 @@ export class CohortsService {
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
         }
+        const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
+          cohort.periodOfDay.id,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+        if (msgSpanningAssignment) {
+          instructorMessages.push(msgSpanningAssignment);
+        }
         const courses = instructor.courses.map(
           (instructorCourse) => instructorCourse.course,
         );
@@ -119,6 +128,7 @@ export class CohortsService {
           courses,
           clazz.course.id,
         );
+
         if (msgTeachableCourse) {
           instructorMessages.push(msgTeachableCourse);
         }
