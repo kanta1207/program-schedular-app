@@ -19,7 +19,7 @@ import {
   Course,
 } from 'src/entity';
 
-import { CONTRACTOR_CONTRACT_TYPE_ID } from './instructor.constant';
+import { CONTRACTOR_CONTRACT_TYPE_ID } from '../../common/constants/master.constant';
 
 @Injectable()
 export class InstructorsService {
