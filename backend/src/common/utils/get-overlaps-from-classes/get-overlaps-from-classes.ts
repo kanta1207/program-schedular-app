@@ -1,6 +1,17 @@
 import { Class } from 'src/entity';
 import { getWeeklyHours } from '../';
 
+interface Overlap {
+  overlapStartAt: Date;
+  overlapEndAt: Date;
+  totalWeeklyHours: number;
+}
+
+/**
+ *
+ * @param classes - List of classes
+ * @returns {@link Overlap[]}
+ */
 export const getOverlapsFromClasses = (classes: Class[]) => {
   // Sort all classes by their start date
   const sortedClasses = classes.sort(
