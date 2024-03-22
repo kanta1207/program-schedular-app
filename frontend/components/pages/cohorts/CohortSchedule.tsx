@@ -18,7 +18,7 @@ import {
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Divider, Typography } from '@mui/material';
+import { Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -37,6 +37,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { SchedulePreview } from './SchedulePreview';
 
 export type CreateType = 'new' | 'copy';
 
@@ -51,6 +52,18 @@ type FormValues = {
     instructorId: number;
   }[];
 };
+
+export interface NewWatchSchedule {
+  startAt: Dayjs;
+  endAt: Dayjs;
+  cohortId: number;
+  weekdaysRangeId: number;
+  courseId: number;
+  classroomId: number;
+  instructorId: number;
+  startWeek: number;
+  totalWeeks: number;
+}
 
 interface CohortScheduleProps {
   cohort: GetCohortResponse;
@@ -97,10 +110,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const watchSchedule = watch('schedule');
 
   const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
-  const cohortIntakeEndAt = dayjs(cohort.intake.endAt);
-  const intakeDaysDiff = cohortIntakeEndAt.diff(cohortIntakeStartAt, 'day');
-  const intakeTotalWeeks = Math.ceil(intakeDaysDiff / 7);
-
   const newWatchSchedule = watchSchedule.map((item) => {
     // calculate class duration
     const daysDiff = dayjs(item.endAt).diff(dayjs(item.startAt), 'day');
@@ -117,8 +126,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       totalWeeks: totalWeeks,
     };
   });
-  // console.log(watchSchedule);
-  // console.log(newWatchSchedule);
 
   const { fields, append, remove } = useFieldArray<FormValues>({ control, name: 'schedule' });
 
@@ -292,107 +299,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: `2fr repeat(${intakeTotalWeeks}, 1fr)`,
-            gridTemplateRows: '1.5fr repeat(2, 1fr)',
-            width: '100%',
-            height: '100px',
-          }}
-        >
-          <Box
-            sx={{
-              gridColumnStart: '1',
-              gridColumnEnd: '2',
-              gridRowStart: '2',
-              gridRowEnd: '3',
-            }}
-          >
-            MonWed
-          </Box>
-          <Box
-            sx={{
-              gridColumnStart: '1',
-              gridColumnEnd: '2',
-              gridRowStart: '3',
-              gridRowEnd: '4',
-            }}
-          >
-            WedFri
-          </Box>
-          {newWatchSchedule.map((item, index) => {
-            // add 1 because the first column is table head (MonWed, WedFri)
-            const startCol = item.startWeek + 1;
-            const endCol = item.startWeek + item.totalWeeks + 1;
-            // find course name because the object only has courseId
-            const courseName = courses.find((course) => course.id === item.courseId);
-            return (
-              <Box
-                key={index}
-                sx={{
-                  gridColumn: `${startCol.toString()} / span ${item.totalWeeks}`,
-                  // gridColumnStart: startCol.toString(),
-                  // gridColumnEnd: endCol.toString(),
-                  gridRowStart: item.weekdaysRangeId === 1 ? '2' : item.weekdaysRangeId === 2 ? '2' : '3',
-                  gridRowEnd: item.weekdaysRangeId === 1 ? '4' : item.weekdaysRangeId === 2 ? '3' : '4',
-                  bgcolor:
-                    item.weekdaysRangeId === 1 ? '#662d9180' : item.weekdaysRangeId === 2 ? '#0047AB80' : '#BA002180',
-                  border: '1px solid #FFF',
-                  color: '#FFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  pl: '0.25rem',
-                  overflow: 'hidden',
-                }}
-              >
-                <Typography
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {courseName?.name}
-                </Typography>
-              </Box>
-            );
-          })}
-          {(() => {
-            const items = [];
-            for (let i = 0; i < intakeTotalWeeks; i++) {
-              items.push(i);
-            }
-            return items.map((item) => {
-              const colStart = item + 2;
-              const weekStartDate = dayjs(cohort.intake.startAt)
-                .add(item * 7, 'day')
-                .format('MM-DD');
-              const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
-              return (
-                <Box
-                  key={item}
-                  sx={{
-                    gridColumnStart: colStart.toString(),
-                    gridRowStart: '1',
-                    gridRowEnd: '4',
-                    border: '1px solid',
-                    borderColor: '#33333315',
-                    fontSize: '0.85rem',
-                    textAlign: 'center',
-                  }}
-                >
-                  <Typography sx={{ fontSize: '0.75rem' }}>
-                    {weekStartDate}
-                    <br />
-                    {weekEndDate}
-                  </Typography>
-                </Box>
-              );
-            });
-          })()}
-        </Box>
-      </Box>
+      <SchedulePreview cohort={cohort} courses={courses} schedule={newWatchSchedule} breaks={breaks} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleClose} cohorts={filteredCohorts} />
         {/* Schedule Edit Actions */}
