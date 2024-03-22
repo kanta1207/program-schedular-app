@@ -11,7 +11,7 @@ export const checkInstructorsAvailabilityPeriodOfDays = (
     (availablePeriod) => availablePeriod.id === periodOfDayId,
   );
   if (!isAvailable) {
-    return `Instructor is not available at that period!!!!!`;
+    return `Instructor is not available at that period`;
   }
   return null;
 };

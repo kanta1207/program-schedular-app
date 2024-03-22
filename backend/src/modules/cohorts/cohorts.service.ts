@@ -96,6 +96,7 @@ export class CohortsService {
               },
             },
             courses: { course: true },
+            periodOfDays: { periodOfDay: true },
           },
         },
       },
