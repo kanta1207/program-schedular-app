@@ -5,26 +5,19 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as dayjs from 'dayjs';
 
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import {
-  Cohort,
-  Intake,
-  MasterPeriodOfDay,
-  Program,
-  Class,
-  Instructor,
-} from 'src/entity';
+import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
+
 import {
-  // WEEKDAYS_RANGE_MON_FRI,
-  WEEKDAYS_RANGE_MON_WED,
-  WEEKDAYS_RANGE_WED_FRI,
-} from './cohorts.constant';
+  checkInstructorTeachableCourse,
+  checkSpanningAssignmentOfInstructor,
+  checkOverlapAllowed,
+} from '../../common/validator';
 
 @Injectable()
 export class CohortsService {
@@ -39,8 +32,6 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
-    @InjectRepository(Instructor)
-    private readonly instructorRepository: Repository<Instructor>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -99,7 +90,14 @@ export class CohortsService {
           weekdaysRange: true,
           course: true,
           classroom: true,
-          instructor: true,
+          instructor: {
+            classes: {
+              cohort: {
+                periodOfDay: true,
+              },
+            },
+            courses: { course: true },
+          },
         },
       },
     });
@@ -112,9 +110,29 @@ export class CohortsService {
       const instructorMessages: string[] = [];
 
       if (instructor) {
-        const msgIsActive = this.checkInstructorIsActive(instructor);
+        const msgIsActive = this.checkInstructorIsActive(instructor.isActive);
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
+        }
+        const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
+          cohort.periodOfDay.id,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+        if (msgSpanningAssignment) {
+          instructorMessages.push(msgSpanningAssignment);
+        }
+        const courses = instructor.courses.map(
+          (instructorCourse) => instructorCourse.course,
+        );
+        const msgTeachableCourse = checkInstructorTeachableCourse(
+          courses,
+          clazz.course.id,
+        );
+
+        if (msgTeachableCourse) {
+          instructorMessages.push(msgTeachableCourse);
         }
       }
 
@@ -132,13 +150,14 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          data: clazz.instructor,
+          // We don't want to include unnecessary classes data in the response
+          data: { ...instructor, classes: undefined },
           messages: instructorMessages,
         },
       };
     });
 
-    formattedClasses = this.checkClassOverlap(formattedClasses);
+    formattedClasses = checkOverlapAllowed(formattedClasses);
 
     const formattedResponse = {
       ...cohort,
@@ -256,54 +275,10 @@ export class CohortsService {
     });
   }
 
-  checkInstructorIsActive(instructor: Instructor): string | null {
-    if (!instructor.isActive) {
+  checkInstructorIsActive(isActive: boolean): string | null {
+    if (!isActive) {
       return 'Instructor is not active';
     }
     return null;
-  }
-
-  checkClassOverlap(classes: FormattedClass[]): FormattedClass[] {
-    const checkOverlapAllowed = (rangeAId: number, rangeBId: number) => {
-      const allowedCombinations = [
-        [WEEKDAYS_RANGE_MON_WED.id, WEEKDAYS_RANGE_WED_FRI.id],
-        [WEEKDAYS_RANGE_WED_FRI.id, WEEKDAYS_RANGE_MON_WED.id],
-      ];
-      // Allow overlaps of [Mon-Wed, Wed-Fri] or [Wed-Fri, Mon-Wed]
-      return allowedCombinations.some(
-        ([a, b]) => rangeAId === a && rangeBId === b,
-      );
-    };
-
-    const generateMessage = (clazz: FormattedClass) => {
-      const startAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
-      const endAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
-      const rangeName = clazz.weekdaysRange.data.name;
-
-      return `Overlaps with ${startAt} - ${endAt}(${rangeName})`;
-    };
-
-    // Compare each classes
-    for (let i = 0; i < classes.length; i++) {
-      for (let j = i + 1; j < classes.length; j++) {
-        const classA = classes[i];
-        const classB = classes[j];
-
-        // Check duration
-        if (classA.startAt <= classB.endAt && classA.endAt >= classB.startAt) {
-          // Check if (Mon-Wed, Wed-Fri) or (Wed-Fri, Mon-Wed)
-          const isOverlapAllowed = checkOverlapAllowed(
-            classA.weekdaysRange.data.id,
-            classB.weekdaysRange.data.id,
-          );
-          if (!isOverlapAllowed) {
-            classA.weekdaysRange.messages.push(generateMessage(classA));
-            classB.weekdaysRange.messages.push(generateMessage(classB));
-          }
-        }
-      }
-    }
-
-    return classes;
   }
 }
