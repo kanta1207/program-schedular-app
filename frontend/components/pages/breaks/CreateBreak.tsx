@@ -9,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createBreak } from '@/actions/breaks/createBreak';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { TOAST } from '@/constants/_index';
 
 const CreateBreak = () => {
