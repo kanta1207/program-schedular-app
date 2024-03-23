@@ -16,7 +16,7 @@ import { FormattedClass } from './types';
 import {
   checkInstructorTeachableCourse,
   checkSpanningAssignmentOfInstructor,
-  checkOverlapAllowed,
+  checkClassOverlapAllowed,
 } from '../../common/validator';
 
 @Injectable()
@@ -157,7 +157,7 @@ export class CohortsService {
       };
     });
 
-    formattedClasses = checkOverlapAllowed(formattedClasses);
+    formattedClasses = checkClassOverlapAllowed(formattedClasses);
 
     const formattedResponse = {
       ...cohort,

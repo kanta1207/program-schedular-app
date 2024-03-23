@@ -3,7 +3,9 @@ import { FormattedClass } from '../../../modules/cohorts/types';
 import {
   WEEKDAYS_RANGE_MON_WED,
   WEEKDAYS_RANGE_WED_FRI,
-} from '../../../common/constants/master.constant';
+} from '../../constants/master.constant';
+
+// checkClassOverlap
 
 /**
  * Check if there are any overlapped schedule in the given list of classes
@@ -11,7 +13,7 @@ import {
  * @param {FormattedClass[]} classes
  * @return {FormattedClass[]} List of FormattedClass with error messages
  */
-export const checkOverlapAllowed = (
+export const checkClassOverlapAllowed = (
   classes: FormattedClass[],
 ): FormattedClass[] => {
   const checkOverlapAllowed = (rangeAId: number, rangeBId: number) => {
