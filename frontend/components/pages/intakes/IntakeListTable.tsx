@@ -1,6 +1,7 @@
 'use client';
 import { deleteIntake } from '@/actions/intakes/deleteIntake';
 import { updateIntake } from '@/actions/intakes/updateIntakes';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -67,7 +68,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
       setEditIntakeId(null);
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
   const handleEditClick = (id: number) => {

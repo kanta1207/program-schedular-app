@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createBreak } from '@/actions/breaks/createBreak';
 import { toast } from 'react-toastify';
 import { TOAST } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 const CreateBreak = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const CreateBreak = () => {
       reset();
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 

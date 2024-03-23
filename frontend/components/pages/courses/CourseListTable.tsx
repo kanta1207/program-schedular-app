@@ -1,6 +1,7 @@
 'use client';
 import { deleteCourse } from '@/actions/courses/deleteCourse';
 import { updateCourse } from '@/actions/courses/updateCourse';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -54,7 +55,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
       setEditCourseId(null);
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 

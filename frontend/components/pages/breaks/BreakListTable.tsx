@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { TOAST } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 interface BreakListTableProps {
   breaks: GetBreaksResponse[];
@@ -66,7 +67,7 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
       setEditBreakId(null);
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 

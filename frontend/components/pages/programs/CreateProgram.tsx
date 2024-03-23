@@ -1,5 +1,6 @@
 'use client';
 import { createProgram } from '@/actions/programs/createProgram';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import { TOAST } from '@/constants/_index';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -36,7 +37,7 @@ const CreateProgram = () => {
       reset();
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 

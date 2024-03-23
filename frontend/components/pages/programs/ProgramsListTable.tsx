@@ -1,6 +1,7 @@
 'use client';
 import { deleteProgram } from '@/actions/programs/deleteProgram';
 import { updateProgram } from '@/actions/programs/updateProgram';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -57,7 +58,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
       setEditProgramId(null);
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 

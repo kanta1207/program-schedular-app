@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { TOAST } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 interface CreateCourseProps {
   programs?: GetProgramsResponse[];
@@ -51,7 +52,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
       reset();
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
