@@ -20,7 +20,7 @@ import {
   Typography,
 } from '@mui/material';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
-import { CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { CONFIRM, CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 import { GetCoursesResponse, GetInstructorResponse, GetProgramsResponse } from '@/types/_index';
@@ -64,7 +64,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
   }, []);
 
   const handleCancel = () => {
-    const isConfirmed = confirm('Do you want to cancel?');
+    const isConfirmed = confirm(CONFIRM.cancel);
     if (isConfirmed) {
       if (instructor) {
         setIsEditMode(false);
@@ -85,7 +85,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
   };
 
   const handleDelete = async () => {
-    const isConfirmed = confirm('Do you want to delete?');
+    const isConfirmed = confirm(CONFIRM.delete);
     if (isConfirmed && instructor) {
       await deleteInstructor(instructor.id);
       router.push('/instructors');

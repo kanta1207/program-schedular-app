@@ -4,7 +4,7 @@ import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
 import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import Headline from '@/components/partials/Headline';
-import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { CLASSROOMS, CONFIRM, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
 import {
   GetBreaksResponse,
@@ -143,8 +143,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   };
 
   const handleCancelClick = () => {
-    const message = 'Do you really want to cancel?';
-    if (confirm(message)) {
+    if (confirm(CONFIRM.cancel)) {
       setIsScheduleEditable(false);
       remove();
       if (cohort.classes.length > 0) {

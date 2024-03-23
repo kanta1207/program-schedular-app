@@ -9,7 +9,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { CONFIRM_DELETE, TOAST } from '@/constants/_index';
+import { CONFIRM, TOAST } from '@/constants/_index';
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -72,7 +72,7 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
   };
 
   const handleDelete = async () => {
-    if (confirm(CONFIRM_DELETE)) {
+    if (confirm(CONFIRM.delete)) {
       try {
         await onDelete(id);
         toast.success(TOAST.success.deleted);

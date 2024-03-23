@@ -2,7 +2,7 @@
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
-import { PERIOD_OF_DAYS } from '@/constants/_index';
+import { CONFIRM, PERIOD_OF_DAYS } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -33,8 +33,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
   }, []);
 
   const handleCancel = () => {
-    const message = 'Do you really want to cancel?';
-    if (confirm(message)) {
+    if (confirm(CONFIRM.cancel)) {
       if (cohort) {
         setIsEditable(false);
         reset({
@@ -50,11 +49,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
   };
 
   const handleDelete = async () => {
-    const message = `
-    Are you sure you want to delete this item?
-    This action cannot be undone.
-    `;
-    if (confirm(message) && cohort) {
+    if (confirm(CONFIRM.delete) && cohort) {
       await deleteCohort(cohort.id);
       router.push('/cohorts');
     }
