@@ -8,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { CONFIRM_DELETE, TOAST } from '@/constants/_index';
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -69,16 +71,17 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
     onEdit(id);
   };
 
-  const handleDelete = () => {
-    const message = `
-    Are you sure you want to delete this item?
-    This action cannot be undone.
-    `;
-    if (confirm(message)) {
-      handleClose();
-      onDelete(id);
-      router.refresh();
+  const handleDelete = async () => {
+    if (confirm(CONFIRM_DELETE)) {
+      try {
+        await onDelete(id);
+        toast.success(TOAST.success.deleted);
+        router.refresh();
+      } catch (error: any) {
+        toast.error(error.message);
+      }
     }
+    handleClose();
   };
 
   return (

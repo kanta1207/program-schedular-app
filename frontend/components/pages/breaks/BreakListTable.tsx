@@ -19,6 +19,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { TOAST } from '@/constants/_index';
 
 interface BreakListTableProps {
   breaks: GetBreaksResponse[];
@@ -60,10 +62,11 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
 
       await updateBreak(editBreakId, payload);
 
+      toast.success(TOAST.success.updated);
       setEditBreakId(null);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
