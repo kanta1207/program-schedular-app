@@ -83,8 +83,6 @@ describe('checkInstructorExceedsMaxHours', () => {
       maxHoursOfInstructor,
     );
 
-    console.log(result);
-    console.log(expectedMessage);
     expect(result).toBe(expectedMessage);
   });
 
