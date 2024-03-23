@@ -19,12 +19,14 @@ const monWedWeekdaysRange = {
 } as MasterWeekdaysRange;
 
 const class1 = {
+  id: 1,
   weekdaysRange: monFriWeekdaysRange,
   startAt: new Date('2022-03-01'),
   endAt: new Date('2022-03-31'),
 } as Class;
 
 const class2 = {
+  id: 2,
   weekdaysRange: monWedWeekdaysRange,
   startAt: new Date('2022-03-01'),
   endAt: new Date('2022-03-15'),
@@ -45,27 +47,30 @@ describe('checkInstructorExceedsMaxHours', () => {
       [],
       new Date(),
       new Date(),
-      1,
     );
     expect(result).toBeNull();
   });
 
   it('should return message when the new class is overlapping with the existing classes, and instructor will exceed the maximum hours', () => {
     // Arrange mock data
-    const mockClassesOfInstructor = [class1, class2] as Class[];
+    const mockNewClass = {
+      id: 3,
+      // The new class is from 2022-02-21 to 2022-03-14, which is overlapping with the existing classes
+      startAt: new Date('2022-02-21'),
+      endAt: new Date('2022-03-14'),
+      // The new class is on Monday and Friday,
+      // So the weekly hours is 20, then the total weekly hours is 50, which will exceed the maximum hours
+      weekdaysRange: monFriWeekdaysRange,
+    } as Class;
+    const mockClassesOfInstructor = [class1, class2, mockNewClass] as Class[];
 
     const maxHoursOfInstructor = 40;
-    // The new class is from 2022-02-21 to 2022-03-14, which is overlapping with the existing classes
-    const startAtOfClass = new Date('2022-02-21');
-    const endAtOfClass = new Date('2022-03-14');
-    const weekdaysRangeId = MON_FRI_WEEKDAYS_RANGE_ID;
 
     const result = checkInstructorExceedsMaxHours(
       maxHoursOfInstructor,
       mockClassesOfInstructor,
-      startAtOfClass,
-      endAtOfClass,
-      weekdaysRangeId,
+      mockNewClass.startAt,
+      mockNewClass.endAt,
     );
 
     // In total 50 weekly hours (class1: 20 + class2: 10 + newClass: 20)
@@ -88,43 +93,48 @@ describe('checkInstructorExceedsMaxHours', () => {
 
   it('should return null when the new class is overlapping with the existing classes, but instructor will NOT exceed the maximum hours', () => {
     // Arrange mock data
-    const mockClassesOfInstructor = [class1, class2] as Class[];
+    const mockNewClass = {
+      id: 3,
+      // The overlap period is from 2022-03-01 to 2022-03-14
+      startAt: new Date('2022-02-21'),
+      endAt: new Date('2022-03-14'),
+      // The new class is on Monday and Wednesday,
+      // So the weekly hours is 10, then the total weekly hours is 40, which will not exceed the maximum hours
+      weekdaysRange: monWedWeekdaysRange,
+    } as Class;
+    const mockClassesOfInstructor = [class1, class2, mockNewClass] as Class[];
 
     const maxHoursOfInstructor = 40;
-    // The overlap period is from 2022-03-01 to 2022-03-14
-    const startAtOfClass = new Date('2022-02-21');
-    const endAtOfClass = new Date('2022-03-14');
-    // The new class is on Monday and Wednesday,
-    // So the weekly hours is 10, then the total weekly hours is 40, which will not exceed the maximum hours
-    const weekdaysRangeId = MON_WED_WEEKDAYS_RANGE_ID;
 
     const result = checkInstructorExceedsMaxHours(
       maxHoursOfInstructor,
       mockClassesOfInstructor,
-      startAtOfClass,
-      endAtOfClass,
-      weekdaysRangeId,
+      mockNewClass.startAt,
+      mockNewClass.endAt,
     );
 
     expect(result).toBeNull();
   });
 
   it('should return null when the new class is NOT overlapping with the existing classes', () => {
+    const mockNewClass = {
+      id: 3,
+      // The new class is from 2022-03-16 to 2022-03-31, which is not overlapping with the existing classes
+      startAt: new Date('2022-03-16'),
+      endAt: new Date('2022-03-31'),
+      weekdaysRange: monFriWeekdaysRange,
+    } as Class;
+
     // Arrange mock data
-    const mockClassesOfInstructor = [class1, class2] as Class[];
+    const mockClassesOfInstructor = [class1, class2, mockNewClass] as Class[];
 
     const maxHoursOfInstructor = 40;
-    // The new class is from 2022-03-16 to 2022-03-31, which is not overlapping with the existing classes
-    const startAtOfClass = new Date('2022-03-16');
-    const endAtOfClass = new Date('2022-03-31');
-    const weekdaysRangeId = MON_FRI_WEEKDAYS_RANGE_ID;
 
     const result = checkInstructorExceedsMaxHours(
       maxHoursOfInstructor,
       mockClassesOfInstructor,
-      startAtOfClass,
-      endAtOfClass,
-      weekdaysRangeId,
+      mockNewClass.startAt,
+      mockNewClass.endAt,
     );
 
     expect(result).toBeNull();

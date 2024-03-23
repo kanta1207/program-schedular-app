@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 
-import { getOverlapsFromClasses, getWeeklyHours } from '../../../common/utils';
+import { getOverlapsFromClasses } from '../../../common/utils';
 import { Class } from 'src/entity';
 
 /**
@@ -16,7 +16,6 @@ export const checkInstructorExceedsMaxHours = (
   classesOfInstructor: Class[],
   startAtOfClass: Date,
   endAtOfClass: Date,
-  weekdaysRangeId: number,
 ): string | null => {
   if (maxHoursOfInstructor) {
     const overlaps = getOverlapsFromClasses(classesOfInstructor);
@@ -37,10 +36,12 @@ export const checkInstructorExceedsMaxHours = (
             ? endAtOfClass
             : overlap.overlapEndAt;
 
+        const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
+
         // Weekly hours of the class is 20 if the weekdays range is Monday to Friday, otherwise 10
-        const weeklyHoursOfNewClass = getWeeklyHours(weekdaysRangeId);
-        const totalWeeklyHoursInstructorAssigned =
-          overlap.totalWeeklyHours + weeklyHoursOfNewClass;
+        // const weeklyHoursOfNewClass = getWeeklyHours(weekdaysRangeId);
+        // const totalWeeklyHoursInstructorAssigned =
+        //   overlap.totalWeeklyHours + weeklyHoursOfNewClass;
         if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
           const formattedOverlapStartAt =
             dayjs(overlapStartAt).format('YYYY-MM-DD');

@@ -123,7 +123,6 @@ export class CohortsService {
           instructor.classes,
           clazz.startAt,
           clazz.endAt,
-          clazz.weekdaysRange.id,
         );
 
         if (msgExceedsMaxHours) {
