@@ -12,10 +12,11 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const navigation = [
+const nonNestedMenu = [
   {
     name: 'Schedules',
     path: '/schedules',
@@ -25,24 +26,30 @@ const navigation = [
     path: '/instructors',
   },
   {
+    name: 'Cohorts',
+    path: '/cohorts',
+  },
+];
+
+const schoolCalendarMenu = [
+  {
     name: 'Intakes',
     path: '/intakes',
   },
   {
-    name: 'Cohorts',
-    path: '/cohorts',
+    name: 'Breaks',
+    path: '/breaks',
   },
-  {
-    name: 'Courses',
-    path: '/courses',
-  },
+];
+
+const curriculumMenu = [
   {
     name: 'Programs',
     path: '/programs',
   },
   {
-    name: 'Breaks',
-    path: '/breaks',
+    name: 'Courses',
+    path: '/courses',
   },
 ];
 
@@ -54,10 +61,11 @@ const settings = [
 ];
 
 const Header = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [anchorElSchoolCalendar, setAnchorElSchoolCalendar] = useState<null | HTMLElement>(null);
+  const [anchorElCurriculum, setAnchorElCurriculum] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -65,6 +73,22 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenSchoolCalendarMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElSchoolCalendar(event.currentTarget);
+  };
+
+  const handleCloseSchoolCalendarMenu = () => {
+    setAnchorElSchoolCalendar(null);
+  };
+
+  const handleOpenCurriculumMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElCurriculum(event.currentTarget);
+  };
+
+  const handleCloseCurriculumMenu = () => {
+    setAnchorElCurriculum(null);
   };
   return (
     <AppBar position="sticky">
@@ -83,7 +107,7 @@ const Header = () => {
           </Link>
 
           <Box sx={{ flexGrow: 1, display: 'flex', gap: '1rem', marginLeft: '3rem' }}>
-            {navigation.map((navItem) => (
+            {nonNestedMenu.map((navItem) => (
               <Button
                 key={navItem.path}
                 href={navItem.path}
@@ -91,7 +115,6 @@ const Header = () => {
                 sx={{
                   my: 2,
                   color: 'white',
-                  display: 'block',
                   textDecoration: navItem.path === pathname ? 'underline' : 'none',
                   textUnderlineOffset: '4px',
                 }}
@@ -99,6 +122,48 @@ const Header = () => {
                 {navItem.name}
               </Button>
             ))}
+
+            <Box>
+              <Button
+                sx={{ my: 2, color: 'white' }}
+                onClick={handleOpenSchoolCalendarMenu}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                School Calendar
+              </Button>
+              <Menu
+                anchorEl={anchorElSchoolCalendar}
+                open={Boolean(anchorElSchoolCalendar)}
+                onClose={handleCloseSchoolCalendarMenu}
+              >
+                {schoolCalendarMenu.map((menuItem) => (
+                  <Link key={menuItem.path} href={menuItem.path}>
+                    <MenuItem onClick={handleCloseSchoolCalendarMenu}>{menuItem.name}</MenuItem>
+                  </Link>
+                ))}
+              </Menu>
+            </Box>
+
+            <Box>
+              <Button
+                sx={{ my: 2, color: 'white' }}
+                onClick={handleOpenCurriculumMenu}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Curriculum
+              </Button>
+              <Menu
+                anchorEl={anchorElCurriculum}
+                open={Boolean(anchorElCurriculum)}
+                onClose={handleCloseCurriculumMenu}
+              >
+                {curriculumMenu.map((menuItem) => (
+                  <Link key={menuItem.path} href={menuItem.path}>
+                    <MenuItem onClick={handleCloseCurriculumMenu}>{menuItem.name}</MenuItem>
+                  </Link>
+                ))}
+              </Menu>
+            </Box>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
