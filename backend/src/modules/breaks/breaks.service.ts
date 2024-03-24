@@ -90,10 +90,6 @@ export class BreaksService {
   }
 
   async remove(id: number) {
-    const deleteResult = await this.breakRepository.delete(id);
-
-    if (deleteResult.affected === 0) {
-      throw new NotFoundException('Break Not Found');
-    }
+    await this.breakRepository.delete(id);
   }
 }
