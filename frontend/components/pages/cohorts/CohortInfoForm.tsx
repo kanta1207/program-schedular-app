@@ -2,12 +2,14 @@
 import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
-import { CONFIRM, PERIOD_OF_DAYS } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
+import { CONFIRM, PERIOD_OF_DAYS, TOAST } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface CohortInfoFormProps {
   cohort?: GetCohortResponse;
@@ -50,8 +52,13 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
 
   const handleDelete = async () => {
     if (confirm(CONFIRM.delete) && cohort) {
-      await deleteCohort(cohort.id);
-      router.push('/cohorts');
+      try {
+        await deleteCohort(cohort.id);
+        router.push('/cohorts');
+        toast.success(TOAST.success.deleted);
+      } catch (error: any) {
+        toast.error(<ErrorMessages message={error.message} />);
+      }
     }
   };
 
@@ -83,12 +90,14 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
           programId: updatedCohort.program.id,
         });
         setIsEditable(false);
+        toast.success(TOAST.success.updated);
       } else {
         const { data: newCohort } = await createCohort(payload);
         router.push(`/cohorts/${newCohort.id}`);
+        toast.success(TOAST.success.created);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
