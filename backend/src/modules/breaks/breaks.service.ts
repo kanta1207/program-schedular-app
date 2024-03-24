@@ -30,7 +30,13 @@ export class BreaksService {
   }
 
   async findOne(id: number) {
-    return await this.breakRepository.findOneBy({ id });
+    const breakData = await this.breakRepository.findOneBy({ id });
+
+    if (!breakData) {
+      throw new NotFoundException('Break Not Found');
+    }
+
+    return breakData;
   }
 
   async create(createBreakDto: CreateBreakDto) {
@@ -70,6 +76,12 @@ export class BreaksService {
       .where('break.startAt < :endAt', { endAt })
       .andWhere('break.endAt > :startAt', { startAt });
 
+    if (existingBreak) {
+      query.andWhere('break.id != :id', {
+        id: existingBreak.id,
+      });
+    }
+
     const overlappingBreak = await query.getOne();
 
     if (overlappingBreak) {
@@ -86,6 +98,9 @@ export class BreaksService {
   }
 
   async remove(id: number) {
-    await this.breakRepository.delete(id);
+    const deleteResult = await this.breakRepository.delete(id);
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Break Not Found');
+    }
   }
 }

@@ -138,7 +138,11 @@ export class CohortsService {
   }
 
   async remove(id: number) {
-    await this.cohortRepository.delete(id);
+    const deleteResult = await this.cohortRepository.delete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Cohort Not Found');
+    }
   }
 
   async updateClasses(id: number, updateClassesDto: UpdateClassesDto) {
