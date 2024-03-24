@@ -1,4 +1,5 @@
 'use client';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -14,7 +15,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const nonNestedMenu = [
   {
@@ -62,10 +62,11 @@ const settings = [
 
 const Header = () => {
   const pathname = usePathname();
+  const firstPathname = `/${pathname.split('/')[1]}`;
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [anchorElSchoolCalendar, setAnchorElSchoolCalendar] = useState<null | HTMLElement>(null);
-  const [anchorElCurriculum, setAnchorElCurriculum] = useState<null | HTMLElement>(null);
+  const [curriculumOpen, setCurriculumOpen] = useState(false);
+  const [schoolCalendarOpen, setSchoolCalendarOpen] = useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -75,23 +76,8 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
-  const handleOpenSchoolCalendarMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorElSchoolCalendar(event.currentTarget);
-  };
-
-  const handleCloseSchoolCalendarMenu = () => {
-    setAnchorElSchoolCalendar(null);
-  };
-
-  const handleOpenCurriculumMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorElCurriculum(event.currentTarget);
-  };
-
-  const handleCloseCurriculumMenu = () => {
-    setAnchorElCurriculum(null);
-  };
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link href="/schedules">
@@ -115,54 +101,105 @@ const Header = () => {
                 sx={{
                   my: 2,
                   color: 'white',
-                  textDecoration: navItem.path === pathname ? 'underline' : 'none',
+                  textDecoration: navItem.path === firstPathname ? 'underline' : 'none',
                   textUnderlineOffset: '4px',
+                  '&:hover': { textDecoration: navItem.path === firstPathname ? 'underline' : 'none' },
                 }}
               >
                 {navItem.name}
               </Button>
             ))}
 
-            <Box>
+            <Box
+              sx={{ position: 'relative' }}
+              onMouseOver={() => setSchoolCalendarOpen(true)}
+              onMouseLeave={() => setSchoolCalendarOpen(false)}
+            >
               <Button
-                sx={{ my: 2, color: 'white' }}
-                onClick={handleOpenSchoolCalendarMenu}
-                endIcon={<KeyboardArrowDownIcon />}
+                sx={{ my: 2, color: 'white', position: 'relative' }}
+                endIcon={<KeyboardArrowDownIcon sx={{ transform: schoolCalendarOpen ? 'rotate(180deg)' : '' }} />}
               >
                 School Calendar
               </Button>
-              <Menu
-                anchorEl={anchorElSchoolCalendar}
-                open={Boolean(anchorElSchoolCalendar)}
-                onClose={handleCloseSchoolCalendarMenu}
+              <Box
+                sx={{
+                  minWidth: '110px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  px: 2,
+                  py: 1,
+                  position: 'absolute',
+                  right: '0',
+                  bgcolor: 'primary.light',
+                  transform: schoolCalendarOpen ? '' : 'translateY(-100%)',
+                  pointerEvents: schoolCalendarOpen ? 'unset' : 'none',
+                  opacity: schoolCalendarOpen ? 'unset' : '0',
+                  transition: '0.25s',
+                }}
               >
                 {schoolCalendarMenu.map((menuItem) => (
-                  <Link key={menuItem.path} href={menuItem.path}>
-                    <MenuItem onClick={handleCloseSchoolCalendarMenu}>{menuItem.name}</MenuItem>
-                  </Link>
+                  <Button
+                    key={menuItem.path}
+                    href={menuItem.path}
+                    component="a"
+                    sx={{
+                      my: '0.25rem',
+                      color: 'white',
+                      textDecoration: menuItem.path === firstPathname ? 'underline' : 'none',
+                      textUnderlineOffset: '4px',
+                      '&:hover': { textDecoration: menuItem.path === firstPathname ? 'underline' : 'none' },
+                    }}
+                  >
+                    {menuItem.name}
+                  </Button>
                 ))}
-              </Menu>
+              </Box>
             </Box>
 
-            <Box>
+            <Box
+              sx={{ position: 'relative' }}
+              onMouseOver={() => setCurriculumOpen(true)}
+              onMouseLeave={() => setCurriculumOpen(false)}
+            >
               <Button
                 sx={{ my: 2, color: 'white' }}
-                onClick={handleOpenCurriculumMenu}
-                endIcon={<KeyboardArrowDownIcon />}
+                endIcon={<KeyboardArrowDownIcon sx={{ transform: curriculumOpen ? 'rotate(180deg)' : '' }} />}
               >
                 Curriculum
               </Button>
-              <Menu
-                anchorEl={anchorElCurriculum}
-                open={Boolean(anchorElCurriculum)}
-                onClose={handleCloseCurriculumMenu}
+              <Box
+                sx={{
+                  minWidth: '110px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  px: 2,
+                  py: 1,
+                  position: 'absolute',
+                  right: '0',
+                  bgcolor: 'primary.light',
+                  transform: curriculumOpen ? '' : 'translateY(-100%)',
+                  pointerEvents: curriculumOpen ? 'unset' : 'none',
+                  opacity: curriculumOpen ? 'unset' : '0',
+                  transition: '0.25s',
+                }}
               >
                 {curriculumMenu.map((menuItem) => (
-                  <Link key={menuItem.path} href={menuItem.path}>
-                    <MenuItem onClick={handleCloseCurriculumMenu}>{menuItem.name}</MenuItem>
-                  </Link>
+                  <Button
+                    key={menuItem.path}
+                    href={menuItem.path}
+                    component="a"
+                    sx={{
+                      my: '0.25rem',
+                      color: 'white',
+                      textDecoration: menuItem.path === firstPathname ? 'underline' : 'none',
+                      textUnderlineOffset: '4px',
+                      '&:hover': { textDecoration: menuItem.path === firstPathname ? 'underline' : 'none' },
+                    }}
+                  >
+                    {menuItem.name}
+                  </Button>
                 ))}
-              </Menu>
+              </Box>
             </Box>
           </Box>
 
