@@ -20,10 +20,19 @@ import {
   Typography,
 } from '@mui/material';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
-import { CONFIRM, CONTRACT_TYPES, DESIRED_WORKING_HOURS, PERIOD_OF_DAYS, WEEKDAYS_RANGES } from '@/constants/_index';
+import {
+  CONFIRM,
+  CONTRACT_TYPES,
+  DESIRED_WORKING_HOURS,
+  PERIOD_OF_DAYS,
+  TOAST,
+  WEEKDAYS_RANGES,
+} from '@/constants/_index';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { createInstructor } from '@/actions/instructors/createInstructor';
 import { GetCoursesResponse, GetInstructorResponse, GetProgramsResponse } from '@/types/_index';
+import { toast } from 'react-toastify';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 type FormValues = {
   name: string;
@@ -87,8 +96,13 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
   const handleDelete = async () => {
     const isConfirmed = confirm(CONFIRM.delete);
     if (isConfirmed && instructor) {
-      await deleteInstructor(instructor.id);
-      router.push('/instructors');
+      try {
+        await deleteInstructor(instructor.id);
+        router.push('/instructors');
+        toast.success(TOAST.success.deleted);
+      } catch (error: any) {
+        toast.error(<ErrorMessages message={error.message} />);
+      }
     }
   };
 
@@ -149,12 +163,14 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
           note: updatedInstructor.note ?? '',
         });
         setIsEditMode(false);
+        toast.success(TOAST.success.updated);
       } else {
         const { data: newInstructor } = await createInstructor(payload);
         router.push(`/instructors/${newInstructor.id}`);
+        toast.success(TOAST.success.created);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
