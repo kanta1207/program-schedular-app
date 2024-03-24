@@ -1,4 +1,5 @@
 'use client';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -12,10 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-const navigation = [
+const nonNestedMenu = [
   {
     name: 'Schedules',
     path: '/schedules',
@@ -25,24 +26,30 @@ const navigation = [
     path: '/instructors',
   },
   {
+    name: 'Cohorts',
+    path: '/cohorts',
+  },
+];
+
+const schoolCalendarMenu = [
+  {
     name: 'Intakes',
     path: '/intakes',
   },
   {
-    name: 'Cohorts',
-    path: '/cohorts',
+    name: 'Breaks',
+    path: '/breaks',
   },
-  {
-    name: 'Courses',
-    path: '/courses',
-  },
+];
+
+const curriculumMenu = [
   {
     name: 'Programs',
     path: '/programs',
   },
   {
-    name: 'Breaks',
-    path: '/breaks',
+    name: 'Courses',
+    path: '/courses',
   },
 ];
 
@@ -54,8 +61,8 @@ const settings = [
 ];
 
 const Header = () => {
-  const router = useRouter();
   const pathname = usePathname();
+  const firstPathname = `/${pathname.split('/')[1]}`;
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -66,8 +73,63 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const NavButton = ({ path, name }: { path: string; name: string }) => {
+    return (
+      <Button
+        key={path}
+        href={path}
+        component="a"
+        sx={{
+          color: 'white',
+          textDecoration: path === firstPathname ? 'underline' : 'none',
+          textUnderlineOffset: '4px',
+          '&:hover': { textDecoration: path === firstPathname ? 'underline' : 'none' },
+        }}
+      >
+        {name}
+      </Button>
+    );
+  };
+
+  const DropdownMenu = ({ label, menu }: { label: string; menu: { name: string; path: string }[] }) => {
+    const [open, setOpen] = useState(false);
+    return (
+      <Box sx={{ position: 'relative' }} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <Button
+          sx={{ my: 2, color: 'white' }}
+          endIcon={<KeyboardArrowDownIcon sx={{ transform: open ? 'rotate(180deg)' : '', transition: '.25s' }} />}
+        >
+          {label}
+        </Button>
+        <Box
+          sx={{
+            minWidth: '110px',
+            display: 'flex',
+            flexDirection: 'column',
+            px: 0.5,
+            py: 1,
+            borderBottomLeftRadius: '4px',
+            borderBottomRightRadius: '4px',
+            position: 'absolute',
+            right: '0',
+            bgcolor: 'primary.light',
+            transform: open ? '' : 'translateY(-100%)',
+            pointerEvents: open ? 'unset' : 'none',
+            opacity: open ? 'unset' : '0',
+            transition: '0.25s',
+          }}
+        >
+          {menu.map(({ path, name }) => (
+            <NavButton path={path} name={name} />
+          ))}
+        </Box>
+      </Box>
+    );
+  };
+
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{ '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link href="/schedules">
@@ -82,23 +144,12 @@ const Header = () => {
             </div>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: 'flex', gap: '1rem', marginLeft: '3rem' }}>
-            {navigation.map((navItem) => (
-              <Button
-                key={navItem.path}
-                href={navItem.path}
-                component="a"
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  textDecoration: navItem.path === pathname ? 'underline' : 'none',
-                  textUnderlineOffset: '4px',
-                }}
-              >
-                {navItem.name}
-              </Button>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '3rem' }}>
+            {nonNestedMenu.map(({ path, name }) => (
+              <NavButton path={path} name={name} />
             ))}
+            <DropdownMenu label="School Calendar" menu={schoolCalendarMenu} />
+            <DropdownMenu label="Curriculum" menu={curriculumMenu} />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
