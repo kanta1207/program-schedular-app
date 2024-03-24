@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -48,7 +48,7 @@ export class CoursesService {
   }
 
   async findOne(id: number) {
-    return await this.courseRepository.findOne({
+    const course = await this.courseRepository.findOne({
       where: { id },
       order: {
         program: {
@@ -87,12 +87,21 @@ export class CoursesService {
         },
       },
     });
+
+    if (!course) {
+      throw new NotFoundException('Course Not Found');
+    }
+
+    return course;
   }
 
   async update(id: number, updateCourseDto: UpdateCourseDto) {
     const { name, requiredHours, programId } = updateCourseDto;
 
     const course = await this.courseRepository.findOneBy({ id });
+    if (!course) {
+      throw new NotFoundException('Course Not Found');
+    }
 
     course.name = name ?? course.name;
     course.requiredHours = requiredHours ?? requiredHours;
@@ -107,6 +116,10 @@ export class CoursesService {
   }
 
   async remove(id: number) {
-    await this.courseRepository.softDelete(id);
+    const deleteResult = await this.courseRepository.softDelete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Course Not Found');
+    }
   }
 }

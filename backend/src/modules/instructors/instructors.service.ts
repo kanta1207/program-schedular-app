@@ -326,6 +326,10 @@ export class InstructorsService {
   }
 
   async remove(id: number) {
-    return await this.instructorRepository.softDelete(id);
+    const deleteResult = await this.instructorRepository.softDelete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Instructor Not Found');
+    }
   }
 }
