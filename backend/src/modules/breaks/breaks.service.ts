@@ -76,6 +76,12 @@ export class BreaksService {
       .where('break.startAt < :endAt', { endAt })
       .andWhere('break.endAt > :startAt', { startAt });
 
+    if (existingBreak) {
+      query.andWhere('break.id != :id', {
+        id: existingBreak.id,
+      });
+    }
+
     const overlappingBreak = await query.getOne();
 
     if (overlappingBreak) {
