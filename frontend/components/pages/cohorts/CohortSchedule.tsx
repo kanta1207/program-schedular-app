@@ -3,8 +3,9 @@
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
 import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
-import { CLASSROOMS, WEEKDAYS_RANGES } from '@/constants/_index';
+import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
 import {
   GetBreaksResponse,
@@ -37,6 +38,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 export type CreateType = 'new' | 'copy';
 
@@ -136,15 +138,15 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           instructorId: classData.instructor?.id,
         })),
       });
+      toast.success(TOAST.success.updated);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
   const handleCancelClick = () => {
-    const message = 'Do you really want to cancel?';
-    if (confirm(message)) {
+    if (confirm(CONFIRM.cancel)) {
       setIsScheduleEditable(false);
       remove();
       if (cohort.classes.length > 0) {
@@ -493,7 +495,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           render={({ field }: any) => {
                             return (
                               <FormControl fullWidth>
-                                <Select size="small" value={field.value} required {...field}>
+                                <Select size="small" value={field.value} {...field}>
                                   {instructors.map((instructor) => (
                                     <MenuItem key={instructor.id} value={instructor.id} disabled={!instructor.isActive}>
                                       {instructor.name} {!instructor.isActive && '(Inactive)'}

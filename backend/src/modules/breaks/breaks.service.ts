@@ -22,6 +22,8 @@ export class BreaksService {
   async findAll() {
     return await this.breakRepository.find({
       order: {
+        startAt: 'DESC',
+        endAt: 'DESC',
         id: 'DESC',
       },
     });

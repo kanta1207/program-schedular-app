@@ -1,7 +1,9 @@
 'use client';
 import { deleteIntake } from '@/actions/intakes/deleteIntake';
 import { updateIntake } from '@/actions/intakes/updateIntakes';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
+import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
 import { GetIntakesResponse } from '@/types/_index';
 import { TableFooter, TablePagination } from '@mui/material';
@@ -19,6 +21,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface IntakeListTableProps {
   intakes: GetIntakesResponse[];
@@ -61,10 +64,11 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
 
       await updateIntake(editIntakeId, payload);
 
+      toast.success(TOAST.success.updated);
       setEditIntakeId(null);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
   const handleEditClick = (id: number) => {

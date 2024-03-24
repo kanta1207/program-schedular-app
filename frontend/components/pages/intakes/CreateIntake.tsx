@@ -8,6 +8,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createIntake } from '@/actions/intakes/createIntake';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { TOAST } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 const CreateIntake = () => {
   const [isCreating, setIsCreating] = useState(false);
@@ -36,11 +39,12 @@ const CreateIntake = () => {
 
       await createIntake(payload);
 
-      reset();
+      toast.success(TOAST.success.updated);
       setIsCreating(false);
+      reset();
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
