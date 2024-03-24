@@ -19,7 +19,7 @@ import {
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Divider } from '@mui/material';
+import { Container, Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -306,7 +306,20 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             )}
           </Box>
         </Box>
-        <SchedulePreview cohort={cohorts[6]} courses={courses} schedule={cohorts[6].classes} breaks={breaks} />
+        <Box
+          sx={{
+            bgcolor: '#ffeeee',
+            width: '100vw',
+            height: '300px',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <Container>
+            <SchedulePreview cohort={cohorts[6]} courses={courses} schedule={cohorts[6].classes} breaks={breaks} />
+          </Container>
+        </Box>
 
         <SchedulePreview cohort={cohort} courses={courses} watchSchedule={watchSchedule} breaks={breaks} />
         {cohorts
