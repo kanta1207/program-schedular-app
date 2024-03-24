@@ -12,9 +12,6 @@ const InstructorPage = async () => {
         <Headline name="New Instructor" />
       </Box>
       <InstructorInfoForm courses={courses} programs={programs} />
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '2rem' }}>
-        <Headline name="Schedule" />
-      </Box>
     </>
   );
 };
