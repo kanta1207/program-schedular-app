@@ -65,8 +65,6 @@ const Header = () => {
   const firstPathname = `/${pathname.split('/')[1]}`;
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [curriculumOpen, setCurriculumOpen] = useState(false);
-  const [schoolCalendarOpen, setSchoolCalendarOpen] = useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -74,6 +72,60 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const NavButton = ({ path, name }: { path: string; name: string }) => {
+    return (
+      <Button
+        key={path}
+        href={path}
+        component="a"
+        sx={{
+          color: 'white',
+          textDecoration: path === firstPathname ? 'underline' : 'none',
+          textUnderlineOffset: '4px',
+          '&:hover': { textDecoration: path === firstPathname ? 'underline' : 'none' },
+        }}
+      >
+        {name}
+      </Button>
+    );
+  };
+
+  const DropdownMenu = ({ label, menu }: { label: string; menu: { name: string; path: string }[] }) => {
+    const [open, setOpen] = useState(false);
+    return (
+      <Box sx={{ position: 'relative' }} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <Button
+          sx={{ my: 2, color: 'white' }}
+          endIcon={<KeyboardArrowDownIcon sx={{ transform: open ? 'rotate(180deg)' : '', transition: '.25s' }} />}
+        >
+          {label}
+        </Button>
+        <Box
+          sx={{
+            minWidth: '110px',
+            display: 'flex',
+            flexDirection: 'column',
+            px: 0.5,
+            py: 1,
+            borderBottomLeftRadius: '4px',
+            borderBottomRightRadius: '4px',
+            position: 'absolute',
+            right: '0',
+            bgcolor: 'primary.light',
+            transform: open ? '' : 'translateY(-100%)',
+            pointerEvents: open ? 'unset' : 'none',
+            opacity: open ? 'unset' : '0',
+            transition: '0.25s',
+          }}
+        >
+          {menu.map(({ path, name }) => (
+            <NavButton path={path} name={name} />
+          ))}
+        </Box>
+      </Box>
+    );
   };
 
   return (
@@ -92,115 +144,12 @@ const Header = () => {
             </div>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: 'flex', gap: '1rem', marginLeft: '3rem' }}>
-            {nonNestedMenu.map((navItem) => (
-              <Button
-                key={navItem.path}
-                href={navItem.path}
-                component="a"
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  textDecoration: navItem.path === firstPathname ? 'underline' : 'none',
-                  textUnderlineOffset: '4px',
-                  '&:hover': { textDecoration: navItem.path === firstPathname ? 'underline' : 'none' },
-                }}
-              >
-                {navItem.name}
-              </Button>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '3rem' }}>
+            {nonNestedMenu.map(({ path, name }) => (
+              <NavButton path={path} name={name} />
             ))}
-
-            <Box
-              sx={{ position: 'relative' }}
-              onMouseOver={() => setSchoolCalendarOpen(true)}
-              onMouseLeave={() => setSchoolCalendarOpen(false)}
-            >
-              <Button
-                sx={{ my: 2, color: 'white', position: 'relative' }}
-                endIcon={<KeyboardArrowDownIcon sx={{ transform: schoolCalendarOpen ? 'rotate(180deg)' : '' }} />}
-              >
-                School Calendar
-              </Button>
-              <Box
-                sx={{
-                  minWidth: '110px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  px: 2,
-                  py: 1,
-                  position: 'absolute',
-                  right: '0',
-                  bgcolor: 'primary.light',
-                  transform: schoolCalendarOpen ? '' : 'translateY(-100%)',
-                  pointerEvents: schoolCalendarOpen ? 'unset' : 'none',
-                  opacity: schoolCalendarOpen ? 'unset' : '0',
-                  transition: '0.25s',
-                }}
-              >
-                {schoolCalendarMenu.map((menuItem) => (
-                  <Button
-                    key={menuItem.path}
-                    href={menuItem.path}
-                    component="a"
-                    sx={{
-                      my: '0.25rem',
-                      color: 'white',
-                      textDecoration: menuItem.path === firstPathname ? 'underline' : 'none',
-                      textUnderlineOffset: '4px',
-                      '&:hover': { textDecoration: menuItem.path === firstPathname ? 'underline' : 'none' },
-                    }}
-                  >
-                    {menuItem.name}
-                  </Button>
-                ))}
-              </Box>
-            </Box>
-
-            <Box
-              sx={{ position: 'relative' }}
-              onMouseOver={() => setCurriculumOpen(true)}
-              onMouseLeave={() => setCurriculumOpen(false)}
-            >
-              <Button
-                sx={{ my: 2, color: 'white' }}
-                endIcon={<KeyboardArrowDownIcon sx={{ transform: curriculumOpen ? 'rotate(180deg)' : '' }} />}
-              >
-                Curriculum
-              </Button>
-              <Box
-                sx={{
-                  minWidth: '110px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  px: 2,
-                  py: 1,
-                  position: 'absolute',
-                  right: '0',
-                  bgcolor: 'primary.light',
-                  transform: curriculumOpen ? '' : 'translateY(-100%)',
-                  pointerEvents: curriculumOpen ? 'unset' : 'none',
-                  opacity: curriculumOpen ? 'unset' : '0',
-                  transition: '0.25s',
-                }}
-              >
-                {curriculumMenu.map((menuItem) => (
-                  <Button
-                    key={menuItem.path}
-                    href={menuItem.path}
-                    component="a"
-                    sx={{
-                      my: '0.25rem',
-                      color: 'white',
-                      textDecoration: menuItem.path === firstPathname ? 'underline' : 'none',
-                      textUnderlineOffset: '4px',
-                      '&:hover': { textDecoration: menuItem.path === firstPathname ? 'underline' : 'none' },
-                    }}
-                  >
-                    {menuItem.name}
-                  </Button>
-                ))}
-              </Box>
-            </Box>
+            <DropdownMenu label="School Calendar" menu={schoolCalendarMenu} />
+            <DropdownMenu label="Curriculum" menu={curriculumMenu} />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
