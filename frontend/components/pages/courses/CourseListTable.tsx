@@ -1,7 +1,9 @@
 'use client';
 import { deleteCourse } from '@/actions/courses/deleteCourse';
 import { updateCourse } from '@/actions/courses/updateCourse';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
+import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
 import { GetCoursesResponse, GetProgramsResponse } from '@/types/_index';
 import { MenuItem, Select, TableFooter, TablePagination } from '@mui/material';
@@ -15,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface CourseListTableProps {
   courses: GetCoursesResponse[];
@@ -47,10 +50,12 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
       }
 
       await updateCourse(editCourseId, payload);
+
+      toast.success(TOAST.success.updated);
       setEditCourseId(null);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
