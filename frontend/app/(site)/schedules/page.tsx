@@ -1,8 +1,7 @@
 import { getClasses } from '@/actions/classes/getClasses';
 import { convertClassesToGantt } from '@/helpers/convertClassesToGantt';
-import { GetClassesGroupByCohort } from '@/types/class';
+import { GetClassesGroupByCohort } from '@/types/_index';
 import ScheduleList from '../../../components/pages/schedules/ScheduleList';
-import './style.css';
 import { getCohorts } from '@/actions/cohorts/getCohorts';
 import { getIntakes } from '@/actions/intakes/getIntakes';
 import { getInstructors } from '@/actions/instructors/getInstructors';
