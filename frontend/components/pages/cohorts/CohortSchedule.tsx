@@ -305,6 +305,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             )}
           </Box>
         </Box>
+        <SchedulePreview cohort={cohorts[6]} courses={courses} schedule={cohorts[6].classes} breaks={breaks} />
 
         <SchedulePreview cohort={cohort} courses={courses} watchSchedule={watchSchedule} breaks={breaks} />
         {cohorts

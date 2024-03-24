@@ -29,7 +29,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
     intakeWeeks.push(i);
   }
 
-  const caluclateWeeks = (scheduleArray: GetBreaksResponse[] | WatchSchedule[] | GetCohortClass[]) => {
+  const calculateWeeks = (scheduleArray: GetBreaksResponse[] | WatchSchedule[] | GetCohortClass[]) => {
     const newArray = scheduleArray.map((item) => {
       // calculate class duration
       const daysDiff = dayjs(item.endAt).diff(dayjs(item.startAt), 'day');
@@ -60,7 +60,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
 
   const modifySchedule = () => {
     if (watchSchedule) {
-      const tempModifiedSchedule = caluclateWeeks(watchSchedule) as ModifiedWatchSchedule[];
+      const tempModifiedSchedule = calculateWeeks(watchSchedule) as ModifiedWatchSchedule[];
       const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
         return {
           name: cohort.name,
@@ -72,11 +72,9 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
       });
       return returnModifiedSchedule;
     } else if (schedule) {
-      const tempModifiedSchedule = caluclateWeeks(schedule) as ModifiedClasses[];
+      const tempModifiedSchedule = calculateWeeks(schedule) as ModifiedClasses[];
       const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
         return {
-          // ...item,s
-          id: item.id,
           name: item.cohort.name,
           startWeek: item.startWeek,
           totalWeeks: item.totalWeeks,
@@ -93,7 +91,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   const filterdBreaks = breaks
     .filter((item) => dayjs(item.startAt).isAfter(dayjs(cohort.intake.startAt)))
     .filter((item) => dayjs(item.endAt).isBefore(dayjs(cohort.intake.endAt)));
-  const newBreaks = caluclateWeeks(filterdBreaks);
+  const newBreaks = calculateWeeks(filterdBreaks);
 
   return (
     <Box sx={{ '& p': { textAlign: 'center' }, mb: '1rem' }}>
@@ -108,7 +106,14 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
           borderColor: '#33333315',
         }}
       >
-        {modifiedSchedule && modifiedSchedule[0].name}
+        <Box
+          sx={{
+            gridColumnStart: '1',
+            gridRowStart: '1',
+          }}
+        >
+          {modifiedSchedule && modifiedSchedule[0].name}
+        </Box>
         {/* Column Header */}
         <Box
           sx={{
