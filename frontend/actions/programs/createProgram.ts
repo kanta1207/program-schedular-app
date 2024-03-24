@@ -24,15 +24,14 @@ export const createProgram = async (payload: CreateProgramPayload): Promise<ApiR
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.messages);
+    }
 
     return data;
   } catch (error: any) {
-    console.error(error);
-    throw new Error(`An error occurred: ${error.message}`);
+    throw new Error(error.message);
   }
 };

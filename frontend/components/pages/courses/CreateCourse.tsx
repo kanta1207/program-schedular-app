@@ -7,6 +7,9 @@ import { GetProgramsResponse } from '@/types/_index';
 import { createCourse } from '@/actions/courses/createCourse';
 import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { TOAST } from '@/constants/_index';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 
 interface CreateCourseProps {
   programs?: GetProgramsResponse[];
@@ -22,6 +25,11 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
+  const handleCancelClick = () => {
+    setIsCreating(false);
+    reset();
+  };
+
   const { control, handleSubmit, reset } = useForm<CourseFormValues>({
     defaultValues: {
       name: '',
@@ -31,18 +39,20 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   });
 
   const onSubmit: SubmitHandler<CourseFormValues> = async (data) => {
-    const payload = {
-      ...data,
-      requiredHours: Number(data.requiredHours),
-    };
-
     try {
+      const payload = {
+        ...data,
+        requiredHours: Number(data.requiredHours),
+      };
+
       await createCourse(payload);
-      reset();
+
+      toast.success(TOAST.success.created);
       setIsCreating(false);
+      reset();
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
@@ -58,26 +68,24 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
 
       {isCreating && (
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 items-end p-4 border my-4">
-          <div>
-            <Controller
-              control={control}
-              name="name"
-              rules={{ required: true }}
-              render={({ field }: any) => {
-                return (
-                  <TextField
-                    required
-                    id="courseName"
-                    label="Course Name"
-                    placeholder="Enter course name"
-                    sx={{ width: '20rem' }}
-                    value={field.value}
-                    onChange={(name) => field.onChange(name)}
-                  />
-                );
-              }}
-            />
-          </div>
+          <Controller
+            control={control}
+            name="name"
+            rules={{ required: true }}
+            render={({ field }: any) => {
+              return (
+                <TextField
+                  required
+                  id="courseName"
+                  label="Course Name"
+                  placeholder="Enter course name"
+                  sx={{ width: '20rem' }}
+                  value={field.value}
+                  onChange={(name) => field.onChange(name)}
+                />
+              );
+            }}
+          />
 
           <FormControl>
             <InputLabel id="select-program" required>
@@ -110,44 +118,44 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
             />
           </FormControl>
 
-          <div>
-            <Controller
-              control={control}
-              name="requiredHours"
-              rules={{
-                required: true,
-                pattern: { value: /^\d+$/, message: '' },
-              }}
-              render={({ field }: any) => {
-                return (
-                  <TextField
-                    required
-                    id="requiredHours"
-                    label="Required Hours"
-                    placeholder="60"
-                    type="number"
-                    value={field.value}
-                    sx={{ width: '20rem' }}
-                    onChange={(requiredHours) => field.onChange(requiredHours)}
-                    inputProps={{
-                      type: 'number',
-                      min: 0,
-                      max: 999,
-                      maxLength: 3,
-                      onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-                        e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
-                      },
-                    }}
-                  />
-                );
-              }}
-            />
-          </div>
+          <Controller
+            control={control}
+            name="requiredHours"
+            rules={{
+              required: true,
+              pattern: { value: /^\d+$/, message: '' },
+            }}
+            render={({ field }: any) => {
+              return (
+                <TextField
+                  required
+                  id="requiredHours"
+                  label="Required Hours"
+                  placeholder="60"
+                  type="number"
+                  value={field.value}
+                  sx={{ width: '20rem' }}
+                  onChange={(requiredHours) => field.onChange(requiredHours)}
+                  inputProps={{
+                    type: 'number',
+                    min: 0,
+                    max: 999,
+                    maxLength: 3,
+                    onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+                      e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, e.target.maxLength);
+                    },
+                  }}
+                />
+              );
+            }}
+          />
+
           <div className="ml-auto flex gap-4">
             <Button
               sx={{ display: 'flex', justifyContent: 'flex-end' }}
               variant={'outlined'}
-              onClick={() => setIsCreating(!isCreating)}
+              type="button"
+              onClick={handleCancelClick}
             >
               Cancel
             </Button>

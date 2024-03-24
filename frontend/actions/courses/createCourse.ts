@@ -21,16 +21,14 @@ export const createCourse = async (payload: CreateCoursePayload): Promise<ApiRes
       },
       body: JSON.stringify(payload),
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(data.messages);
     }
-
-    const data = await response.json();
 
     return data;
   } catch (error: any) {
-    console.error(error);
-    throw new Error(`An error occurred: ${error.message}`);
+    throw new Error(error.message);
   }
 };

@@ -1,7 +1,9 @@
 'use client';
 import { deleteProgram } from '@/actions/programs/deleteProgram';
 import { updateProgram } from '@/actions/programs/updateProgram';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
+import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
 import { GetProgramsResponse } from '@/types/program';
 import { TableFooter, TablePagination } from '@mui/material';
@@ -15,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface ProgramListTableProps {
   programs: GetProgramsResponse[];
@@ -51,10 +54,11 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
 
       await updateProgram(editProgramId, payload);
 
+      toast.success(TOAST.success.updated);
       setEditProgramId(null);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
@@ -90,9 +94,9 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
       <Table>
         <TableHead>
           <TableRow sx={thRowStyle}>
-            <TableCell sx={{ width: 'calc(100% * 11/12)' }}>Name</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 10/12)' }}>Name</TableCell>
             {/* Empty head for edit and delete */}
-            <TableCell sx={{ width: 'calc(100% * 1/12)' }} />
+            <TableCell sx={{ width: 'calc(100% * 2/12)' }} />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -112,7 +116,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
                             <TextField
                               label="Name"
                               id="name"
-                              sx={{ width: '100%' }}
+                              sx={{ width: '50%' }}
                               value={field.value}
                               onChange={(name) => field.onChange(name)}
                             />
