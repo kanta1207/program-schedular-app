@@ -8,9 +8,8 @@ export interface Overlap {
 }
 
 /**
- *
  * @param classes - Array of classes
- * @returns Array of overlaps
+ * @returns Array of {@link Overlap}
  */
 export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
   // Sort all classes by their start date

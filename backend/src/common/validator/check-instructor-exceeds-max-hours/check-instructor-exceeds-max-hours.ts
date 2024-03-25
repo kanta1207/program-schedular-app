@@ -8,7 +8,6 @@ import { Class } from 'src/entity';
  * @param classesOfInstructor - Classes the instructor is already assigned to
  * @param startAtOfClass - Start date of the new class
  * @param endAtOfClass - End date of the new class
- * @param weekdaysRangeOfNewClass - Weekdays range of the new class
  * @returns An alert message when the instructor will exceed the maximum hours if assigned to the new class
  */
 export const checkInstructorExceedsMaxHours = (
@@ -18,6 +17,7 @@ export const checkInstructorExceedsMaxHours = (
   endAtOfClass: Date,
 ): string | null => {
   if (maxHoursOfInstructor) {
+    // Get overlaps from instructor's existing classes
     const overlaps = getOverlapsFromClasses(classesOfInstructor);
 
     // Check if the new class overlaps with any of the existing classes
@@ -38,10 +38,6 @@ export const checkInstructorExceedsMaxHours = (
 
         const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
 
-        // Weekly hours of the class is 20 if the weekdays range is Monday to Friday, otherwise 10
-        // const weeklyHoursOfNewClass = getWeeklyHours(weekdaysRangeId);
-        // const totalWeeklyHoursInstructorAssigned =
-        //   overlap.totalWeeklyHours + weeklyHoursOfNewClass;
         if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
           const formattedOverlapStartAt =
             dayjs(overlapStartAt).format('YYYY-MM-DD');
