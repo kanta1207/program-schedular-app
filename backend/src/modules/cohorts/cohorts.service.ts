@@ -17,6 +17,7 @@ import {
   checkInstructorTeachableCourse,
   checkSpanningAssignmentOfInstructor,
   checkClassOverlapAllowed,
+  checkInstructorExceedsMaxHours,
 } from '../../common/validator';
 
 @Injectable()
