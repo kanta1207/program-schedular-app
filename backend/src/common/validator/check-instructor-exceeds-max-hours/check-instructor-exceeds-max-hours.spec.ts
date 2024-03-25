@@ -37,8 +37,15 @@ const message = (
   overlapStartAt: Date,
   overlapEndAt: Date,
   maxHoursOfInstructor: number,
-) =>
-  `Instructor will exceed maximum hours if assigned to this class. Total weekly working hours will be ${totalWeeklyHoursInstructorAssigned} from ${dayjs(overlapStartAt).format('YYYY-MM-DD')} to ${dayjs(overlapEndAt).format('YYYY-MM-DD')}. Instructor's maximum weekly working hour is ${maxHoursOfInstructor}.`;
+) => {
+  const formattedOverlapStartAt = dayjs(overlapStartAt)
+    .subtract(1, 'day')
+    .format('YYYY-MM-DD');
+  const formattedOverlapEndAt = dayjs(overlapEndAt)
+    .subtract(1, 'day')
+    .format('YYYY-MM-DD');
+  return `Instructor will exceed maximum hours if assigned to this class. Total weekly working hours is ${totalWeeklyHoursInstructorAssigned}h. Max hours is ${maxHoursOfInstructor}h. Exceeding duration is ${formattedOverlapStartAt} to ${formattedOverlapEndAt}.`;
+};
 
 describe('checkInstructorExceedsMaxHours', () => {
   it('should return null when maxHoursOfInstructor is null', () => {
