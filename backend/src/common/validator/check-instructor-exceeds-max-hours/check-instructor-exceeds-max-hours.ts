@@ -39,6 +39,8 @@ export const checkInstructorExceedsMaxHours = (
         const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
 
         if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
+          // TODO: dayjs is decreasing the date by 1 day only in frontend, and couldn't figure out why,
+          // so subtracting the day by 1 in backend as a temporary solution.
           const formattedOverlapStartAt = dayjs(overlapStartAt)
             .subtract(1, 'day')
             .format('YYYY-MM-DD');
