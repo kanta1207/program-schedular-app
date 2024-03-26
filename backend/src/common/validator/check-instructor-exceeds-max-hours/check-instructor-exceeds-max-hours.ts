@@ -47,7 +47,7 @@ export const checkInstructorExceedsMaxHours = (
           const formattedOverlapEndAt = dayjs(overlapEndAt)
             .subtract(1, 'day')
             .format('YYYY-MM-DD');
-          return `Instructor will exceed maximum hours if assigned to this class. Total weekly working hours is ${totalWeeklyHoursInstructorAssigned}h. Max hours is ${maxHoursOfInstructor}h. Exceeding duration is ${formattedOverlapStartAt} to ${formattedOverlapEndAt}.`;
+          return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w. Exceeding period: ${formattedOverlapStartAt} to ${formattedOverlapEndAt}.`;
         }
       }
     }
