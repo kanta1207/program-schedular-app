@@ -12,10 +12,12 @@ export interface Overlap {
  * @returns Array of {@link Overlap}
  */
 export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
-  // Sort all classes by their start date
-  const sortedClasses = classes.sort(
-    (a, b) => a.startAt.getTime() - b.startAt.getTime(),
-  );
+  // Sort all classes by their duration
+  const sortedClasses = classes.sort((a, b) => {
+    const aDuration = a.endAt.getTime() - a.startAt.getTime();
+    const bDuration = b.endAt.getTime() - b.startAt.getTime();
+    return aDuration - bDuration;
+  });
 
   const overlaps: {
     overlapStartAt: Date;
@@ -51,12 +53,19 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
         // Update the total hours of the overlap group
         overlaps[i].totalWeeklyHours += weeklyHoursOfCurrentClass;
         found = true;
-        break;
       }
     }
 
     // If no overlapping group is found, create a new one
     if (!found) {
+      for (let i = 0; i < classes.length; i++) {
+        if (
+          classes[i].id !== currentClass.id &&
+          classes[i].startAt <= currentClass.endAt &&
+          classes[i].endAt >= currentClass.startAt
+        ) {
+        }
+      }
       overlaps.push({
         overlapStartAt: currentClass.startAt,
         overlapEndAt: currentClass.endAt,
