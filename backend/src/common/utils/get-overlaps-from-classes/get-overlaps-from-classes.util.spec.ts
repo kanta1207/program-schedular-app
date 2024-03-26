@@ -1,5 +1,5 @@
 import { Class, MasterWeekdaysRange } from 'src/entity';
-import { getOverlapsFromClasses } from './get-overlaps-from-classes';
+import { getOverlapsFromClasses } from './get-overlaps-from-classes.util';
 import {
   MON_FRI_WEEKDAYS_RANGE_ID,
   MON_WED_WEEKDAYS_RANGE_ID,

@@ -3,7 +3,7 @@ import {
   MON_WED_WEEKDAYS_RANGE_ID,
   WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../constants/master.constant';
-import { getWeeklyHours } from './get-weekly-hours';
+import { getWeeklyHours } from './get-weekly-hours.util';
 
 describe('getWeeklyHours', () => {
   it('should return 20 for Monday-Friday range', () => {
