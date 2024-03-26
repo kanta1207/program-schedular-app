@@ -1,5 +1,5 @@
 import { Class } from 'src/entity';
-import { getWeeklyHours } from '..';
+import { getWeeklyHours } from '..'; // Adjust the import path as necessary
 
 export interface Overlap {
   overlapStartAt: Date;
@@ -12,34 +12,20 @@ export interface Overlap {
  * @returns Array of {@link Overlap}
  */
 export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
-  // Sort all classes by their duration
-  const sortedClasses = classes.sort((a, b) => {
-    const aDuration = a.endAt.getTime() - a.startAt.getTime();
-    const bDuration = b.endAt.getTime() - b.startAt.getTime();
-    return aDuration - bDuration;
-  });
+  // Step 1: Sort Classes by Start Time
+  const sortedClasses = classes.sort(
+    (a, b) => a.startAt.getTime() - b.startAt.getTime(),
+  );
 
-  const overlaps: {
-    overlapStartAt: Date;
-    overlapEndAt: Date;
-    totalWeeklyHours: number;
-  }[] = [];
+  const overlaps: Overlap[] = [];
 
-  for (let i = 0; i < sortedClasses.length; i++) {
-    const currentClass = sortedClasses[i];
-    const weeklyHoursOfCurrentClass = getWeeklyHours(
-      currentClass.weekdaysRange.id,
-    );
+  // Step 2: Find Overlaps and Group Overlapping Classes
+  sortedClasses.forEach((currentClass, i) => {
     for (let j = i + 1; j < sortedClasses.length; j++) {
       const targetClass = sortedClasses[j];
-      const weeklyHoursOfTargetClass = getWeeklyHours(
-        targetClass.weekdaysRange.id,
-      );
-      if (
-        currentClass.startAt <= targetClass.endAt &&
-        currentClass.endAt >= targetClass.startAt
-      ) {
-        // Calculate the overlap start at and end at date
+
+      // Check if classes overlap
+      if (currentClass.endAt > targetClass.startAt) {
         const overlapStartAt = new Date(
           Math.max(
             currentClass.startAt.getTime(),
@@ -50,44 +36,54 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
           Math.min(currentClass.endAt.getTime(), targetClass.endAt.getTime()),
         );
 
-        // Find the existing overlap group overlapping with the current overlap
-        const existingOverlapIndex = overlaps.findIndex(
-          (overlap) =>
-            overlap.overlapStartAt.getTime() <= overlapEndAt.getTime() &&
-            overlap.overlapEndAt.getTime() >= overlapStartAt.getTime(),
+        // Attempt to find an existing overlap group that this new overlap fits into
+        const existingOverlap = overlaps.find(
+          (o) =>
+            o.overlapStartAt <= overlapEndAt &&
+            o.overlapEndAt >= overlapStartAt,
         );
 
-        // If an existing overlap group is found, update the overlap start at, end at and total hours
-        if (existingOverlapIndex !== -1) {
-          // Update the overlap start at date
-          overlaps[existingOverlapIndex].overlapStartAt = new Date(
-            Math.max(
-              overlaps[existingOverlapIndex].overlapStartAt.getTime(),
+        if (existingOverlap) {
+          // If found, update the existing group's overlap period
+          existingOverlap.overlapStartAt = new Date(
+            Math.min(
+              existingOverlap.overlapStartAt.getTime(),
               overlapStartAt.getTime(),
             ),
           );
-          // Update the overlap end at date
-          overlaps[existingOverlapIndex].overlapEndAt = new Date(
-            Math.min(
-              overlaps[existingOverlapIndex].overlapEndAt.getTime(),
+          existingOverlap.overlapEndAt = new Date(
+            Math.max(
+              existingOverlap.overlapEndAt.getTime(),
               overlapEndAt.getTime(),
             ),
           );
-          // Update the total hours of the overlap groups
-          overlaps[existingOverlapIndex].totalWeeklyHours +=
-            weeklyHoursOfCurrentClass + weeklyHoursOfTargetClass;
         } else {
-          // if no existing overlap group is found, create a new one
+          // If no existing group, create a new overlap entry
           overlaps.push({
             overlapStartAt,
             overlapEndAt,
-            totalWeeklyHours:
-              weeklyHoursOfCurrentClass + weeklyHoursOfTargetClass,
+            // Initialize total weekly hours to 0, calculate later in Step 3
+            totalWeeklyHours: 0,
           });
         }
       }
     }
-  }
+  });
+
+  // Step 3: Correctly Calculate Overlap Weekly Hours
+  overlaps.forEach((overlap) => {
+    overlap.totalWeeklyHours = sortedClasses
+      .filter(
+        (classItem) =>
+          classItem.startAt < overlap.overlapEndAt &&
+          classItem.endAt > overlap.overlapStartAt,
+      )
+      .reduce(
+        (total, classItem) =>
+          total + getWeeklyHours(classItem.weekdaysRange.id),
+        0,
+      );
+  });
 
   return overlaps;
 };
