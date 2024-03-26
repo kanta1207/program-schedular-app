@@ -14,7 +14,7 @@ describe('getOverlapsFromClasses', () => {
     id: MON_WED_WEEKDAYS_RANGE_ID,
   } as MasterWeekdaysRange;
 
-  it('should return the correct overlaps, caseA', () => {
+  it('should return the correct overlaps, CaseA: when there are two overlap groups', () => {
     /**
      * Case A
      * class1 and class2 overlap from 2022-03-01 to 2022-03-15,
@@ -58,31 +58,31 @@ describe('getOverlapsFromClasses', () => {
     ]);
   });
 
-  it('should return the correct overlaps, caseB', () => {
+  it('should return the correct overlaps, CaseB: when there are 1 overlap group, and one of the class is not overlap with others', () => {
     /**
      * Case B
-     * class4 and class5 overlap from 2022-03-01 to 2022-03-12,
+     * class1 and class2 overlap from 2022-03-01 to 2022-03-12,
      * with a total of 30 weekly hours (class1: 20 + class2: 10)
      */
-    const class4 = {
+    const class1 = {
       weekdaysRange: monFriWeekdaysRange,
       startAt: new Date('2022-03-01'),
       endAt: new Date('2022-03-15'),
     } as Class;
 
-    const class5 = {
+    const class2 = {
       weekdaysRange: monWedWeekdaysRange,
       startAt: new Date('2022-03-05'),
       endAt: new Date('2022-03-12'),
     } as Class;
 
-    const class6 = {
+    const class3 = {
       weekdaysRange: monFriWeekdaysRange,
       startAt: new Date('2022-03-16'),
       endAt: new Date('2022-03-31'),
     } as Class;
 
-    const classesCaseB = [class4, class5, class6];
+    const classesCaseB = [class1, class2, class3];
 
     const overlapsB = getOverlapsFromClasses(classesCaseB);
 
@@ -95,20 +95,57 @@ describe('getOverlapsFromClasses', () => {
     ]);
   });
 
-  it("should return an empty array if there's no overlap", () => {
-    const class7 = {
+  it('should return the correct overlaps, CaseC: when there are 1 overlap group, and all of the class is overlaps', () => {
+    /**
+     * Case C
+     * class1, class2 and class3 overlap from 2022-03-01 to 2022-03-15,
+     * with a total of 50 weekly hours (class1: 20 + class2: 10 + class3: 20)
+     */
+    const class1 = {
       weekdaysRange: monFriWeekdaysRange,
       startAt: new Date('2022-03-01'),
       endAt: new Date('2022-03-15'),
     } as Class;
 
-    const class8 = {
+    const class2 = {
+      weekdaysRange: monWedWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-15'),
+    } as Class;
+
+    const class3 = {
+      weekdaysRange: monFriWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-15'),
+    } as Class;
+
+    const classesCaseC = [class1, class2, class3];
+
+    const overlapsC = getOverlapsFromClasses(classesCaseC);
+
+    expect(overlapsC).toEqual([
+      {
+        overlapStartAt: new Date('2022-03-01'),
+        overlapEndAt: new Date('2022-03-15'),
+        totalWeeklyHours: 50,
+      },
+    ]);
+  });
+
+  it("should return an empty array if there's no overlap", () => {
+    const class1 = {
+      weekdaysRange: monFriWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-15'),
+    } as Class;
+
+    const class2 = {
       weekdaysRange: monWedWeekdaysRange,
       startAt: new Date('2022-03-16'),
       endAt: new Date('2022-03-31'),
     } as Class;
 
-    const classesCaseC = [class7, class8];
+    const classesCaseC = [class1, class2];
 
     const overlapsC = getOverlapsFromClasses(classesCaseC);
 
