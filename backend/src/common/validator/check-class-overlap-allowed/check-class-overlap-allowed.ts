@@ -1,8 +1,8 @@
 import * as dayjs from 'dayjs';
 import { FormattedClass } from '../../../modules/cohorts/types';
 import {
-  WEEKDAYS_RANGE_MON_WED,
-  WEEKDAYS_RANGE_WED_FRI,
+  MON_WED_WEEKDAYS_RANGE_ID,
+  WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../constants/master.constant';
 
 /**
@@ -29,8 +29,8 @@ const generateMessage = (clazz: FormattedClass): string => {
  */
 const checkOverlapAllowed = (rangeAId: number, rangeBId: number): boolean => {
   const allowedCombinations = [
-    [WEEKDAYS_RANGE_MON_WED.id, WEEKDAYS_RANGE_WED_FRI.id],
-    [WEEKDAYS_RANGE_WED_FRI.id, WEEKDAYS_RANGE_MON_WED.id],
+    [MON_WED_WEEKDAYS_RANGE_ID, WED_FRI_WEEKDAYS_RANGE_ID],
+    [WED_FRI_WEEKDAYS_RANGE_ID, MON_WED_WEEKDAYS_RANGE_ID],
   ];
   // Allow overlaps of [Mon-Wed, Wed-Fri] or [Wed-Fri, Mon-Wed]
   return allowedCombinations.some(([a, b]) => rangeAId === a && rangeBId === b);
