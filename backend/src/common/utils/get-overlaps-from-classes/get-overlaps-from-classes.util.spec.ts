@@ -94,4 +94,24 @@ describe('getOverlapsFromClasses', () => {
       },
     ]);
   });
+
+  it("should return an empty array if there's no overlap", () => {
+    const class7 = {
+      weekdaysRange: monFriWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-15'),
+    } as Class;
+
+    const class8 = {
+      weekdaysRange: monWedWeekdaysRange,
+      startAt: new Date('2022-03-16'),
+      endAt: new Date('2022-03-31'),
+    } as Class;
+
+    const classesCaseC = [class7, class8];
+
+    const overlapsC = getOverlapsFromClasses(classesCaseC);
+
+    expect(overlapsC).toEqual([]);
+  });
 });
