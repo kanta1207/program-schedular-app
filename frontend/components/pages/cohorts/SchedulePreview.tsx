@@ -1,4 +1,10 @@
-import { GetBreaksResponse, GetCohortClass, GetCohortResponse, GetCoursesResponse } from '@/types/_index';
+import {
+  GetBreaksResponse,
+  GetCohortClass,
+  GetCohortResponse,
+  GetCoursesResponse,
+  GetInstructorsResponse,
+} from '@/types/_index';
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -10,6 +16,16 @@ interface SchedulePreviewProps {
   courses: GetCoursesResponse[];
   breaks: GetBreaksResponse[];
   schedule?: GetCohortClass[];
+  instructors: GetInstructorsResponse[];
+}
+
+interface ModifiedWatchSchedule extends WatchSchedule {
+  startWeek: number;
+  totalWeeks: number;
+}
+interface ModifiedClass extends GetCohortClass {
+  startWeek: number;
+  totalWeeks: number;
 }
 
 export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
@@ -18,15 +34,28 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   courses,
   breaks,
   schedule,
+  instructors,
 }) => {
-  const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
+  // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
+  const cohortIntakeStartAt =
+    dayjs(cohort.intake.startAt).day() === 2
+      ? dayjs(cohort.intake.startAt).subtract(1, 'day')
+      : dayjs(cohort.intake.startAt);
   const cohortIntakeEndAt = dayjs(cohort.intake.endAt);
   const intakeDaysDiff = cohortIntakeEndAt.diff(cohortIntakeStartAt, 'day');
   const intakeTotalWeeks = Math.ceil(intakeDaysDiff / 7);
 
-  const intakeWeeks = [];
+  const intakeWeekBlocks = [];
   for (let i = 0; i < intakeTotalWeeks; i++) {
-    intakeWeeks.push(i);
+    const weekStartDate = cohortIntakeStartAt.add(i * 7, 'day').format('MM-DD');
+    const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
+
+    const weekBlock = {
+      id: i,
+      weekStartDate: weekStartDate,
+      weekEndDate: weekEndDate,
+    };
+    intakeWeekBlocks.push(weekBlock);
   }
 
   const calculateWeeks = (scheduleArray: GetBreaksResponse[] | WatchSchedule[] | GetCohortClass[]) => {
@@ -49,15 +78,6 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
     return newArray;
   };
 
-  interface ModifiedWatchSchedule extends WatchSchedule {
-    startWeek: number;
-    totalWeeks: number;
-  }
-  interface ModifiedClasses extends GetCohortClass {
-    startWeek: number;
-    totalWeeks: number;
-  }
-
   const modifySchedule = () => {
     if (watchSchedule) {
       const tempModifiedSchedule = calculateWeeks(watchSchedule) as ModifiedWatchSchedule[];
@@ -68,11 +88,12 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
           totalWeeks: item.totalWeeks,
           courseId: item.courseId,
           weekdaysRangeId: item.weekdaysRangeId,
+          instructorId: item.instructorId,
         };
       });
       return returnModifiedSchedule;
     } else if (schedule) {
-      const tempModifiedSchedule = calculateWeeks(schedule) as ModifiedClasses[];
+      const tempModifiedSchedule = calculateWeeks(schedule) as ModifiedClass[];
       const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
         return {
           name: item.cohort.name,
@@ -80,6 +101,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
           totalWeeks: item.totalWeeks,
           courseId: item.course.id,
           weekdaysRangeId: item.weekdaysRange.id,
+          instructorId: item.instructor?.id,
         };
       });
       return returnModifiedSchedule;
@@ -94,45 +116,63 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   const newBreaks = calculateWeeks(filterdBreaks);
 
   return (
-    <Box sx={{ '& p': { textAlign: 'center' }, mb: '1rem' }}>
+    <Box
+      sx={{
+        '& .schedule-grid-child': {
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        },
+        '& p': { textAlign: 'center' },
+        mb: '1rem',
+      }}
+    >
       <Box
         sx={{
           display: 'grid',
           gridTemplateColumns: `2fr repeat(${intakeTotalWeeks}, 1fr)`,
-          gridTemplateRows: '1.5fr repeat(2, 1fr)',
+          gridTemplateRows: 'repeat(3, 1fr)',
           width: '100%',
-          height: '100px',
+          height: '120px',
+          bgcolor: '#FFF',
           border: '1px solid',
           borderColor: '#33333315',
         }}
       >
+        {/* Cohort name */}
         <Box
+          className="schedule-grid-child"
           sx={{
-            gridColumnStart: '1',
+            gridColumn: '1',
             gridRowStart: '1',
           }}
         >
-          {modifiedSchedule && modifiedSchedule[0].name}
+          <Typography variant="h6">{modifiedSchedule && modifiedSchedule[0] && modifiedSchedule[0].name}</Typography>
         </Box>
-        {/* Column Header */}
+
+        {/* Column Header (Days of the week)*/}
         <Box
+          className="schedule-grid-child"
           sx={{
-            gridColumnStart: '1',
+            gridColumn: '1',
             gridRowStart: '2',
           }}
         >
           <Typography>Mon - Wed</Typography>
         </Box>
         <Box
+          className="schedule-grid-child"
           sx={{
-            gridColumnStart: '1',
+            gridColumn: '1',
             gridRowStart: '3',
           }}
         >
           <Typography>Wed - Fri</Typography>
         </Box>
 
-        {/* Break Blocks */}
+        {/* Break blocks */}
         {newBreaks.map((item, index) => {
           // add 1 because the first column is column head (MonWed, WedFri)
           const startCol = item.startWeek + 1;
@@ -141,44 +181,33 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
               key={index}
               sx={{
                 gridColumn: `${startCol.toString()} / span ${item.totalWeeks}`,
-                gridRowStart: '1',
-                gridRowEnd: '4',
-                bgcolor: '#e8e8e8',
+                gridRow: '1 / span 3',
+                bgcolor: 'grey.200',
               }}
-            >
-              <Typography
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              ></Typography>
-            </Box>
+            ></Box>
           );
         })}
 
-        {/* Week Blocks */}
-        {intakeWeeks.map((item) => {
-          const colStart = item + 2;
-          const weekStartDate = dayjs(cohort.intake.startAt)
-            .add(item * 7, 'day')
-            .format('MM-DD');
-          const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
+        {/* Week blocks  */}
+        {intakeWeekBlocks.map((item) => {
+          // add 2 because grid column number starts from 1
+          // and the first column will be the header
+          const columnStartNumber = item.id + 2;
           return (
             <Box
-              key={item}
+              key={item.id}
               sx={{
-                gridColumnStart: colStart.toString(),
-                gridRowStart: '1',
-                gridRowEnd: '4',
+                gridColumn: columnStartNumber.toString(),
+                gridRow: '1 / span 3',
                 border: '1px solid',
-                borderColor: '#33333315',
+                borderColor: 'grey.200',
                 margin: '-1px',
               }}
             >
               <Typography sx={{ fontSize: '0.75rem' }}>
-                {weekStartDate}
+                {item.weekStartDate}
                 <br />
-                {weekEndDate}
+                {item.weekEndDate}
               </Typography>
             </Box>
           );
@@ -187,35 +216,30 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
         {/* Schedule Blocks */}
         {modifiedSchedule &&
           modifiedSchedule.map((item, index) => {
-            // add 1 because the first column is table head (MonWed, WedFri)
+            // add 1 because the first column is table column head (MonWed, WedFri)
             const startCol = item.startWeek + 1;
-            const endCol = item.startWeek + item.totalWeeks + 1;
-            // find course name because the object only has courseId
-            const courseName = courses.find((course) => course.id === item.courseId);
+            // find course name and instructor name because the object only has IDs
+            const course = courses.find((course) => course.id === item.courseId);
+            const instructor = instructors.find((instructor) => instructor.id === item.instructorId);
             return (
               <Box
+                className="schedule-grid-child"
                 key={index}
                 sx={{
                   gridColumn: `${startCol.toString()} / span ${item.totalWeeks}`,
-                  gridRowStart: item.weekdaysRangeId === 1 ? '2' : item.weekdaysRangeId === 2 ? '2' : '3',
-                  gridRowEnd: item.weekdaysRangeId === 1 ? '4' : item.weekdaysRangeId === 2 ? '3' : '4',
+                  gridRow: item.weekdaysRangeId === 1 ? '2 / span 2' : item.weekdaysRangeId === 2 ? '2' : '3',
                   bgcolor:
                     item.weekdaysRangeId === 1 ? '#662d9180' : item.weekdaysRangeId === 2 ? '#0047AB80' : '#BA002180',
                   border: '1px solid #FFF',
                   color: '#FFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  pl: '0.25rem',
-                  overflow: 'hidden',
                 }}
               >
                 <Typography
                   sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    fontSize: '0.9rem',
                   }}
                 >
-                  {courseName?.name}
+                  {course ? course.name : ''} - {instructor ? instructor.name : 'N/A'}
                 </Typography>
               </Box>
             );

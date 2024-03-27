@@ -16,10 +16,11 @@ import {
   GetInstructorsResponse,
   Holiday,
 } from '@/types/_index';
+import { ExpandMore } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Container, Divider } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -278,6 +279,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
+  const [accordionOpen, setAccordionOpen] = useState(false);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -306,39 +308,51 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             )}
           </Box>
         </Box>
-        <Box
-          sx={{
-            bgcolor: '#ffeeee',
-            width: '100vw',
-            height: '300px',
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        >
-          <Container>
-            <SchedulePreview cohort={cohorts[6]} courses={courses} schedule={cohorts[6].classes} breaks={breaks} />
-          </Container>
+        <Box sx={{ mb: '1rem' }}>
+          <Accordion onChange={() => setAccordionOpen(!accordionOpen)}>
+            <AccordionSummary
+              sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
+              expandIcon={<ExpandMore />}
+            >
+              <Typography>Schedules of cohorts from same intake</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
+              {cohorts
+                .filter((item) => {
+                  return item.intake.id === cohort.intake.id && item.id !== cohort.id;
+                })
+                .map((item) => {
+                  return (
+                    <SchedulePreview
+                      key={item.id}
+                      cohort={item}
+                      courses={courses}
+                      schedule={item.classes}
+                      breaks={breaks}
+                      instructors={instructors}
+                    />
+                  );
+                })}
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+        <Box sx={{ mx: accordionOpen ? '1rem' : '0', transition: '0.25s' }}>
+          <SchedulePreview
+            cohort={cohort}
+            courses={courses}
+            watchSchedule={watchSchedule}
+            breaks={breaks}
+            instructors={instructors}
+          />
         </Box>
 
-        <SchedulePreview cohort={cohort} courses={courses} watchSchedule={watchSchedule} breaks={breaks} />
-        {cohorts
-          .filter((item) => {
-            return item.intake.id === cohort.intake.id && item.id !== cohort.id;
-          })
-          .map((item) => {
-            return (
-              <SchedulePreview key={item.id} cohort={item} courses={courses} schedule={item.classes} breaks={breaks} />
-            );
-          })}
         {/* Cohort Schedule */}
         <Table
           sx={{
             minWidth: 650,
-            '& td': { padding: '0.5rem' },
-            '& th': { padding: '0.5rem' },
-            '& *': { fontSize: '0.8rem' },
+            '& td, th': { padding: '0.5rem' },
             '& input': { fontSize: '0.8rem' },
+            '& div': { fontSize: '0.8rem' },
           }}
         >
           <TableHead>
@@ -492,18 +506,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
                       {/* Hours met */}
                       <TableCell>
-                        <span
-                          className={`${
-                            plannedHours > requiredHours
-                              ? 'text-red-500 font-semibold'
-                              : plannedHours < requiredHours
-                              ? 'text-blue-500 font-semibold'
-                              : ''
-                          }`}
-                        >
-                          {plannedHours}
-                        </span>
-                        / {requiredHours}
+                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>/{' '}
+                        {requiredHours}
                       </TableCell>
 
                       {/* ClassroomId */}
@@ -595,18 +599,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
                         </TableCell>
                         <TableCell>
-                          <span
-                            className={`${
-                              plannedHours > requiredHours
-                                ? 'text-red-500 font-semibold'
-                                : plannedHours < requiredHours
-                                ? 'text-blue-500 font-semibold'
-                                : ''
-                            }`}
-                          >
-                            {plannedHours}
-                          </span>{' '}
-                          / {requiredHours}
+                          <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
+                          {requiredHours}
                         </TableCell>
                         <TableCell>
                           {item.classroom.name} ({item.classroom.floor} floor)
