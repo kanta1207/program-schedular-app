@@ -81,16 +81,23 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
           } else {
             // If existing overlap doesn't completely cover the new overlap, Entry uncovered overlaps
             if (existingOverlap.startAt > overlapStartAt) {
+              // - 1 the date to exclude the new overlap's start at date
+              const endAt = new Date(existingOverlap.startAt);
+              endAt.setUTCDate(endAt.getUTCDate() - 1);
               overlaps.push({
                 startAt: overlapStartAt,
-                endAt: existingOverlap.startAt,
+                endAt,
                 // Initialize total weekly hours to 0, calculate later to avoid double counting
                 totalWeeklyHours: 0,
               });
             }
             if (existingOverlap.endAt < overlapEndAt) {
+              // + 1 the date to exclude the new overlap's start at date
+              const startAt = new Date(existingOverlap.endAt);
+              startAt.setUTCDate(startAt.getUTCDate() + 1);
+
               overlaps.push({
-                startAt: existingOverlap.endAt,
+                startAt,
                 endAt: overlapEndAt,
                 // Initialize total weekly hours to 0, calculate later to avoid double counting
                 totalWeeklyHours: 0,
