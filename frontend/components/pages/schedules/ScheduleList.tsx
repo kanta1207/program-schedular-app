@@ -2,7 +2,6 @@
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
-import 'gantt-task-react/dist/index.css';
 import theme from '@/app/theme';
 import { Box, Button, Typography } from '@mui/material';
 import { GanttGroupBy, convertClassesToGantt } from '@/helpers/convertClassesToGantt';
