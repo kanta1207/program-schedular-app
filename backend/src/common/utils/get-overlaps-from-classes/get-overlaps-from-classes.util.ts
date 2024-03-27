@@ -2,8 +2,8 @@ import { Class } from 'src/entity';
 import { getWeeklyHours } from '..'; // Adjust the import path as necessary
 
 export interface Overlap {
-  overlapStartAt: Date;
-  overlapEndAt: Date;
+  startAt: Date;
+  endAt: Date;
   totalWeeklyHours: number;
 }
 
@@ -38,30 +38,25 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
 
         // Attempt to find an existing overlap group that this new overlap fits into
         const existingOverlap = overlaps.find(
-          (o) =>
-            o.overlapStartAt <= overlapEndAt &&
-            o.overlapEndAt >= overlapStartAt,
+          (o) => o.startAt <= overlapEndAt && o.endAt >= overlapStartAt,
         );
 
         if (existingOverlap) {
           // If found, update the existing group's overlap period
-          existingOverlap.overlapStartAt = new Date(
+          existingOverlap.startAt = new Date(
             Math.min(
-              existingOverlap.overlapStartAt.getTime(),
+              existingOverlap.startAt.getTime(),
               overlapStartAt.getTime(),
             ),
           );
-          existingOverlap.overlapEndAt = new Date(
-            Math.max(
-              existingOverlap.overlapEndAt.getTime(),
-              overlapEndAt.getTime(),
-            ),
+          existingOverlap.endAt = new Date(
+            Math.max(existingOverlap.endAt.getTime(), overlapEndAt.getTime()),
           );
         } else {
           // If no existing group, create a new overlap entry
           overlaps.push({
-            overlapStartAt,
-            overlapEndAt,
+            startAt: overlapStartAt,
+            endAt: overlapEndAt,
             // Initialize total weekly hours to 0, calculate later in Step 3
             totalWeeklyHours: 0,
           });
@@ -75,8 +70,8 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
     overlap.totalWeeklyHours = sortedClasses
       .filter(
         (classItem) =>
-          classItem.startAt < overlap.overlapEndAt &&
-          classItem.endAt > overlap.overlapStartAt,
+          classItem.startAt < overlap.endAt &&
+          classItem.endAt > overlap.startAt,
       )
       .reduce(
         (total, classItem) =>

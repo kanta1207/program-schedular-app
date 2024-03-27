@@ -46,19 +46,19 @@ describe('getOverlapsFromClasses', () => {
 
     expect(overlapsA).toEqual([
       {
-        overlapStartAt: new Date('2022-03-01'),
-        overlapEndAt: new Date('2022-03-15'),
+        startAt: new Date('2022-03-01'),
+        endAt: new Date('2022-03-15'),
         totalWeeklyHours: 30,
       },
       {
-        overlapStartAt: new Date('2022-03-16'),
-        overlapEndAt: new Date('2022-03-31'),
+        startAt: new Date('2022-03-16'),
+        endAt: new Date('2022-03-31'),
         totalWeeklyHours: 40,
       },
     ]);
   });
 
-  it('should return the correct overlaps, CaseB: when there are 1 overlap group, and one of the class is not overlap with others', () => {
+  it('should return the correct overlaps, CaseB: when there are 1 overlap group, and one of the classes is not overlapping with others', () => {
     /**
      * Case B
      * class1 and class2 overlap from 2022-03-01 to 2022-03-12,
@@ -88,14 +88,14 @@ describe('getOverlapsFromClasses', () => {
 
     expect(overlapsB).toEqual([
       {
-        overlapStartAt: new Date('2022-03-05'),
-        overlapEndAt: new Date('2022-03-12'),
+        startAt: new Date('2022-03-05'),
+        endAt: new Date('2022-03-12'),
         totalWeeklyHours: 30,
       },
     ]);
   });
 
-  it('should return the correct overlaps, CaseC: when there are 1 overlap group, and all of the class is overlaps', () => {
+  it('should return the correct overlaps, CaseC: when there are 1 overlap group, and all of the classes are completely overlapping each other', () => {
     /**
      * Case C
      * class1, class2 and class3 overlap from 2022-03-01 to 2022-03-15,
@@ -125,9 +125,53 @@ describe('getOverlapsFromClasses', () => {
 
     expect(overlapsC).toEqual([
       {
-        overlapStartAt: new Date('2022-03-01'),
-        overlapEndAt: new Date('2022-03-15'),
+        startAt: new Date('2022-03-01'),
+        endAt: new Date('2022-03-15'),
         totalWeeklyHours: 50,
+      },
+    ]);
+  });
+
+  it('should return the correct overlaps, CaseD: when there are 3 classes and 2 overlap groups', () => {
+    /**
+     * Case D
+     * class1, class2. and class3 overlap from 2022-03-01 to 2022-03-15,
+     * with a total of 50 weekly hours (class1: 20 + class2: 10 + class3: 20)
+     * class1 and class3 overlap from 2022-03-15 to 2022-03-31,
+     * with a total of 40 weekly hours (class1: 20 + class3: 20)
+     */
+    const class1 = {
+      weekdaysRange: monFriWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-31'),
+    } as Class;
+
+    const class2 = {
+      weekdaysRange: monWedWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-03-15'),
+    } as Class;
+
+    const class3 = {
+      weekdaysRange: monFriWeekdaysRange,
+      startAt: new Date('2022-03-01'),
+      endAt: new Date('2022-04-15'),
+    } as Class;
+
+    const classesCaseD = [class1, class2, class3];
+
+    const overlapsD = getOverlapsFromClasses(classesCaseD);
+
+    expect(overlapsD).toEqual([
+      {
+        startAt: new Date('2022-03-01'),
+        endAt: new Date('2022-03-15'),
+        totalWeeklyHours: 50,
+      },
+      {
+        startAt: new Date('2022-03-15'),
+        endAt: new Date('2022-03-31'),
+        totalWeeklyHours: 40,
       },
     ]);
   });
@@ -145,10 +189,10 @@ describe('getOverlapsFromClasses', () => {
       endAt: new Date('2022-03-31'),
     } as Class;
 
-    const classesCaseC = [class1, class2];
+    const classesCaseE = [class1, class2];
 
-    const overlapsC = getOverlapsFromClasses(classesCaseC);
+    const overlapsE = getOverlapsFromClasses(classesCaseE);
 
-    expect(overlapsC).toEqual([]);
+    expect(overlapsE).toEqual([]);
   });
 });
