@@ -78,6 +78,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [accordionOpen, setAccordionOpen] = useState(false);
+
   const router = useRouter();
   const now = dayjs();
 
@@ -279,7 +281,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
-  const [accordionOpen, setAccordionOpen] = useState(false);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -308,34 +309,36 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             )}
           </Box>
         </Box>
-        <Box sx={{ mb: '1rem' }}>
-          <Accordion onChange={() => setAccordionOpen(!accordionOpen)}>
-            <AccordionSummary
-              sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
-              expandIcon={<ExpandMore />}
-            >
-              <Typography>Schedules of cohorts from same intake</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
-              {cohorts
-                .filter((item) => {
-                  return item.intake.id === cohort.intake.id && item.id !== cohort.id;
-                })
-                .map((item) => {
-                  return (
-                    <SchedulePreview
-                      key={item.id}
-                      cohort={item}
-                      courses={courses}
-                      schedule={item.classes}
-                      breaks={breaks}
-                      instructors={instructors}
-                    />
-                  );
-                })}
-            </AccordionDetails>
-          </Accordion>
-        </Box>
+
+        {/* Schedule Preview Accordion */}
+        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen(!accordionOpen)}>
+          <AccordionSummary
+            sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
+            expandIcon={<ExpandMore />}
+          >
+            <Typography>Schedules of cohorts from same intake</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
+            {cohorts
+              .filter((item) => {
+                return item.intake.id === cohort.intake.id && item.id !== cohort.id;
+              })
+              .map((item) => {
+                return (
+                  <SchedulePreview
+                    key={item.id}
+                    cohort={item}
+                    courses={courses}
+                    schedule={item.classes}
+                    breaks={breaks}
+                    instructors={instructors}
+                  />
+                );
+              })}
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Current Page Cohort Schedule Preview */}
         <Box sx={{ mx: accordionOpen ? '1rem' : '0', transition: '0.25s' }}>
           <SchedulePreview
             cohort={cohort}
