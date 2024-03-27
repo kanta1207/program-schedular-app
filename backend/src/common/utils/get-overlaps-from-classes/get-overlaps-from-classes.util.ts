@@ -44,13 +44,13 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
         if (existingOverlap) {
           // If found, update the existing group's overlap period
           existingOverlap.startAt = new Date(
-            Math.min(
+            Math.max(
               existingOverlap.startAt.getTime(),
               overlapStartAt.getTime(),
             ),
           );
           existingOverlap.endAt = new Date(
-            Math.max(existingOverlap.endAt.getTime(), overlapEndAt.getTime()),
+            Math.min(existingOverlap.endAt.getTime(), overlapEndAt.getTime()),
           );
         } else {
           // If no existing group, create a new overlap entry
