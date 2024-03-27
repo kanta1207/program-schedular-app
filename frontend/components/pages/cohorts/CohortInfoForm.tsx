@@ -55,6 +55,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
       try {
         await deleteCohort(cohort.id);
         router.push('/cohorts');
+        router.refresh();
         toast.success(TOAST.success.deleted);
       } catch (error: any) {
         toast.error(<ErrorMessages message={error.message} />);
