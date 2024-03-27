@@ -1,5 +1,5 @@
 import { Class } from 'src/entity';
-import { getWeeklyHours } from '..'; // Adjust the import path as necessary
+import { getWeeklyHours } from '..';
 
 export interface Overlap {
   startAt: Date;
