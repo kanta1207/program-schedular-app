@@ -89,8 +89,6 @@ describe('getOverlapsFromClasses', () => {
 
     const overlaps = getOverlapsFromClasses(classes);
 
-    console.log('CaseB', overlaps);
-
     expect(overlaps).toEqual([
       {
         startAt: new Date('2022-03-07'),
@@ -143,8 +141,6 @@ describe('getOverlapsFromClasses', () => {
     const classes = [class1, class2, class3];
 
     const overlaps = getOverlapsFromClasses(classes);
-
-    console.log('CaseC', overlaps);
 
     expect(overlaps).toEqual([
       {

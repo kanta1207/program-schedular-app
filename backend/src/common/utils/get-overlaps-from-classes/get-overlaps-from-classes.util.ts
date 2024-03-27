@@ -12,17 +12,12 @@ export interface Overlap {
  * @returns Array of {@link Overlap}
  */
 export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
-  // Sort Classes by Start Time
-  const sortedClasses = classes.sort(
-    (a, b) => a.startAt.getTime() - b.startAt.getTime(),
-  );
-
   const overlaps: Overlap[] = [];
 
   // Find Overlaps and Group Overlapping Classes
-  sortedClasses.forEach((currentClass, i) => {
-    for (let j = i + 1; j < sortedClasses.length; j++) {
-      const targetClass = sortedClasses[j];
+  classes.forEach((currentClass, i) => {
+    for (let j = i + 1; j < classes.length; j++) {
+      const targetClass = classes[j];
 
       // Check if classes overlap
       if (currentClass.endAt > targetClass.startAt) {
@@ -90,8 +85,7 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
                 // Initialize total weekly hours to 0, calculate later to avoid double counting
                 totalWeeklyHours: 0,
               });
-            }
-            if (existingOverlap.endAt < overlapEndAt) {
+            } else if (existingOverlap.endAt < overlapEndAt) {
               // + 1 the date to exclude the new overlap's start at date
               const startAt = new Date(existingOverlap.endAt);
               startAt.setUTCDate(startAt.getUTCDate() + 1);
@@ -102,18 +96,22 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
                 // Initialize total weekly hours to 0, calculate later to avoid double counting
                 totalWeeklyHours: 0,
               });
+            } else {
+              // Update the existing overlap to include the new overlap
+              existingOverlap.startAt = new Date(
+                Math.max(
+                  existingOverlap.startAt.getTime(),
+                  overlapStartAt.getTime(),
+                ),
+              );
+              existingOverlap.endAt = new Date(
+                Math.min(
+                  existingOverlap.endAt.getTime(),
+                  overlapEndAt.getTime(),
+                ),
+              );
             }
           }
-
-          existingOverlap.startAt = new Date(
-            Math.max(
-              existingOverlap.startAt.getTime(),
-              overlapStartAt.getTime(),
-            ),
-          );
-          existingOverlap.endAt = new Date(
-            Math.min(existingOverlap.endAt.getTime(), overlapEndAt.getTime()),
-          );
         } else {
           // If no existing group, create a new overlap entry
           overlaps.push({
@@ -129,7 +127,7 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
 
   // Calculate Overlap Weekly Hours
   overlaps.forEach((overlap) => {
-    overlap.totalWeeklyHours = sortedClasses
+    overlap.totalWeeklyHours = classes
       .filter(
         (classItem) =>
           classItem.startAt < overlap.endAt &&
