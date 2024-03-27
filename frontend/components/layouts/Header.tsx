@@ -121,7 +121,7 @@ const Header = () => {
           }}
         >
           {menu.map(({ path, name }) => (
-            <NavButton path={path} name={name} />
+            <NavButton key={path} path={path} name={name} />
           ))}
         </Box>
       </Box>
@@ -146,7 +146,7 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '3rem' }}>
             {nonNestedMenu.map(({ path, name }) => (
-              <NavButton path={path} name={name} />
+              <NavButton key={path} path={path} name={name} />
             ))}
             <DropdownMenu label="School Calendar" menu={schoolCalendarMenu} />
             <DropdownMenu label="Curriculum" menu={curriculumMenu} />
