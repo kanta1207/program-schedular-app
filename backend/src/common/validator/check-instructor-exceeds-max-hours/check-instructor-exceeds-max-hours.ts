@@ -22,19 +22,12 @@ export const checkInstructorExceedsMaxHours = (
 
     // Check if the new class overlaps with any of the existing classes
     for (const overlap of overlaps) {
-      if (
-        startAtOfClass <= overlap.overlapEndAt &&
-        endAtOfClass >= overlap.overlapStartAt
-      ) {
+      if (startAtOfClass <= overlap.endAt && endAtOfClass >= overlap.startAt) {
         // Correct the overlap start and end date, compare with the new class start and end date
         const overlapStartAt =
-          startAtOfClass > overlap.overlapStartAt
-            ? startAtOfClass
-            : overlap.overlapStartAt;
+          startAtOfClass > overlap.startAt ? startAtOfClass : overlap.startAt;
         const overlapEndAt =
-          endAtOfClass < overlap.overlapEndAt
-            ? endAtOfClass
-            : overlap.overlapEndAt;
+          endAtOfClass < overlap.endAt ? endAtOfClass : overlap.endAt;
 
         const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
 
