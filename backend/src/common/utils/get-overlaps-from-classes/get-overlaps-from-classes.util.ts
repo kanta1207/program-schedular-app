@@ -7,6 +7,85 @@ export interface Overlap {
   totalWeeklyHours: number;
 }
 
+const handleOverlapFullyCoveredByExistingOverlap = (
+  existingOverlap: Overlap,
+  overlapStartAt: Date,
+  overlapEndAt: Date,
+  overlaps: Overlap[],
+) => {
+  // If existing overlap completely covers the new overlap,
+  // split the existing overlap into following 3 parts:
+  // 1. Before the new overlap,
+  // 2. The new overlap,
+  // 3. After the new overlap
+  if (existingOverlap.startAt < overlapStartAt) {
+    // - 1 the date to exclude the new overlap's start at date);
+    const endAt = new Date(overlapStartAt);
+    endAt.setUTCDate(endAt.getUTCDate() - 1);
+
+    overlaps.push({
+      startAt: existingOverlap.startAt,
+      endAt,
+      // Initialize total weekly hours to 0, calculate later to avoid double counting
+      totalWeeklyHours: 0,
+    });
+  }
+  if (existingOverlap.endAt > overlapEndAt) {
+    // + 1 the date to exclude the new overlap's start at date
+    const startAt = new Date(overlapEndAt);
+    startAt.setUTCDate(startAt.getUTCDate() + 1);
+
+    overlaps.push({
+      startAt,
+      endAt: existingOverlap.endAt,
+      // Initialize total weekly hours to 0, calculate later to avoid double counting
+      totalWeeklyHours: 0,
+    });
+  }
+  // Update the existing overlap to the new overlap
+  existingOverlap.startAt = overlapStartAt;
+  existingOverlap.endAt = overlapEndAt;
+};
+
+const handleOverlapNotFullyCoveredByExistingOverlap = (
+  existingOverlap: Overlap,
+  overlapStartAt: Date,
+  overlapEndAt: Date,
+  overlaps: Overlap[],
+) => {
+  // If existing overlap doesn't completely cover the new overlap, Entry uncovered overlaps
+  if (existingOverlap.startAt > overlapStartAt) {
+    // - 1 the date to exclude the new overlap's start at date
+    const endAt = new Date(existingOverlap.startAt);
+    endAt.setUTCDate(endAt.getUTCDate() - 1);
+    overlaps.push({
+      startAt: overlapStartAt,
+      endAt,
+      // Initialize total weekly hours to 0, calculate later to avoid double counting
+      totalWeeklyHours: 0,
+    });
+  } else if (existingOverlap.endAt < overlapEndAt) {
+    // + 1 the date to exclude the new overlap's start at date
+    const startAt = new Date(existingOverlap.endAt);
+    startAt.setUTCDate(startAt.getUTCDate() + 1);
+
+    overlaps.push({
+      startAt,
+      endAt: overlapEndAt,
+      // Initialize total weekly hours to 0, calculate later to avoid double counting
+      totalWeeklyHours: 0,
+    });
+  } else {
+    // Update the existing overlap to include the new overlap
+    existingOverlap.startAt = new Date(
+      Math.max(existingOverlap.startAt.getTime(), overlapStartAt.getTime()),
+    );
+    existingOverlap.endAt = new Date(
+      Math.min(existingOverlap.endAt.getTime(), overlapEndAt.getTime()),
+    );
+  }
+};
+
 /**
  * @param classes - Array of classes
  * @returns Array of {@link Overlap}
@@ -37,80 +116,24 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
         );
 
         if (existingOverlap) {
-          // If existing overlap completely covers the new overlap,
-          // split the existing overlap into following 3 parts:
-          // 1. Before the new overlap,
-          // 2. The new overlap,
-          // 3. After the new overlap
+          // Check if existing overlap completely covers the new overlap
           if (
             existingOverlap.startAt <= overlapStartAt &&
             existingOverlap.endAt >= overlapEndAt
           ) {
-            if (existingOverlap.startAt < overlapStartAt) {
-              // - 1 the date to exclude the new overlap's start at date);
-              const endAt = new Date(overlapStartAt);
-              endAt.setUTCDate(endAt.getUTCDate() - 1);
-
-              overlaps.push({
-                startAt: existingOverlap.startAt,
-                endAt,
-                // Initialize total weekly hours to 0, calculate later to avoid double counting
-                totalWeeklyHours: 0,
-              });
-            }
-            if (existingOverlap.endAt > overlapEndAt) {
-              // + 1 the date to exclude the new overlap's start at date
-              const startAt = new Date(overlapEndAt);
-              startAt.setUTCDate(startAt.getUTCDate() + 1);
-
-              overlaps.push({
-                startAt,
-                endAt: existingOverlap.endAt,
-                // Initialize total weekly hours to 0, calculate later to avoid double counting
-                totalWeeklyHours: 0,
-              });
-            }
-            // Update the existing overlap to the new overlap
-            existingOverlap.startAt = overlapStartAt;
-            existingOverlap.endAt = overlapEndAt;
+            handleOverlapFullyCoveredByExistingOverlap(
+              existingOverlap,
+              overlapStartAt,
+              overlapEndAt,
+              overlaps,
+            );
           } else {
-            // If existing overlap doesn't completely cover the new overlap, Entry uncovered overlaps
-            if (existingOverlap.startAt > overlapStartAt) {
-              // - 1 the date to exclude the new overlap's start at date
-              const endAt = new Date(existingOverlap.startAt);
-              endAt.setUTCDate(endAt.getUTCDate() - 1);
-              overlaps.push({
-                startAt: overlapStartAt,
-                endAt,
-                // Initialize total weekly hours to 0, calculate later to avoid double counting
-                totalWeeklyHours: 0,
-              });
-            } else if (existingOverlap.endAt < overlapEndAt) {
-              // + 1 the date to exclude the new overlap's start at date
-              const startAt = new Date(existingOverlap.endAt);
-              startAt.setUTCDate(startAt.getUTCDate() + 1);
-
-              overlaps.push({
-                startAt,
-                endAt: overlapEndAt,
-                // Initialize total weekly hours to 0, calculate later to avoid double counting
-                totalWeeklyHours: 0,
-              });
-            } else {
-              // Update the existing overlap to include the new overlap
-              existingOverlap.startAt = new Date(
-                Math.max(
-                  existingOverlap.startAt.getTime(),
-                  overlapStartAt.getTime(),
-                ),
-              );
-              existingOverlap.endAt = new Date(
-                Math.min(
-                  existingOverlap.endAt.getTime(),
-                  overlapEndAt.getTime(),
-                ),
-              );
-            }
+            handleOverlapNotFullyCoveredByExistingOverlap(
+              existingOverlap,
+              overlapStartAt,
+              overlapEndAt,
+              overlaps,
+            );
           }
         } else {
           // If no existing group, create a new overlap entry
@@ -140,11 +163,5 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
       );
   });
 
-  // Sort Overlaps by Start Time to maintain order
-  const sortedOverlaps = overlaps.sort(
-    (a, b) => a.startAt.getTime() - b.startAt.getTime(),
-  );
-
-  return sortedOverlaps;
-  // return overlaps;
+  return overlaps;
 };

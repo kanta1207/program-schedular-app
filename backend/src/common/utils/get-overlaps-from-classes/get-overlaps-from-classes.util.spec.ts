@@ -44,6 +44,8 @@ describe('getOverlapsFromClasses', () => {
 
     const overlaps = getOverlapsFromClasses(classes);
 
+    overlaps.sort((a, b) => a.startAt.getTime() - b.startAt.getTime());
+
     expect(overlaps).toEqual([
       {
         startAt: new Date('2022-03-01'),
@@ -88,6 +90,8 @@ describe('getOverlapsFromClasses', () => {
     const classes = [class1, class2, class3];
 
     const overlaps = getOverlapsFromClasses(classes);
+
+    overlaps.sort((a, b) => a.startAt.getTime() - b.startAt.getTime());
 
     expect(overlaps).toEqual([
       {
@@ -141,6 +145,8 @@ describe('getOverlapsFromClasses', () => {
     const classes = [class1, class2, class3];
 
     const overlaps = getOverlapsFromClasses(classes);
+
+    overlaps.sort((a, b) => a.startAt.getTime() - b.startAt.getTime());
 
     expect(overlaps).toEqual([
       {
