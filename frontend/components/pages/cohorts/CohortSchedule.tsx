@@ -214,9 +214,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   // dialog
   useEffect(() => {
     if (dialogOpen) {
-      const filteredCohorts = cohorts
-        .filter((item) => item.program.id === cohort.program.id)
-        .filter((item) => item.id !== cohort.id);
+      const filteredCohorts = cohorts.filter(
+        (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+      );
       setFilteredCohorts(filteredCohorts);
     }
   }, [dialogOpen]);
@@ -225,7 +225,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     cohort.classes.length === 0 && setDialogOpen(true);
 
     // Filter cohorts by the same program ID but excluding their own cohort ID.
-    const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id && item.id !== cohort.id);
+    const filteredCohorts = cohorts.filter(
+      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+    );
     setFilteredCohorts(filteredCohorts);
   }, []);
 
@@ -598,36 +600,40 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               </>
             ) : (
               <>
-                {scheduleItems.map((item) => {
-                  const startDate = dayjs(item.startAt).format('YYYY-MM-DD (ddd)');
-                  const endDate = dayjs(item.endAt).format('YYYY-MM-DD (ddd)');
-                  const isClass = 'cohort' in item;
+                {scheduleItems.map((shceduleItem) => {
+                  const startDate = dayjs(shceduleItem.startAt).format('YYYY-MM-DD (ddd)');
+                  const endDate = dayjs(shceduleItem.endAt).format('YYYY-MM-DD (ddd)');
+                  const isClass = 'cohort' in shceduleItem;
                   if (isClass) {
-                    const plannedHours = getPlannedHours(item.startAt, item.endAt, item.weekdaysRange.id);
-                    const requiredHours = item.course.requiredHours;
+                    const plannedHours = getPlannedHours(
+                      shceduleItem.startAt,
+                      shceduleItem.endAt,
+                      shceduleItem.weekdaysRange.id,
+                    );
+                    const requiredHours = shceduleItem.course.requiredHours;
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
-                      <TableRow key={item.id}>
+                      <TableRow key={shceduleItem.id}>
                         <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
-                        <TableCell>{item.course.name}</TableCell>
+                        <TableCell>{shceduleItem.course.name}</TableCell>
                         <TableCell>
-                          <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+                          <DaysOfTheWeekChip daysOfTheWeek={shceduleItem.weekdaysRange} />
                         </TableCell>
                         <TableCell>
                           <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
                           {requiredHours}
                         </TableCell>
                         <TableCell>
-                          {item.classroom.name} ({item.classroom.floor} floor)
+                          {shceduleItem.classroom.name} ({shceduleItem.classroom.floor} floor)
                         </TableCell>
-                        <TableCell>{item.instructor?.name}</TableCell>
+                        <TableCell>{shceduleItem.instructor?.name}</TableCell>
                         <TableCell />
                       </TableRow>
                     );
                   } else {
                     return (
-                      <TableRow key={item.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                      <TableRow key={shceduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
                         <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
                         <TableCell>School Break</TableCell>

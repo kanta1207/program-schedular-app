@@ -8,7 +8,7 @@ import {
 } from '@/types/_index';
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { WatchSchedule } from './CohortSchedule';
 
 interface SchedulePreviewProps {
@@ -43,7 +43,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   watchSchedule,
   schedule,
 }) => {
-  // const [intakeWeekBlocks, setIntakeWeekBlocks] = useState<WeekBlock[]>([]);
+  const [intakeWeekBlocks, setIntakeWeekBlocks] = useState<WeekBlock[]>([]);
   // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
   const cohortIntakeStartAt =
     dayjs(cohort.intake.startAt).day() === 2
@@ -53,32 +53,38 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   const intakeDaysDiff = cohortIntakeEndAt.diff(cohortIntakeStartAt, 'day');
   const intakeTotalWeeks = Math.ceil(intakeDaysDiff / 7);
 
-  const intakeWeekBlocks = [];
-  for (let i = 0; i < intakeTotalWeeks; i++) {
-    const weekStartDate = cohortIntakeStartAt.add(i * 7, 'day').format('MM-DD');
-    const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
+  useEffect(() => {
+    const weekBlocks = [];
+    for (let i = 0; i < intakeTotalWeeks; i++) {
+      const weekStartDate = cohortIntakeStartAt.add(i * 7, 'day').format('MM-DD');
+      const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
 
-    const weekBlock = {
-      id: i,
-      weekStartDate: weekStartDate,
-      weekEndDate: weekEndDate,
-    };
-    intakeWeekBlocks.push(weekBlock);
-  }
+      const weekBlock = {
+        id: i,
+        weekStartDate: weekStartDate,
+        weekEndDate: weekEndDate,
+      };
+      weekBlocks.push(weekBlock);
+    }
+    setIntakeWeekBlocks([...weekBlocks]);
+  }, []);
 
   const calculateWeeks = (scheduleArray: GetBreaksResponse[] | WatchSchedule[] | GetCohortClass[]) => {
-    const newArray = scheduleArray.map((item) => {
+    const newArray = scheduleArray.map((scheduleItem) => {
       // calculate class duration
-      const daysDiff = dayjs(item.endAt).diff(dayjs(item.startAt), 'day');
+      const daysDiff = dayjs(scheduleItem.endAt).diff(dayjs(scheduleItem.startAt), 'day');
       const totalWeeks = Math.ceil(daysDiff / 7);
 
       // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
-      const startAt = dayjs(item.startAt).day() === 2 ? dayjs(item.startAt).subtract(1, 'day') : dayjs(item.startAt);
+      const startAt =
+        dayjs(scheduleItem.startAt).day() === 2
+          ? dayjs(scheduleItem.startAt).subtract(1, 'day')
+          : dayjs(scheduleItem.startAt);
       const daysFromIntakeStartDate = startAt.diff(cohortIntakeStartAt, 'day');
       const startWeekNumber = Math.ceil(daysFromIntakeStartDate / 7);
 
       return {
-        ...item,
+        ...scheduleItem,
         startWeek: startWeekNumber,
         totalWeeks: totalWeeks,
       };
@@ -89,27 +95,27 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   const modifySchedule = () => {
     if (watchSchedule) {
       const tempModifiedSchedule = calculateWeeks(watchSchedule) as ModifiedWatchSchedule[];
-      const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
+      const returnModifiedSchedule = tempModifiedSchedule.map((scheduleItem) => {
         return {
           name: cohort.name,
-          startWeek: item.startWeek,
-          totalWeeks: item.totalWeeks,
-          courseId: item.courseId,
-          weekdaysRangeId: item.weekdaysRangeId,
-          instructorId: item.instructorId,
+          startWeek: scheduleItem.startWeek,
+          totalWeeks: scheduleItem.totalWeeks,
+          courseId: scheduleItem.courseId,
+          weekdaysRangeId: scheduleItem.weekdaysRangeId,
+          instructorId: scheduleItem.instructorId,
         };
       });
       return returnModifiedSchedule;
     } else if (schedule) {
       const tempModifiedSchedule = calculateWeeks(schedule) as ModifiedClass[];
-      const returnModifiedSchedule = tempModifiedSchedule.map((item) => {
+      const returnModifiedSchedule = tempModifiedSchedule.map((scheduleItem) => {
         return {
-          name: item.cohort.name,
-          startWeek: item.startWeek,
-          totalWeeks: item.totalWeeks,
-          courseId: item.course.id,
-          weekdaysRangeId: item.weekdaysRange.id,
-          instructorId: item.instructor?.id,
+          name: scheduleItem.cohort.name,
+          startWeek: scheduleItem.startWeek,
+          totalWeeks: scheduleItem.totalWeeks,
+          courseId: scheduleItem.course.id,
+          weekdaysRangeId: scheduleItem.weekdaysRange.id,
+          instructorId: scheduleItem.instructor?.id,
         };
       });
       return returnModifiedSchedule;
@@ -118,9 +124,11 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
 
   const modifiedSchedule = modifySchedule();
 
-  const filteredBreaks = breaks
-    .filter((item) => dayjs(item.startAt).isAfter(dayjs(cohort.intake.startAt)))
-    .filter((item) => dayjs(item.endAt).isBefore(dayjs(cohort.intake.endAt)));
+  const filteredBreaks = breaks.filter(
+    (breakItem) =>
+      dayjs(breakItem.startAt).isAfter(dayjs(cohort.intake.startAt)) &&
+      dayjs(breakItem.endAt).isBefore(dayjs(cohort.intake.endAt)),
+  );
   const modifiedBreaks = calculateWeeks(filteredBreaks);
 
   return (
@@ -142,7 +150,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
           justifyContent: 'center',
           overflow: 'hidden',
         },
-        '& p': { textAlign: 'center' },
+        '& p': { textAlign: 'center', lineHeight: '1.2' },
       }}
     >
       {/* Cohort name */}
@@ -177,15 +185,15 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
       </Box>
 
       {/* Break blocks */}
-      {modifiedBreaks.map((item, index) => {
+      {modifiedBreaks.map((breakItem, index) => {
         // add 2 because grid column border number starts from 1
         // also the first column (border 1 to 2) will be the header
-        const columnStartNumber = item.startWeek + 2;
+        const columnStartNumber = breakItem.startWeek + 2;
         return (
           <Box
             key={index}
             sx={{
-              gridColumn: `${columnStartNumber.toString()} / span ${item.totalWeeks}`,
+              gridColumn: `${columnStartNumber.toString()} / span ${breakItem.totalWeeks}`,
               gridRow: '1 / span 3',
               bgcolor: 'grey.200',
             }}
@@ -194,29 +202,30 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
       })}
 
       {/* Week blocks  */}
-      {intakeWeekBlocks.map((weekBlock) => {
-        // add 2 because grid column border number starts from 1
-        // also the first column (border 1 to 2) will be the header
-        const columnStartNumber = weekBlock.id + 2;
-        return (
-          <Box
-            key={weekBlock.id}
-            sx={{
-              gridColumn: columnStartNumber.toString(),
-              gridRow: '1 / span 3',
-              border: '1px solid',
-              borderColor: 'grey.200',
-              margin: '-1px',
-            }}
-          >
-            <Typography sx={{ fontSize: '0.75rem' }}>
-              {weekBlock.weekStartDate}
-              <br />
-              {weekBlock.weekEndDate}
-            </Typography>
-          </Box>
-        );
-      })}
+      {intakeWeekBlocks.length > 0 &&
+        intakeWeekBlocks.map((weekBlock) => {
+          // add 2 because grid column border number starts from 1
+          // also the first column (border 1 to 2) will be the header
+          const columnStartNumber = weekBlock.id + 2;
+          return (
+            <Box
+              key={weekBlock.id}
+              sx={{
+                gridColumn: columnStartNumber.toString(),
+                gridRow: '1 / span 3',
+                border: '1px solid',
+                borderColor: 'grey.200',
+                margin: '-1px',
+              }}
+            >
+              <Typography sx={{ fontSize: '0.75rem' }}>
+                {weekBlock.weekStartDate}
+                <br />
+                {weekBlock.weekEndDate}
+              </Typography>
+            </Box>
+          );
+        })}
 
       {/* Schedule Blocks */}
       {modifiedSchedule &&
