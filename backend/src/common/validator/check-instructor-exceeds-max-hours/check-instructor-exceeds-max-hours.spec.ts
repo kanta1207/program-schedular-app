@@ -1,5 +1,3 @@
-import * as dayjs from 'dayjs';
-
 import { Class, MasterWeekdaysRange } from 'src/entity';
 
 import {
@@ -34,19 +32,9 @@ const class2 = {
 
 const message = (
   totalWeeklyHoursInstructorAssigned: number,
-  overlapStartAt: Date,
-  overlapEndAt: Date,
   maxHoursOfInstructor: number,
 ) => {
-  // TODO: dayjs is decreasing the date by 1 day only in frontend, and couldn't figure out why,
-  // so subtracting the day by 1 in backend as a temporary solution.
-  const formattedOverlapStartAt = dayjs(overlapStartAt)
-    .subtract(1, 'day')
-    .format('YYYY-MM-DD');
-  const formattedOverlapEndAt = dayjs(overlapEndAt)
-    .subtract(1, 'day')
-    .format('YYYY-MM-DD');
-  return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w. Exceeding period: ${formattedOverlapStartAt} to ${formattedOverlapEndAt}.`;
+  return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w.`;
 };
 
 describe('checkInstructorExceedsMaxHours', () => {
@@ -85,15 +73,8 @@ describe('checkInstructorExceedsMaxHours', () => {
     // In total 50 weekly hours (class1: 20 + class2: 10 + newClass: 20)
     const totalWeeklyHoursInstructorAssigned = 50;
 
-    // The overlap period is from 2022-03-01 to 2022-03-14
-    const overlapStartAt = new Date('2022-03-01');
-
-    const overlapEndAt = new Date('2022-03-14');
-
     const expectedMessage = message(
       totalWeeklyHoursInstructorAssigned,
-      overlapStartAt,
-      overlapEndAt,
       maxHoursOfInstructor,
     );
 
