@@ -18,6 +18,7 @@ import {
   checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
   checkClassOverlapAllowed,
+  checkInstructorsAvailabilityDaysRange,
 } from '../../common/validator';
 
 @Injectable()
@@ -99,6 +100,7 @@ export class CohortsService {
             },
             courses: { course: true },
             periodOfDays: { periodOfDay: true },
+            weekdaysRange: true,
           },
         },
       },
@@ -145,6 +147,14 @@ export class CohortsService {
         );
         if (msgIsAvailablePeriod) {
           instructorMessages.push(msgIsAvailablePeriod);
+        }
+        const msgIsAvailablePeriodOfWeekdays =
+          checkInstructorsAvailabilityDaysRange(
+            instructor.weekdaysRange.id,
+            clazz.weekdaysRange.id,
+          );
+        if (msgIsAvailablePeriodOfWeekdays) {
+          instructorMessages.push(msgIsAvailablePeriodOfWeekdays);
         }
       }
 
