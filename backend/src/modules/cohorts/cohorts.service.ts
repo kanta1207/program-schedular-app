@@ -15,6 +15,7 @@ import { FormattedClass } from './types';
 
 import {
   checkInstructorTeachableCourse,
+  checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
   checkClassOverlapAllowed,
   checkInstructorExceedsMaxHours,
@@ -101,6 +102,7 @@ export class CohortsService {
               course: true,
             },
             courses: { course: true },
+            periodOfDays: { periodOfDay: true },
           },
         },
       },
@@ -149,6 +151,16 @@ export class CohortsService {
         if (msgTeachableCourse) {
           instructorMessages.push(msgTeachableCourse);
         }
+        const periodOfDays = instructor.periodOfDays.map(
+          (InstructorsPeriodOfDays) => InstructorsPeriodOfDays.periodOfDay,
+        );
+        const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
+          periodOfDays,
+          cohort.periodOfDay.id,
+        );
+        if (msgIsAvailablePeriod) {
+          instructorMessages.push(msgIsAvailablePeriod);
+        }
       }
 
       return {
@@ -165,7 +177,13 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          data: { ...instructor, classes: undefined, contractType: undefined },
+          data: {
+            ...instructor,
+            classes: undefined,
+            contractType: undefined,
+            periodOfDays: undefined,
+            courses: undefined,
+          },
           messages: instructorMessages,
         },
       };
