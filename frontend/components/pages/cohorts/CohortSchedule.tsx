@@ -401,8 +401,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       </TableCell>
                       <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                       <TableCell>{classData.course.name}</TableCell>
-                      <TableCell sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
+                      <TableCell
+                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.25rem' }}
+                      >
                         {classData.weekdaysRange.messages.length > 0 && (
                           <Tooltip title={tooltipTitle(classData.weekdaysRange.messages)}>
                             <WarningIcon
@@ -412,6 +413,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                             />
                           </Tooltip>
                         )}
+                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
                       </TableCell>
                       <TableCell>
                         <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
