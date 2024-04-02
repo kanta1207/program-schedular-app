@@ -12,11 +12,13 @@ import { UpdateClassesDto } from './dto/update-classes.dto';
 
 import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
+
 import {
   checkInstructorTeachableCourse,
   checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
-} from 'src/common/validator';
+  checkClassOverlapAllowed,
+} from '../../common/validator';
 
 @Injectable()
 export class CohortsService {
@@ -105,7 +107,7 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    const formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
+    let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
       const { instructor } = clazz;
       const instructorMessages: string[] = [];
 
@@ -172,7 +174,12 @@ export class CohortsService {
       };
     });
 
-    const formattedResponse = { ...cohort, classes: formattedClasses };
+    formattedClasses = checkClassOverlapAllowed(formattedClasses);
+
+    const formattedResponse = {
+      ...cohort,
+      classes: formattedClasses,
+    };
 
     return formattedResponse;
   }
