@@ -8,7 +8,7 @@ import {
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
 import { Intake, MasterPeriodOfDay } from 'src/entity';
-import checkDateOrder from 'src/common/utils/check-date-order.util';
+import { checkDateOrder } from 'src/common/utils';
 
 @Injectable()
 export class IntakesService {
