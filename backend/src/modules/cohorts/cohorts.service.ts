@@ -193,6 +193,7 @@ export class CohortsService {
             contractType: undefined,
             periodOfDays: undefined,
             courses: undefined,
+            weekdaysRange: undefined,
           },
           messages: instructorMessages,
         },
