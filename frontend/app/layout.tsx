@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="overflow-x-hidden">
         <AppRouterCacheProvider>
           <ToastContainer position="top-right" autoClose={5000} />
           <ThemeProvider theme={theme}>{children}</ThemeProvider>

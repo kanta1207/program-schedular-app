@@ -106,8 +106,8 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
-      <Container maxWidth="xl">
+    <AppBar position="sticky" sx={{ width: '100vw', '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
+      <div className="container mx-auto">
         <Toolbar disableGutters>
           <Link href="/schedules">
             <div className="relative h-12 w-12">
@@ -129,7 +129,7 @@ const Header = () => {
             <DropdownMenu label="Curriculum" menu={curriculumMenu} />
           </Box>
         </Toolbar>
-      </Container>
+      </div>
     </AppBar>
   );
 };
