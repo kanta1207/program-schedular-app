@@ -7,6 +7,14 @@ export interface Overlap {
   totalWeeklyHours: number;
 }
 
+/**
+ * function to handle new overlap, which is fully covered by existing overlap.
+ * Called in {@link getOverlapsFromClasses}
+ * @param existingOverlap - Existing overlap completely covering the new overlap
+ * @param overlapStartAt - Start date of the new overlap
+ * @param overlapEndAt - End date of the new overlap
+ * @param overlaps - Array of overlaps
+ */
 const handleOverlapFullyCoveredByExistingOverlap = (
   existingOverlap: Overlap,
   overlapStartAt: Date,
@@ -47,7 +55,15 @@ const handleOverlapFullyCoveredByExistingOverlap = (
   existingOverlap.endAt = overlapEndAt;
 };
 
-const handleOverlapNotFullyCoveredByExistingOverlap = (
+/**
+ * function to handle new overlap, which is partially covered by existing overlap
+ * Called in {@link getOverlapsFromClasses}
+ * @param existingOverlap - Existing overlap not completely covering the new overlap
+ * @param overlapStartAt - Start date of the new overlap
+ * @param overlapEndAt - End date of the new overlap
+ * @param overlaps - Array of overlaps
+ */
+const handleOverlapPartiallyCoveredByExistingOverlap = (
   existingOverlap: Overlap,
   overlapStartAt: Date,
   overlapEndAt: Date,
@@ -128,7 +144,7 @@ export const getOverlapsFromClasses = (classes: Class[]): Overlap[] => {
               overlaps,
             );
           } else {
-            handleOverlapNotFullyCoveredByExistingOverlap(
+            handleOverlapPartiallyCoveredByExistingOverlap(
               existingOverlap,
               overlapStartAt,
               overlapEndAt,
