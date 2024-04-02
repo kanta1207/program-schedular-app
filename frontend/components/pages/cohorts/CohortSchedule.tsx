@@ -16,10 +16,11 @@ import {
   GetInstructorsResponse,
   Holiday,
 } from '@/types/_index';
+import { ExpandMore } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Divider } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -39,7 +40,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
+import { SchedulePreview } from './SchedulePreview';
 export type CreateType = 'new' | 'copy';
 
 type FormValues = {
@@ -54,6 +55,16 @@ type FormValues = {
   }[];
 };
 
+export interface WatchSchedule {
+  startAt: Dayjs;
+  endAt: Dayjs;
+  cohortId: number;
+  weekdaysRangeId: number;
+  courseId: number;
+  classroomId: number;
+  instructorId: number;
+}
+
 interface CohortScheduleProps {
   cohort: GetCohortResponse;
   courses: GetCoursesResponse[];
@@ -67,6 +78,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [accordionOpen, setAccordionOpen] = useState(false);
+
   const router = useRouter();
   const now = dayjs();
 
@@ -201,9 +214,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   // dialog
   useEffect(() => {
     if (dialogOpen) {
-      const filteredCohorts = cohorts
-        .filter((item) => item.program.id === cohort.program.id)
-        .filter((item) => item.id !== cohort.id);
+      const filteredCohorts = cohorts.filter(
+        (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+      );
       setFilteredCohorts(filteredCohorts);
     }
   }, [dialogOpen]);
@@ -212,7 +225,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     cohort.classes.length === 0 && setDialogOpen(true);
 
     // Filter cohorts by the same program ID but excluding their own cohort ID.
-    const filteredCohorts = cohorts.filter((item) => item.program.id === cohort.program.id && item.id !== cohort.id);
+    const filteredCohorts = cohorts.filter(
+      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+    );
     setFilteredCohorts(filteredCohorts);
   }, []);
 
@@ -268,6 +283,12 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
+  const inBoxScrollBar = {
+    '&::-webkit-scrollbar': { height: '0.5rem' },
+    '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
+    '&::-webkit-scrollbar-thumb': { bgcolor: 'grey.200', borderRadius: '0.25rem', cursor: 'grab' },
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -297,8 +318,63 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </Box>
         </Box>
 
+        {/* Schedule Preview Accordion */}
+        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen(!accordionOpen)}>
+          <AccordionSummary
+            sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
+            expandIcon={<ExpandMore />}
+          >
+            <Typography>Schedules of cohorts from same intake</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
+            {cohorts
+              .filter((cohortItem) => {
+                return cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id;
+              })
+              .map((cohortInSameIntake) => {
+                return (
+                  <Box key={cohortInSameIntake.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
+                    <SchedulePreview
+                      cohort={cohortInSameIntake}
+                      courses={courses}
+                      schedule={cohortInSameIntake.classes}
+                      breaks={breaks}
+                      instructors={instructors}
+                    />
+                  </Box>
+                );
+              })}
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Current Page Cohort Schedule Preview */}
+        <Box
+          sx={{
+            mb: '1rem',
+            mx: accordionOpen ? '1rem' : '0',
+            transition: '0.25s',
+            overflowX: 'scroll',
+            ...inBoxScrollBar,
+          }}
+        >
+          <SchedulePreview
+            cohort={cohort}
+            courses={courses}
+            watchSchedule={watchSchedule}
+            breaks={breaks}
+            instructors={instructors}
+          />
+        </Box>
+
         {/* Cohort Schedule */}
-        <Table sx={{ minWidth: 650 }}>
+        <Table
+          sx={{
+            minWidth: 650,
+            '& td, th': { padding: '0.5rem' },
+            '& input': { fontSize: '0.8rem' },
+            '& div': { fontSize: '0.8rem' },
+          }}
+        >
           <TableHead>
             <TableRow sx={thRowStyle}>
               <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
@@ -325,7 +401,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                   return (
                     <TableRow key={field.id}>
                       {/* StartAt */}
-                      <TableCell component="th" scope="row">
+                      <TableCell>
                         <Controller
                           control={control}
                           name={`schedule.${index}.startAt`}
@@ -450,7 +526,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
                       {/* Hours met */}
                       <TableCell>
-                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
+                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>/{' '}
                         {requiredHours}
                       </TableCell>
 
@@ -524,41 +600,41 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               </>
             ) : (
               <>
-                {scheduleItems.map((item) => {
-                  const startDate = dayjs(item.startAt).format('YYYY-MM-DD (ddd)');
-                  const endDate = dayjs(item.endAt).format('YYYY-MM-DD (ddd)');
-                  const isClass = 'cohort' in item;
+                {scheduleItems.map((shceduleItem) => {
+                  const startDate = dayjs(shceduleItem.startAt).format('YYYY-MM-DD (ddd)');
+                  const endDate = dayjs(shceduleItem.endAt).format('YYYY-MM-DD (ddd)');
+                  const isClass = 'cohort' in shceduleItem;
                   if (isClass) {
-                    const plannedHours = getPlannedHours(item.startAt, item.endAt, item.weekdaysRange.id);
-                    const requiredHours = item.course.requiredHours;
+                    const plannedHours = getPlannedHours(
+                      shceduleItem.startAt,
+                      shceduleItem.endAt,
+                      shceduleItem.weekdaysRange.id,
+                    );
+                    const requiredHours = shceduleItem.course.requiredHours;
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
-                      <TableRow key={item.id}>
-                        <TableCell component="th" scope="row">
-                          {startDate}
-                        </TableCell>
+                      <TableRow key={shceduleItem.id}>
+                        <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
-                        <TableCell>{item.course.name}</TableCell>
+                        <TableCell>{shceduleItem.course.name}</TableCell>
                         <TableCell>
-                          <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
+                          <DaysOfTheWeekChip daysOfTheWeek={shceduleItem.weekdaysRange} />
                         </TableCell>
                         <TableCell>
                           <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
                           {requiredHours}
                         </TableCell>
                         <TableCell>
-                          {item.classroom.name} ({item.classroom.floor} floor)
+                          {shceduleItem.classroom.name} ({shceduleItem.classroom.floor} floor)
                         </TableCell>
-                        <TableCell>{item.instructor?.name}</TableCell>
+                        <TableCell>{shceduleItem.instructor?.name}</TableCell>
                         <TableCell />
                       </TableRow>
                     );
                   } else {
                     return (
-                      <TableRow key={item.id}>
-                        <TableCell component="th" scope="row">
-                          {startDate}
-                        </TableCell>
+                      <TableRow key={shceduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                        <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
                         <TableCell>School Break</TableCell>
                         <TableCell colSpan={5} />
