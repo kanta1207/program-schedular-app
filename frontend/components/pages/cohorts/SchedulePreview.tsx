@@ -1,3 +1,4 @@
+import { WEEKDAYS_RANGES } from '@/constants/weekdays-range';
 import {
   GetBreaksResponse,
   GetCohortClass,
@@ -28,6 +29,12 @@ interface ModifiedClass extends GetCohortClass {
   totalWeeks: number;
 }
 
+interface WeekBlock {
+  id: number;
+  weekStartDate: string;
+  weekEndDate: string;
+}
+
 export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   cohort,
   courses,
@@ -36,6 +43,7 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
   watchSchedule,
   schedule,
 }) => {
+  // const [intakeWeekBlocks, setIntakeWeekBlocks] = useState<WeekBlock[]>([]);
   // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
   const cohortIntakeStartAt =
     dayjs(cohort.intake.startAt).day() === 2
@@ -110,10 +118,10 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
 
   const modifiedSchedule = modifySchedule();
 
-  const filterdBreaks = breaks
+  const filteredBreaks = breaks
     .filter((item) => dayjs(item.startAt).isAfter(dayjs(cohort.intake.startAt)))
     .filter((item) => dayjs(item.endAt).isBefore(dayjs(cohort.intake.endAt)));
-  const modifiedBreaks = calculateWeeks(filterdBreaks);
+  const modifiedBreaks = calculateWeeks(filteredBreaks);
 
   return (
     <Box
@@ -122,11 +130,11 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
         gridTemplateColumns: `2fr repeat(${intakeTotalWeeks}, 1fr)`,
         gridTemplateRows: 'repeat(3, 1fr)',
         width: '100%',
+        minWidth: '1024px',
         height: '120px',
         bgcolor: '#FFF',
         border: '1px solid',
         borderColor: '#33333315',
-        mb: '1rem',
         '& .schedule-grid-child': {
           width: '100%',
           display: 'flex',
@@ -186,13 +194,13 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
       })}
 
       {/* Week blocks  */}
-      {intakeWeekBlocks.map((item) => {
+      {intakeWeekBlocks.map((weekBlock) => {
         // add 2 because grid column border number starts from 1
         // also the first column (border 1 to 2) will be the header
-        const columnStartNumber = item.id + 2;
+        const columnStartNumber = weekBlock.id + 2;
         return (
           <Box
-            key={item.id}
+            key={weekBlock.id}
             sx={{
               gridColumn: columnStartNumber.toString(),
               gridRow: '1 / span 3',
@@ -202,9 +210,9 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
             }}
           >
             <Typography sx={{ fontSize: '0.75rem' }}>
-              {item.weekStartDate}
+              {weekBlock.weekStartDate}
               <br />
-              {item.weekEndDate}
+              {weekBlock.weekEndDate}
             </Typography>
           </Box>
         );
@@ -212,22 +220,23 @@ export const SchedulePreview: React.FC<SchedulePreviewProps> = ({
 
       {/* Schedule Blocks */}
       {modifiedSchedule &&
-        modifiedSchedule.map((item, index) => {
+        modifiedSchedule.map((scheduleItem, index) => {
           // add 2 because grid column border number starts from 1
           // also the first column (border 1 to 2) will be the header
-          const columnStartNumber = item.startWeek + 2;
+          const columnStartNumber = scheduleItem.startWeek + 2;
           // find course name and instructor name because the object only has IDs
-          const course = courses.find((course) => course.id === item.courseId);
-          const instructor = instructors.find((instructor) => instructor.id === item.instructorId);
+          const course = courses.find((course) => course.id === scheduleItem.courseId);
+          const instructor = instructors.find((instructor) => instructor.id === scheduleItem.instructorId);
+          const weekDaysRange = WEEKDAYS_RANGES.find((range) => range.id === scheduleItem.weekdaysRangeId);
           return (
             <Box
               className="schedule-grid-child"
               key={index}
               sx={{
-                gridColumn: `${columnStartNumber.toString()} / span ${item.totalWeeks}`,
-                gridRow: item.weekdaysRangeId === 1 ? '2 / span 2' : item.weekdaysRangeId === 2 ? '2' : '3',
-                bgcolor:
-                  item.weekdaysRangeId === 1 ? '#662d9180' : item.weekdaysRangeId === 2 ? '#0047AB80' : '#BA002180',
+                gridColumn: `${columnStartNumber.toString()} / span ${scheduleItem.totalWeeks}`,
+                gridRow:
+                  scheduleItem.weekdaysRangeId === 1 ? '2 / span 2' : scheduleItem.weekdaysRangeId === 2 ? '2' : '3',
+                bgcolor: weekDaysRange && `${weekDaysRange.color.primary}80`,
                 border: '1px solid #FFF',
                 color: '#FFF',
               }}

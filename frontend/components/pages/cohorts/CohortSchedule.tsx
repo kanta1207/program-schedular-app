@@ -281,6 +281,12 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
 
+  const inBoxScrollBar = {
+    '&::-webkit-scrollbar': { height: '0.5rem' },
+    '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
+    '&::-webkit-scrollbar-thumb': { bgcolor: 'grey.200', borderRadius: '0.25rem', cursor: 'grab' },
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -320,26 +326,35 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
             {cohorts
-              .filter((item) => {
-                return item.intake.id === cohort.intake.id && item.id !== cohort.id;
+              .filter((cohortItem) => {
+                return cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id;
               })
-              .map((item) => {
+              .map((cohortInSameIntake) => {
                 return (
-                  <SchedulePreview
-                    key={item.id}
-                    cohort={item}
-                    courses={courses}
-                    schedule={item.classes}
-                    breaks={breaks}
-                    instructors={instructors}
-                  />
+                  <Box key={cohortInSameIntake.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
+                    <SchedulePreview
+                      cohort={cohortInSameIntake}
+                      courses={courses}
+                      schedule={cohortInSameIntake.classes}
+                      breaks={breaks}
+                      instructors={instructors}
+                    />
+                  </Box>
                 );
               })}
           </AccordionDetails>
         </Accordion>
 
         {/* Current Page Cohort Schedule Preview */}
-        <Box sx={{ mx: accordionOpen ? '1rem' : '0', transition: '0.25s' }}>
+        <Box
+          sx={{
+            mb: '1rem',
+            mx: accordionOpen ? '1rem' : '0',
+            transition: '0.25s',
+            overflowX: 'scroll',
+            ...inBoxScrollBar,
+          }}
+        >
           <SchedulePreview
             cohort={cohort}
             courses={courses}
@@ -384,7 +399,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                   return (
                     <TableRow key={field.id}>
                       {/* StartAt */}
-                      <TableCell component="th" scope="row">
+                      <TableCell>
                         <Controller
                           control={control}
                           name={`schedule.${index}.startAt`}
@@ -593,9 +608,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
                       <TableRow key={item.id}>
-                        <TableCell component="th" scope="row">
-                          {startDate}
-                        </TableCell>
+                        <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
                         <TableCell>{item.course.name}</TableCell>
                         <TableCell>
@@ -614,10 +627,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                     );
                   } else {
                     return (
-                      <TableRow key={item.id}>
-                        <TableCell component="th" scope="row">
-                          {startDate}
-                        </TableCell>
+                      <TableRow key={item.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                        <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
                         <TableCell>School Break</TableCell>
                         <TableCell colSpan={5} />
