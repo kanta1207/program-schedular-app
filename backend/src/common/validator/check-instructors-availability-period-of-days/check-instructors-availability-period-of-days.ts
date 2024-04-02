@@ -4,9 +4,6 @@ export const checkInstructorsAvailabilityPeriodOfDays = (
   periodOfDays: MasterPeriodOfDay[],
   periodOfDayId: number,
 ): string | null => {
-  console.log(periodOfDays);
-  console.log(periodOfDayId);
-
   const isAvailable = periodOfDays.some(
     (availablePeriod) => availablePeriod.id === periodOfDayId,
   );
