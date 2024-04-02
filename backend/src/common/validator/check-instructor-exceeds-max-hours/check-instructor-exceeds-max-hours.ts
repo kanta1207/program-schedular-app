@@ -24,7 +24,7 @@ export const checkInstructorExceedsMaxHours = (
         const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
 
         if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
-          return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w.`;
+          return `Instructor exceeds max working hours(${maxHoursOfInstructor}h/w). Current assigned hours are ${totalWeeklyHoursInstructorAssigned}h/w.`;
         }
       }
     }
