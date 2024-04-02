@@ -15,6 +15,7 @@ import { FormattedClass } from './types';
 
 import {
   checkInstructorTeachableCourse,
+  checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
   checkClassOverlapAllowed,
 } from '../../common/validator';
@@ -97,6 +98,7 @@ export class CohortsService {
               },
             },
             courses: { course: true },
+            periodOfDays: { periodOfDay: true },
           },
         },
       },
@@ -134,6 +136,16 @@ export class CohortsService {
         if (msgTeachableCourse) {
           instructorMessages.push(msgTeachableCourse);
         }
+        const periodOfDays = instructor.periodOfDays.map(
+          (InstructorsPeriodOfDays) => InstructorsPeriodOfDays.periodOfDay,
+        );
+        const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
+          periodOfDays,
+          cohort.periodOfDay.id,
+        );
+        if (msgIsAvailablePeriod) {
+          instructorMessages.push(msgIsAvailablePeriod);
+        }
       }
 
       return {
@@ -151,7 +163,12 @@ export class CohortsService {
         },
         instructor: {
           // We don't want to include unnecessary classes data in the response
-          data: { ...instructor, classes: undefined },
+          data: {
+            ...instructor,
+            classes: undefined,
+            periodOfDays: undefined,
+            courses: undefined,
+          },
           messages: instructorMessages,
         },
       };
