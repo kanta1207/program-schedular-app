@@ -1,5 +1,3 @@
-import * as dayjs from 'dayjs';
-
 import { getOverlapsFromClasses } from '../../../common/utils';
 import { Class } from 'src/entity';
 
@@ -23,24 +21,10 @@ export const checkInstructorExceedsMaxHours = (
     // Check if the new class overlaps with any of the existing classes
     for (const overlap of overlaps) {
       if (startAtOfClass <= overlap.endAt && endAtOfClass >= overlap.startAt) {
-        // Correct the overlap start and end date, compare with the new class start and end date
-        const overlapStartAt =
-          startAtOfClass > overlap.startAt ? startAtOfClass : overlap.startAt;
-        const overlapEndAt =
-          endAtOfClass < overlap.endAt ? endAtOfClass : overlap.endAt;
-
         const totalWeeklyHoursInstructorAssigned = overlap.totalWeeklyHours;
 
         if (totalWeeklyHoursInstructorAssigned > maxHoursOfInstructor) {
-          // TODO: dayjs is decreasing the date by 1 day only in frontend, and couldn't figure out why,
-          // so subtracting the day by 1 in backend as a temporary solution.
-          const formattedOverlapStartAt = dayjs(overlapStartAt)
-            .subtract(1, 'day')
-            .format('YYYY-MM-DD');
-          const formattedOverlapEndAt = dayjs(overlapEndAt)
-            .subtract(1, 'day')
-            .format('YYYY-MM-DD');
-          return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w. Exceeding period: ${formattedOverlapStartAt} to ${formattedOverlapEndAt}.`;
+          return `Instructor exceeds max working hour(${maxHoursOfInstructor}h/w). Current assigned hours: ${totalWeeklyHoursInstructorAssigned}h/w.`;
         }
       }
     }
