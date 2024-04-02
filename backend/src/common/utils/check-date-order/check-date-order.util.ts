@@ -15,12 +15,12 @@ interface CheckDateOrderProps {
   existingEndAt: Date;
 }
 
-function checkDateOrder({
+export const checkDateOrder = ({
   newStartAt,
   newEndAt,
   existingStartAt,
   existingEndAt,
-}: CheckDateOrderProps): boolean {
+}: CheckDateOrderProps): boolean => {
   if (!newStartAt && !newEndAt) return false;
 
   if (newStartAt && newEndAt) {
@@ -34,6 +34,4 @@ function checkDateOrder({
   if (newEndAt) {
     return existingStartAt.getTime() < newEndAt.getTime();
   }
-}
-
-export default checkDateOrder;
+};

@@ -18,6 +18,7 @@ import {
   checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
   checkClassOverlapAllowed,
+  checkInstructorExceedsMaxHours,
   checkInstructorsAvailabilityDaysRange,
 } from '../../common/validator';
 
@@ -93,10 +94,13 @@ export class CohortsService {
           course: true,
           classroom: true,
           instructor: {
+            contractType: true,
             classes: {
               cohort: {
                 periodOfDay: true,
               },
+              weekdaysRange: true,
+              course: true,
             },
             courses: { course: true },
             periodOfDays: { periodOfDay: true },
@@ -117,6 +121,17 @@ export class CohortsService {
         const msgIsActive = this.checkInstructorIsActive(instructor.isActive);
         if (msgIsActive) {
           instructorMessages.push(msgIsActive);
+        }
+
+        const msgExceedsMaxHours = checkInstructorExceedsMaxHours(
+          instructor.contractType.maxHours,
+          instructor.classes,
+          clazz.startAt,
+          clazz.endAt,
+        );
+
+        if (msgExceedsMaxHours) {
+          instructorMessages.push(msgExceedsMaxHours);
         }
         const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
           cohort.periodOfDay.id,
@@ -172,10 +187,10 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          // We don't want to include unnecessary classes data in the response
           data: {
             ...instructor,
             classes: undefined,
+            contractType: undefined,
             periodOfDays: undefined,
             courses: undefined,
           },
