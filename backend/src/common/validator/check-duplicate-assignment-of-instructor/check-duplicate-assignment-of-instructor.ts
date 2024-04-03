@@ -3,7 +3,7 @@ import { Class } from 'src/entity';
 import {
   MON_WED_WEEKDAYS_RANGE_ID,
   WED_FRI_WEEKDAYS_RANGE_ID,
-} from 'src/common/constants/master.constant';
+} from '../../../common/constants/master.constant';
 
 /**
  * Check if the instructor is already assigned in the same duration, same period of day, overlapping weekdays range
@@ -42,6 +42,9 @@ export const checkDuplicateAssignmentOfInstructor = (
       clazz.startAt <= classEndAt && clazz.endAt >= classStartAt;
 
     const isSamePeriod = clazz.cohort.periodOfDay.id === periodOfDayId;
+
+    console.log('isDurationOverlapping', isDurationOverlapping);
+    console.log('isSamePeriod', isSamePeriod);
 
     if (isDurationOverlapping && isSamePeriod) {
       return 'Instructor is already assigned in this duration';
