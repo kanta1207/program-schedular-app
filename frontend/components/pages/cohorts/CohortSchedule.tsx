@@ -186,7 +186,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Course</TableCell>
               <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
               <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Classroom</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Classroom</TableCell>
               <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
               <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
             </TableRow>
@@ -420,7 +420,14 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         / {requiredHours}
                       </TableCell>
                       <TableCell>
-                        {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          {classData.classroom.data.name} ({classData.classroom.data.floor} floor)
+                          {classData.classroom.messages.length > 0 && (
+                            <Tooltip title={tooltipTitle(classData.classroom.messages)}>
+                              <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
+                            </Tooltip>
+                          )}
+                        </Box>
                       </TableCell>
 
                       <TableCell sx={{ alignItems: 'center' }}>
