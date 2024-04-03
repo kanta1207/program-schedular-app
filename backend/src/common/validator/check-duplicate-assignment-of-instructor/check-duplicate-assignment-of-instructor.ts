@@ -13,7 +13,7 @@ import {
  * @param classStartAt - Start date of the class the instructor is being assigned to
  * @param classEndAt - End date of the class the instructor is being assigned to
  * @param classesOfInstructor - Classes the instructor is already assigned to
- * @returns an alert message when the instructor is already assigned in the same duration, else null
+ * @returns an alert message when the instructor is already assigned, else null
  */
 export const checkDuplicateAssignmentOfInstructor = (
   periodOfDayId: number,
