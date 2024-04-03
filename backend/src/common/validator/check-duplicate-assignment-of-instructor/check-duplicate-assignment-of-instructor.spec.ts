@@ -48,7 +48,7 @@ const class1 = {
 } as Class;
 
 const message =
-  'Instructor is already assigned already assigned in the overlapping duration, same period of day, overlapping days of the week.';
+  'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.';
 
 describe('checkDuplicateAssignmentOfInstructor', () => {
   it('should return message when the instructor has already been assigned in the overlapping duration, same period of day, overlapping weekdays range', () => {

@@ -47,7 +47,7 @@ export const checkDuplicateAssignmentOfInstructor = (
     console.log('isSamePeriod', isSamePeriod);
 
     if (isDurationOverlapping && isSamePeriod) {
-      return 'Instructor is already assigned already assigned in the overlapping duration, same period of day, overlapping days of the week.';
+      return 'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.';
     }
   }
   return null;
