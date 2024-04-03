@@ -1,24 +1,10 @@
-import * as dayjs from 'dayjs';
 import { FormattedClass } from '../../../modules/cohorts/types';
 import {
   MON_WED_WEEKDAYS_RANGE_ID,
   WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../constants/master.constant';
 
-/**
- * Create error message from the Class instance
- * ex) 'Overlaps with 2024-03-01 - 2024-03-20(Mon - Wed)'
- *
- * @param {FormattedClass} clazz
- * @return {string}
- */
-const generateMessage = (clazz: FormattedClass): string => {
-  const startAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
-  const endAt = dayjs(clazz.startAt).format('YYYY-MM-DD');
-  const rangeName = clazz.weekdaysRange.data.name;
-
-  return `Overlaps with ${startAt} - ${endAt}(${rangeName})`;
-};
+const errorMessage = 'This course is overlapping with another course.';
 
 /**
  * Check if the overlap is allowed case or not
@@ -59,8 +45,12 @@ export const checkClassOverlapAllowed = (
           classB.weekdaysRange.data.id,
         );
         if (!isOverlapAllowed) {
-          classA.weekdaysRange.messages.push(generateMessage(classA));
-          classB.weekdaysRange.messages.push(generateMessage(classB));
+          if (!classA.weekdaysRange.messages.length) {
+            classA.weekdaysRange.messages.push(errorMessage);
+          }
+          if (!classB.weekdaysRange.messages.length) {
+            classB.weekdaysRange.messages.push(errorMessage);
+          }
         }
       }
     }
