@@ -17,9 +17,10 @@ import {
   checkInstructorTeachableCourse,
   checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
-  checkClassOverlapAllowed,
+  checkClassOverlap,
   checkInstructorExceedsMaxHours,
   checkInstructorsAvailabilityDaysRange,
+  checkClassroomOccupancy,
 } from '../../common/validator';
 
 @Injectable()
@@ -200,7 +201,8 @@ export class CohortsService {
       };
     });
 
-    formattedClasses = checkClassOverlapAllowed(formattedClasses);
+    formattedClasses = checkClassOverlap(formattedClasses);
+    formattedClasses = checkClassroomOccupancy(formattedClasses);
 
     const formattedResponse = {
       ...cohort,
