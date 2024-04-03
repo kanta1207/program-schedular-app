@@ -1,29 +1,7 @@
 import { FormattedClass } from '../../../modules/cohorts/types';
-import {
-  MON_WED_WEEKDAYS_RANGE_ID,
-  WED_FRI_WEEKDAYS_RANGE_ID,
-} from '../../constants/master.constant';
+import { checkClassOverlapAllowed } from '../check-class-overlap-allowed/check-class-overlap-allowed';
 
 const errorMessage = 'This course is overlapping with another course.';
-
-/**
- * Check if the overlap is allowed case or not
- *
- * @param {number} rangeAId id of WeekdaysRange
- * @param {number} rangeBId id of WeekdaysRange
- * @return {boolean} true if the overlap is allowed
- */
-export const checkOverlapAllowed = (
-  rangeAId: number,
-  rangeBId: number,
-): boolean => {
-  const allowedCombinations = [
-    [MON_WED_WEEKDAYS_RANGE_ID, WED_FRI_WEEKDAYS_RANGE_ID],
-    [WED_FRI_WEEKDAYS_RANGE_ID, MON_WED_WEEKDAYS_RANGE_ID],
-  ];
-  // Allow overlaps of [Mon-Wed, Wed-Fri] or [Wed-Fri, Mon-Wed]
-  return allowedCombinations.some(([a, b]) => rangeAId === a && rangeBId === b);
-};
 
 /**
  * Check if there are any overlapped schedule in the given list of classes
@@ -31,7 +9,7 @@ export const checkOverlapAllowed = (
  * @param {FormattedClass[]} classes
  * @return {FormattedClass[]} List of FormattedClass with error messages
  */
-export const checkClassOverlapAllowed = (
+export const checkClassOverlap = (
   classes: FormattedClass[],
 ): FormattedClass[] => {
   // Compare each classes
@@ -43,7 +21,7 @@ export const checkClassOverlapAllowed = (
       // Check duration
       if (classA.startAt <= classB.endAt && classA.endAt >= classB.startAt) {
         // Check if (Mon-Wed, Wed-Fri) or (Wed-Fri, Mon-Wed)
-        const isOverlapAllowed = checkOverlapAllowed(
+        const isOverlapAllowed = checkClassOverlapAllowed(
           classA.weekdaysRange.data.id,
           classB.weekdaysRange.data.id,
         );
