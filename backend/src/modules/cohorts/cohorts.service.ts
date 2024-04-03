@@ -13,7 +13,6 @@ import { UpdateClassesDto } from './dto/update-classes.dto';
 import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
 
-
 import {
   checkInstructorTeachableCourse,
   checkInstructorsAvailabilityPeriodOfDays,
@@ -21,10 +20,8 @@ import {
   checkClassOverlapAllowed,
   checkInstructorExceedsMaxHours,
   checkInstructorsAvailabilityDaysRange,
-} from '../../common/validator';
   checkDuplicateAssignmentOfInstructor,
-  checkSpanningAssignmentOfInstructor,
-} from './validator';
+} from '../../common/validator';
 
 @Injectable()
 export class CohortsService {
