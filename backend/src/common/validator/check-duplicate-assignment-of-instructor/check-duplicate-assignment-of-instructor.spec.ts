@@ -47,10 +47,11 @@ const class1 = {
   cohort: morningCohort,
 } as Class;
 
-const message = 'Instructor is already assigned in this duration';
+const message =
+  'Instructor is already assigned already assigned in the overlapping duration, same period of day, overlapping days of the week.';
 
 describe('checkDuplicateAssignmentOfInstructor', () => {
-  it('should return message when the instructor has already been assigned in the same duration, same period of day, overlapping weekdays range', () => {
+  it('should return message when the instructor has already been assigned in the overlapping duration, same period of day, overlapping weekdays range', () => {
     // Arrange mock data
     // This class has overlapping duration, same period of day, overlapping weekdays range with the class1
     const mockNewClass = {
@@ -74,7 +75,7 @@ describe('checkDuplicateAssignmentOfInstructor', () => {
     expect(result).toBe(message);
   });
 
-  it('should return null when the instructor has not been assigned in the same duration', () => {
+  it('should return null when the instructor has not been assigned in the overlapping duration', () => {
     // Arrange mock data
     // This class has non-overlapping duration with the class1
     const mockNewClass = {

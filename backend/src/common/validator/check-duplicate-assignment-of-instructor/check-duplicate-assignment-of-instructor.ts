@@ -6,7 +6,7 @@ import {
 } from '../../../common/constants/master.constant';
 
 /**
- * Check if the instructor is already assigned in the same duration, same period of day, overlapping weekdays range
+ * Check if the instructor is already assigned in the overlapping duration, same period of day, overlapping weekdays range
  * @param periodOfDayId - Period of Day of the Cohort the instructor is being assigned to
  * @param classId - ID of the class the instructor is being assigned to
  * @param weekdaysRangeId - ID of the weekdays range of the class the instructor is being assigned to
@@ -47,7 +47,7 @@ export const checkDuplicateAssignmentOfInstructor = (
     console.log('isSamePeriod', isSamePeriod);
 
     if (isDurationOverlapping && isSamePeriod) {
-      return 'Instructor is already assigned in this duration';
+      return 'Instructor is already assigned already assigned in the overlapping duration, same period of day, overlapping days of the week.';
     }
   }
   return null;
