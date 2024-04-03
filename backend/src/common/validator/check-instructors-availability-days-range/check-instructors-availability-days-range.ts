@@ -4,10 +4,7 @@ export const checkInstructorsAvailabilityDaysRange = (
   instructorsWeekdaysRangeId: number,
   classWeekdaysRangeId: number,
 ): string | null => {
-  // TODO:
-  // dont forget to change this logic when you add saturday and sunday (weekends included)
-  // because this logic using directly the constant. it matches the ids.
-
+  // TODO: When SAT-SUN weekdays range is added, refactor this logic
   if (instructorsWeekdaysRangeId === MON_FRI_WEEKDAYS_RANGE_ID) {
     return null;
   }
