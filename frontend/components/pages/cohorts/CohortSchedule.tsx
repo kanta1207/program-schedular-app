@@ -401,9 +401,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       </TableCell>
                       <TableCell>{dayjs(classData.endAt).format('YYYY-MM-DD (ddd)')}</TableCell>
                       <TableCell>{classData.course.name}</TableCell>
-                      <TableCell
-                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '0.25rem' }}
-                      >
+                      <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
                         {classData.weekdaysRange.messages.length > 0 && (
                           <Tooltip title={tooltipTitle(classData.weekdaysRange.messages)}>
                             <WarningIcon
@@ -413,7 +412,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                             />
                           </Tooltip>
                         )}
-                        <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange.data} />
                       </TableCell>
                       <TableCell>
                         <span className={`${plannedHours > requiredHours && 'text-red-500 font-semibold'}`}>
@@ -426,7 +424,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       </TableCell>
 
                       <TableCell sx={{ alignItems: 'center' }}>
-                        <Box display="flex" alignItems="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          {classData.instructor.data?.name}
                           {classData.instructor.messages.length > 0 && (
                             <Tooltip title={tooltipTitle(classData.instructor.messages)}>
                               <WarningIcon
@@ -436,7 +435,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                               />
                             </Tooltip>
                           )}
-                          {classData.instructor.data?.name}
                         </Box>
                       </TableCell>
                       <TableCell></TableCell>
