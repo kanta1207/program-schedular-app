@@ -13,7 +13,10 @@ const errorMessage = 'This course is overlapping with another course.';
  * @param {number} rangeBId id of WeekdaysRange
  * @return {boolean} true if the overlap is allowed
  */
-const checkOverlapAllowed = (rangeAId: number, rangeBId: number): boolean => {
+export const checkOverlapAllowed = (
+  rangeAId: number,
+  rangeBId: number,
+): boolean => {
   const allowedCombinations = [
     [MON_WED_WEEKDAYS_RANGE_ID, WED_FRI_WEEKDAYS_RANGE_ID],
     [WED_FRI_WEEKDAYS_RANGE_ID, MON_WED_WEEKDAYS_RANGE_ID],

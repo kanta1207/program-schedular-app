@@ -1,5 +1,5 @@
 import { FormattedClass } from '../../../modules/cohorts/types';
-import { checkClassOverlapAllowed } from './check-class-overlap-allowed';
+import { checkClassOverlapAllowed } from './check-class-overlap';
 import * as dayjs from 'dayjs';
 
 describe('checkOverlapAllowed', () => {
