@@ -13,7 +13,15 @@ import { UpdateClassesDto } from './dto/update-classes.dto';
 import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
 import { FormattedClass } from './types';
 
+
 import {
+  checkInstructorTeachableCourse,
+  checkInstructorsAvailabilityPeriodOfDays,
+  checkSpanningAssignmentOfInstructor,
+  checkClassOverlapAllowed,
+  checkInstructorExceedsMaxHours,
+  checkInstructorsAvailabilityDaysRange,
+} from '../../common/validator';
   checkDuplicateAssignmentOfInstructor,
   checkSpanningAssignmentOfInstructor,
 } from './validator';
@@ -90,11 +98,17 @@ export class CohortsService {
           course: true,
           classroom: true,
           instructor: {
+            contractType: true,
             classes: {
               cohort: {
                 periodOfDay: true,
               },
+              weekdaysRange: true,
+              course: true,
             },
+            courses: { course: true },
+            periodOfDays: { periodOfDay: true },
+            weekdaysRange: true,
           },
         },
       },
@@ -103,7 +117,7 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    const formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
+    let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
       const { instructor } = clazz;
       const instructorMessages: string[] = [];
 
@@ -113,15 +127,53 @@ export class CohortsService {
           instructorMessages.push(msgIsActive);
         }
 
+        const msgExceedsMaxHours = checkInstructorExceedsMaxHours(
+          instructor.contractType.maxHours,
+          instructor.classes,
+          clazz.startAt,
+          clazz.endAt,
+        );
+
+        if (msgExceedsMaxHours) {
+          instructorMessages.push(msgExceedsMaxHours);
+        }
         const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
           cohort.periodOfDay.id,
           clazz.startAt,
           clazz.endAt,
           instructor.classes,
         );
-
         if (msgSpanningAssignment) {
           instructorMessages.push(msgSpanningAssignment);
+        }
+        const courses = instructor.courses.map(
+          (instructorCourse) => instructorCourse.course,
+        );
+        const msgTeachableCourse = checkInstructorTeachableCourse(
+          courses,
+          clazz.course.id,
+        );
+
+        if (msgTeachableCourse) {
+          instructorMessages.push(msgTeachableCourse);
+        }
+        const periodOfDays = instructor.periodOfDays.map(
+          (InstructorsPeriodOfDays) => InstructorsPeriodOfDays.periodOfDay,
+        );
+        const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
+          periodOfDays,
+          cohort.periodOfDay.id,
+        );
+        if (msgIsAvailablePeriod) {
+          instructorMessages.push(msgIsAvailablePeriod);
+        }
+        const msgIsAvailablePeriodOfWeekdays =
+          checkInstructorsAvailabilityDaysRange(
+            instructor.weekdaysRange.id,
+            clazz.weekdaysRange.id,
+          );
+        if (msgIsAvailablePeriodOfWeekdays) {
+          instructorMessages.push(msgIsAvailablePeriodOfWeekdays);
         }
 
         const msgDuplicateAssignment = checkDuplicateAssignmentOfInstructor(
@@ -152,14 +204,25 @@ export class CohortsService {
           messages: [],
         },
         instructor: {
-          // We don't want to include unnecessary classes data in the response
-          data: { ...instructor, classes: undefined },
+          data: {
+            ...instructor,
+            classes: undefined,
+            contractType: undefined,
+            periodOfDays: undefined,
+            courses: undefined,
+            weekdaysRange: undefined,
+          },
           messages: instructorMessages,
         },
       };
     });
 
-    const formattedResponse = { ...cohort, classes: formattedClasses };
+    formattedClasses = checkClassOverlapAllowed(formattedClasses);
+
+    const formattedResponse = {
+      ...cohort,
+      classes: formattedClasses,
+    };
 
     return formattedResponse;
   }

@@ -1,4 +1,4 @@
-import checkDateOrder from './check-date-order.util';
+import { checkDateOrder } from './check-date-order.util';
 
 describe('checkDateOrder function', () => {
   const convertToUTC = (dateString: string) =>
