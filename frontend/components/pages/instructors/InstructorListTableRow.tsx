@@ -37,7 +37,7 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
         {instructor.name}
       </TableCell>
       <TableCell>{instructor.contractType.name}</TableCell>
-      <TableCell>{instructor.desiredWorkingHours}</TableCell>
+      <TableCell>{instructor.desiredWorkingHours ? instructor.desiredWorkingHours : '-'}</TableCell>
       <TableCell>
         <ul className="flex gap-2">{periodsWithIcons}</ul>
       </TableCell>
