@@ -23,10 +23,9 @@ export const checkDuplicateAssignmentOfInstructor = (
   classEndAt: Date,
   classesOfInstructor: Class[],
 ): string | null => {
-  // If the instructor is assigned to any classes with overlapping duration and the period of day, return an alert message
-  for (const clazz of classesOfInstructor) {
+  const isDuplicateAssignment = classesOfInstructor.some((clazz) => {
     // Instructor's class list includes the class being assigned to, so have to skip it
-    if (clazz.id === classId) continue;
+    if (clazz.id === classId) return false;
 
     // TODO: When SAT-SUN weekdays range is added, refactor this logic
     // If the combination of weekdays range is either MON_WED and WED_FRI or WED_FRI and MON_WED, it will not overlap so skip the check.
@@ -36,19 +35,17 @@ export const checkDuplicateAssignmentOfInstructor = (
       (weekdaysRangeId === WED_FRI_WEEKDAYS_RANGE_ID &&
         clazz.weekdaysRange.id === MON_WED_WEEKDAYS_RANGE_ID)
     )
-      continue;
+      return false;
 
     const isDurationOverlapping =
       clazz.startAt <= classEndAt && clazz.endAt >= classStartAt;
 
     const isSamePeriod = clazz.cohort.periodOfDay.id === periodOfDayId;
 
-    console.log('isDurationOverlapping', isDurationOverlapping);
-    console.log('isSamePeriod', isSamePeriod);
+    return isDurationOverlapping && isSamePeriod;
+  });
 
-    if (isDurationOverlapping && isSamePeriod) {
-      return 'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.';
-    }
-  }
-  return null;
+  return isDuplicateAssignment
+    ? 'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.'
+    : null;
 };
