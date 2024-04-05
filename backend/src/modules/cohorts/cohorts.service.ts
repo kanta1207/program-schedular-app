@@ -20,6 +20,7 @@ import {
   checkClassOverlapAllowed,
   checkInstructorExceedsMaxHours,
   checkInstructorsAvailabilityDaysRange,
+  checkDuplicateAssignmentOfInstructor,
 } from '../../common/validator';
 
 @Injectable()
@@ -170,6 +171,19 @@ export class CohortsService {
           );
         if (msgIsAvailablePeriodOfWeekdays) {
           instructorMessages.push(msgIsAvailablePeriodOfWeekdays);
+        }
+
+        const msgDuplicateAssignment = checkDuplicateAssignmentOfInstructor(
+          cohort.periodOfDay.id,
+          clazz.id,
+          clazz.weekdaysRange.id,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+
+        if (msgDuplicateAssignment) {
+          instructorMessages.push(msgDuplicateAssignment);
         }
       }
 
