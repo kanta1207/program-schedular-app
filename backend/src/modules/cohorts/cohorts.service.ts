@@ -149,6 +149,7 @@ export class CohortsService {
         const msgTeachableCourse = checkInstructorTeachableCourse(
           courses,
           clazz.course.id,
+          clazz.course.name,
         );
 
         if (msgTeachableCourse) {
@@ -160,6 +161,7 @@ export class CohortsService {
         const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
           periodOfDays,
           cohort.periodOfDay.id,
+          cohort.periodOfDay.name,
         );
         if (msgIsAvailablePeriod) {
           instructorMessages.push(msgIsAvailablePeriod);
@@ -168,6 +170,7 @@ export class CohortsService {
           checkInstructorsAvailabilityDaysRange(
             instructor.weekdaysRange.id,
             clazz.weekdaysRange.id,
+            clazz.weekdaysRange.name,
           );
         if (msgIsAvailablePeriodOfWeekdays) {
           instructorMessages.push(msgIsAvailablePeriodOfWeekdays);
