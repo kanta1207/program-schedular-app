@@ -7,6 +7,8 @@ import {
 
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
+  EVENING_PERIOD_OF_DAY_ID,
+  MON_FRI_WEEKDAYS_RANGE_ID,
   MON_WED_WEEKDAYS_RANGE_ID,
   MORNING_PERIOD_OF_DAY_ID,
   WED_FRI_WEEKDAYS_RANGE_ID,
@@ -23,127 +25,735 @@ const wedFriWeekdaysRange = {
   id: WED_FRI_WEEKDAYS_RANGE_ID,
 } as MasterWeekdaysRange;
 
-const morningPeriodOfDay = {
-  id: MORNING_PERIOD_OF_DAY_ID,
-} as MasterPeriodOfDay;
-
-const afternoonPeriodOfDay = {
-  id: AFTERNOON_PERIOD_OF_DAY_ID,
-} as MasterPeriodOfDay;
+const monFriWeekdaysRange = {
+  id: MON_FRI_WEEKDAYS_RANGE_ID,
+} as MasterWeekdaysRange;
 
 const morningCohort = {
-  periodOfDay: morningPeriodOfDay,
+  periodOfDay: {
+    id: MORNING_PERIOD_OF_DAY_ID,
+  } as MasterPeriodOfDay,
 } as Cohort;
 
 const afternoonCohort = {
-  periodOfDay: afternoonPeriodOfDay,
+  periodOfDay: {
+    id: AFTERNOON_PERIOD_OF_DAY_ID,
+  } as MasterPeriodOfDay,
 } as Cohort;
 
-const class1 = {
-  id: 1,
-  weekdaysRange: monWedWeekdaysRange,
-  startAt: new Date('2022-03-01'),
-  endAt: new Date('2022-03-31'),
-  cohort: morningCohort,
-} as Class;
+const eveningCohort = {
+  periodOfDay: {
+    id: EVENING_PERIOD_OF_DAY_ID,
+  } as MasterPeriodOfDay,
+} as Cohort;
 
-const message =
-  'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.';
+const message = 'Already assigned to another class.';
 
 describe('checkDuplicateAssignmentOfInstructor', () => {
-  it('should return message when the instructor has already been assigned in the overlapping duration, same period of day, overlapping weekdays range', () => {
-    // Arrange mock data
-    // This class has overlapping duration, same period of day, overlapping weekdays range with the class1
-    const mockNewClass = {
-      id: 3,
-      startAt: new Date('2022-02-21'),
-      endAt: new Date('2022-03-14'),
-      weekdaysRange: monWedWeekdaysRange,
-      cohort: morningCohort,
-    } as Class;
-    const mockClassesOfInstructor = [class1, mockNewClass] as Class[];
+  describe('Expect: Return error message', () => {
+    describe('Perspective of duration', () => {
+      const mockExistingClass = {
+        id: 1,
+        startAt: new Date('2022-03-01'),
+        endAt: new Date('2022-03-31'),
+        weekdaysRange: monWedWeekdaysRange,
+        cohort: morningCohort,
+      } as Class;
 
-    const result = checkDuplicateAssignmentOfInstructor(
-      mockNewClass.cohort.periodOfDay.id,
-      mockNewClass.id,
-      mockNewClass.weekdaysRange.id,
-      mockNewClass.startAt,
-      mockNewClass.endAt,
-      mockClassesOfInstructor,
-    );
+      it('same weekdays range, same period, overlap duration (start date of given class is overlapping by one day)', () => {
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-31'), // Overlapping by one day
+          endAt: new Date('2022-03-14'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
 
-    expect(result).toBe(message);
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('same weekdays range, same period, overlap duration (end date of given class is overlapping by one day)', () => {
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-02-01'),
+          endAt: new Date('2022-03-01'), // Overlapping by one day
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+    });
+    describe('Perspective of weekdays range', () => {
+      it('mon-wed and mon-wed, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+      it('wed-fri and wed-fri, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('mon-wed and mon-fri, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('wed-fri and mon-fri, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('mon-fri and mon-wed, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('mon-fri and wed-fri, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 3,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+    });
+    describe('Perspective of period of the day', () => {
+      it('same weekdays range, morning and morning, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('same weekdays range, afternoon and afternoon, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+
+      it('same weekdays range, evening and evening, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-01'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBe(message);
+      });
+    });
   });
 
-  it('should return null when the instructor has not been assigned in the overlapping duration', () => {
-    // Arrange mock data
-    // This class has non-overlapping duration with the class1
-    const mockNewClass = {
-      id: 2,
-      startAt: new Date('2022-04-01'),
-      endAt: new Date('2022-04-30'),
-      weekdaysRange: monWedWeekdaysRange,
-      cohort: morningCohort,
-    } as Class;
-    const mockClassesOfInstructor = [class1, mockNewClass] as Class[];
+  describe('Expect: Return null', () => {
+    describe('Perspective of duration', () => {
+      const mockExistingClass = {
+        id: 1,
+        startAt: new Date('2022-03-02'),
+        endAt: new Date('2022-03-31'),
+        weekdaysRange: monWedWeekdaysRange,
+        cohort: morningCohort,
+      } as Class;
 
-    const result = checkDuplicateAssignmentOfInstructor(
-      mockNewClass.cohort.periodOfDay.id,
-      mockNewClass.id,
-      mockNewClass.weekdaysRange.id,
-      mockNewClass.startAt,
-      mockNewClass.endAt,
-      mockClassesOfInstructor,
-    );
+      it('same weekdays range, same period, no overlap duration (given class ends only one day earlier)', () => {
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-02-14'),
+          endAt: new Date('2022-03-01'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
 
-    expect(result).toBeNull();
-  });
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
 
-  it('should return null when the instructor has not been assigned in the same period of day', () => {
-    // Arrange mock data
-    // This class has different period of day with the class1
-    const mockNewClass = {
-      id: 2,
-      startAt: new Date('2022-04-01'),
-      endAt: new Date('2022-04-30'),
-      weekdaysRange: monWedWeekdaysRange,
-      cohort: afternoonCohort,
-    } as Class;
-    const mockClassesOfInstructor = [class1, mockNewClass] as Class[];
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
 
-    const result = checkDuplicateAssignmentOfInstructor(
-      mockNewClass.cohort.periodOfDay.id,
-      mockNewClass.id,
-      mockNewClass.weekdaysRange.id,
-      mockNewClass.startAt,
-      mockNewClass.endAt,
-      mockClassesOfInstructor,
-    );
+        expect(result).toBeNull();
+      });
 
-    expect(result).toBeNull();
-  });
+      it('same weekdays range, same period, no overlap duration (given class starts only one day later)', () => {
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-04-01'),
+          endAt: new Date('2022-04-30'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
 
-  it('should return null when the instructor has not been assigned in the overlapping weekdays range', () => {
-    // Arrange mock data
-    // This class's weekdays range is not overlapping with the class1
-    const mockNewClass = {
-      id: 2,
-      startAt: new Date('2022-04-01'),
-      endAt: new Date('2022-04-30'),
-      weekdaysRange: wedFriWeekdaysRange,
-      cohort: morningCohort,
-    } as Class;
-    const mockClassesOfInstructor = [class1, mockNewClass] as Class[];
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
 
-    const result = checkDuplicateAssignmentOfInstructor(
-      mockNewClass.cohort.periodOfDay.id,
-      mockNewClass.id,
-      mockNewClass.weekdaysRange.id,
-      mockNewClass.startAt,
-      mockNewClass.endAt,
-      mockClassesOfInstructor,
-    );
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
 
-    expect(result).toBeNull();
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('Perspective of weekdays range', () => {
+      it('mon-wed and wed-fri, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('wed-fri and mon-wed, same period, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: wedFriWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('Perspective of period of the day', () => {
+      it('same weekdays range, morning and afternoon, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('same weekdays range, morning and evening, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('same weekdays range, afternoon and morning, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('same weekdays range, afternoon and evening, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('same weekdays range, evening and morning, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: morningCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+
+      it('same weekdays range, evening and afternoon, same duration', () => {
+        const mockExistingClass = {
+          id: 1,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: eveningCohort,
+        } as Class;
+
+        const mockGivenClass = {
+          id: 2,
+          startAt: new Date('2022-03-02'),
+          endAt: new Date('2022-03-31'),
+          weekdaysRange: monWedWeekdaysRange,
+          cohort: afternoonCohort,
+        } as Class;
+
+        const mockClassesOfInstructor = [
+          mockExistingClass,
+          mockGivenClass,
+        ] as Class[];
+
+        const result = checkDuplicateAssignmentOfInstructor(
+          mockGivenClass.cohort.periodOfDay.id,
+          mockGivenClass.id,
+          mockGivenClass.weekdaysRange.id,
+          mockGivenClass.startAt,
+          mockGivenClass.endAt,
+          mockClassesOfInstructor,
+        );
+
+        expect(result).toBeNull();
+      });
+    });
   });
 });

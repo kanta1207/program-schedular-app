@@ -5,6 +5,7 @@ import {
   WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../../common/constants/master.constant';
 
+const message = 'Already assigned to another class.';
 /**
  * Check if the instructor is already assigned in the overlapping duration, same period of day, overlapping weekdays range
  * @param periodOfDayId - Period of Day of the Cohort the instructor is being assigned to
@@ -45,7 +46,5 @@ export const checkDuplicateAssignmentOfInstructor = (
     return isDurationOverlapping && isSamePeriod;
   });
 
-  return isDuplicateAssignment
-    ? 'Instructor is already assigned in the overlapping duration, same period of day, overlapping days of the week.'
-    : null;
+  return isDuplicateAssignment ? message : null;
 };
