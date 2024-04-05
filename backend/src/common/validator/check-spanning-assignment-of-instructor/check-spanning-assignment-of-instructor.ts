@@ -56,7 +56,7 @@ export const checkSpanningAssignmentOfInstructor = (
     overlapDurations.length > 0 &&
     overlapDurations.length > durationsCoveredByAfternoonClass.length
   ) {
-    return `Instructor is assigned to both Morning and Evening class in the same term`;
+    return `Assigned to morning and evening, idle in afternoon.`;
   }
   return null;
 };
