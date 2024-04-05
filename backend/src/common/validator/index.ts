@@ -4,4 +4,4 @@ export * from './check-instructors-availability-period-of-days/check-instructors
 export * from './check-class-overlap/check-class-overlap';
 export * from './check-instructors-availability-days-range/check-instructors-availability-days-range';
 export * from './check-instructor-exceeds-max-hours/check-instructor-exceeds-max-hours';
-export * from './check-classroom-occupancy/check-classroom-occupancy';
+export * from './check-classroom-duplication/check-classroom-duplication';
