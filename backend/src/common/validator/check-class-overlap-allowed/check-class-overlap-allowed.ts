@@ -4,7 +4,7 @@ import {
   WED_FRI_WEEKDAYS_RANGE_ID,
 } from '../../constants/master.constant';
 
-const errorMessage = 'This course is overlapping with another course.';
+const errorMessage = 'Overlapping with another class in the same cohort.';
 
 /**
  * Check if the overlap is allowed case or not
