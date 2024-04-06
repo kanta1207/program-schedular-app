@@ -20,8 +20,8 @@ export const checkClassroomDuplication = (
     for (const existingClass of classesWithinPeriod) {
       if (formattedClass.classroom.data.id === existingClass.classroom.id) {
         const periodsOverlap =
-          formattedClass.startAt < existingClass.endAt &&
-          formattedClass.endAt > existingClass.startAt;
+          formattedClass.startAt <= existingClass.endAt &&
+          formattedClass.endAt >= existingClass.startAt;
 
         if (periodsOverlap) {
           let overlapAllowed = false;
