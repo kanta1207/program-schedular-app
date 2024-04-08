@@ -40,6 +40,7 @@ const theme = createTheme({
     success: {
       main: '#19B571',
     },
+    grey: { '100': '#D9D9D933' },
     gantt: {
       project: '#264d67',
     },

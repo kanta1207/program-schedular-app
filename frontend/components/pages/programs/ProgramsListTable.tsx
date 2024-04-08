@@ -1,8 +1,12 @@
 'use client';
 import { deleteProgram } from '@/actions/programs/deleteProgram';
 import { updateProgram } from '@/actions/programs/updateProgram';
+import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
+import { TOAST } from '@/constants/_index';
+import { usePagination } from '@/hooks/usePagination';
 import { GetProgramsResponse } from '@/types/program';
+import { TableFooter, TablePagination } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface ProgramListTableProps {
   programs: GetProgramsResponse[];
@@ -49,10 +54,11 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
 
       await updateProgram(editProgramId, payload);
 
+      toast.success(TOAST.success.updated);
       setEditProgramId(null);
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
@@ -68,63 +74,94 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
   const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
   const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
 
+  const {
+    rowsPerPageOptions,
+    count,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    ActionsComponent,
+    emptyRows,
+  } = usePagination({
+    count: programs.length,
+    rowsPerPage: 25,
+    page: 0,
+  });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Table>
         <TableHead>
           <TableRow sx={thRowStyle}>
-            <TableCell sx={{ width: 'calc(100% * 11/12)' }}>Name</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 10/12)' }}>Name</TableCell>
             {/* Empty head for edit and delete */}
-            <TableCell sx={{ width: 'calc(100% * 1/12)' }} />
+            <TableCell sx={{ width: 'calc(100% * 2/12)' }} />
           </TableRow>
         </TableHead>
         <TableBody>
-          {programs.map((program) => (
-            <TableRow key={program.id}>
-              {editProgramId === program.id ? (
-                // Edit mode
-                <>
-                  <TableCell>
-                    <Controller
-                      control={control}
-                      name="name"
-                      rules={{ required: true }}
-                      render={({ field }: any) => {
-                        return (
-                          <TextField
-                            label="Name"
-                            id="name"
-                            sx={{ width: '100%' }}
-                            value={field.value}
-                            onChange={(name) => field.onChange(name)}
-                          />
-                        );
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-x-2.5">
-                      <Button variant="outlined" type="button" onClick={handleCancelClick}>
-                        Cancel
-                      </Button>
-                      <Button variant="contained" type="submit">
-                        Save
-                      </Button>
-                    </div>
-                  </TableCell>
-                </>
-              ) : (
-                // Display mode
-                <>
-                  <TableCell>{program.name}</TableCell>
-                  <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <TableMenu id={program.id} onEdit={handleEditClick} onDelete={deleteProgram} />
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-          ))}
+          {(rowsPerPage > 0 ? programs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : programs).map(
+            (program) => (
+              <TableRow key={program.id}>
+                {editProgramId === program.id ? (
+                  // Edit mode
+                  <>
+                    <TableCell>
+                      <Controller
+                        control={control}
+                        name="name"
+                        rules={{ required: true }}
+                        render={({ field }: any) => {
+                          return (
+                            <TextField
+                              label="Name"
+                              id="name"
+                              sx={{ width: '50%' }}
+                              value={field.value}
+                              onChange={(name) => field.onChange(name)}
+                            />
+                          );
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-end gap-x-2.5">
+                        <Button variant="outlined" type="button" onClick={handleCancelClick}>
+                          Cancel
+                        </Button>
+                        <Button variant="contained" type="submit">
+                          Save
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </>
+                ) : (
+                  // Display mode
+                  <>
+                    <TableCell>{program.name}</TableCell>
+                    <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <TableMenu id={program.id} onEdit={handleEditClick} onDelete={deleteProgram} />
+                    </TableCell>
+                  </>
+                )}
+              </TableRow>
+            ),
+          )}
+          {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={rowsPerPageOptions}
+              count={count}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              ActionsComponent={ActionsComponent}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </form>
   );

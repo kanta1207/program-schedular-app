@@ -1,10 +1,13 @@
 'use client';
 import { createProgram } from '@/actions/programs/createProgram';
+import ErrorMessages from '@/components/partials/ErrorMessages';
+import { TOAST } from '@/constants/_index';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const CreateProgram = () => {
   const router = useRouter();
@@ -29,17 +32,18 @@ const CreateProgram = () => {
 
       await createProgram(payload);
 
-      reset();
+      toast.success(TOAST.success.created);
       setIsCreating(false);
+      reset();
       router.refresh();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast.error(<ErrorMessages message={error.message} />);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-end mb-4 ">
+      <div className="flex justify-end mb-4">
         {!isCreating && (
           <Button variant="contained" onClick={() => setIsCreating(!isCreating)}>
             New Program

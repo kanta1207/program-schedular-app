@@ -102,7 +102,11 @@ export class InstructorsService {
     return instructor;
   }
 
-  async findAll(rangeId: number | undefined, courseId: number | undefined) {
+  async findAll(
+    rangeId: number | undefined,
+    courseId: number | undefined,
+    isActive: boolean | undefined,
+  ) {
     let instructorIds = [];
 
     // If courseId is provided, get all instructorsId for that course and add them to instructorIds
@@ -121,6 +125,7 @@ export class InstructorsService {
       where: {
         id: instructorIds.length > 0 ? In(instructorIds) : undefined,
         weekdaysRange: rangeId ? { id: rangeId } : undefined,
+        isActive: isActive,
       },
       relations: {
         contractType: true,
@@ -321,6 +326,10 @@ export class InstructorsService {
   }
 
   async remove(id: number) {
-    return await this.instructorRepository.softDelete(id);
+    const deleteResult = await this.instructorRepository.softDelete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Instructor Not Found');
+    }
   }
 }

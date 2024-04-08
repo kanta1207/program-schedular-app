@@ -1,21 +1,16 @@
 'use client';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-const navigation = [
+const nonNestedMenu = [
   {
     name: 'Schedules',
     path: '/schedules',
@@ -25,20 +20,15 @@ const navigation = [
     path: '/instructors',
   },
   {
-    name: 'Intakes',
-    path: '/intakes',
-  },
-  {
     name: 'Cohorts',
     path: '/cohorts',
   },
+];
+
+const schoolCalendarMenu = [
   {
-    name: 'Courses',
-    path: '/courses',
-  },
-  {
-    name: 'Programs',
-    path: '/programs',
+    name: 'Intakes',
+    path: '/intakes',
   },
   {
     name: 'Breaks',
@@ -46,29 +36,78 @@ const navigation = [
   },
 ];
 
-const settings = [
+const curriculumMenu = [
   {
-    name: 'Logout',
-    path: '/logout',
+    name: 'Programs',
+    path: '/programs',
+  },
+  {
+    name: 'Courses',
+    path: '/courses',
   },
 ];
 
 const Header = () => {
-  const router = useRouter();
   const pathname = usePathname();
+  const firstPathname = `/${pathname.split('/')[1]}`;
 
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+  const NavButton = ({ path, name }: { path: string; name: string }) => {
+    return (
+      <Button
+        key={path}
+        href={path}
+        component="a"
+        sx={{
+          color: 'white',
+          textDecoration: path === firstPathname ? 'underline' : 'none',
+          textUnderlineOffset: '4px',
+          '&:hover': { textDecoration: path === firstPathname ? 'underline' : 'none' },
+        }}
+      >
+        {name}
+      </Button>
+    );
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const DropdownMenu = ({ label, menu }: { label: string; menu: { name: string; path: string }[] }) => {
+    const [open, setOpen] = useState(false);
+    return (
+      <Box sx={{ position: 'relative' }} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+        <Button
+          sx={{ my: 2, color: 'white' }}
+          endIcon={<KeyboardArrowDownIcon sx={{ transform: open ? 'rotate(180deg)' : '', transition: '.25s' }} />}
+        >
+          {label}
+        </Button>
+        <Box
+          sx={{
+            minWidth: '110px',
+            display: 'flex',
+            flexDirection: 'column',
+            px: 0.5,
+            py: 1,
+            borderBottomLeftRadius: '4px',
+            borderBottomRightRadius: '4px',
+            position: 'absolute',
+            right: '0',
+            bgcolor: 'primary.light',
+            transform: open ? '' : 'translateY(-100%)',
+            pointerEvents: open ? 'unset' : 'none',
+            opacity: open ? 'unset' : '0',
+            transition: '0.25s',
+          }}
+        >
+          {menu.map(({ path, name }) => (
+            <NavButton key={path} path={path} name={name} />
+          ))}
+        </Box>
+      </Box>
+    );
   };
+
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl">
+    <AppBar position="sticky" sx={{ width: '100vw', '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
+      <div className="container mx-auto">
         <Toolbar disableGutters>
           <Link href="/schedules">
             <div className="relative h-12 w-12">
@@ -82,55 +121,15 @@ const Header = () => {
             </div>
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: 'flex', gap: '1rem', marginLeft: '3rem' }}>
-            {navigation.map((navItem) => (
-              <Button
-                key={navItem.path}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  textDecoration: navItem.path === pathname ? 'underline' : 'none',
-                  textUnderlineOffset: '4px',
-                }}
-                onClick={() => router.push(navItem.path)}
-              >
-                {navItem.name}
-              </Button>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '3rem' }}>
+            {nonNestedMenu.map(({ path, name }) => (
+              <NavButton key={path} path={path} name={name} />
             ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Rodrigo" src="/" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.path} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            <DropdownMenu label="School Calendar" menu={schoolCalendarMenu} />
+            <DropdownMenu label="Curriculum" menu={curriculumMenu} />
           </Box>
         </Toolbar>
-      </Container>
+      </div>
     </AppBar>
   );
 };

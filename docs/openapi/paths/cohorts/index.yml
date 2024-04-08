@@ -2,15 +2,6 @@ get:
   tags:
     - Cohort
   summary: Get the Cohorts
-  parameters:
-    - in: query
-      name: cohortId
-      schema:
-        type: array
-        items:
-          type: integer
-      required: false
-      description: Multiple ids of the cohorts to get
   responses:
     '200':
       description: Returns Cohorts

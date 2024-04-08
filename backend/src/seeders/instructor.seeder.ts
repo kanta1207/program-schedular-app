@@ -30,7 +30,7 @@ const instructors = [
   {
     name: 'Diogo',
     isActive: true,
-    desiredWorkingHours: 20,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 2 },
     weekdaysRange: { id: 1 },
@@ -38,7 +38,7 @@ const instructors = [
   {
     name: 'Gaurav',
     isActive: true,
-    desiredWorkingHours: 20,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 2 },
     weekdaysRange: { id: 1 },
@@ -70,7 +70,7 @@ const instructors = [
   {
     name: 'Mariam',
     isActive: true,
-    desiredWorkingHours: 40,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 1 },
     weekdaysRange: { id: 1 },
@@ -94,7 +94,7 @@ const instructors = [
   {
     name: 'Vedant',
     isActive: true,
-    desiredWorkingHours: 20,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 2 },
     weekdaysRange: { id: 1 },
@@ -126,7 +126,7 @@ const instructors = [
   {
     name: 'Brigitte',
     isActive: false,
-    desiredWorkingHours: 30,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 1 },
     weekdaysRange: { id: 1 },
@@ -174,7 +174,7 @@ const instructors = [
   {
     name: 'Tiago',
     isActive: false,
-    desiredWorkingHours: 40,
+    desiredWorkingHours: null,
     note: '',
     contractType: { id: 1 },
     weekdaysRange: { id: 1 },

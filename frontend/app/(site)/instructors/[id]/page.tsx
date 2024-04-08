@@ -1,10 +1,13 @@
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box } from '@mui/material';
 import InstructorInfoForm from '@/components/pages/instructors/InstructorInfoForm';
-import { InstructorScheduleTable } from '@/components/pages/instructors/InstructorScheduleTable';
 import Headline from '@/components/partials/Headline';
 import { getInstructorById } from '@/actions/instructors/getInstructorById';
 import { getCourses } from '@/actions/courses/getCourses';
 import { getPrograms } from '@/actions/programs/getPrograms';
+import InstructorSchedule from '@/components/pages/instructors/InstructorSchedule';
+import { getClasses } from '@/actions/classes/getClasses';
+import { GetClassesGroupByCohort } from '@/types/_index';
+import { convertClassesToGantt } from '@/helpers/convertClassesToGantt';
 
 interface PageProps {
   params: { id: string };
@@ -12,11 +15,14 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const [{ data: instructor }, { data: courses }, { data: programs }] = await Promise.all([
+  const [{ data: instructor }, { data: courses }, { data: programs }, { data }] = await Promise.all([
     getInstructorById(id),
     getCourses(),
     getPrograms(),
+    getClasses({ groupBy: 'cohort', instructorId: [Number(id)] }),
   ]);
+  const cohorts = data as GetClassesGroupByCohort[];
+  const ganttItems = convertClassesToGantt({ cohorts });
 
   return (
     <>
@@ -24,17 +30,8 @@ const page = async ({ params }: PageProps) => {
         <Headline name="Instructor" />
       </Box>
       <InstructorInfoForm instructor={instructor} courses={courses} programs={programs} />
-      <br />
-      <Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
-          <Headline name={`${instructor.name}'s Schedule`} />
-          <ToggleButtonGroup color="primary" exclusive aria-label="Schedule Type">
-            <ToggleButton value="list">List</ToggleButton>
-            <ToggleButton value="gantt">Gantt</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-        <InstructorScheduleTable instructor={instructor} />
-      </Box>
+      <Box sx={{ height: '4rem' }} />
+      <InstructorSchedule instructor={instructor} ganttItems={ganttItems} />
     </>
   );
 };

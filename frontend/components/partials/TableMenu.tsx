@@ -1,13 +1,15 @@
 'use client';
-import { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Menu, { MenuProps } from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
+import { CONFIRM, TOAST } from '@/constants/_index';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
+import Menu, { MenuProps } from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { alpha, styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -69,21 +71,23 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
     onEdit(id);
   };
 
-  const handleDelete = () => {
-    const message = `
-    Are you sure you want to delete this item?
-    This action cannot be undone.
-    `;
-    if (confirm(message)) {
-      handleClose();
-      onDelete(id);
-      router.refresh();
+  const handleDelete = async () => {
+    if (confirm(CONFIRM.delete)) {
+      try {
+        await onDelete(id);
+        toast.success(TOAST.success.deleted);
+        router.refresh();
+      } catch (error: any) {
+        toast.error(error.message);
+      }
     }
+    handleClose();
   };
 
   return (
     <div className="flex justify-end">
       <IconButton
+        sx={{ padding: '0' }}
         id="menu-trigger-button"
         aria-controls={open ? 'menu-trigger-button' : undefined}
         aria-haspopup="true"

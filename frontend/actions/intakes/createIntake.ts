@@ -8,8 +8,8 @@ interface CreateIntakePayload {
 }
 
 export const createIntake = async (payload: CreateIntakePayload): Promise<ApiResponse<CreateIntakeResponse>> => {
-  const { name, startAt, endAt } = payload;
   try {
+    const { name, startAt, endAt } = payload;
     if (name === '') {
       throw new Error('Name cannot be empty');
     }
@@ -19,8 +19,6 @@ export const createIntake = async (payload: CreateIntakePayload): Promise<ApiRes
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/intakes`;
 
-    const payload = { name, startAt, endAt };
-
     const response = await fetch(baseUrl, {
       method: 'POST',
       headers: {
@@ -29,15 +27,14 @@ export const createIntake = async (payload: CreateIntakePayload): Promise<ApiRes
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.messages);
+    }
 
     return data;
   } catch (error: any) {
-    console.error(error);
-    throw new Error(`An error occurred: ${error.message}`);
+    throw new Error(error.message);
   }
 };

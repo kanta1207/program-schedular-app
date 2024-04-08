@@ -84,7 +84,7 @@ export class CohortsService {
     const cohort = await this.cohortRepository.findOne({
       where: { id },
       order: {
-        classes: { startAt: 'ASC', endAt: 'ASC' },
+        classes: { startAt: 'ASC', endAt: 'ASC', weekdaysRange: { id: 'ASC' } },
       },
       relations: {
         intake: true,
@@ -298,7 +298,11 @@ export class CohortsService {
   }
 
   async remove(id: number) {
-    await this.cohortRepository.delete(id);
+    const deleteResult = await this.cohortRepository.delete(id);
+
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException('Cohort Not Found');
+    }
   }
 
   async updateClasses(id: number, updateClassesDto: UpdateClassesDto) {

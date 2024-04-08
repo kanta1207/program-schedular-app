@@ -21,7 +21,7 @@ interface FormattedClassField<T> {
   messages: string[];
 }
 
-interface GetCohortClass extends ClassBase {
+export interface GetCohortClass extends ClassBase {
   cohort: CohortBase;
   course: CourseBase;
   weekdaysRange: FormattedClassField<WeekdaysRange>;
