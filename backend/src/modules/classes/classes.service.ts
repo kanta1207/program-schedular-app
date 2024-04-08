@@ -5,7 +5,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 
-import { Instructor, Cohort } from 'src/entity';
+import { Instructor, Cohort } from '../../entity';
 
 @Injectable()
 export class ClassesService {

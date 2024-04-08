@@ -1,4 +1,4 @@
-import { Course } from 'src/entity';
+import { Course } from '../../../entity';
 
 export const checkInstructorTeachableCourse = (
   courses: Course[],

@@ -4,7 +4,7 @@ import {
   Instructor,
   MasterClassroom,
   MasterWeekdaysRange,
-} from 'src/entity';
+} from '../../../entity';
 
 interface FormattedClassField<T> {
   data: T;

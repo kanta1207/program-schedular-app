@@ -1,4 +1,4 @@
-import { Class } from 'src/entity';
+import { Class } from '../../../entity';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,

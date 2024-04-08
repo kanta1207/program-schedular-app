@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
-import { Intake, MasterPeriodOfDay } from 'src/entity';
+import { Intake, MasterPeriodOfDay } from '../../entity';
 import { checkDateOrder } from 'src/common/utils';
 
 @Injectable()
