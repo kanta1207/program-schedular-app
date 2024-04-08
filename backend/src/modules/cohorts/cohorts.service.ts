@@ -17,9 +17,10 @@ import {
   checkInstructorTeachableCourse,
   checkInstructorsAvailabilityPeriodOfDays,
   checkSpanningAssignmentOfInstructor,
-  checkClassOverlapAllowed,
+  checkClassOverlap,
   checkInstructorExceedsMaxHours,
   checkInstructorsAvailabilityDaysRange,
+  checkClassroomDuplication,
   checkDuplicateAssignmentOfInstructor,
 } from '../../common/validator';
 
@@ -93,7 +94,12 @@ export class CohortsService {
           cohort: true,
           weekdaysRange: true,
           course: true,
-          classroom: true,
+          classroom: {
+            classes: {
+              classroom: true,
+              weekdaysRange: true,
+            },
+          },
           instructor: {
             contractType: true,
             classes: {
@@ -190,6 +196,27 @@ export class CohortsService {
         }
       }
 
+      const classroomMessages: string[] = [];
+      const classroomClasses = clazz.classroom.classes;
+      for (const classroomClass of classroomClasses) {
+        if (classroomMessages.length) break;
+        const msgIsClassroomOccupied = checkClassroomDuplication(
+          clazz.id,
+          clazz.classroom.id,
+          clazz.startAt,
+          clazz.endAt,
+          clazz.weekdaysRange.id,
+          classroomClass.id,
+          classroomClass.classroom.id,
+          classroomClass.startAt,
+          classroomClass.endAt,
+          classroomClass.weekdaysRange.id,
+        );
+        if (msgIsClassroomOccupied) {
+          classroomMessages.push(msgIsClassroomOccupied);
+        }
+      }
+
       return {
         startAt: clazz.startAt,
         endAt: clazz.endAt,
@@ -201,7 +228,7 @@ export class CohortsService {
         },
         classroom: {
           data: clazz.classroom,
-          messages: [],
+          messages: classroomMessages,
         },
         instructor: {
           data: {
@@ -217,7 +244,7 @@ export class CohortsService {
       };
     });
 
-    formattedClasses = checkClassOverlapAllowed(formattedClasses);
+    formattedClasses = checkClassOverlap(formattedClasses);
 
     const formattedResponse = {
       ...cohort,

@@ -1,5 +1,5 @@
 import { FormattedClass } from '../../../modules/cohorts/types';
-import { checkClassOverlapAllowed } from './check-class-overlap-allowed';
+import { checkClassOverlap } from './check-class-overlap';
 import * as dayjs from 'dayjs';
 
 describe('checkOverlapAllowed', () => {
@@ -17,7 +17,7 @@ describe('checkOverlapAllowed', () => {
       },
     ] as FormattedClass[];
 
-    const result = checkClassOverlapAllowed(formattedClasses);
+    const result = checkClassOverlap(formattedClasses);
     expect(result[0].weekdaysRange.messages.length).toBe(0);
     expect(result[1].weekdaysRange.messages.length).toBe(0);
   });
@@ -36,7 +36,7 @@ describe('checkOverlapAllowed', () => {
       },
     ] as FormattedClass[];
 
-    const result = checkClassOverlapAllowed(formattedClasses);
+    const result = checkClassOverlap(formattedClasses);
     expect(result[0].weekdaysRange.messages.length).not.toBe(0);
     expect(result[1].weekdaysRange.messages.length).not.toBe(0);
     expect(result[0].weekdaysRange.messages[0]).toContain(
