@@ -1,4 +1,5 @@
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import { dateFormat } from '@/styles/_index';
 import { GetClassResponse } from '@/types/_index';
 import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
@@ -8,14 +9,12 @@ interface InstructorScheduleTableRowProps {
 }
 
 export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProps> = ({ classData }) => {
-  const startDate = dayjs(classData.startAt).format('MMM DD, YYYY (ddd)');
-  const endDate = dayjs(classData.endAt).format('MMM DD, YYYY (ddd)');
+  const startDate = dayjs(classData.startAt).format(dateFormat);
+  const endDate = dayjs(classData.endAt).format(dateFormat);
 
   return (
     <>
-      <TableCell component="th" scope="row">
-        {startDate}
-      </TableCell>
+      <TableCell>{startDate}</TableCell>
       <TableCell>{endDate}</TableCell>
       <TableCell>{classData.course.name}</TableCell>
       <TableCell>{classData.cohort.name}</TableCell>

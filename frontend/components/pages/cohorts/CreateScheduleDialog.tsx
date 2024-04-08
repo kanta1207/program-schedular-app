@@ -1,6 +1,7 @@
 'use client';
 
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
+import { dateFormat, inBoxScrollBar } from '@/styles/_index';
 import { GetCohortResponse } from '@/types/cohort';
 import {
   Box,
@@ -69,7 +70,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
   };
 
   return (
-    <Dialog onClose={handleCancel} open={open} maxWidth={'lg'}>
+    <Dialog onClose={handleCancel} open={open} maxWidth={false}>
       <Box sx={{ padding: '1rem' }}>
         <DialogTitle>Create/Reset Schedule</DialogTitle>
         <Box sx={{ pt: 0, display: 'flex', flexDirection: 'column', gap: '1rem', mb: '1rem' }}>
@@ -121,13 +122,15 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
             <Box
               sx={{
                 bgcolor: 'grey.100',
-                width: '600px',
+                width: '750px',
                 height: '320px',
                 padding: '1em',
                 borderRadius: '0.25rem',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '0.25rem',
+                overflowY: 'scroll',
+                ...inBoxScrollBar,
               }}
             >
               {selectedCohort ? (
@@ -136,11 +139,9 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                     <>
                       {selectedCohort.classes.map((item) => (
                         <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
+                          <Typography sx={{ width: '25%' }}>{dayjs(item.startAt).format(dateFormat)}</Typography>
                           <Typography sx={{ width: '25%' }}>
-                            {dayjs(item.startAt).format('MMM DD, YYYY (ddd)')}
-                          </Typography>
-                          <Typography sx={{ width: '25%' }}>
-                            {dayjs(item.endAt).format('MMM DD, YYYY (ddd)')}
+                            {dayjs(item.endAt).format(dateFormat)}
                           </Typography>
                           <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
                           <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
