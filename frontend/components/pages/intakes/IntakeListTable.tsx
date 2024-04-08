@@ -148,6 +148,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                               <DatePicker
                                 label="Start Date"
                                 value={field.value}
+                                format={'MMM DD, YYYY'}
                                 onChange={(date) => field.onChange(date)}
                               />
                             );
@@ -164,6 +165,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                               <DatePicker
                                 label="End Date"
                                 value={field.value}
+                                format={'MMM DD, YYYY'}
                                 onChange={(date) => field.onChange(date)}
                               />
                             );
@@ -187,8 +189,8 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                       <TableCell component="th" scope="row">
                         {intake.name}
                       </TableCell>
-                      <TableCell>{dayjs(intake.startAt).format('YYYY-MM-DD')}</TableCell>
-                      <TableCell>{dayjs(intake.endAt).format('YYYY-MM-DD')}</TableCell>
+                      <TableCell>{dayjs(intake.startAt).format('MMM DD, YYYY (ddd)')}</TableCell>
+                      <TableCell>{dayjs(intake.endAt).format('MMM DD, YYYY (ddd)')}</TableCell>
                       {intake.periodOfDays.map((period) => (
                         <TableCell key={period.id}>{period.cohorts.map((cohort) => cohort.name).join(', ')}</TableCell>
                       ))}
@@ -200,7 +202,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                 </TableRow>
               ),
             )}
-            {emptyRows > 0 && <TableRow style={{ height: 73 * emptyRows }} />}
+            {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
           </TableBody>
           <TableFooter>
             <TableRow>

@@ -1,16 +1,16 @@
 'use client';
-import { Dayjs } from 'dayjs';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
+import { createBreak } from '@/actions/breaks/createBreak';
+import ErrorMessages from '@/components/partials/ErrorMessages';
+import { TOAST } from '@/constants/_index';
 import Button from '@mui/material/Button';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { createBreak } from '@/actions/breaks/createBreak';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Dayjs } from 'dayjs';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { TOAST } from '@/constants/_index';
-import ErrorMessages from '@/components/partials/ErrorMessages';
 
 const CreateBreak = () => {
   const router = useRouter();
@@ -65,7 +65,14 @@ const CreateBreak = () => {
               name="startAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return <DatePicker label="Start Date" value={field.value} onChange={(date) => field.onChange(date)} />;
+                return (
+                  <DatePicker
+                    label="Start Date"
+                    value={field.value}
+                    format={'MMM DD, YYYY'}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
               }}
             />
             {/* End Date */}
@@ -74,7 +81,14 @@ const CreateBreak = () => {
               name="endAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return <DatePicker label="End Date" value={field.value} onChange={(date) => field.onChange(date)} />;
+                return (
+                  <DatePicker
+                    label="End Date"
+                    value={field.value}
+                    format={'MMM DD, YYYY'}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
               }}
             />
             {/* Table Menu */}

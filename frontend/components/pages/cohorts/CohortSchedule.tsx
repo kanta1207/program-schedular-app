@@ -420,6 +420,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                                 }}
                                 shouldDisableDate={isDateDisable}
                                 value={dayjs(field.value)}
+                                format={'MMM DD, YYYY'}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}
@@ -449,6 +450,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                                 }}
                                 shouldDisableDate={isDateDisable}
                                 value={dayjs(field.value)}
+                                format={'MMM DD, YYYY'}
                                 onChange={(date) => {
                                   field.onChange(date);
                                 }}
@@ -601,8 +603,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             ) : (
               <>
                 {scheduleItems.map((shceduleItem) => {
-                  const startDate = dayjs(shceduleItem.startAt).format('YYYY-MM-DD (ddd)');
-                  const endDate = dayjs(shceduleItem.endAt).format('YYYY-MM-DD (ddd)');
+                  const startDate = dayjs(shceduleItem.startAt).format('MMM DD, YYYY (ddd)');
+                  const endDate = dayjs(shceduleItem.endAt).format('MMM DD, YYYY (ddd)');
                   const isClass = 'cohort' in shceduleItem;
                   if (isClass) {
                     const plannedHours = getPlannedHours(

@@ -89,16 +89,19 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
     page: 0,
   });
 
+  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
+  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Table>
         <TableHead>
-          <TableRow sx={{ bgcolor: 'primary.main' }}>
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Course name</TableCell>
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Program</TableCell>
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }}>Required hours</TableCell>
+          <TableRow sx={thRowStyle}>
+            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Course name</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Program</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Required hours</TableCell>
             {/* Empty head for edit and delete */}
-            <TableCell sx={{ border: '1px solid white', color: 'white', width: '20rem' }} />
+            <TableCell sx={{ width: 'calc(100% * 3/12)' }} />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -210,7 +213,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
               </TableRow>
             ),
           )}
-          {emptyRows > 0 && <TableRow style={{ height: 73 * emptyRows }} />}
+          {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
         </TableBody>
         <TableFooter>
           <TableRow>

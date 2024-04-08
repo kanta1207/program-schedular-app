@@ -18,7 +18,7 @@ export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({ daysOfTheW
           display: 'inline-block',
           width: '6rem',
           paddingInline: '0.5em',
-          paddingBlock: '0.25em',
+          paddingBlock: '0.15em',
           textAlign: 'center',
           borderRadius: '0.25em',
         }}

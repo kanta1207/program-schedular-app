@@ -8,8 +8,8 @@ interface InstructorScheduleTableRowProps {
 }
 
 export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProps> = ({ classData }) => {
-  const startDate = dayjs(classData.startAt).format('YYYY-MM-DD');
-  const endDate = dayjs(classData.endAt).format('YYYY-MM-DD');
+  const startDate = dayjs(classData.startAt).format('MMM DD, YYYY (ddd)');
+  const endDate = dayjs(classData.endAt).format('MMM DD, YYYY (ddd)');
 
   return (
     <>
