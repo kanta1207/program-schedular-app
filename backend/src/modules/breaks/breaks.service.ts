@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Break } from '../../entity';
-import { checkDateOrder } from 'src/common/utils';
+import { checkDateOrder } from '../../common/utils';
 
 import { CreateBreakDto } from './dto/create-break.dto';
 import { UpdateBreakDto } from './dto/update-break.dto';

@@ -10,8 +10,8 @@ import {
 import { IntakesService } from './intakes.service';
 import { CreateIntakeDto } from './dto/create-intake.dto';
 import { UpdateIntakeDto } from './dto/update-intake.dto';
-import { ApiResponse } from 'src/common/api-response';
-import { StatusCodes } from 'src/common/status-code';
+import { ApiResponse } from '../../common/api-response';
+import { StatusCodes } from '../../common/status-code';
 
 @Controller('intakes')
 export class IntakesController {

@@ -10,8 +10,8 @@ import {
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { ApiResponse } from 'src/common/api-response';
-import { StatusCodes } from 'src/common/status-code';
+import { ApiResponse } from '../../common/api-response';
+import { StatusCodes } from '../../common/status-code';
 
 @Controller('courses')
 export class CoursesController {

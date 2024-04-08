@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsString, IsNotEmpty, MaxLength, IsDate } from 'class-validator';
-import { IsAfterDate } from 'src/common/validator/is-after-date';
+import { IsAfterDate } from '../../../common/validator/is-after-date';
 
 export class CreateIntakeDto {
   @IsString()

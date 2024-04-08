@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ProgramsService } from './programs.service';
-import { ApiResponse } from 'src/common/api-response';
-import { StatusCodes } from 'src/common/status-code';
+import { ApiResponse } from '../../common/api-response';
+import { StatusCodes } from '../../common/status-code';
 import { CreateProgramDto } from './dto/create-program.dto';
 import { UpdateProgramDto } from './dto/update-program.dto';
 
