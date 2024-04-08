@@ -79,36 +79,6 @@ export class CohortsService {
     });
   }
 
-  async findWithinPeriod(startAt: Date, endAt: Date) {
-    return await this.classRepository
-      .createQueryBuilder('class')
-      .leftJoinAndSelect('class.classroom', 'classroom')
-      .leftJoinAndSelect('class.weekdaysRange', 'weekdaysRange')
-      .leftJoinAndSelect('class.cohort', 'cohort')
-      .where('class.startAt >= :startAt', { startAt })
-      .andWhere('class.endAt <= :endAt', { endAt })
-      .getMany();
-  }
-
-  getFormattedClassRange(formattedClasses: FormattedClass[]): {
-    startAt: Date;
-    endAt: Date;
-  } {
-    let minStartAt = formattedClasses[0].startAt;
-    let maxEndAt = formattedClasses[0].endAt;
-
-    for (const formattedClass of formattedClasses) {
-      if (formattedClass.startAt < minStartAt) {
-        minStartAt = formattedClass.startAt;
-      }
-      if (formattedClass.endAt > maxEndAt) {
-        maxEndAt = formattedClass.endAt;
-      }
-    }
-
-    return { startAt: minStartAt, endAt: maxEndAt };
-  }
-
   async findOne(id: number) {
     const cohort = await this.cohortRepository.findOne({
       where: { id },
