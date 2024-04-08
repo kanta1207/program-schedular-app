@@ -5,3 +5,4 @@ export * from './check-class-overlap/check-class-overlap';
 export * from './check-instructors-availability-days-range/check-instructors-availability-days-range';
 export * from './check-instructor-exceeds-max-hours/check-instructor-exceeds-max-hours';
 export * from './check-classroom-duplication/check-classroom-duplication';
+export * from './check-duplicate-assignment-of-instructor/check-duplicate-assignment-of-instructor';
