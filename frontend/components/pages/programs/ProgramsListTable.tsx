@@ -147,7 +147,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
               </TableRow>
             ),
           )}
-          {emptyRows > 0 && <TableRow style={{ height: 73 * emptyRows }} />}
+          {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
         </TableBody>
         <TableFooter>
           <TableRow>

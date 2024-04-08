@@ -1,16 +1,16 @@
 'use client';
-import { useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import { Dayjs } from 'dayjs';
-import { useForm, Controller, SubmitHandler, FieldValues } from 'react-hook-form';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { createIntake } from '@/actions/intakes/createIntake';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import { TOAST } from '@/constants/_index';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { TOAST } from '@/constants/_index';
+import { Button, TextField } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Dayjs } from 'dayjs';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 const CreateIntake = () => {
   const [isCreating, setIsCreating] = useState(false);
@@ -84,7 +84,14 @@ const CreateIntake = () => {
               name="startAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return <DatePicker label="Start Date" value={field.value} onChange={(date) => field.onChange(date)} />;
+                return (
+                  <DatePicker
+                    label="Start Date"
+                    value={field.value}
+                    format={'MMM DD, YYYY'}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
               }}
             />
             {/* End Date */}
@@ -93,7 +100,14 @@ const CreateIntake = () => {
               name="endAt"
               rules={{ required: true }}
               render={({ field }: any) => {
-                return <DatePicker label="End Date" value={field.value} onChange={(date) => field.onChange(date)} />;
+                return (
+                  <DatePicker
+                    label="End Date"
+                    value={field.value}
+                    format={'MMM DD, YYYY'}
+                    onChange={(date) => field.onChange(date)}
+                  />
+                );
               }}
             />
             <div className="flex items-end gap-4 ml-auto">

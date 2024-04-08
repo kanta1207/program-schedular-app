@@ -137,9 +137,11 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                       {selectedCohort.classes.map((item) => (
                         <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
                           <Typography sx={{ width: '25%' }}>
-                            {dayjs(item.startAt).format('YYYY-MM-DD (ddd)')}
+                            {dayjs(item.startAt).format('MMM DD, YYYY (ddd)')}
                           </Typography>
-                          <Typography sx={{ width: '25%' }}>{dayjs(item.endAt).format('YYYY-MM-DD (ddd)')}</Typography>
+                          <Typography sx={{ width: '25%' }}>
+                            {dayjs(item.endAt).format('MMM DD, YYYY (ddd)')}
+                          </Typography>
                           <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
                           <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
                         </Box>
