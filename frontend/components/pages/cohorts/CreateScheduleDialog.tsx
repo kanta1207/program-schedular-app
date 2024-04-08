@@ -1,7 +1,7 @@
 'use client';
 
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
-import { GetCohortResponse } from '@/types/cohort';
+import { GetCohortsResponse } from '@/types/_index';
 import {
   Box,
   Button,
@@ -21,14 +21,14 @@ import { CreateType } from './CohortSchedule';
 
 export interface CreateScheduleDialogProps {
   dialogOpen: boolean;
-  onClose: (value?: string, cohort?: GetCohortResponse) => void;
-  cohorts: GetCohortResponse[];
+  onClose: (value?: string, cohort?: GetCohortsResponse) => void;
+  cohorts: GetCohortsResponse[];
 }
 
 export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onClose, dialogOpen: open, cohorts }) => {
   const [selectedCreateType, setSelectedCreateType] = useState<CreateType>('copy');
   const [selectedCohortIds, setSelectedCohortIds] = useState<string[]>([]);
-  const [selectedCohort, setSelectedCohort] = useState<GetCohortResponse>();
+  const [selectedCohort, setSelectedCohort] = useState<GetCohortsResponse>();
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedCreateType(event.target.value as CreateType);

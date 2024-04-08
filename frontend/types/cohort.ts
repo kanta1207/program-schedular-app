@@ -36,10 +36,23 @@ export interface GetCohortResponse extends CohortBase {
   classes: GetCohortClass[];
 }
 
-export interface GetCohortsResponse extends GetCohortResponse {}
+export interface GetCohortsClass extends ClassBase {
+  cohort: CohortBase;
+  course: CourseBase;
+  weekdaysRange: WeekdaysRange;
+  instructor: InstructorBase | null;
+  classroom: Classroom;
+}
+
+export interface GetCohortsResponse extends CohortBase {
+  intake: IntakeBase;
+  program: ProgramBase;
+  periodOfDay: PeriodOfDay;
+  classes: GetCohortsClass[];
+}
 
 export interface CreateCohortResponse extends GetCohortResponse {}
 
 export interface UpdateCohortResponse extends GetCohortResponse {}
 
-export interface UpdateCohortClassesResponse extends GetCohortClass {}
+export interface UpdateCohortClassesResponse extends GetCohortsClass {}

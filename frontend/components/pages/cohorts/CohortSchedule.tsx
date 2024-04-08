@@ -147,10 +147,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           startAt: dayjs(classData.startAt),
           endAt: dayjs(classData.endAt),
           cohortId: cohort.id,
-          weekdaysRangeId: classData.weekdaysRange.data.id,
+          weekdaysRangeId: classData.weekdaysRange.id,
           courseId: classData.course.id,
-          classroomId: classData.classroom.data.id,
-          instructorId: classData.instructor.data?.id,
+          classroomId: classData.classroom.id,
+          instructorId: classData.instructor?.id,
         })),
       });
       toast.success(TOAST.success.updated);
@@ -170,10 +170,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             startAt: dayjs(classData.startAt),
             endAt: dayjs(classData.endAt),
             cohortId: cohort.id,
-            weekdaysRangeId: classData.weekdaysRange.id,
+            weekdaysRangeId: classData.weekdaysRange.data.id,
             courseId: classData.course.id,
-            classroomId: classData.classroom.id,
-            instructorId: classData.instructor?.id,
+            classroomId: classData.classroom.data.id,
+            instructorId: classData.instructor.data?.id,
           })),
         });
       }

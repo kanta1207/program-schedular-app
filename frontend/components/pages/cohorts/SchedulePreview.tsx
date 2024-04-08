@@ -3,6 +3,8 @@ import {
   GetBreaksResponse,
   GetCohortClass,
   GetCohortResponse,
+  GetCohortsClass,
+  GetCohortsResponse,
   GetCoursesResponse,
   GetInstructorsResponse,
 } from '@/types/_index';
@@ -12,19 +14,19 @@ import React, { useEffect, useState } from 'react';
 import { WatchSchedule } from './CohortSchedule';
 
 interface SchedulePreviewProps {
-  cohort: GetCohortResponse;
+  cohort: GetCohortResponse | GetCohortsResponse;
   courses: GetCoursesResponse[];
   breaks: GetBreaksResponse[];
   instructors: GetInstructorsResponse[];
   watchSchedule?: WatchSchedule[];
-  schedule?: GetCohortClass[];
+  schedule?: GetCohortClass[] | GetCohortsClass[];
 }
 
 interface ModifiedWatchSchedule extends WatchSchedule {
   startWeek: number;
   totalWeeks: number;
 }
-interface ModifiedClass extends GetCohortClass {
+interface ModifiedClass extends GetCohortsClass {
   startWeek: number;
   totalWeeks: number;
 }
