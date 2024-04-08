@@ -614,27 +614,27 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               </>
             ) : (
               <>
-                {scheduleItems.map((shceduleItem) => {
-                  const startDate = dayjs(shceduleItem.startAt).format('MMM DD, YYYY (ddd)');
-                  const endDate = dayjs(shceduleItem.endAt).format('MMM DD, YYYY (ddd)');
-                  const isClass = 'cohort' in shceduleItem;
+                {scheduleItems.map((scheduleItem) => {
+                  const startDate = dayjs(scheduleItem.startAt).format('MMM DD, YYYY (ddd)');
+                  const endDate = dayjs(scheduleItem.endAt).format('MMM DD, YYYY (ddd)');
+                  const isClass = 'cohort' in scheduleItem;
                   if (isClass) {
                     const plannedHours = getPlannedHours(
-                      shceduleItem.startAt,
-                      shceduleItem.endAt,
-                      shceduleItem.weekdaysRange.data.id,
+                      scheduleItem.startAt,
+                      scheduleItem.endAt,
+                      scheduleItem.weekdaysRange.data.id,
                     );
-                    const requiredHours = shceduleItem.course.requiredHours;
+                    const requiredHours = scheduleItem.course.requiredHours;
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
-                      <TableRow key={shceduleItem.id}>
+                      <TableRow key={scheduleItem.id}>
                         <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
-                        <TableCell>{shceduleItem.course.name}</TableCell>
+                        <TableCell>{scheduleItem.course.name}</TableCell>
                         <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <DaysOfTheWeekChip daysOfTheWeek={shceduleItem.weekdaysRange.data} />
-                          {shceduleItem.weekdaysRange.messages.length > 0 && (
-                            <Tooltip title={tooltipTitle(shceduleItem.weekdaysRange.messages)}>
+                          <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
+                          {scheduleItem.weekdaysRange.messages.length > 0 && (
+                            <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
                               <WarningIcon
                                 fontSize="small"
                                 color="warning"
@@ -649,9 +649,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            {shceduleItem.classroom.data.name} ({shceduleItem.classroom.data.floor} floor)
-                            {shceduleItem.classroom.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(shceduleItem.classroom.messages)}>
+                            {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
+                            {scheduleItem.classroom.messages.length > 0 && (
+                              <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
                                 <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
                               </Tooltip>
                             )}
@@ -660,9 +660,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
                         <TableCell sx={{ alignItems: 'center' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            {shceduleItem.instructor.data?.name}
-                            {shceduleItem.instructor.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(shceduleItem.instructor.messages)}>
+                            {scheduleItem.instructor.data?.name}
+                            {scheduleItem.instructor.messages.length > 0 && (
+                              <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
                                 <WarningIcon
                                   fontSize="small"
                                   color="warning"
@@ -676,7 +676,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                     );
                   } else {
                     return (
-                      <TableRow key={shceduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                      <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
                         <TableCell>{startDate}</TableCell>
                         <TableCell>{endDate}</TableCell>
                         <TableCell>School Break</TableCell>
