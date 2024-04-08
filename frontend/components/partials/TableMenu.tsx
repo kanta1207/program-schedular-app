@@ -87,7 +87,6 @@ const TableMenu: React.FC<TableMenuProps> = ({ id, onEdit, onDelete }) => {
   return (
     <div className="flex justify-end">
       <IconButton
-        sx={{ padding: '0' }}
         id="menu-trigger-button"
         aria-controls={open ? 'menu-trigger-button' : undefined}
         aria-haspopup="true"

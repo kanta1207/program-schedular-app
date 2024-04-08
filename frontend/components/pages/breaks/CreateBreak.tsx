@@ -2,6 +2,7 @@
 import { createBreak } from '@/actions/breaks/createBreak';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import { TOAST } from '@/constants/_index';
+import { datePickerFormat } from '@/styles/_index';
 import Button from '@mui/material/Button';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -69,7 +70,7 @@ const CreateBreak = () => {
                   <DatePicker
                     label="Start Date"
                     value={field.value}
-                    format={'MMM DD, YYYY'}
+                    format={datePickerFormat}
                     onChange={(date) => field.onChange(date)}
                   />
                 );
@@ -85,7 +86,7 @@ const CreateBreak = () => {
                   <DatePicker
                     label="End Date"
                     value={field.value}
-                    format={'MMM DD, YYYY'}
+                    format={datePickerFormat}
                     onChange={(date) => field.onChange(date)}
                   />
                 );
