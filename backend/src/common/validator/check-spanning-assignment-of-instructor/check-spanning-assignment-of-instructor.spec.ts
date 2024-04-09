@@ -31,9 +31,7 @@ describe('checkSpanningAssignmentOfInstructor', () => {
 
   const classesOfInstructor = [morningClass, eveningClass];
 
-  const message =
-    'Instructor is assigned to both Morning and Evening class in the same term';
-
+  const message = 'Assigned to morning and evening, idle in afternoon.';
   it('should return message when the new class is in Morning, and the instructor is already assigned to Evening classes in the same term', () => {
     // Case A
     const periodOfDayOfCohortA = morningPeriodOfDay;

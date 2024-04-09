@@ -4,6 +4,8 @@ import {
   EVENING_PERIOD_OF_DAY_ID,
   MORNING_PERIOD_OF_DAY_ID,
 } from '../../constants/master.constant';
+
+const message = 'Assigned to morning and evening, idle in afternoon.';
 // TODO: We might want to take `day of the week` into account when new data like `SAT-SUN` is introduced.
 /**
  * @param periodOfDayId - Period of Day of the Cohort the instructor is being assigned to
@@ -56,7 +58,7 @@ export const checkSpanningAssignmentOfInstructor = (
     overlapDurations.length > 0 &&
     overlapDurations.length > durationsCoveredByAfternoonClass.length
   ) {
-    return `Assigned to morning and evening, idle in afternoon.`;
+    return message;
   }
   return null;
 };

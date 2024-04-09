@@ -34,7 +34,7 @@ const message = (
   totalWeeklyHoursInstructorAssigned: number,
   maxHoursOfInstructor: number,
 ) => {
-  return `Instructor exceeds max working hours(${maxHoursOfInstructor}h/w). Current assigned hours are ${totalWeeklyHoursInstructorAssigned}h/w.`;
+  return `Exceeds ${maxHoursOfInstructor}h/w, assigned ${totalWeeklyHoursInstructorAssigned}h/w.`;
 };
 
 describe('checkInstructorExceedsMaxHours', () => {
