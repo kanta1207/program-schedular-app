@@ -35,9 +35,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -120,10 +122,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         startAt: dayjs(classData.startAt),
         endAt: dayjs(classData.endAt),
         cohortId: cohort.id,
-        weekdaysRangeId: classData.weekdaysRange.id,
         courseId: classData.course.id,
-        classroomId: classData.classroom.id,
-        instructorId: classData.instructor?.id,
+        weekdaysRangeId: classData.weekdaysRange.data.id,
+        classroomId: classData.classroom.data.id,
+        instructorId: classData.instructor.data?.id,
       })),
     });
   }, []);
@@ -169,10 +171,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             startAt: dayjs(classData.startAt),
             endAt: dayjs(classData.endAt),
             cohortId: cohort.id,
-            weekdaysRangeId: classData.weekdaysRange.id,
+            weekdaysRangeId: classData.weekdaysRange.data.id,
             courseId: classData.course.id,
-            classroomId: classData.classroom.id,
-            instructorId: classData.instructor?.id,
+            classroomId: classData.classroom.data.id,
+            instructorId: classData.instructor.data?.id,
           })),
         });
       }
@@ -207,6 +209,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   const getRequiredHours = (courseId: number): number => {
     return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
+  };
+
+  const tooltipTitle = (messages: string[]) => {
+    return (
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>&bull; {message}</li>
+        ))}
+      </ul>
+    );
   };
 
   // dialog
@@ -598,40 +610,69 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 </>
               ) : (
                 <>
-                  {scheduleItems.map((shceduleItem) => {
-                    const startDate = dayjs(shceduleItem.startAt).format(dateFormat);
-                    const endDate = dayjs(shceduleItem.endAt).format(dateFormat);
-                    const isClass = 'cohort' in shceduleItem;
+                  {scheduleItems.map((scheduleItem) => {
+                    const startDate = dayjs(scheduleItem.startAt).format(dateFormat);
+                    const endDate = dayjs(scheduleItem.endAt).format(dateFormat);
+                    const isClass = 'cohort' in scheduleItem;
                     if (isClass) {
                       const plannedHours = getPlannedHours(
-                        shceduleItem.startAt,
-                        shceduleItem.endAt,
-                        shceduleItem.weekdaysRange.id,
+                        scheduleItem.startAt,
+                        scheduleItem.endAt,
+                        scheduleItem.weekdaysRange.data.id,
                       );
-                      const requiredHours = shceduleItem.course.requiredHours;
+                      const requiredHours = scheduleItem.course.requiredHours;
                       const isTimeExceeded = plannedHours > requiredHours;
                       return (
-                        <TableRow key={shceduleItem.id}>
+                        <TableRow key={scheduleItem.id}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
-                          <TableCell>{shceduleItem.course.name}</TableCell>
-                          <TableCell>
-                            <DaysOfTheWeekChip daysOfTheWeek={shceduleItem.weekdaysRange} />
+                          <TableCell>{scheduleItem.course.name}</TableCell>
+                          <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
+                            {scheduleItem.weekdaysRange.messages.length > 0 && (
+                              <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
+                                <WarningIcon
+                                  fontSize="small"
+                                  color="warning"
+                                  sx={{ marginRight: '4px', cursor: 'pointer' }}
+                                />
+                              </Tooltip>
+                            )}
                           </TableCell>
                           <TableCell>
                             <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>{' '}
                             / {requiredHours}
                           </TableCell>
                           <TableCell>
-                            {shceduleItem.classroom.name} ({shceduleItem.classroom.floor} floor)
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
+                              {scheduleItem.classroom.messages.length > 0 && (
+                                <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
+                                  <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
+                                </Tooltip>
+                              )}
+                            </Box>
                           </TableCell>
-                          <TableCell>{shceduleItem.instructor?.name}</TableCell>
+                          <TableCell sx={{ alignItems: 'center' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              {scheduleItem.instructor.data?.name}
+                              {scheduleItem.instructor.messages.length > 0 && (
+                                <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
+                                  <WarningIcon
+                                    fontSize="small"
+                                    color="warning"
+                                    sx={{ marginRight: '4px', cursor: 'pointer' }}
+                                  />
+                                </Tooltip>
+                              )}
+                            </Box>
+                          </TableCell>
                           <TableCell />
                         </TableRow>
                       );
                     } else {
                       return (
-                        <TableRow key={shceduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                        <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
                           <TableCell>School Break</TableCell>

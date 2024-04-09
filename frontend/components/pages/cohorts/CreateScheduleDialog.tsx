@@ -2,7 +2,7 @@
 
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { dateFormat, inBoxScrollBar } from '@/styles/_index';
-import { GetCohortResponse } from '@/types/cohort';
+import { GetCohortsResponse } from '@/types/_index';
 import {
   Box,
   Button,
@@ -22,14 +22,14 @@ import { CreateType } from './CohortSchedule';
 
 export interface CreateScheduleDialogProps {
   dialogOpen: boolean;
-  onClose: (value?: string, cohort?: GetCohortResponse) => void;
-  cohorts: GetCohortResponse[];
+  onClose: (value?: string, cohort?: GetCohortsResponse) => void;
+  cohorts: GetCohortsResponse[];
 }
 
 export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onClose, dialogOpen: open, cohorts }) => {
   const [selectedCreateType, setSelectedCreateType] = useState<CreateType>('copy');
   const [selectedCohortIds, setSelectedCohortIds] = useState<string[]>([]);
-  const [selectedCohort, setSelectedCohort] = useState<GetCohortResponse>();
+  const [selectedCohort, setSelectedCohort] = useState<GetCohortsResponse>();
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedCreateType(event.target.value as CreateType);
@@ -140,9 +140,7 @@ export const CreateScheduleDialog: React.FC<CreateScheduleDialogProps> = ({ onCl
                       {selectedCohort.classes.map((item) => (
                         <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: '2%' }}>
                           <Typography sx={{ width: '25%' }}>{dayjs(item.startAt).format(dateFormat)}</Typography>
-                          <Typography sx={{ width: '25%' }}>
-                            {dayjs(item.endAt).format(dateFormat)}
-                          </Typography>
+                          <Typography sx={{ width: '25%' }}>{dayjs(item.endAt).format(dateFormat)}</Typography>
                           <Typography sx={{ width: '35%' }}>{item.course.name}</Typography>
                           <DaysOfTheWeekChip daysOfTheWeek={item.weekdaysRange} />
                         </Box>

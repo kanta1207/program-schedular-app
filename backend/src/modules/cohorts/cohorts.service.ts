@@ -10,7 +10,25 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+} from '../../entity';
+import { FormattedClass } from './types';
+
+import {
+  checkInstructorTeachableCourse,
+  checkInstructorsAvailabilityPeriodOfDays,
+  checkSpanningAssignmentOfInstructor,
+  checkClassOverlap,
+  checkInstructorExceedsMaxHours,
+  checkInstructorsAvailabilityDaysRange,
+  checkClassroomDuplication,
+  checkDuplicateAssignmentOfInstructor,
+} from '../../common/validator';
 
 @Injectable()
 export class CohortsService {
@@ -79,11 +97,33 @@ export class CohortsService {
         program: true,
         periodOfDay: true,
         classes: {
-          cohort: true,
+          cohort: {
+            periodOfDay: true,
+          },
           weekdaysRange: true,
           course: true,
-          classroom: true,
-          instructor: true,
+          classroom: {
+            classes: {
+              cohort: {
+                periodOfDay: true,
+              },
+              classroom: true,
+              weekdaysRange: true,
+            },
+          },
+          instructor: {
+            contractType: true,
+            classes: {
+              cohort: {
+                periodOfDay: true,
+              },
+              weekdaysRange: true,
+              course: true,
+            },
+            courses: { course: true },
+            periodOfDays: { periodOfDay: true },
+            weekdaysRange: true,
+          },
         },
       },
     });
@@ -91,7 +131,140 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    return cohort;
+    let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
+      const { instructor } = clazz;
+      const instructorMessages: string[] = [];
+
+      if (instructor) {
+        const msgIsActive = this.checkInstructorIsActive(instructor.isActive);
+        if (msgIsActive) {
+          instructorMessages.push(msgIsActive);
+        }
+
+        const msgExceedsMaxHours = checkInstructorExceedsMaxHours(
+          instructor.contractType.maxHours,
+          instructor.classes,
+          clazz.startAt,
+          clazz.endAt,
+        );
+
+        if (msgExceedsMaxHours) {
+          instructorMessages.push(msgExceedsMaxHours);
+        }
+        const msgSpanningAssignment = checkSpanningAssignmentOfInstructor(
+          cohort.periodOfDay.id,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+        if (msgSpanningAssignment) {
+          instructorMessages.push(msgSpanningAssignment);
+        }
+        const courses = instructor.courses.map(
+          (instructorCourse) => instructorCourse.course,
+        );
+        const msgTeachableCourse = checkInstructorTeachableCourse(
+          courses,
+          clazz.course.id,
+          clazz.course.name,
+        );
+
+        if (msgTeachableCourse) {
+          instructorMessages.push(msgTeachableCourse);
+        }
+        const periodOfDays = instructor.periodOfDays.map(
+          (InstructorsPeriodOfDays) => InstructorsPeriodOfDays.periodOfDay,
+        );
+        const msgIsAvailablePeriod = checkInstructorsAvailabilityPeriodOfDays(
+          periodOfDays,
+          cohort.periodOfDay.id,
+          cohort.periodOfDay.name,
+        );
+        if (msgIsAvailablePeriod) {
+          instructorMessages.push(msgIsAvailablePeriod);
+        }
+        const msgIsAvailablePeriodOfWeekdays =
+          checkInstructorsAvailabilityDaysRange(
+            instructor.weekdaysRange.id,
+            clazz.weekdaysRange.id,
+            clazz.weekdaysRange.name,
+          );
+        if (msgIsAvailablePeriodOfWeekdays) {
+          instructorMessages.push(msgIsAvailablePeriodOfWeekdays);
+        }
+
+        const msgDuplicateAssignment = checkDuplicateAssignmentOfInstructor(
+          cohort.periodOfDay.id,
+          clazz.id,
+          clazz.weekdaysRange.id,
+          clazz.startAt,
+          clazz.endAt,
+          instructor.classes,
+        );
+
+        if (msgDuplicateAssignment) {
+          instructorMessages.push(msgDuplicateAssignment);
+        }
+      }
+
+      const classroomMessages: string[] = [];
+      const classroomClasses = clazz.classroom.classes;
+      for (const classroomClass of classroomClasses) {
+        if (classroomMessages.length) break;
+        const msgIsClassroomOccupied = checkClassroomDuplication(
+          clazz.id,
+          clazz.classroom.id,
+          clazz.startAt,
+          clazz.endAt,
+          clazz.weekdaysRange.id,
+          clazz.cohort.periodOfDay.id,
+          classroomClass.id,
+          classroomClass.classroom.id,
+          classroomClass.startAt,
+          classroomClass.endAt,
+          classroomClass.weekdaysRange.id,
+          classroomClass.cohort.periodOfDay.id,
+        );
+        if (msgIsClassroomOccupied) {
+          classroomMessages.push(msgIsClassroomOccupied);
+        }
+      }
+
+      return {
+        startAt: clazz.startAt,
+        endAt: clazz.endAt,
+        cohort: clazz.cohort,
+        course: clazz.course,
+        weekdaysRange: {
+          data: clazz.weekdaysRange,
+          messages: [],
+        },
+        classroom: {
+          data: clazz.classroom,
+          messages: classroomMessages,
+        },
+        instructor: {
+          data: {
+            ...instructor,
+            classes: undefined,
+            contractType: undefined,
+            periodOfDays: undefined,
+            courses: undefined,
+            weekdaysRange: undefined,
+          },
+          messages: instructorMessages,
+        },
+      };
+    });
+
+    formattedClasses = checkClassOverlap(formattedClasses);
+
+    const formattedResponse = {
+      ...cohort,
+      classes: formattedClasses,
+    };
+
+    return formattedResponse;
   }
 
   async update(id: number, updateCohortDto: UpdateCohortDto) {
@@ -204,5 +377,12 @@ export class CohortsService {
         endAt: 'ASC',
       },
     });
+  }
+
+  checkInstructorIsActive(isActive: boolean): string | null {
+    if (!isActive) {
+      return 'Instructor is not active';
+    }
+    return null;
   }
 }
