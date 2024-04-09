@@ -109,7 +109,7 @@ const coursesInstructors = [
 });
 
 export const coursesInstructorsSeeder = async () => {
-  await seederWrapper('course_instructors', async () => {
+  await seederWrapper('courses_instructors', async () => {
     const coursesInstructorsRepo = dataSource.getRepository(CoursesInstructors);
     await coursesInstructorsRepo.save(coursesInstructors);
   });
