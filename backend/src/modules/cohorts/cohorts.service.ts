@@ -10,7 +10,13 @@ import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
-import { Cohort, Intake, MasterPeriodOfDay, Program, Class } from 'src/entity';
+import {
+  Cohort,
+  Intake,
+  MasterPeriodOfDay,
+  Program,
+  Class,
+} from '../../entity';
 import { FormattedClass } from './types';
 
 import {
@@ -91,11 +97,16 @@ export class CohortsService {
         program: true,
         periodOfDay: true,
         classes: {
-          cohort: true,
+          cohort: {
+            periodOfDay: true,
+          },
           weekdaysRange: true,
           course: true,
           classroom: {
             classes: {
+              cohort: {
+                periodOfDay: true,
+              },
               classroom: true,
               weekdaysRange: true,
             },
@@ -206,11 +217,13 @@ export class CohortsService {
           clazz.startAt,
           clazz.endAt,
           clazz.weekdaysRange.id,
+          clazz.cohort.periodOfDay.id,
           classroomClass.id,
           classroomClass.classroom.id,
           classroomClass.startAt,
           classroomClass.endAt,
           classroomClass.weekdaysRange.id,
+          classroomClass.cohort.periodOfDay.id,
         );
         if (msgIsClassroomOccupied) {
           classroomMessages.push(msgIsClassroomOccupied);

@@ -23,14 +23,21 @@ export const checkClassroomDuplication = (
   cohortClassStartAt: Date,
   cohortClassEndAt: Date,
   cohortClassWeekdaysRangeId: number,
+  cohortPeriodOfDayId: number,
   classroomClassId: number,
   classroomClassClassroomId: number,
   classroomClassStartAt: Date,
   classroomClassEndAt: Date,
   classroomClassWeekdaysRangeId: number,
+  classroomClassPeriodOfDayId: number,
 ): string | void => {
-  if (cohortClassId === classroomClassId) return;
-  if (cohortClassClassroomId !== classroomClassClassroomId) return;
+  if (
+    cohortClassId === classroomClassId ||
+    cohortClassClassroomId !== classroomClassClassroomId ||
+    cohortPeriodOfDayId !== classroomClassPeriodOfDayId
+  ) {
+    return;
+  }
 
   const periodsOverlap =
     cohortClassStartAt <= classroomClassEndAt &&
