@@ -106,7 +106,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
     <form className="w-fit mb-32">
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Name:</Typography>
+          <Typography sx={{ width: '5rem' }}>
+            Name <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+          </Typography>
           <Controller
             control={control}
             name="name"
@@ -126,7 +128,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
           />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Intake:</Typography>
+          <Typography sx={{ width: '5rem' }}>
+            Intake <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+          </Typography>
           <Controller
             control={control}
             name="intakeId"
@@ -156,7 +160,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
           />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Program:</Typography>
+          <Typography sx={{ width: '5rem' }}>
+            Program <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+          </Typography>
           <Controller
             control={control}
             name="programId"
@@ -186,7 +192,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
           />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Period:</Typography>
+          <Typography sx={{ width: '5rem' }}>
+            Period <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+          </Typography>
           <Controller
             control={control}
             name="periodOfDayId"
