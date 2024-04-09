@@ -3,6 +3,7 @@ import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import { CONFIRM, PERIOD_OF_DAYS, TOAST } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
@@ -104,10 +105,20 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
 
   return (
     <form className="w-fit mb-32">
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>
-            Name <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+          '& > div': { display: 'flex', flexDirection: 'row', alignItems: 'center' },
+          '& > div > p': { width: '6rem' },
+        }}
+      >
+        <Box>
+          <Typography>
+            Name
+            <RequiredMark isEditable={isEditable} />
           </Typography>
           <Controller
             control={control}
@@ -127,9 +138,10 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>
-            Intake <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+        <Box>
+          <Typography>
+            Intake
+            <RequiredMark isEditable={isEditable} />
           </Typography>
           <Controller
             control={control}
@@ -159,9 +171,10 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>
-            Program <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+        <Box>
+          <Typography>
+            Program
+            <RequiredMark isEditable={isEditable} />
           </Typography>
           <Controller
             control={control}
@@ -191,9 +204,10 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>
-            Period <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+        <Box>
+          <Typography>
+            Period
+            <RequiredMark isEditable={isEditable} />
           </Typography>
           <Controller
             control={control}

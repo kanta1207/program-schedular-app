@@ -4,6 +4,7 @@ import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import {
   CONFIRM,
   CONTRACT_TYPES,
@@ -190,7 +191,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {/* name */}
             <TableRow>
               <TableCell>
-                Name <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+                Name
+                <RequiredMark isEditable={isEditable} />
               </TableCell>
               <TableCell>
                 <Controller
@@ -214,7 +216,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {/* contracts */}
             <TableRow>
               <TableCell>
-                Contract <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+                Contract
+                <RequiredMark isEditable={isEditable} />
               </TableCell>
               <TableCell>
                 <Controller
@@ -241,7 +244,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {contractTypeIdNumber === 3 && (
               <TableRow>
                 <TableCell>
-                  Desired Hours <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+                  Desired Hours
+                  <RequiredMark isEditable={isEditable} />
                 </TableCell>
                 <TableCell>
                   <Controller
@@ -267,7 +271,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {/* Weekdays Range */}
             <TableRow>
               <TableCell>
-                Days <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+                Days
+                <RequiredMark isEditable={isEditable} />
               </TableCell>
               <TableCell>
                 <Controller
@@ -334,7 +339,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {/* Active */}
             <TableRow>
               <TableCell>
-                Active <span className={isEditable ? 'text-[#FF0000]' : ''}>{isEditable ? '*' : ':'}</span>
+                Active
+                <RequiredMark isEditable={isEditable} />
               </TableCell>
               <TableCell>
                 <Controller
