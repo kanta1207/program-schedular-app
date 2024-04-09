@@ -5,9 +5,9 @@ import dataSource from '../data-source';
  * * Database connection need to be established before using this function
  *
  * @param {string} tableName
- * @param {boolean} [cascade=false]
+ * @param {boolean} [cascade=true]
  */
-export const truncateTable = async (tableName: string, cascade = false) => {
+export const truncateTable = async (tableName: string, cascade = true) => {
   const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
 
