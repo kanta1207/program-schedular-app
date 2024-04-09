@@ -1,6 +1,7 @@
 'use client';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { PERIOD_OF_DAYS } from '@/constants/_index';
+import { clickableTrStyle } from '@/styles/_index';
 import { GetInstructorsResponse } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -27,15 +28,8 @@ export const InstructorListTableRow: React.FC<InstructorListTableRowProps> = ({ 
     );
   });
   return (
-    <TableRow
-      hover
-      onClick={handleRowClick}
-      style={{ cursor: 'pointer' }}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 }, ':hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' } }}
-    >
-      <TableCell component="th" scope="row">
-        {instructor.name}
-      </TableCell>
+    <TableRow hover onClick={handleRowClick} sx={clickableTrStyle}>
+      <TableCell component="th">{instructor.name}</TableCell>
       <TableCell>{instructor.contractType.name}</TableCell>
       <TableCell>{instructor.desiredWorkingHours ? instructor.desiredWorkingHours : '-'}</TableCell>
       <TableCell>

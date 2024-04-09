@@ -7,6 +7,7 @@ import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
+import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import {
   GetBreaksResponse,
   GetCohortClass,
@@ -220,9 +221,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     );
   };
 
-  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
-
   // dialog
   useEffect(() => {
     if (dialogOpen) {
@@ -294,12 +292,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     );
   const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
   const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
-
-  const inBoxScrollBar = {
-    '&::-webkit-scrollbar': { height: '0.5rem' },
-    '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
-    '&::-webkit-scrollbar-thumb': { bgcolor: 'grey.200', borderRadius: '0.25rem', cursor: 'grab' },
-  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -379,290 +371,266 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         </Box>
 
         {/* Cohort Schedule */}
-        <Table
-          sx={{
-            minWidth: 650,
-            '& td, th': { padding: '0.5rem' },
-            '& input': { fontSize: '0.8rem' },
-            '& div': { fontSize: '0.8rem' },
-          }}
-        >
-          <TableHead>
-            <TableRow sx={thRowStyle}>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Course</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Classroom</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
-              <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isScheduleEditable ? (
-              <>
-                {fields.map((field, index) => {
-                  const plannedHours = getPlannedHours(
-                    dayjs(watchSchedule[index].startAt).toDate(),
-                    dayjs(watchSchedule[index].endAt).toDate(),
-                    watchSchedule[index].weekdaysRangeId,
-                  );
-                  const requiredHours = getRequiredHours(watchSchedule[index].courseId as number);
-                  const isTimeExceeded = plannedHours > requiredHours;
-                  return (
-                    <TableRow key={field.id}>
-                      {/* StartAt */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.startAt`}
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <DatePicker
-                                slotProps={{
-                                  textField: { size: 'small' },
-                                  day: (ownerState) => {
-                                    if (isDateDisable(ownerState.day)) {
-                                      return { sx: { bgcolor: 'grey.200' } };
-                                    }
-                                    return {};
-                                  },
-                                }}
-                                shouldDisableDate={isDateDisable}
-                                value={dayjs(field.value)}
-                                format={'MMM DD, YYYY'}
-                                onChange={(date) => {
-                                  field.onChange(date);
-                                }}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* EndAt */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.endAt`}
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <DatePicker
-                                slotProps={{
-                                  textField: { size: 'small' },
-                                  day: (ownerState) => {
-                                    if (isDateDisable(ownerState.day)) {
-                                      return { sx: { bgcolor: 'grey.200' } };
-                                    }
-                                    return {};
-                                  },
-                                }}
-                                shouldDisableDate={isDateDisable}
-                                value={dayjs(field.value)}
-                                format={'MMM DD, YYYY'}
-                                onChange={(date) => {
-                                  field.onChange(date);
-                                }}
-                              />
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* CourseId */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.courseId`}
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <FormControl fullWidth>
-                                <Select
-                                  size="small"
-                                  value={field.value}
-                                  required
-                                  {...field}
-                                  onChange={(e) => {
-                                    field.onChange(e);
+        <Box sx={{ overflowX: 'scroll', ...inBoxScrollBar }}>
+          <Table
+            sx={{
+              minWidth: 650,
+              ...tableStyle,
+              '& tr th': { py: '0.5rem' },
+            }}
+          >
+            <TableHead>
+              <TableRow sx={thRowStyle}>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Course</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Classroom</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {isScheduleEditable ? (
+                <>
+                  {fields.map((field, index) => {
+                    const plannedHours = getPlannedHours(
+                      dayjs(watchSchedule[index].startAt).toDate(),
+                      dayjs(watchSchedule[index].endAt).toDate(),
+                      watchSchedule[index].weekdaysRangeId,
+                    );
+                    const requiredHours = getRequiredHours(watchSchedule[index].courseId as number);
+                    const isTimeExceeded = plannedHours > requiredHours;
+                    return (
+                      <TableRow key={field.id}>
+                        {/* StartAt */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.startAt`}
+                            rules={{ required: true }}
+                            render={({ field }: any) => {
+                              return (
+                                <DatePicker
+                                  slotProps={{
+                                    textField: { size: 'small' },
+                                    day: (ownerState) => {
+                                      if (isDateDisable(ownerState.day)) {
+                                        return { sx: { bgcolor: 'grey.200' } };
+                                      }
+                                      return {};
+                                    },
                                   }}
-                                >
-                                  {courses
-                                    .filter((course) => course.program.id === cohort.program.id)
-                                    .map((course) => {
+                                  shouldDisableDate={isDateDisable}
+                                  value={dayjs(field.value)}
+                                  format={datePickerFormat}
+                                  onChange={(date) => {
+                                    field.onChange(date);
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </TableCell>
+
+                        {/* EndAt */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.endAt`}
+                            rules={{ required: true }}
+                            render={({ field }: any) => {
+                              return (
+                                <DatePicker
+                                  slotProps={{
+                                    textField: { size: 'small' },
+                                    day: (ownerState) => {
+                                      if (isDateDisable(ownerState.day)) {
+                                        return { sx: { bgcolor: 'grey.200' } };
+                                      }
+                                      return {};
+                                    },
+                                  }}
+                                  shouldDisableDate={isDateDisable}
+                                  value={dayjs(field.value)}
+                                  format={datePickerFormat}
+                                  onChange={(date) => {
+                                    field.onChange(date);
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </TableCell>
+
+                        {/* CourseId */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.courseId`}
+                            rules={{ required: true }}
+                            render={({ field }: any) => {
+                              return (
+                                <FormControl fullWidth>
+                                  <Select
+                                    size="small"
+                                    value={field.value}
+                                    required
+                                    {...field}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                    }}
+                                  >
+                                    {courses
+                                      .filter((course) => course.program.id === cohort.program.id)
+                                      .map((course) => {
+                                        return (
+                                          <MenuItem key={course.id} value={course.id}>
+                                            {course.name}
+                                          </MenuItem>
+                                        );
+                                      })}
+                                  </Select>
+                                </FormControl>
+                              );
+                            }}
+                          />
+                        </TableCell>
+
+                        {/* WeekdaysRangeId */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.weekdaysRangeId`}
+                            rules={{ required: true }}
+                            render={({ field }: any) => {
+                              return (
+                                <FormControl fullWidth>
+                                  <Select
+                                    size="small"
+                                    value={field.value}
+                                    required
+                                    {...field}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                    }}
+                                  >
+                                    {WEEKDAYS_RANGES.map((range) => {
                                       return (
-                                        <MenuItem key={course.id} value={course.id}>
-                                          {course.name}
+                                        <MenuItem key={range.id} value={range.id}>
+                                          {range.name}
                                         </MenuItem>
                                       );
                                     })}
-                                </Select>
-                              </FormControl>
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* WeekdaysRangeId */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.weekdaysRangeId`}
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <FormControl fullWidth>
-                                <Select
-                                  size="small"
-                                  value={field.value}
-                                  required
-                                  {...field}
-                                  onChange={(e) => {
-                                    field.onChange(e);
-                                  }}
-                                >
-                                  {WEEKDAYS_RANGES.map((range) => {
-                                    return (
-                                      <MenuItem key={range.id} value={range.id}>
-                                        {range.name}
-                                      </MenuItem>
-                                    );
-                                  })}
-                                </Select>
-                              </FormControl>
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* Hours met */}
-                      <TableCell>
-                        <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>/{' '}
-                        {requiredHours}
-                      </TableCell>
-
-                      {/* ClassroomId */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.classroomId`}
-                          rules={{ required: true }}
-                          render={({ field }: any) => {
-                            return (
-                              <FormControl fullWidth>
-                                <Select
-                                  size="small"
-                                  value={field.value}
-                                  required
-                                  {...field}
-                                  onChange={(e) => {
-                                    field.onChange(e);
-                                  }}
-                                >
-                                  {CLASSROOMS.map((classroom) => {
-                                    return (
-                                      <MenuItem key={classroom.id} value={classroom.id}>
-                                        {classroom.name}
-                                      </MenuItem>
-                                    );
-                                  })}
-                                </Select>
-                              </FormControl>
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* InstructorId */}
-                      <TableCell>
-                        <Controller
-                          control={control}
-                          name={`schedule.${index}.instructorId`}
-                          rules={{ required: false }}
-                          render={({ field }: any) => {
-                            return (
-                              <FormControl fullWidth>
-                                <Select size="small" value={field.value} {...field}>
-                                  {instructors.map((instructor) => (
-                                    <MenuItem key={instructor.id} value={instructor.id} disabled={!instructor.isActive}>
-                                      {instructor.name} {!instructor.isActive && '(Inactive)'}
-                                    </MenuItem>
-                                  ))}
-                                </Select>
-                              </FormControl>
-                            );
-                          }}
-                        />
-                      </TableCell>
-
-                      {/* Delete */}
-                      <TableCell>
-                        {isScheduleEditable ? (
-                          <IconButton type="button" aria-label="delete" onClick={() => remove(index)}>
-                            <DeleteIcon sx={{ color: 'grey' }} />
-                          </IconButton>
-                        ) : (
-                          ''
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </>
-            ) : (
-              <>
-                {scheduleItems.map((scheduleItem) => {
-                  const startDate = dayjs(scheduleItem.startAt).format('MMM DD, YYYY (ddd)');
-                  const endDate = dayjs(scheduleItem.endAt).format('MMM DD, YYYY (ddd)');
-                  const isClass = 'cohort' in scheduleItem;
-                  if (isClass) {
-                    const plannedHours = getPlannedHours(
-                      scheduleItem.startAt,
-                      scheduleItem.endAt,
-                      scheduleItem.weekdaysRange.data.id,
-                    );
-                    const requiredHours = scheduleItem.course.requiredHours;
-                    const isTimeExceeded = plannedHours > requiredHours;
-                    return (
-                      <TableRow key={scheduleItem.id}>
-                        <TableCell>{startDate}</TableCell>
-                        <TableCell>{endDate}</TableCell>
-                        <TableCell>{scheduleItem.course.name}</TableCell>
-                        <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
-                          {scheduleItem.weekdaysRange.messages.length > 0 && (
-                            <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
-                              <WarningIcon
-                                fontSize="small"
-                                color="warning"
-                                sx={{ marginRight: '4px', cursor: 'pointer' }}
-                              />
-                            </Tooltip>
-                          )}
+                                  </Select>
+                                </FormControl>
+                              );
+                            }}
+                          />
                         </TableCell>
+
+                        {/* Hours met */}
                         <TableCell>
-                          <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span> /{' '}
+                          <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>/{' '}
                           {requiredHours}
                         </TableCell>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
-                            {scheduleItem.classroom.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
-                                <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
-                              </Tooltip>
-                            )}
-                          </Box>
+
+                        {/* ClassroomId */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.classroomId`}
+                            rules={{ required: true }}
+                            render={({ field }: any) => {
+                              return (
+                                <FormControl fullWidth>
+                                  <Select
+                                    size="small"
+                                    value={field.value}
+                                    required
+                                    {...field}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                    }}
+                                  >
+                                    {CLASSROOMS.map((classroom) => {
+                                      return (
+                                        <MenuItem key={classroom.id} value={classroom.id}>
+                                          {classroom.name}
+                                        </MenuItem>
+                                      );
+                                    })}
+                                  </Select>
+                                </FormControl>
+                              );
+                            }}
+                          />
                         </TableCell>
 
-                        <TableCell sx={{ alignItems: 'center' }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            {scheduleItem.instructor.data?.name}
-                            {scheduleItem.instructor.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
+                        {/* InstructorId */}
+                        <TableCell sx={{ px: '0.5rem' }}>
+                          <Controller
+                            control={control}
+                            name={`schedule.${index}.instructorId`}
+                            rules={{ required: false }}
+                            render={({ field }: any) => {
+                              return (
+                                <FormControl fullWidth>
+                                  <Select size="small" value={field.value} {...field}>
+                                    {instructors.map((instructor) => (
+                                      <MenuItem
+                                        key={instructor.id}
+                                        value={instructor.id}
+                                        disabled={!instructor.isActive}
+                                      >
+                                        {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                              );
+                            }}
+                          />
+                        </TableCell>
+
+                        {/* Delete */}
+                        <TableCell>
+                          {isScheduleEditable ? (
+                            <IconButton type="button" aria-label="delete" onClick={() => remove(index)}>
+                              <DeleteIcon sx={{ color: 'grey' }} />
+                            </IconButton>
+                          ) : (
+                            ''
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  {scheduleItems.map((scheduleItem) => {
+                    const startDate = dayjs(scheduleItem.startAt).format(dateFormat);
+                    const endDate = dayjs(scheduleItem.endAt).format(dateFormat);
+                    const isClass = 'cohort' in scheduleItem;
+                    if (isClass) {
+                      const plannedHours = getPlannedHours(
+                        scheduleItem.startAt,
+                        scheduleItem.endAt,
+                        scheduleItem.weekdaysRange.data.id,
+                      );
+                      const requiredHours = scheduleItem.course.requiredHours;
+                      const isTimeExceeded = plannedHours > requiredHours;
+                      return (
+                        <TableRow key={scheduleItem.id}>
+                          <TableCell>{startDate}</TableCell>
+                          <TableCell>{endDate}</TableCell>
+                          <TableCell>{scheduleItem.course.name}</TableCell>
+                          <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
+                            {scheduleItem.weekdaysRange.messages.length > 0 && (
+                              <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
                                 <WarningIcon
                                   fontSize="small"
                                   color="warning"
@@ -670,48 +638,77 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                                 />
                               </Tooltip>
                             )}
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  } else {
-                    return (
-                      <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
-                        <TableCell>{startDate}</TableCell>
-                        <TableCell>{endDate}</TableCell>
-                        <TableCell>School Break</TableCell>
-                        <TableCell colSpan={5} />
-                      </TableRow>
-                    );
-                  }
-                })}
-              </>
-            )}
-          </TableBody>
-        </Table>
-        {isScheduleEditable && (
-          <Box sx={{ display: 'flex', justifyItems: 'center' }}>
-            <Button
-              startIcon={<AddCircleIcon />}
-              sx={{ marginTop: '1rem', marginInline: 'auto' }}
-              type="button"
-              variant="contained"
-              onClick={() =>
-                append({
-                  startAt: now.startOf('day'),
-                  endAt: now.startOf('day'),
-                  cohortId: cohort.id,
-                  weekdaysRangeId: 1,
-                  courseId: 0,
-                  classroomId: 0,
-                  instructorId: 0,
-                })
-              }
-            >
-              Add Course
-            </Button>
-          </Box>
-        )}
+                          </TableCell>
+                          <TableCell>
+                            <span className={`${isTimeExceeded && 'text-red-500 font-semibold'}`}>{plannedHours}</span>{' '}
+                            / {requiredHours}
+                          </TableCell>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
+                              {scheduleItem.classroom.messages.length > 0 && (
+                                <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
+                                  <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
+                                </Tooltip>
+                              )}
+                            </Box>
+                          </TableCell>
+                          <TableCell sx={{ alignItems: 'center' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              {scheduleItem.instructor.data?.name}
+                              {scheduleItem.instructor.messages.length > 0 && (
+                                <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
+                                  <WarningIcon
+                                    fontSize="small"
+                                    color="warning"
+                                    sx={{ marginRight: '4px', cursor: 'pointer' }}
+                                  />
+                                </Tooltip>
+                              )}
+                            </Box>
+                          </TableCell>
+                          <TableCell />
+                        </TableRow>
+                      );
+                    } else {
+                      return (
+                        <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                          <TableCell>{startDate}</TableCell>
+                          <TableCell>{endDate}</TableCell>
+                          <TableCell>School Break</TableCell>
+                          <TableCell colSpan={5} />
+                        </TableRow>
+                      );
+                    }
+                  })}
+                </>
+              )}
+            </TableBody>
+          </Table>
+          {isScheduleEditable && (
+            <Box sx={{ display: 'flex', justifyItems: 'center' }}>
+              <Button
+                startIcon={<AddCircleIcon />}
+                sx={{ marginTop: '1rem', marginInline: 'auto' }}
+                type="button"
+                variant="contained"
+                onClick={() =>
+                  append({
+                    startAt: now.startOf('day'),
+                    endAt: now.startOf('day'),
+                    cohortId: cohort.id,
+                    weekdaysRangeId: 1,
+                    courseId: 0,
+                    classroomId: 0,
+                    instructorId: 0,
+                  })
+                }
+              >
+                Add Course
+              </Button>
+            </Box>
+          )}
+        </Box>
       </form>
     </LocalizationProvider>
   );

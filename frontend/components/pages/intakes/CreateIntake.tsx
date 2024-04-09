@@ -2,6 +2,7 @@
 import { createIntake } from '@/actions/intakes/createIntake';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import { TOAST } from '@/constants/_index';
+import { datePickerFormat } from '@/styles/_index';
 import { Button, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -88,7 +89,7 @@ const CreateIntake = () => {
                   <DatePicker
                     label="Start Date"
                     value={field.value}
-                    format={'MMM DD, YYYY'}
+                    format={datePickerFormat}
                     onChange={(date) => field.onChange(date)}
                   />
                 );
@@ -104,7 +105,7 @@ const CreateIntake = () => {
                   <DatePicker
                     label="End Date"
                     value={field.value}
-                    format={'MMM DD, YYYY'}
+                    format={datePickerFormat}
                     onChange={(date) => field.onChange(date)}
                   />
                 );

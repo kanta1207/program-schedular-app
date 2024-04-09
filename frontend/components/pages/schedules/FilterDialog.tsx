@@ -1,3 +1,4 @@
+import { inBoxScrollBar } from '@/styles/_index';
 import { GetCohortsResponse, GetInstructorsResponse, GetIntakesResponse } from '@/types/_index';
 import {
   Box,
@@ -121,13 +122,6 @@ const FilterScheduleDialog: React.FC<FilterDialogProps> = ({
 
   const handleClose = () => {
     onClose(storedFilterSettings);
-  };
-
-  // styles
-  const inBoxScrollBar = {
-    '&::-webkit-scrollbar': { width: '0.5rem' },
-    '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
-    '&::-webkit-scrollbar-thumb': { bgcolor: 'grey.200', borderRadius: '0.25rem' },
   };
 
   const checkboxOuterBox = {

@@ -5,8 +5,9 @@ import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
+import { inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import { GetCoursesResponse, GetProgramsResponse } from '@/types/_index';
-import { MenuItem, Select, TableFooter, TablePagination } from '@mui/material';
+import { Box, MenuItem, Select, TableFooter, TablePagination } from '@mui/material';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -89,146 +90,145 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
     page: 0,
   });
 
-  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Table>
-        <TableHead>
-          <TableRow sx={thRowStyle}>
-            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Course name</TableCell>
-            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Program</TableCell>
-            <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Required hours</TableCell>
-            {/* Empty head for edit and delete */}
-            <TableCell sx={{ width: 'calc(100% * 3/12)' }} />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(rowsPerPage > 0 ? courses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : courses).map(
-            (course) => (
-              <TableRow key={course.id}>
-                {editCourseId === course.id ? (
-                  // Edit mode
-                  <>
-                    <TableCell>
-                      <Controller
-                        control={control}
-                        name="name"
-                        rules={{ required: true }}
-                        render={({ field }: any) => {
-                          return (
-                            <TextField
-                              value={field.value}
-                              onChange={(name) => field.onChange(name)}
-                              variant="outlined"
-                              sx={{ width: '100%' }}
-                            />
-                          );
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Controller
-                        control={control}
-                        name="programId"
-                        rules={{
-                          required: true,
-                          pattern: { value: /^\d+$/, message: '' },
-                        }}
-                        render={({ field }: any) => {
-                          return (
-                            <Select
-                              labelId="select-program"
-                              id="select-program"
-                              defaultValue={String(course.program.id)}
-                              onChange={(programId) => field.onChange(programId)}
-                              sx={{ width: '100%' }}
-                              required
-                            >
-                              {programs.map((program) => (
-                                <MenuItem key={program.id} value={program.id}>
-                                  {program.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          );
-                        }}
-                      />
-                    </TableCell>
+      <Box sx={{ overflowX: 'scroll', ...inBoxScrollBar }}>
+        <Table sx={tableStyle}>
+          <TableHead>
+            <TableRow sx={thRowStyle}>
+              <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Course name</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Program</TableCell>
+              <TableCell sx={{ width: 'calc(100% * 3/12)' }}>Required hours</TableCell>
+              {/* Empty head for edit and delete */}
+              <TableCell sx={{ width: 'calc(100% * 3/12)' }} />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0 ? courses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : courses).map(
+              (course) => (
+                <TableRow key={course.id}>
+                  {editCourseId === course.id ? (
+                    // Edit mode
+                    <>
+                      <TableCell sx={{ px: '0.5rem' }}>
+                        <Controller
+                          control={control}
+                          name="name"
+                          rules={{ required: true }}
+                          render={({ field }: any) => {
+                            return (
+                              <TextField
+                                value={field.value}
+                                onChange={(name) => field.onChange(name)}
+                                variant="outlined"
+                                sx={{ width: '100%' }}
+                              />
+                            );
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ px: '0.5rem' }}>
+                        <Controller
+                          control={control}
+                          name="programId"
+                          rules={{
+                            required: true,
+                            pattern: { value: /^\d+$/, message: '' },
+                          }}
+                          render={({ field }: any) => {
+                            return (
+                              <Select
+                                labelId="select-program"
+                                id="select-program"
+                                defaultValue={String(course.program.id)}
+                                onChange={(programId) => field.onChange(programId)}
+                                sx={{ width: '100%' }}
+                                required
+                              >
+                                {programs.map((program) => (
+                                  <MenuItem key={program.id} value={program.id}>
+                                    {program.name}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            );
+                          }}
+                        />
+                      </TableCell>
 
-                    <TableCell>
-                      <Controller
-                        control={control}
-                        name="requiredHours"
-                        rules={{ required: true }}
-                        render={({ field }: any) => {
-                          return (
-                            <TextField
-                              required
-                              id="requiredHours"
-                              placeholder="60"
-                              type="number"
-                              value={field.value}
-                              sx={{ width: '100%' }}
-                              onChange={(requiredHours) => field.onChange(requiredHours)}
-                              inputProps={{
-                                type: 'number',
-                                min: 0,
-                                max: 999,
-                                maxLength: 3,
-                                onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-                                  e.target.value = Math.max(0, parseInt(e.target.value))
-                                    .toString()
-                                    .slice(0, e.target.maxLength);
-                                },
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-end gap-x-2.5">
-                        <Button variant="outlined" onClick={() => handleCancelClick()}>
-                          Cancel
-                        </Button>
-                        <Button type="submit" variant="contained">
-                          Save
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </>
-                ) : (
-                  // Display mode
-                  <>
-                    <TableCell>{course.name}</TableCell>
-                    <TableCell>{course.program.name}</TableCell>
-                    <TableCell>{course.requiredHours}</TableCell>
-                    <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <TableMenu id={course.id} onEdit={() => handleEditClick(course)} onDelete={deleteCourse} />
-                    </TableCell>
-                  </>
-                )}
-              </TableRow>
-            ),
-          )}
-          {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={rowsPerPageOptions}
-              count={count}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={ActionsComponent}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+                      <TableCell sx={{ px: '0.5rem' }}>
+                        <Controller
+                          control={control}
+                          name="requiredHours"
+                          rules={{ required: true }}
+                          render={({ field }: any) => {
+                            return (
+                              <TextField
+                                required
+                                id="requiredHours"
+                                placeholder="60"
+                                type="number"
+                                value={field.value}
+                                sx={{ width: '100%' }}
+                                onChange={(requiredHours) => field.onChange(requiredHours)}
+                                inputProps={{
+                                  type: 'number',
+                                  min: 0,
+                                  max: 999,
+                                  maxLength: 3,
+                                  onInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                    e.target.value = Math.max(0, parseInt(e.target.value))
+                                      .toString()
+                                      .slice(0, e.target.maxLength);
+                                  },
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex justify-end gap-x-2.5">
+                          <Button variant="outlined" onClick={() => handleCancelClick()}>
+                            Cancel
+                          </Button>
+                          <Button type="submit" variant="contained">
+                            Save
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </>
+                  ) : (
+                    // Display mode
+                    <>
+                      <TableCell>{course.name}</TableCell>
+                      <TableCell>{course.program.name}</TableCell>
+                      <TableCell>{course.requiredHours}</TableCell>
+                      <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <TableMenu id={course.id} onEdit={() => handleEditClick(course)} onDelete={deleteCourse} />
+                      </TableCell>
+                    </>
+                  )}
+                </TableRow>
+              ),
+            )}
+            {emptyRows > 0 && <TableRow style={{ height: 57 * emptyRows }} />}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={rowsPerPageOptions}
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={ActionsComponent}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </Box>
     </form>
   );
 };

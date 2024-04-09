@@ -5,6 +5,7 @@ import ErrorMessages from '@/components/partials/ErrorMessages';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
+import { tableStyle, thRowStyle } from '@/styles/_index';
 import { GetProgramsResponse } from '@/types/program';
 import { TableFooter, TablePagination } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -71,9 +72,6 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
     setEditProgramId(null);
   };
 
-  const thStyle = { color: '#FFF', borderRight: '#FFF 1px solid' };
-  const thRowStyle = { bgcolor: 'primary.main', '& th': thStyle, '& th:last-child': { borderRight: 'none' } };
-
   const {
     rowsPerPageOptions,
     count,
@@ -91,7 +89,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Table>
+      <Table sx={tableStyle}>
         <TableHead>
           <TableRow sx={thRowStyle}>
             <TableCell sx={{ width: 'calc(100% * 10/12)' }}>Name</TableCell>
@@ -106,7 +104,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
                 {editProgramId === program.id ? (
                   // Edit mode
                   <>
-                    <TableCell>
+                    <TableCell sx={{ px: '0.5rem' }}>
                       <Controller
                         control={control}
                         name="name"
@@ -114,7 +112,6 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
                         render={({ field }: any) => {
                           return (
                             <TextField
-                              label="Name"
                               id="name"
                               sx={{ width: '50%' }}
                               value={field.value}
