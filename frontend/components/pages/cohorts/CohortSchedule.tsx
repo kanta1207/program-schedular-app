@@ -5,6 +5,7 @@ import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleD
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
+import { TableRowRequiredMark } from '@/components/partials/RequiredMark';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
@@ -381,21 +382,25 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             <TableHead>
               <TableRow sx={thRowStyle}>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
-                  Start Date<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                  Start Date
+                  <TableRowRequiredMark isEditable={isScheduleEditable} />
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
-                  End Date<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                  End Date
+                  <TableRowRequiredMark isEditable={isScheduleEditable} />
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>
-                  Course<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                  Course
+                  <TableRowRequiredMark isEditable={isScheduleEditable} />
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   Days of the Week
-                  <span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                  <TableRowRequiredMark isEditable={isScheduleEditable} />
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
-                  Classroom<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                  Classroom
+                  <TableRowRequiredMark isEditable={isScheduleEditable} />
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
