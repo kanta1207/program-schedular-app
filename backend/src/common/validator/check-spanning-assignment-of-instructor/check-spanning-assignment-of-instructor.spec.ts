@@ -1,4 +1,4 @@
-import { Class, Cohort, MasterPeriodOfDay } from 'src/entity';
+import { Class, Cohort, MasterPeriodOfDay } from '../../../entity';
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,
   EVENING_PERIOD_OF_DAY_ID,

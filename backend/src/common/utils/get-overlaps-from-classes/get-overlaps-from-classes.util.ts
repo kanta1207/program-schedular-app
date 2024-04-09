@@ -1,4 +1,4 @@
-import { Class } from 'src/entity';
+import { Class } from '../../../entity';
 import { getWeeklyHours } from '..';
 
 export interface Overlap {

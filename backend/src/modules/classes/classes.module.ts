@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClassesService } from './classes.service';
 import { ClassesController } from './classes.controller';
-import { Cohort, Instructor } from 'src/entity';
+import { Cohort, Instructor } from '../../entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cohort, Instructor])],

@@ -11,8 +11,8 @@ import {
 import { CohortsService } from './cohorts.service';
 import { CreateCohortDto } from './dto/create-cohort.dto';
 import { UpdateCohortDto } from './dto/update-cohort.dto';
-import { ApiResponse } from 'src/common/api-response';
-import { StatusCodes } from 'src/common/status-code';
+import { ApiResponse } from '../../common/api-response';
+import { StatusCodes } from '../../common/status-code';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
 @Controller('cohorts')

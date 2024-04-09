@@ -3,7 +3,7 @@ import {
   Cohort,
   MasterPeriodOfDay,
   MasterWeekdaysRange,
-} from 'src/entity';
+} from '../../../entity';
 
 import {
   AFTERNOON_PERIOD_OF_DAY_ID,

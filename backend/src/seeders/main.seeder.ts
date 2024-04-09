@@ -24,21 +24,20 @@ const mainSeeder = async () => {
     await queryRunner.startTransaction();
 
     console.log('Start seeding...');
+
     await masterClassroomSeeder();
     await masterContractTypeSeeder();
     await masterPeriodOfDaySeeder();
     await masterWeekdaysRangeSeeder();
     await programSeeder();
-    if (process.env.NODE_ENV === 'development') {
-      await breakSeeder();
-      await intakeSeeder();
-      await cohortSeeder();
-      await courseSeeder();
-      await instructorSeeder();
-      await classSeeder();
-      await coursesInstructorsSeeder();
-      await instructorsPeriodOfDaysSeeder();
-    }
+    await breakSeeder();
+    await intakeSeeder();
+    await cohortSeeder();
+    await courseSeeder();
+    await instructorSeeder();
+    await classSeeder();
+    await coursesInstructorsSeeder();
+    await instructorsPeriodOfDaysSeeder();
 
     await queryRunner.commitTransaction();
     console.log('All seeding completed successfully');

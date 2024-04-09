@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { BreaksService } from './breaks.service';
-import { ApiResponse } from 'src/common/api-response';
-import { StatusCodes } from 'src/common/status-code';
+import { ApiResponse } from '../../common/api-response';
+import { StatusCodes } from '../../common/status-code';
 import { CreateBreakDto } from './dto/create-break.dto';
 import { UpdateBreakDto } from './dto/update-break.dto';
 

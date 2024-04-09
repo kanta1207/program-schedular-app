@@ -17,7 +17,7 @@ import {
   MasterPeriodOfDay,
   InstructorsPeriodOfDays,
   Course,
-} from 'src/entity';
+} from '../../entity';
 
 import { CONTRACTOR_CONTRACT_TYPE_ID } from '../../common/constants/master.constant';
 

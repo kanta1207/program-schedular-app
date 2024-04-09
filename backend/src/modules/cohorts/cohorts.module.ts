@@ -10,7 +10,7 @@ import {
   Program,
   Class,
   Instructor,
-} from 'src/entity';
+} from '../../entity';
 
 @Module({
   imports: [

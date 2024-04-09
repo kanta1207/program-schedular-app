@@ -1,5 +1,5 @@
 import { getOverlapsFromClasses } from '../../../common/utils';
-import { Class } from 'src/entity';
+import { Class } from '../../../entity';
 
 /**
  * @param maxHoursOfInstructor - Maximum hours the instructor can be assigned to

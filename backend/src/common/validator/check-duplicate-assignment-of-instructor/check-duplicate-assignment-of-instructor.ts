@@ -1,4 +1,4 @@
-import { Class } from 'src/entity';
+import { Class } from '../../../entity';
 
 import {
   MON_WED_WEEKDAYS_RANGE_ID,
