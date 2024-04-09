@@ -67,9 +67,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: '',
-      intakeId: 0,
-      periodOfDayId: 1,
-      programId: 0,
+      intakeId: '' as number | string,
+      programId: '' as number | string,
+      periodOfDayId: '' as number | string,
     },
   });
 
