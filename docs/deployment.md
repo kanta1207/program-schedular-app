@@ -45,7 +45,7 @@ So we decided to have 2 types of build commands.
    - Select `backend` as rood directory.
    - Select `Node` for runtime.
    - For build command,
-     - If it's the first deployment including database, use `npm run build:initial-prod`
+     - If it's the first deployment including database, use `npm run build:initial-prod`. Otherwise, all the data that have already created in production will be flushed.
      - If you don't want to initialize the database, please use `npm run build:prod`
    - For start command, use `npm run start:prod`
    - Add the environment variables from Supabase(`Host`,`Database name`,`Port`,`User`,`Password`).
