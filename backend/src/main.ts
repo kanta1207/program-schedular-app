@@ -23,6 +23,6 @@ async function bootstrap() {
       'https://program-schedular.vercel.app',
     ],
   });
-  await app.listen(4000); // TODO: Replace port number with env variable
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();
