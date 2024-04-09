@@ -21,7 +21,8 @@ import { ExpandMore } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
+import WarningIcon from '@mui/icons-material/Warning';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -35,11 +36,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { Tooltip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -381,12 +380,23 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           >
             <TableHead>
               <TableRow sx={thRowStyle}>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Course</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Start Date<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  End Date<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>
+                  Course<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Days of the Week
+                  <span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Classroom</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Classroom<span className={`${isScheduleEditable ? 'inline' : 'hidden'} text-[#FF0000]`}> *</span>
+                </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
               </TableRow>
