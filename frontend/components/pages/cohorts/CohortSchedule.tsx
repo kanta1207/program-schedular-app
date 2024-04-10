@@ -6,7 +6,6 @@ import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
-import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import {
   GetBreaksResponse,
@@ -44,6 +43,8 @@ import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ClassItem, ScheduleStackView } from './ScheduleStackView';
+import getPlannedHours from '@/helpers/getPlannedHours';
+import getRequiredHours from '@/helpers/getRequiredHours';
 
 export type CreateType = 'new' | 'copy';
 
@@ -99,26 +100,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   const { control, handleSubmit, reset, watch } = useForm<FormValues>({
     defaultValues: {
-      schedule: [
-        {
-          startAt: now.toDate(),
-          endAt: now.toDate(),
-          cohortId: 0,
-          weekdaysRangeId: 0,
-          courseId: 0,
-          classroomId: 0,
-          instructorId: 0,
-        },
-      ],
-    },
-  });
-
-  const watchSchedule = watch('schedule');
-
-  const { fields, append, remove } = useFieldArray<FormValues>({ control, name: 'schedule' });
-
-  useEffect(() => {
-    reset({
       schedule: cohort.classes.map((classData) => ({
         startAt: classData.startAt,
         endAt: classData.endAt,
@@ -128,8 +109,12 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         classroomId: classData.classroom.data.id,
         instructorId: classData.instructor.data?.id,
       })),
-    });
-  }, []);
+    },
+  });
+
+  const watchSchedule = watch('schedule');
+
+  const { fields, append, remove } = useFieldArray<FormValues>({ control, name: 'schedule' });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -180,36 +165,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
         });
       }
     }
-  };
-
-  const getPlannedHours = (startAt: Date, endAt: Date, weekdaysRangeId: number): number => {
-    const startDate = dayjs(startAt);
-    const endDate = dayjs(endAt);
-
-    const totalBreakWeeks = breaks.reduce((accumulator, breakItem) => {
-      const { startAt, endAt } = breakItem;
-      const breakStartDate = dayjs(startAt);
-      const breakEndDate = dayjs(endAt);
-
-      if (startDate <= breakStartDate && breakEndDate <= endDate) {
-        const daysDiff = breakEndDate.diff(breakStartDate, 'day');
-        const breakWeeks = Math.ceil(daysDiff / 7);
-        return accumulator + breakWeeks;
-      }
-
-      return accumulator;
-    }, 0);
-
-    const daysDiff = endDate.diff(startDate, 'day');
-    const totalWeeks = Math.ceil(daysDiff / 7);
-
-    const weeklyHours = getWeeklyHours(weekdaysRangeId);
-
-    return (totalWeeks - totalBreakWeeks) * weeklyHours;
-  };
-
-  const getRequiredHours = (courseId: number): number => {
-    return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
   };
 
   const tooltipTitle = (messages: string[]) => {
@@ -418,8 +373,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       dayjs(watchSchedule[index].startAt).toDate(),
                       dayjs(watchSchedule[index].endAt).toDate(),
                       watchSchedule[index].weekdaysRangeId,
+                      breaks,
                     );
-                    const requiredHours = getRequiredHours(watchSchedule[index].courseId as number);
+                    const requiredHours = getRequiredHours(watchSchedule[index].courseId, courses);
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
                       <TableRow key={field.id}>
@@ -638,6 +594,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         scheduleItem.startAt,
                         scheduleItem.endAt,
                         scheduleItem.weekdaysRange.data.id,
+                        breaks,
                       );
                       const requiredHours = scheduleItem.course.requiredHours;
                       const isTimeExceeded = plannedHours > requiredHours;
