@@ -54,11 +54,12 @@ interface InstructorInfoFormProps {
 }
 
 const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses, programs }) => {
-  const [isEditable, setIsEditMode] = useState(false);
+  const [isEditable, setIsEditMode] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (instructor) {
+      setIsEditMode(false);
       reset({
         name: instructor.name,
         contractTypeId: instructor.contractType.id,
@@ -69,8 +70,6 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
         courseIds: instructor.courses.map(({ id }) => id),
         note: instructor.note ?? '',
       });
-    } else {
-      setIsEditMode(true);
     }
   }, []);
 
@@ -288,8 +287,13 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                           label={
                             <DaysOfTheWeekChip
                               daysOfTheWeek={range}
-                              isEditmode={isEditable}
-                              selectedDaysOfTheWeekId={instructor?.weekdaysRange.id}
+                              colorPattern={
+                                isEditable
+                                  ? 'active'
+                                  : instructor?.weekdaysRange.id === range.id
+                                  ? 'semiActive'
+                                  : 'inActive'
+                              }
                             />
                           }
                           disabled={!isEditable}
@@ -302,7 +306,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Period */}
             <TableRow>
-              <TableCell>Period</TableCell>
+              <TableCell>Period{isEditable && <RequiredMark />}</TableCell>
               <TableCell>
                 <Controller
                   name="periodOfDayIds"
@@ -359,7 +363,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Course */}
             <TableRow>
-              <TableCell>Course</TableCell>
+              <TableCell>Course{isEditable && <RequiredMark />}</TableCell>
               <TableCell>
                 <Controller
                   name="courseIds"

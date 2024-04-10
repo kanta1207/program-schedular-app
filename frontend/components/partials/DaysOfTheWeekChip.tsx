@@ -4,21 +4,17 @@ import { Typography } from '@mui/material';
 
 interface DaysOfTheWeekChipProps {
   daysOfTheWeek: WeekdaysRange;
-  isEditmode?: boolean;
-  selectedDaysOfTheWeekId?: number;
+  colorPattern?: string;
 }
 
-export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({
-  daysOfTheWeek,
-  isEditmode = true,
-  selectedDaysOfTheWeekId: selected,
-}) => {
+export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({ daysOfTheWeek, colorPattern = 'active' }) => {
   const color = WEEKDAYS_RANGES.find(({ id }) => id === daysOfTheWeek.id)?.color;
   return (
     <>
       <Typography
         sx={{
-          bgcolor: isEditmode ? color?.primary : selected === daysOfTheWeek.id ? `${color?.primary}80` : 'grey.200',
+          bgcolor:
+            colorPattern === 'active' ? color?.primary : colorPattern === 'semiActive' ? color?.tertiary : 'grey.200',
           color: '#FFF',
           fontSize: '0.875rem',
           display: 'inline-block',

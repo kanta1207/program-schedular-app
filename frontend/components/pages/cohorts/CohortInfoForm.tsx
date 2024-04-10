@@ -19,19 +19,18 @@ interface CohortInfoFormProps {
 }
 
 export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes, programs }) => {
-  const [isEditable, setIsEditable] = React.useState(false);
+  const [isEditable, setIsEditable] = React.useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (cohort) {
+      setIsEditable(false);
       reset({
         name: cohort.name,
         intakeId: cohort.intake.id,
         periodOfDayId: cohort.periodOfDay.id,
         programId: cohort.program.id,
       });
-    } else {
-      setIsEditable(true);
     }
   }, []);
 
