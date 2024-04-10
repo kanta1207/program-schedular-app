@@ -3,11 +3,11 @@
 import { useRef, useState } from 'react';
 import ViewSwitcher, { ViewType } from './ViewSwitcher';
 import { InstructorScheduleTable } from './InstructorScheduleTable';
-import ScheduleScreenShotDialog, { DownloadScreenshotValues } from './ScheduleScreenShotDialog';
+
 import { GetInstructorsResponse } from '@/types/instructor';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import DownloadIcon from '@mui/icons-material/Download';
 import dayjs from 'dayjs';
 import theme from '@/app/theme';
 import Headline from '@/components/partials/Headline';
@@ -46,16 +46,16 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   return (
     <>
-      <Box ref={ref}>
+      <Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
-          {/* <Box sx={{ display: 'flex' }}> */}
-          <Headline name={`${instructor.name}'s Schedule`} />
-          {/* <Tooltip title="Take Screenshot">
-              <IconButton onClick={handleTakeScreenshot} sx={{ display: 'flex', alignItems: 'end' }}>
-                <CameraAltIcon />
+          <Box sx={{ display: 'flex' }}>
+            <Headline name={`${instructor.name}'s Schedule`} />
+            <Tooltip title="Download schedule">
+              <IconButton onClick={handleTakeScreenshot} sx={{ marginBottom: '0.35em' }}>
+                <DownloadIcon />
               </IconButton>
-            </Tooltip> */}
-          {/* </Box> */}
+            </Tooltip>
+          </Box>
           <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
         </Box>
         {viewType === 'list' ? (
