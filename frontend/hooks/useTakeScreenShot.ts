@@ -51,20 +51,23 @@ const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
       });
   };
 
-  return { image, takeScreenShot };
+  /**
+   * creates name of file
+   * @param extension - file extension
+   * @param  name - file name
+   */
+  const createFileName = (extension: string, name: string) => {
+    return `${name}.${extension}`;
+  };
+
+  const downloadScreenshot = (extension: string, name: string) => {
+    // create a element to attach the image as href, then click it to download the image
+    const a = document.createElement('a');
+    if (!image) throw new Error('Image is not available.');
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  return { image, takeScreenShot, downloadScreenshot };
 };
-
-/**
- * creates name of file
- * @param extension - file extension
- * @param  name - file name
- */
-const createFileName = (extension?: string, name?: string) => {
-  if (!extension || !name) {
-    return '';
-  }
-
-  return `${name}.${extension}`;
-};
-
-export { useScreenshot, createFileName };
