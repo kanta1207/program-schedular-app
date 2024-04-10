@@ -83,5 +83,5 @@ export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
     a.click();
   };
 
-  return { takeScreenShot, downloadScreenshot };
+  return { image, takeScreenShot, downloadScreenshot };
 };
