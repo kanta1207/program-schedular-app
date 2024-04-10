@@ -192,7 +192,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             <TableRow>
               <TableCell>
                 Name
-                <RequiredMark isEditable={isEditable} />
+                {isEditable && <RequiredMark />}
               </TableCell>
               <TableCell>
                 <Controller
@@ -217,7 +217,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             <TableRow>
               <TableCell>
                 Contract
-                <RequiredMark isEditable={isEditable} />
+                {isEditable && <RequiredMark />}
               </TableCell>
               <TableCell>
                 <Controller
@@ -245,7 +245,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
               <TableRow>
                 <TableCell>
                   Desired Hours
-                  <RequiredMark isEditable={isEditable} />
+                  {isEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell>
                   <Controller
@@ -272,7 +272,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             <TableRow>
               <TableCell>
                 Days
-                <RequiredMark isEditable={isEditable} />
+                {isEditable && <RequiredMark />}
               </TableCell>
               <TableCell>
                 <Controller
@@ -302,7 +302,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Period */}
             <TableRow>
-              <TableCell>Period :</TableCell>
+              <TableCell>Period</TableCell>
               <TableCell>
                 <Controller
                   name="periodOfDayIds"
@@ -340,7 +340,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             <TableRow>
               <TableCell>
                 Active
-                <RequiredMark isEditable={isEditable} />
+                {isEditable && <RequiredMark />}
               </TableCell>
               <TableCell>
                 <Controller
@@ -359,7 +359,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Course */}
             <TableRow>
-              <TableCell>Course :</TableCell>
+              <TableCell>Course</TableCell>
               <TableCell>
                 <Controller
                   name="courseIds"
@@ -402,7 +402,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Note */}
             <TableRow>
-              <TableCell>Note :</TableCell>
+              <TableCell>Note</TableCell>
               <TableCell>
                 <Controller
                   control={control}

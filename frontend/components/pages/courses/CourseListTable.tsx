@@ -2,7 +2,7 @@
 import { deleteCourse } from '@/actions/courses/deleteCourse';
 import { updateCourse } from '@/actions/courses/updateCourse';
 import ErrorMessages from '@/components/partials/ErrorMessages';
-import { TableRowRequiredMark } from '@/components/partials/RequiredMark';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -99,15 +99,15 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
             <TableRow sx={thRowStyle}>
               <TableCell sx={{ width: 'calc(100% * 3/12)' }}>
                 Course name
-                <TableRowRequiredMark isEditable={!!editCourseId} />
+                {editCourseId && <RequiredMark />}
               </TableCell>
               <TableCell sx={{ width: 'calc(100% * 3/12)' }}>
                 Program
-                <TableRowRequiredMark isEditable={!!editCourseId} />
+                {editCourseId && <RequiredMark />}
               </TableCell>
               <TableCell sx={{ width: 'calc(100% * 3/12)' }}>
                 Required hours
-                <TableRowRequiredMark isEditable={!!editCourseId} />
+                {editCourseId && <RequiredMark />}
               </TableCell>
               {/* Empty head for edit and delete */}
               <TableCell sx={{ width: 'calc(100% * 3/12)' }} />

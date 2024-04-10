@@ -2,7 +2,7 @@
 import { deleteIntake } from '@/actions/intakes/deleteIntake';
 import { updateIntake } from '@/actions/intakes/updateIntakes';
 import ErrorMessages from '@/components/partials/ErrorMessages';
-import { TableRowRequiredMark } from '@/components/partials/RequiredMark';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -106,15 +106,15 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
               <TableRow sx={thRowStyle}>
                 <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>
                   Name
-                  <TableRowRequiredMark isEditable={!!editIntakeId} />
+                  {editIntakeId && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   Start Date
-                  <TableRowRequiredMark isEditable={!!editIntakeId} />
+                  {editIntakeId && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   End Date
-                  <TableRowRequiredMark isEditable={!!editIntakeId} />
+                  {editIntakeId && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Morning Cohorts</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Afternoon Cohorts</TableCell>

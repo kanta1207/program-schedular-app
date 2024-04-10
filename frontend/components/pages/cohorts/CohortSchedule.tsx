@@ -5,7 +5,7 @@ import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleD
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
-import { TableRowRequiredMark } from '@/components/partials/RequiredMark';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
 import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
@@ -383,24 +383,24 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
               <TableRow sx={thRowStyle}>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   Start Date
-                  <TableRowRequiredMark isEditable={isScheduleEditable} />
+                  {isScheduleEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   End Date
-                  <TableRowRequiredMark isEditable={isScheduleEditable} />
+                  {isScheduleEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>
                   Course
-                  <TableRowRequiredMark isEditable={isScheduleEditable} />
+                  {isScheduleEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   Days of the Week
-                  <TableRowRequiredMark isEditable={isScheduleEditable} />
+                  {isScheduleEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
                   Classroom
-                  <TableRowRequiredMark isEditable={isScheduleEditable} />
+                  {isScheduleEditable && <RequiredMark />}
                 </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>

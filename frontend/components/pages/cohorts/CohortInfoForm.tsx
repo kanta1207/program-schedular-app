@@ -118,7 +118,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
         <Box>
           <Typography>
             Name
-            <RequiredMark isEditable={isEditable} />
+            {isEditable && <RequiredMark />}
           </Typography>
           <Controller
             control={control}
@@ -141,7 +141,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
         <Box>
           <Typography>
             Intake
-            <RequiredMark isEditable={isEditable} />
+            {isEditable && <RequiredMark />}
           </Typography>
           <Controller
             control={control}
@@ -174,7 +174,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
         <Box>
           <Typography>
             Program
-            <RequiredMark isEditable={isEditable} />
+            {isEditable && <RequiredMark />}
           </Typography>
           <Controller
             control={control}
@@ -207,7 +207,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
         <Box>
           <Typography>
             Period
-            <RequiredMark isEditable={isEditable} />
+            {isEditable && <RequiredMark />}
           </Typography>
           <Controller
             control={control}
