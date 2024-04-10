@@ -88,6 +88,17 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
 
   const now = dayjs();
 
+  useEffect(() => {
+    if (cohort.classes.length === 0) {
+      setDialogOpen(true);
+    }
+    // Filter cohorts by the same program ID but excluding their own cohort ID.
+    const filteredCohorts = cohorts.filter(
+      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+    );
+    setFilteredCohorts(filteredCohorts);
+  }, []);
+
   const scheduleItems: Array<GetCohortClass | GetBreaksResponse> = [
     ...cohort.classes,
     ...breaks.filter(
@@ -176,26 +187,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       </ul>
     );
   };
-
-  // dialog
-  useEffect(() => {
-    if (dialogOpen) {
-      const filteredCohorts = cohorts.filter(
-        (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
-      );
-      setFilteredCohorts(filteredCohorts);
-    }
-  }, [dialogOpen]);
-
-  useEffect(() => {
-    cohort.classes.length === 0 && setDialogOpen(true);
-
-    // Filter cohorts by the same program ID but excluding their own cohort ID.
-    const filteredCohorts = cohorts.filter(
-      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
-    );
-    setFilteredCohorts(filteredCohorts);
-  }, []);
 
   const handleOpen = () => {
     setDialogOpen(true);
