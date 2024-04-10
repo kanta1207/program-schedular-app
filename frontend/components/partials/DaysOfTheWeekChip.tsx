@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 
 interface DaysOfTheWeekChipProps {
   daysOfTheWeek: WeekdaysRange;
-  activeState?: 'active' | 'semiActive' | 'inActive';
+  activeState?: 'active' | 'semiActive' | 'inactive';
 }
 
 export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({ daysOfTheWeek, activeState = 'active' }) => {
@@ -15,8 +15,10 @@ export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({ daysOfTheW
       return color?.primary;
     } else if (activeState === 'semiActive') {
       return color?.tertiary;
-    } else {
+    } else if (activeState === 'inactive') {
       return 'grey.200';
+    } else {
+      return color?.primary;
     }
   };
 

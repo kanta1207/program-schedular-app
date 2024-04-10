@@ -292,7 +292,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                                   ? 'active'
                                   : instructor?.weekdaysRange.id === range.id
                                   ? 'semiActive'
-                                  : 'inActive'
+                                  : 'inactive'
                               }
                             />
                           }
