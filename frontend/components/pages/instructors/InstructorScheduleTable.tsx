@@ -8,9 +8,12 @@ interface InstructorScheduleTableProps {
   instructor: GetInstructorsResponse;
 }
 
-export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = ({ instructor }) => {
+const InstructorScheduleTableBase = (
+  { instructor }: InstructorScheduleTableProps,
+  ref: React.ForwardedRef<HTMLElement>,
+) => {
   return (
-    <Box sx={{ overflowX: 'scroll', ...inBoxScrollBar }}>
+    <Box sx={{ overflowX: 'scroll', ...inBoxScrollBar }} ref={ref}>
       <Table sx={{ minWidth: 650, ...tableStyle }}>
         <TableHead>
           <TableRow sx={thRowStyle}>
@@ -35,3 +38,5 @@ export const InstructorScheduleTable: React.FC<InstructorScheduleTableProps> = (
     </Box>
   );
 };
+
+export const InstructorScheduleTable = React.forwardRef(InstructorScheduleTableBase);

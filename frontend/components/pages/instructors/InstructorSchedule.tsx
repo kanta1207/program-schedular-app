@@ -23,54 +23,29 @@ interface InstructorScheduleProps {
 
 const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, ganttItems }) => {
   const [viewType, setViewType] = useState<ViewType>('list');
-  const [screenshotDialogOpen, setScreenshotDialogOpen] = useState(false);
   const ref = useRef(null);
 
-  const { image, takeScreenShot, downloadScreenshot } = useScreenshot({
+  const { takeScreenShot } = useScreenshot({
     type: 'image/jpeg',
     quality: 1.0,
   });
+
+  const screenshotFileName = `${instructor.name.replace(/\s/g, '_')}_${dayjs().format('YYYY-MM-DD')}`;
 
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: ViewType) => {
     setViewType(newViewType);
   };
 
-  const handleScreenshotDialogOpen = () => {
-    setScreenshotDialogOpen(true);
-  };
-
-  const handleScreenshotDialogClose = () => {
-    setScreenshotDialogOpen(false);
-  };
-
   const handleTakeScreenshot = () => {
-    ref.current &&
-      takeScreenShot(ref.current)
-        .then(() => {
-          // Make sure image is available before opening dialog
-          handleScreenshotDialogOpen();
-        })
-        .catch(() => toast.error('Failed to take screenshot'));
-  };
-
-  const handleDownload = ({ extension, name }: DownloadScreenshotValues) => {
     try {
-      downloadScreenshot(extension, name);
-    } catch (err) {
-      toast.error('Failed to download screenshot');
+      ref.current && takeScreenShot(ref.current, screenshotFileName);
+    } catch (error) {
+      toast.error('Failed to take screenshot');
     }
   };
 
   return (
     <>
-      {image && (
-        <ScheduleScreenShotDialog
-          dialogOpen={screenshotDialogOpen}
-          image={image}
-          onClose={handleScreenshotDialogClose}
-          handleDownload={handleDownload}
-        />
-      )}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Tooltip title="Take Screenshot">
           <IconButton onClick={handleTakeScreenshot}>
@@ -84,7 +59,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
           <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
         </Box>
         {viewType === 'list' ? (
-          <InstructorScheduleTable instructor={instructor} />
+          <InstructorScheduleTable instructor={instructor} ref={ref} />
         ) : viewType === 'gantt' ? (
           <>
             {ganttItems.length > 0 ? (

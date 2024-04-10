@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import html2canvas, { Options } from 'html2canvas';
 
 interface UseScreenShotProps {
@@ -28,13 +27,20 @@ interface UseScreenShotProps {
  * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
  */
 export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
-  const [image, setImage] = useState<string | null>(null);
+  /**
+   * creates name of file
+   * @param  name - file name
+   */
+  const createFileName = (name: string) => {
+    return `${name}.png`;
+  };
+
   /**
    * convert html element to image
    * @param  element - html element to convert
    * @param  options - options for html2canvas
    */
-  const takeScreenShot = (element: HTMLElement, options?: Partial<Options>) => {
+  const takeScreenShot = (element: HTMLElement, name: string, options?: Partial<Options>) => {
     return html2canvas(element, options)
       .then((canvas) => {
         const croppedCanvas = document.createElement('canvas');
@@ -52,36 +58,17 @@ export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
 
         const base64Image = croppedCanvas.toDataURL(type, quality);
 
-        setImage(base64Image);
-        return base64Image;
+        // create a element to attach the image as href, then click it to download the image
+        const a = document.createElement('a');
+        if (!base64Image) throw new Error('Image is not available.');
+        a.href = base64Image;
+        a.download = createFileName(name);
+        a.click();
       })
       .catch((err) => {
         throw new Error(err);
       });
   };
 
-  /**
-   * creates name of file
-   * @param extension - file extension
-   * @param  name - file name
-   */
-  const createFileName = (extension: string, name: string) => {
-    return `${name}.${extension}`;
-  };
-
-  /**
-   * download screenshot
-   * @param extension - file extension
-   * @param  name - file name
-   */
-  const downloadScreenshot = (extension: string, name: string) => {
-    // create a element to attach the image as href, then click it to download the image
-    const a = document.createElement('a');
-    if (!image) throw new Error('Image is not available.');
-    a.href = image;
-    a.download = createFileName(extension, name);
-    a.click();
-  };
-
-  return { image, takeScreenShot, downloadScreenshot };
+  return { takeScreenShot };
 };
