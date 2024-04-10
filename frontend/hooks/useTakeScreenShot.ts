@@ -1,24 +1,24 @@
 import { useState } from 'react';
 import html2canvas, { Options } from 'html2canvas';
 
-/**
- * These props is used as parameter for HTMLCanvasElement.toDataURL method.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL}
- */
 interface UseScreenShotProps {
   /**
-   * @param type - @param type
+   * @param type - Image format.
    * The standard MIME type for the image format to return.
    * If you do not specify this parameter, the default value is a PNG format image.
+   * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL}
    */
   type?: string;
   /**
-   * @param quality - image quality.
+   * @param quality - Image quality.
+   * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL}
    */
   quality?: number;
 }
 
-const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
+export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
   const [image, setImage] = useState<string | null>(null);
   /**
    * convert html element to image
@@ -69,5 +69,5 @@ const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
     a.click();
   };
 
-  return { image, takeScreenShot, downloadScreenshot };
+  return { takeScreenShot, downloadScreenshot };
 };
