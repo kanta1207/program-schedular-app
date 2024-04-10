@@ -5,7 +5,7 @@ import { GetClassResponse, GetClassesGroupByCohort, GetClassesGroupByInstructor 
 
 export type GanttGroupBy = 'cohort' | 'instructor';
 
-enum RecordType {
+export enum RecordType {
   Group = 'project',
   Class = 'task',
 }
@@ -51,16 +51,6 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
     }
   };
 
-  const projectName = () => {
-    if (groupName === 'cohort') {
-      return classData.cohort.name;
-    } else if (groupName === 'instructor') {
-      return classData.instructor.name;
-    } else {
-      return '';
-    }
-  };
-
   return {
     start: startAt,
     end: endAt,
@@ -69,7 +59,7 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
     type: RecordType.Class,
     progress: getProgress(startAt, endAt),
     isDisabled: true,
-    project: projectName(),
+    project: classData.cohort.name,
     styles: {
       progressColor: color?.secondary,
       progressSelectedColor: color?.secondary,

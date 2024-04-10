@@ -5,18 +5,41 @@ import ScheduleList from '../../../components/pages/schedules/ScheduleList';
 import { getCohorts } from '@/actions/cohorts/getCohorts';
 import { getIntakes } from '@/actions/intakes/getIntakes';
 import { getInstructors } from '@/actions/instructors/getInstructors';
+import { getCourses } from '@/actions/courses/getCourses';
+import { getBreaks } from '@/actions/breaks/getBreaks';
+import { getHolidays } from '@/actions/common/getHolidays';
 
 const page = async () => {
   const { data } = await getClasses({ groupBy: 'cohort' });
   const cohorts = data as GetClassesGroupByCohort[];
   const gantt = convertClassesToGantt({ cohorts });
-  const [{ data: cohortsList }, { data: intakes }, { data: instructors }] = await Promise.all([
+  const [
+    { data: cohortsList },
+    { data: intakes },
+    { data: instructors },
+    { data: courses },
+    { data: breaks },
+    holidays,
+  ] = await Promise.all([
     getCohorts(),
     getIntakes(),
     getInstructors({ isActive: true }),
+    getCourses(),
+    getBreaks(),
+    getHolidays(),
   ]);
 
-  return <ScheduleList initialGantt={gantt} instructors={instructors} intakes={intakes} cohorts={cohortsList} />;
+  return (
+    <ScheduleList
+      initialGantt={gantt}
+      instructors={instructors}
+      intakes={intakes}
+      cohorts={cohortsList}
+      courses={courses}
+      breaks={breaks}
+      holidays={holidays}
+    />
+  );
 };
 
 export default page;
