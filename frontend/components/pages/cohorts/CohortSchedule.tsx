@@ -272,13 +272,13 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </Box>
         </Box>
 
-        {/* Cohort Schedules in the same intake */}
+        {/* Other schedules within the same intake */}
         <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen((isOpen) => !isOpen)}>
           <AccordionSummary
             sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
             expandIcon={<ExpandMore />}
           >
-            <Typography>Schedules of cohorts from same intake</Typography>
+            <Typography>Other schedule within the same intake</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
             {cohortsInSameIntake.length > 0 ? (
@@ -309,7 +309,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 })}
               </>
             ) : (
-              <Typography sx={{ pl: '2rem' }}>No cohorts found in the same intake</Typography>
+              <Typography sx={{ pl: '2rem' }}>No cohort found</Typography>
             )}
           </AccordionDetails>
         </Accordion>
