@@ -287,7 +287,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                           label={
                             <DaysOfTheWeekChip
                               daysOfTheWeek={range}
-                              colorPattern={
+                              activeState={
                                 isEditable
                                   ? 'active'
                                   : instructor?.weekdaysRange.id === range.id
