@@ -7,6 +7,7 @@ export const WEEKDAYS_RANGES: ClientWeekdaysRange[] = [
     color: {
       primary: '#662d91',
       secondary: '#72519E',
+      tertiary: '#662d9180',
     },
   },
   {
@@ -15,6 +16,7 @@ export const WEEKDAYS_RANGES: ClientWeekdaysRange[] = [
     color: {
       primary: '#0047AB',
       secondary: '#365390',
+      tertiary: '#0047AB80',
     },
   },
   {
@@ -23,6 +25,7 @@ export const WEEKDAYS_RANGES: ClientWeekdaysRange[] = [
     color: {
       primary: '#BA0021',
       secondary: '#BF3F4F',
+      tertiary: '#BA002180',
     },
   },
 ] as const;

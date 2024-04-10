@@ -38,6 +38,7 @@ export interface ClientWeekdaysRange extends WeekdaysRange {
   color: {
     primary: string;
     secondary: string;
+    tertiary: string;
   };
 }
 
