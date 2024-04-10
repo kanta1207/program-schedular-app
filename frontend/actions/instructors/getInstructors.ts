@@ -36,6 +36,15 @@ export const getInstructors = async ({
 
     const data = await response.json();
 
+    const instructorsWithHours = data.data.map((instructor) => ({
+      ...instructor,
+      assignedHours: [
+        {
+          startAt: '2024-04-09',
+        },
+      ],
+    }));
+
     return data;
   } catch (error: any) {
     console.error(error);
