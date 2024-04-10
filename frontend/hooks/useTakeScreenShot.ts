@@ -18,6 +18,15 @@ interface UseScreenShotProps {
   quality?: number;
 }
 
+/**
+ * Hook to take screenshot of html element
+ * @param type - Image format.
+ * The standard MIME type for the image format to return.
+ * If you do not specify this parameter, the default value is a PNG format image.
+ * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
+ * @param quality - Image quality.
+ * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
+ */
 export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
   const [image, setImage] = useState<string | null>(null);
   /**
@@ -60,6 +69,11 @@ export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
     return `${name}.${extension}`;
   };
 
+  /**
+   * download screenshot
+   * @param extension - file extension
+   * @param  name - file name
+   */
   const downloadScreenshot = (extension: string, name: string) => {
     // create a element to attach the image as href, then click it to download the image
     const a = document.createElement('a');
