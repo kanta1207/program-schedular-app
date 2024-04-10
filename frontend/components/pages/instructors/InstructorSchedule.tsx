@@ -37,10 +37,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
     ref.current &&
       takeScreenShot(ref.current)
         .then(() => downloadScreenshot('jpeg', 'schedule'))
-        .catch((err) => {
-          toast.error('Failed to take screenshot');
-          console.error(err);
-        });
+        .catch(() => toast.error('Failed to take screenshot'));
   };
 
   return (
