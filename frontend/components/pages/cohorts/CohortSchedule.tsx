@@ -84,7 +84,7 @@ interface CohortScheduleProps {
 const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks, holidays }) => {
   const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [copyableCohorts, setCopyableCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const router = useRouter();
 
@@ -94,11 +94,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     if (cohort.classes.length === 0) {
       setDialogOpen(true);
     }
-    // Filter cohorts by the same program ID but excluding their own cohort ID.
-    const filteredCohorts = cohorts.filter(
+
+    const copyableCohorts = cohorts.filter(
       (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
     );
-    setFilteredCohorts(filteredCohorts);
+    setCopyableCohorts(copyableCohorts);
   }, []);
 
   const scheduleItems: Array<GetCohortClass | GetBreaksResponse> = [
@@ -246,7 +246,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleDialogClose} cohorts={filteredCohorts} />
+        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleDialogClose} cohorts={copyableCohorts} />
         {/* Schedule Edit Actions */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
