@@ -45,6 +45,8 @@ import { toast } from 'react-toastify';
 import { ClassItem, ScheduleStackView } from './ScheduleStackView';
 import getPlannedHours from '@/helpers/getPlannedHours';
 import getRequiredHours from '@/helpers/getRequiredHours';
+import isBreak from '@/helpers/isBreak';
+import isHoliday from '@/helpers/isHoliday';
 
 export type CreateType = 'new' | 'copy';
 
@@ -158,7 +160,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     }
   };
 
-  const handleCancelClick = () => {
+  const handleCancel = () => {
     if (confirm(CONFIRM.cancel)) {
       setIsScheduleEditable(false);
       remove();
@@ -178,21 +180,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     }
   };
 
-  const tooltipTitle = (messages: string[]) => {
-    return (
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>&bull; {message}</li>
-        ))}
-      </ul>
-    );
-  };
-
-  const handleOpen = () => {
+  const handleDialogOpen = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
+  const handleDialogClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
     if (createType === 'new') {
       remove();
       append({
@@ -230,36 +222,38 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     setDialogOpen(false);
   };
 
-  // DatePicker Break/Holiday disabled
-  const isBreak = (date: Dayjs) =>
-    breaks.some(
-      (breakItem) =>
-        dayjs(breakItem.startAt).subtract(1, 'day').isBefore(date, 'day') &&
-        dayjs(breakItem.endAt).add(1, 'day').isAfter(date, 'day'),
-    );
-  const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
-  const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
+  const isDateDisable = (date: Dayjs) => isBreak(date.toDate(), breaks) || isHoliday(date.toDate(), holidays);
 
   const cohortIntakeStartAt =
     dayjs(cohort.intake.startAt).day() === 2
       ? dayjs(cohort.intake.startAt).subtract(1, 'day')
       : dayjs(cohort.intake.startAt);
 
+  const tooltipTitle = (messages: string[]) => {
+    return (
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>&bull; {message}</li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleClose} cohorts={filteredCohorts} />
+        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleDialogClose} cohorts={filteredCohorts} />
         {/* Schedule Edit Actions */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
           <Box>
             {isScheduleEditable ? (
               <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
-                <Button startIcon={<RefreshIcon />} variant="outlined" onClick={handleOpen}>
+                <Button startIcon={<RefreshIcon />} variant="outlined" onClick={handleDialogOpen}>
                   Reset
                 </Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: 'primary.main' }} />
-                <Button variant="outlined" type="button" onClick={handleCancelClick}>
+                <Button variant="outlined" type="button" onClick={handleCancel}>
                   Cancel
                 </Button>
                 <Button variant="contained" type="submit">
