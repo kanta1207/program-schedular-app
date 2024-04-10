@@ -39,7 +39,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ClassItem, ScheduleStackView } from './ScheduleStackView';
@@ -239,6 +239,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     );
   };
 
+  const cohortsInSameIntake = useMemo(() => {
+    return cohorts.filter((cohortItem) => cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id);
+  }, []);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -268,8 +272,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </Box>
         </Box>
 
-        {/* Schedule Preview Accordion */}
-        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen(!accordionOpen)}>
+        {/* Cohort Schedules in the same intake */}
+        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen((isOpen) => !isOpen)}>
           <AccordionSummary
             sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
             expandIcon={<ExpandMore />}
@@ -277,38 +281,40 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             <Typography>Schedules of cohorts from same intake</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
-            {cohorts
-              .filter((cohortItem) => {
-                return cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id;
-              })
-              .map((cohortInSameIntake) => {
-                const classItems: ClassItem[] = cohortInSameIntake.classes.map((classItem) => ({
-                  cohortId: classItem.cohort.id,
-                  courseId: classItem.course.id,
-                  weekdaysRangeId: classItem.weekdaysRange.id,
-                  instructorId: classItem.instructor?.id,
-                  classroomId: classItem.classroom.id,
-                  startAt: classItem.startAt,
-                  endAt: classItem.endAt,
-                }));
-                return (
-                  <Box key={cohortInSameIntake.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
-                    <ScheduleStackView
-                      cohorts={cohorts}
-                      courses={courses}
-                      instructors={instructors}
-                      classItems={classItems}
-                      breaks={breaks}
-                      intakeStartDate={cohortIntakeStartAt.toDate()}
-                      intakeEndDate={cohort.intake.endAt}
-                    />
-                  </Box>
-                );
-              })}
+            {cohortsInSameIntake.length > 0 ? (
+              <>
+                {cohortsInSameIntake.map((cohort) => {
+                  const classItems: ClassItem[] = cohort.classes.map((classItem) => ({
+                    cohortId: classItem.cohort.id,
+                    courseId: classItem.course.id,
+                    weekdaysRangeId: classItem.weekdaysRange.id,
+                    instructorId: classItem.instructor?.id,
+                    classroomId: classItem.classroom.id,
+                    startAt: classItem.startAt,
+                    endAt: classItem.endAt,
+                  }));
+                  return (
+                    <Box key={cohort.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
+                      <ScheduleStackView
+                        cohorts={cohorts}
+                        courses={courses}
+                        instructors={instructors}
+                        classItems={classItems}
+                        breaks={breaks}
+                        intakeStartDate={cohortIntakeStartAt.toDate()}
+                        intakeEndDate={cohort.intake.endAt}
+                      />
+                    </Box>
+                  );
+                })}
+              </>
+            ) : (
+              <Typography sx={{ pl: '2rem' }}>No cohorts found in the same intake</Typography>
+            )}
           </AccordionDetails>
         </Accordion>
 
-        {/* Current Page Cohort Schedule Preview */}
+        {/* Realtime Preview */}
         <Box
           sx={{
             mb: '1rem',
