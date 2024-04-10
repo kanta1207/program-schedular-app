@@ -46,16 +46,16 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Tooltip title="Take Screenshot">
-          <IconButton onClick={handleTakeScreenshot}>
-            <CameraAltIcon color="primary" />
-          </IconButton>
-        </Tooltip>
-      </Box>
       <Box ref={ref}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
+          {/* <Box sx={{ display: 'flex' }}> */}
           <Headline name={`${instructor.name}'s Schedule`} />
+          {/* <Tooltip title="Take Screenshot">
+              <IconButton onClick={handleTakeScreenshot} sx={{ display: 'flex', alignItems: 'end' }}>
+                <CameraAltIcon />
+              </IconButton>
+            </Tooltip> */}
+          {/* </Box> */}
           <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
         </Box>
         {viewType === 'list' ? (
