@@ -2,6 +2,7 @@
 import { deleteBreak } from '@/actions/breaks/deleteBreak';
 import { updateBreak } from '@/actions/breaks/updateBreak';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -109,8 +110,14 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
           <Table sx={tableStyle}>
             <TableHead>
               <TableRow sx={thRowStyle}>
-                <TableCell sx={{ width: 'calc(100% * 4.5/12)' }}>Start Date</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 4.5/12)' }}>End Date</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 4.5/12)' }}>
+                  Start Date
+                  {editBreakId && <RequiredMark />}
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 4.5/12)' }}>
+                  End Date
+                  {editBreakId && <RequiredMark />}
+                </TableCell>
                 {/* Empty head for edit and delete */}
                 <TableCell sx={{ width: 'calc(100% * 3/12)' }} />
               </TableRow>
