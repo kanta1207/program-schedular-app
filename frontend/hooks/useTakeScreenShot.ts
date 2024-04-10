@@ -1,0 +1,70 @@
+import { useState } from 'react';
+import html2canvas, { Options } from 'html2canvas';
+
+/**
+ * These props is used as parameter for HTMLCanvasElement.toDataURL method.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL}
+ */
+interface UseScreenShotProps {
+  /**
+   * @param type - @param type
+   * The standard MIME type for the image format to return.
+   * If you do not specify this parameter, the default value is a PNG format image.
+   */
+  type?: string;
+  /**
+   * @param quality - image quality.
+   */
+  quality?: number;
+}
+
+const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
+  const [image, setImage] = useState<string | null>(null);
+  /**
+   * convert html element to image
+   * @param  element - html element to convert
+   * @param  options - options for html2canvas
+   */
+  const takeScreenShot = (element: HTMLElement, options?: Partial<Options>) => {
+    return html2canvas(element, options)
+      .then((canvas) => {
+        const croppedCanvas = document.createElement('canvas');
+        const croppedCanvasContext = croppedCanvas.getContext('2d');
+        // init data
+        const cropPositionTop = 0;
+        const cropPositionLeft = 0;
+        const cropWidth = canvas.width;
+        const cropHeight = canvas.height;
+
+        croppedCanvas.width = cropWidth;
+        croppedCanvas.height = cropHeight;
+
+        if (croppedCanvasContext) croppedCanvasContext.drawImage(canvas, cropPositionLeft, cropPositionTop);
+
+        const base64Image = croppedCanvas.toDataURL(type, quality);
+
+        setImage(base64Image);
+        return base64Image;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
+
+  return { image, takeScreenShot };
+};
+
+/**
+ * creates name of file
+ * @param extension - file extension
+ * @param  name - file name
+ */
+const createFileName = (extension?: string, name?: string) => {
+  if (!extension || !name) {
+    return '';
+  }
+
+  return `${name}.${extension}`;
+};
+
+export { useScreenshot, createFileName };
