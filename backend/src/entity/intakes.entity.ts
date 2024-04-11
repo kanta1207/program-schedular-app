@@ -28,8 +28,6 @@ export class Intake {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @OneToMany(() => Cohort, (cohort) => cohort.intake, {
-    cascade: true,
-  })
+  @OneToMany(() => Cohort, (cohort) => cohort.intake)
   cohorts: Cohort[];
 }
