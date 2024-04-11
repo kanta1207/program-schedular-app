@@ -1,4 +1,4 @@
-import { Class, MasterWeekdaysRange } from 'src/entity';
+import { Class, MasterWeekdaysRange } from '../../../entity';
 
 import {
   MON_FRI_WEEKDAYS_RANGE_ID,
@@ -34,7 +34,7 @@ const message = (
   totalWeeklyHoursInstructorAssigned: number,
   maxHoursOfInstructor: number,
 ) => {
-  return `Instructor exceeds max working hours(${maxHoursOfInstructor}h/w). Current assigned hours are ${totalWeeklyHoursInstructorAssigned}h/w.`;
+  return `Exceeds ${maxHoursOfInstructor}h/w, assigned ${totalWeeklyHoursInstructorAssigned}h/w.`;
 };
 
 describe('checkInstructorExceedsMaxHours', () => {

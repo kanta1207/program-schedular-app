@@ -15,7 +15,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.enableCors();
-  await app.listen(4000); // TODO: Replace port number with env variable
+  app.enableCors({});
+  await app.listen(process.env.APP_PORT || 4000);
 }
 bootstrap();

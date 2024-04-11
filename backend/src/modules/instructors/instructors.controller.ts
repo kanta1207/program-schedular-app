@@ -11,8 +11,8 @@ import {
 import { InstructorsService } from './instructors.service';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
-import { StatusCodes } from 'src/common/status-code';
-import { ApiResponse } from 'src/common/api-response';
+import { StatusCodes } from '../../common/status-code';
+import { ApiResponse } from '../../common/api-response';
 
 @Controller('instructors')
 export class InstructorsController {

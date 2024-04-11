@@ -1,4 +1,4 @@
-import { MasterPeriodOfDay } from 'src/entity';
+import { MasterPeriodOfDay } from '../../../entity';
 
 export const checkInstructorsAvailabilityPeriodOfDays = (
   periodOfDays: MasterPeriodOfDay[],

@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { IsAfterDate } from 'src/common/validator/is-after-date';
+import { IsAfterDate } from '../../../common/validator/is-after-date';
 
 class ClassDto {
   @IsDate()

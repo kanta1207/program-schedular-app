@@ -24,7 +24,7 @@ const CreateIntake = () => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: null,
+      name: '' as string,
       startAt: null as Dayjs | null,
       endAt: null as Dayjs | null,
     },

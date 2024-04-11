@@ -14,10 +14,17 @@ interface CreateInstructorPayload {
 export const createInstructor = async (
   payload: CreateInstructorPayload,
 ): Promise<ApiResponse<CreateInstructorResponse>> => {
-  const { name, contractTypeId, weekdaysRangeId } = payload;
+  const { name, contractTypeId, weekdaysRangeId, periodOfDayIds, courseIds } = payload;
 
   try {
-    if (!name || !contractTypeId || !contractTypeId || !weekdaysRangeId) {
+    if (
+      !name ||
+      !contractTypeId ||
+      !contractTypeId ||
+      !weekdaysRangeId ||
+      periodOfDayIds.length === 0 ||
+      courseIds.length === 0
+    ) {
       throw new Error("Something's wrong in the input data");
     }
 
