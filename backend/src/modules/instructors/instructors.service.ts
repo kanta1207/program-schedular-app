@@ -19,7 +19,12 @@ import {
   Course,
 } from 'src/entity';
 
-import { CONTRACTOR_CONTRACT_TYPE_ID } from '../../common/constants/master.constant';
+import {
+  CONTRACTOR_CONTRACT_TYPE_ID,
+  MON_FRI_WEEKDAYS_RANGE_ID,
+  MON_WED_WEEKDAYS_RANGE_ID,
+  WED_FRI_WEEKDAYS_RANGE_ID,
+} from '../../common/constants/master.constant';
 
 @Injectable()
 export class InstructorsService {
@@ -151,6 +156,116 @@ export class InstructorsService {
     });
 
     return result;
+  }
+
+  async findWithAssignedHours(year?: number) {
+    if (year !== undefined) {
+      if (!Number.isInteger(year) || year < 0) {
+        throw new BadRequestException();
+      }
+    }
+    if (!year) year = new Date().getFullYear();
+
+    // start and end of the given year
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31, 23, 59, 59);
+
+    // all weeks in 1 year
+    const allWeeks = [];
+    let currentWeekStart = new Date(startDate);
+    while (currentWeekStart <= endDate) {
+      const endOfWeek = new Date(currentWeekStart);
+      endOfWeek.setDate(currentWeekStart.getDate() + 4); // calculate date of weekend (friday)
+
+      allWeeks.push({
+        startAt: currentWeekStart.toISOString().split('T')[0],
+        endAt: endOfWeek.toISOString().split('T')[0],
+      });
+
+      currentWeekStart = new Date(endOfWeek);
+      currentWeekStart.setDate(currentWeekStart.getDate() + 3); // set start date of the next week (skip Saturday and Sunday)
+    }
+
+    const instructors = await this.instructorRepository
+      .createQueryBuilder('instructor')
+      .leftJoinAndSelect('instructor.contractType', 'contractType')
+      .leftJoinAndSelect(
+        'instructor.classes',
+        'classes',
+        'classes.startAt BETWEEN :startDate AND :endDate',
+        { startDate, endDate },
+      )
+      .leftJoinAndSelect('classes.weekdaysRange', 'weekdaysRange')
+      .select([
+        'instructor.id',
+        'instructor.name',
+        'classes.id',
+        'classes.startAt',
+        'classes.endAt',
+        'weekdaysRange.id',
+      ])
+      .orderBy('classes.startAt', 'ASC')
+      .getMany();
+
+    const updateAssignedHours = (
+      assignedHours: number,
+      weekdaysRangeId: number,
+    ): number => {
+      switch (weekdaysRangeId) {
+        case MON_FRI_WEEKDAYS_RANGE_ID:
+          return assignedHours + 20;
+        case MON_WED_WEEKDAYS_RANGE_ID:
+          return assignedHours + 10;
+        case WED_FRI_WEEKDAYS_RANGE_ID:
+          return assignedHours + 10;
+        default:
+          return assignedHours;
+      }
+    };
+
+    const instructorsAssignedHours = instructors.map((instructor) => {
+      const assignedHoursForInstructor = allWeeks.map((week) => {
+        const weekStart = new Date(week.startAt);
+        const weekEnd = new Date(week.endAt);
+        const hours = instructor.classes
+          .filter((cls) => {
+            const clsStartDate = new Date(cls.startAt);
+            return clsStartDate >= weekStart && clsStartDate <= weekEnd;
+          })
+          .reduce(
+            (totalHours, cls) =>
+              updateAssignedHours(totalHours, cls.weekdaysRange.id),
+            0,
+          );
+
+        let isOverMaximum = false;
+        let isUnderMaximum = false;
+        let isUnderDesired = false;
+        if (instructor.desiredWorkingHours !== null) {
+          isUnderDesired = instructor.desiredWorkingHours < hours;
+        } else {
+          isOverMaximum = instructor.contractType.maxHours < hours;
+          isUnderMaximum = hours < instructor.contractType.maxHours;
+        }
+
+        return {
+          startAt: week.startAt,
+          endAt: week.endAt,
+          hours,
+          isOverMaximum,
+          isUnderMaximum,
+          isUnderDesired,
+        };
+      });
+
+      return {
+        id: instructor.id,
+        name: instructor.name,
+        assignedHours: assignedHoursForInstructor,
+      };
+    });
+
+    return instructorsAssignedHours;
   }
 
   async findOne(id: number) {
