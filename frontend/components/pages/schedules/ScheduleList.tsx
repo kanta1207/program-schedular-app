@@ -25,7 +25,7 @@ import CohortSchedule from '../cohorts/CohortSchedule';
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
 import { toast } from 'react-toastify';
-import { TOAST } from '@/constants/_index';
+import { CONFIRM, TOAST } from '@/constants/_index';
 import { useRouter } from 'next/navigation';
 
 interface ScheduleListProps {
@@ -54,6 +54,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
   const [filterSettings, setFilterSettings] = useState<ScheduleFilters>();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   // This flag is used like a switch to notify child component to reset the form, thus boolean value itself doesn't represent its state
   const [resetFlag, setResetFlag] = useState(false);
   const router = useRouter();
@@ -101,19 +102,38 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
     setFilterDialogOpen(false);
   };
 
+  const initEditor = () => {
+    setResetFlag(!resetFlag); // Reset editing schedule
+    setIsScheduleEditable(false);
+  };
+
   const handleGanttItemClick = async (task: Task) => {
     if (task.project) {
       if (task.type === RecordType.Group && groupBy === 'instructor') {
         toast.info(TOAST.info.ganttInstructorClicked);
         return;
       }
+      if (isScheduleEditable) {
+        if (confirm(CONFIRM.closeEditor)) {
+          initEditor();
+        } else {
+          return;
+        }
+      }
+
       const id = task.project.split('-')[0];
       router.push(`/schedules?cohortId=${id}`);
     }
   };
 
   const handleDrawerCloseClick = () => {
-    setResetFlag(!resetFlag);
+    if (isScheduleEditable) {
+      if (confirm(CONFIRM.closeEditor)) {
+        initEditor();
+      } else {
+        return;
+      }
+    }
     setIsDrawerOpen(false);
   };
 
@@ -180,6 +200,8 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
                 courses={courses}
                 breaks={breaks}
                 holidays={holidays}
+                isScheduleEditable={isScheduleEditable}
+                setIsScheduleEditable={setIsScheduleEditable}
                 resetFlag={resetFlag}
               />
             </Box>

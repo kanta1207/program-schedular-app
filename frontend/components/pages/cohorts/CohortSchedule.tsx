@@ -37,9 +37,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ClassItem, ScheduleStackView } from './ScheduleStackView';
@@ -79,6 +79,8 @@ interface CohortScheduleProps {
   cohorts: GetCohortsResponse[];
   breaks: GetBreaksResponse[];
   holidays: Holiday[] | undefined;
+  isScheduleEditable: boolean;
+  setIsScheduleEditable: Dispatch<SetStateAction<boolean>>;
   resetFlag?: boolean;
 }
 
@@ -89,14 +91,16 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
   cohorts,
   breaks,
   holidays,
+  isScheduleEditable,
+  setIsScheduleEditable,
   resetFlag,
 }) => {
-  const [isScheduleEditable, setIsScheduleEditable] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [copyableCohorts, setCopyableCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [cohortsInSameIntake, setCohortsInSameIntake] = useState<GetCohortsResponse[]>();
   const router = useRouter();
+  const pathname = usePathname();
 
   const now = dayjs();
 
@@ -133,7 +137,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
 
   useEffect(() => {
     // Enable users to create schedule without clicking on "Edit schedule" manually
-    if (cohort.classes.length === 0) {
+    if (pathname.split('/')[1] === 'cohorts' && cohort.classes.length === 0) {
       setDialogOpen(true);
     }
 
