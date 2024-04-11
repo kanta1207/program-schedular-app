@@ -108,8 +108,9 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
             ...inBoxScrollBar,
             '& .sticky-column': { zIndex: '2', position: 'sticky' },
             '& tr': { cursor: 'auto' },
-            '& td.sticky-column': { bgcolor: '#FFF' },
+            '& tbody td.sticky-column, & tbody th.sticky-column': { bgcolor: '#FFF' },
             '& tbody tr:hover td.sticky-column': { bgcolor: '#F5F5F5', cursor: 'pointer' },
+            '& tbody tr:hover th.sticky-column': { bgcolor: '#F5F5F5', cursor: 'pointer' },
           }}
         >
           <Table sx={{ minWidth: 650, ...tableStyle, borderCollapse: 'separate' }}>
@@ -150,7 +151,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
                   weekBlocks={weekBlocks}
                 />
               ))}
-              {emptyRows > 0 && <TableRow style={{ height: 42 * emptyRows }} />}
+              {emptyRows > 0 && <TableRow style={{ height: 52 * emptyRows }} />}
             </TableBody>
             <TableFooter>
               <TableRow>

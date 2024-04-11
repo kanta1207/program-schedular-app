@@ -35,14 +35,13 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
 
   return (
     <TableRow sx={clickableTrStyle}>
-      <TableCell onClick={handleRowClick} className="sticky-column" sx={{ left: '0', minWidth: '120px' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'center',
-          }}
-        >
+      <TableCell
+        component="th"
+        onClick={handleRowClick}
+        className="sticky-column"
+        sx={{ left: '0', minWidth: '120px' }}
+      >
+        <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           {<Circle sx={{ fontSize: '0.75rem', color: instructor.isActive ? '#00FA32' : 'grey.200' }} />}
           {instructor.name}
         </Box>
@@ -72,24 +71,24 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
       {weekBlocks.length > 0 &&
         weekBlocks.map((week) => {
           const hours = instructor.assingedHours?.find((item: any) => item.startAt === week.weekStartDate);
-          const getCellColor = () => {
-            if (hours.isOverMaximum) {
-              return { bgcolor: '#FFC7CE', color: '#9C0006' };
-            } else if (hours.isUnderMinimum) {
-              return { bgcolor: '#C0E6F5', color: '#215C98' };
-            } else if (hours.inUnderDesired) {
-              return { bgcolor: 'inherit', color: '#9C5700' };
-            } else {
-              return { bgcolor: 'inherit', color: 'inherit' };
-            }
-          };
-          console.log(hours);
+          // const getCellColor = () => {
+          //   if (hours.isOverMaximum) {
+          //     return { bgcolor: '#FFC7CE', color: '#9C0006' };
+          //   } else if (hours.isUnderMinimum) {
+          //     return { bgcolor: '#C0E6F5', color: '#215C98' };
+          //   } else if (hours.inUnderDesired) {
+          //     return { bgcolor: 'inherit', color: '#9C5700' };
+          //   } else {
+          //     return { bgcolor: 'inherit', color: 'inherit' };
+          //   }
+          // };
+          // console.log(hours);
 
           return (
             <TableCell
               key={week.id}
               sx={{
-                ...getCellColor(),
+                // ...getCellColor(),
                 zIndex: '1',
                 px: '0.5rem',
                 minWidth: '3rem',
