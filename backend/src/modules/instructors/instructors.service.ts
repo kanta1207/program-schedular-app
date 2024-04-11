@@ -189,6 +189,8 @@ export class InstructorsService {
     const instructors = await this.instructorRepository
       .createQueryBuilder('instructor')
       .leftJoinAndSelect('instructor.contractType', 'contractType')
+      .leftJoinAndSelect('instructor.weekdaysRange', 'instructorWeekdaysRange')
+      .leftJoinAndSelect('instructor.periodOfDays', 'periodOfDays')
       .leftJoinAndSelect(
         'instructor.classes',
         'classes',
@@ -197,14 +199,17 @@ export class InstructorsService {
       )
       .leftJoinAndSelect('classes.weekdaysRange', 'weekdaysRange')
       .select([
-        'instructor.id',
-        'instructor.name',
+        'instructor',
+        'contractType',
+        'instructorWeekdaysRange',
+        'periodOfDays',
         'classes.id',
         'classes.startAt',
         'classes.endAt',
         'weekdaysRange.id',
       ])
-      .orderBy('classes.startAt', 'ASC')
+      .orderBy('instructor.isActive', 'DESC')
+      .addOrderBy('classes.startAt', 'ASC')
       .getMany();
 
     const updateAssignedHours = (
@@ -242,7 +247,7 @@ export class InstructorsService {
         let isUnderMaximum = false;
         let isUnderDesired = false;
         if (instructor.desiredWorkingHours !== null) {
-          isUnderDesired = instructor.desiredWorkingHours < hours;
+          isUnderDesired = hours < instructor.desiredWorkingHours;
         } else {
           isOverMaximum = instructor.contractType.maxHours < hours;
           isUnderMaximum = hours < instructor.contractType.maxHours;
@@ -260,7 +265,16 @@ export class InstructorsService {
 
       return {
         id: instructor.id,
+        createdAt: instructor.createdAt,
+        updatedAt: instructor.updatedAt,
+        deletedAt: instructor.deletedAt,
         name: instructor.name,
+        isActive: instructor.isActive,
+        note: instructor.note,
+        desiredWorkingHours: instructor.desiredWorkingHours,
+        contractType: instructor.contractType,
+        weekdaysRange: instructor.weekdaysRange,
+        periodOfDays: instructor.periodOfDays,
         assignedHours: assignedHoursForInstructor,
       };
     });
