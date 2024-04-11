@@ -2,7 +2,9 @@
 import { createInstructor } from '@/actions/instructors/createInstructor';
 import { deleteInstructor } from '@/actions/instructors/deleteInstructor';
 import { updateInstructor } from '@/actions/instructors/updateInstructor';
+import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import {
   CONFIRM,
   CONTRACT_TYPES,
@@ -52,11 +54,12 @@ interface InstructorInfoFormProps {
 }
 
 const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, courses, programs }) => {
-  const [isEditable, setIsEditMode] = useState(false);
+  const [isEditable, setIsEditMode] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (instructor) {
+      setIsEditMode(false);
       reset({
         name: instructor.name,
         contractTypeId: instructor.contractType.id,
@@ -67,8 +70,6 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
         courseIds: instructor.courses.map(({ id }) => id),
         note: instructor.note ?? '',
       });
-    } else {
-      setIsEditMode(true);
     }
   }, []);
 
@@ -164,6 +165,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
           note: updatedInstructor.note ?? '',
         });
         setIsEditMode(false);
+        router.refresh();
         toast.success(TOAST.success.updated);
       } else {
         const { data: newInstructor } = await createInstructor(payload);
@@ -178,12 +180,20 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TableContainer>
-        <Table aria-label="Instructor form table">
+        <Table
+          sx={{
+            '& td': { border: 'none', py: '0.5rem', px: '0', fontSize: '1rem' },
+            '& td:first-child': { width: '6rem' },
+          }}
+        >
           <TableBody>
             {/* name */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Name:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>
+                Name
+                {isEditable && <RequiredMark />}
+              </TableCell>
+              <TableCell>
                 <Controller
                   control={control}
                   name="name"
@@ -204,8 +214,11 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* contracts */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Contract:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>
+                Contract
+                {isEditable && <RequiredMark />}
+              </TableCell>
+              <TableCell>
                 <Controller
                   name="contractTypeId"
                   control={control}
@@ -229,8 +242,11 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             {/* Desired Working Hours */}
             {contractTypeIdNumber === 3 && (
               <TableRow>
-                <TableCell sx={{ border: 'none' }}>Desired Hours:</TableCell>
-                <TableCell sx={{ border: 'none' }}>
+                <TableCell>
+                  Desired Hours
+                  {isEditable && <RequiredMark />}
+                </TableCell>
+                <TableCell>
                   <Controller
                     name="desiredWorkingHours"
                     control={control}
@@ -253,8 +269,11 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             )}
             {/* Weekdays Range */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Days:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>
+                Days
+                {isEditable && <RequiredMark />}
+              </TableCell>
+              <TableCell>
                 <Controller
                   name="weekdaysRangeId"
                   control={control}
@@ -265,7 +284,18 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                           key={range.id}
                           value={range.id}
                           control={<Radio />}
-                          label={range.name}
+                          label={
+                            <DaysOfTheWeekChip
+                              daysOfTheWeek={range}
+                              activeState={
+                                isEditable
+                                  ? 'active'
+                                  : instructor?.weekdaysRange.id === range.id
+                                  ? 'semiActive'
+                                  : 'inactive'
+                              }
+                            />
+                          }
                           disabled={!isEditable}
                         />
                       ))}
@@ -276,8 +306,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Period */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Period:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>Period{isEditable && <RequiredMark />}</TableCell>
+              <TableCell>
                 <Controller
                   name="periodOfDayIds"
                   control={control}
@@ -312,8 +342,11 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Active */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Active:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>
+                Active
+                {isEditable && <RequiredMark />}
+              </TableCell>
+              <TableCell>
                 <Controller
                   name="isActive"
                   control={control}
@@ -330,8 +363,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Course */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Course:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>Course{isEditable && <RequiredMark />}</TableCell>
+              <TableCell>
                 <Controller
                   name="courseIds"
                   control={control}
@@ -373,8 +406,8 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Note */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }}>Note:</TableCell>
-              <TableCell sx={{ border: 'none' }}>
+              <TableCell>Note</TableCell>
+              <TableCell>
                 <Controller
                   control={control}
                   name="note"
@@ -395,7 +428,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
 
             {/* Buttons */}
             <TableRow>
-              <TableCell sx={{ border: 'none' }} colSpan={2} align="right">
+              <TableCell colSpan={2} align="right">
                 <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'end' }}>
                   {isEditable ? (
                     <>
