@@ -63,6 +63,12 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   };
 
   useEffect(() => {
+    if (cohort) {
+      setIsDrawerOpen(true);
+    }
+  }, [cohort]);
+
+  useEffect(() => {
     const fetchData = async () => {
       const storedFilterSettings = localStorage.getItem(filterKey);
       let params: getClassesProps = { groupBy };
@@ -103,8 +109,6 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       }
       const id = task.project.split('-')[0];
       router.push(`/schedules?cohortId=${id}`);
-
-      setIsDrawerOpen(true);
     }
   };
 
