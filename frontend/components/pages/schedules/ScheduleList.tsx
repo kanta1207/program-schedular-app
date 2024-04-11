@@ -91,7 +91,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       setGanttItems(ganttItems);
     };
     fetchData();
-  }, [groupBy, filterSettings]);
+  }, [groupBy, filterSettings, isScheduleEditable]);
 
   const handleFilterOpen = () => {
     setFilterDialogOpen(true);
