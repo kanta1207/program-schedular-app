@@ -54,11 +54,15 @@ export class ProgramsService {
     }
 
     if (program.courses.length > 0) {
-      throw new BadRequestException('Cannot delete program that has courses. ');
+      throw new BadRequestException(
+        'Cannot delete program that contains courses. ',
+      );
     }
 
     if (program.cohorts.length > 0) {
-      throw new BadRequestException('Cannot delete program that has cohorts.');
+      throw new BadRequestException(
+        'Cannot delete program that contains cohorts.',
+      );
     }
 
     await this.programRepository.delete(id);
