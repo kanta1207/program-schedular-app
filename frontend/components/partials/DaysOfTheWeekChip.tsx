@@ -1,6 +1,6 @@
 import { WEEKDAYS_RANGES } from '@/constants/weekdays-range';
 import { WeekdaysRange } from '@/types/_index';
-import { Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 interface DaysOfTheWeekChipProps {
   daysOfTheWeek: WeekdaysRange;
@@ -10,21 +10,21 @@ export const DaysOfTheWeekChip: React.FC<DaysOfTheWeekChipProps> = ({ daysOfTheW
   const color = WEEKDAYS_RANGES.find(({ id }) => id === daysOfTheWeek.id)?.color;
   return (
     <>
-      <Typography
+      <Box
         sx={{
           bgcolor: color?.primary,
           color: '#FFF',
           fontSize: '0.875rem',
-          display: 'inline-block',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           width: '6rem',
-          paddingInline: '0.5em',
-          paddingBlock: '0.15em',
-          textAlign: 'center',
+          padding: '0.5em 0.15em',
           borderRadius: '0.25em',
         }}
       >
-        {daysOfTheWeek.name}
-      </Typography>
+        <span>{daysOfTheWeek.name}</span>
+      </Box>
     </>
   );
 };
