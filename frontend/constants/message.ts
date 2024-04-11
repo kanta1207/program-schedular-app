@@ -4,6 +4,9 @@ export const TOAST = {
     updated: 'Item updated!',
     deleted: 'Item deleted!',
   },
+  info: {
+    ganttInstructorClicked: 'Only class item can be edited',
+  },
 } as const;
 
 export const CONFIRM = {

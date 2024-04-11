@@ -8,8 +8,13 @@ import { getInstructors } from '@/actions/instructors/getInstructors';
 import { getCourses } from '@/actions/courses/getCourses';
 import { getBreaks } from '@/actions/breaks/getBreaks';
 import { getHolidays } from '@/actions/common/getHolidays';
+import { getCohortById } from '@/actions/cohorts/getCohortById';
 
-const page = async () => {
+interface Props {
+  searchParams: { cohortId: string };
+}
+
+const page: React.FC<Props> = async ({ searchParams: { cohortId } }) => {
   const { data } = await getClasses({ groupBy: 'cohort' });
   const cohorts = data as GetClassesGroupByCohort[];
   const gantt = convertClassesToGantt({ cohorts });
@@ -28,9 +33,11 @@ const page = async () => {
     getBreaks(),
     getHolidays(),
   ]);
+  const cohort = cohortId ? (await getCohortById(cohortId)).data : undefined;
 
   return (
     <ScheduleList
+      cohort={cohort}
       initialGantt={gantt}
       instructors={instructors}
       intakes={intakes}

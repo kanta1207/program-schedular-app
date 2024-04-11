@@ -51,6 +51,17 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
     }
   };
 
+  const projectName = () => {
+    // Put cohort id in common to fetch cohort by id when class item is clicked
+    if (groupName === 'cohort') {
+      return `${classData.cohort.id}-${classData.cohort.name}`;
+    } else if (groupName === 'instructor') {
+      return `${classData.cohort.id}-${classData.instructor.name}`;
+    } else {
+      return '';
+    }
+  };
+
   return {
     start: startAt,
     end: endAt,
@@ -59,7 +70,7 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
     type: RecordType.Class,
     progress: getProgress(startAt, endAt),
     isDisabled: true,
-    project: classData.cohort.name,
+    project: projectName(),
     styles: {
       progressColor: color?.secondary,
       progressSelectedColor: color?.secondary,
@@ -80,7 +91,7 @@ const getGanttGroupByCohort = (cohorts: GetClassesGroupByCohort[]) => {
       end: endAt,
       name: cohort.name,
       id: cohort.name, // associated with 'project' in class record
-      project: cohort.name,
+      project: `${cohort.id}-${cohort.name}`,
       progress: getProgress(startAt, endAt),
       type: RecordType.Group,
       isDisabled: true,
@@ -106,7 +117,7 @@ const getGanttGroupByInstructor = (instructors: GetClassesGroupByInstructor[]) =
       end: now.add(6, 'month').toDate(),
       name: instructor.name,
       id: instructor.name, // associated with 'project' in class record
-      project: instructor.name,
+      project: `${instructor.id}-${instructor.name}`,
       progress: 100, // progress in instructor doesn't make sense, so put 100 for simplicity.
       type: RecordType.Group,
       isDisabled: true,

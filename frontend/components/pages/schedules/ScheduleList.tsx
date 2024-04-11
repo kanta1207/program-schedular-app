@@ -22,11 +22,14 @@ import {
 import FilterScheduleDialog, { ScheduleFilters, filterKey } from './FilterDialog';
 import { Close, FilterAlt } from '@mui/icons-material';
 import CohortSchedule from '../cohorts/CohortSchedule';
-import { getCohortById } from '@/actions/cohorts/getCohortById';
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
+import { toast } from 'react-toastify';
+import { TOAST } from '@/constants/_index';
+import { useRouter } from 'next/navigation';
 
 interface ScheduleListProps {
+  cohort?: GetCohortResponse;
   initialGantt: Task[];
   instructors: GetInstructorsResponse[];
   intakes: GetIntakesResponse[];
@@ -37,6 +40,7 @@ interface ScheduleListProps {
 }
 
 const ScheduleList: React.FC<ScheduleListProps> = ({
+  cohort,
   initialGantt,
   instructors,
   intakes,
@@ -49,10 +53,10 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   const [ganttItems, setGanttItems] = useState<Task[]>(initialGantt);
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
   const [filterSettings, setFilterSettings] = useState<ScheduleFilters>();
-  const [selectedCohort, setSelectedCohort] = useState<GetCohortResponse>();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   // This flag is used like a switch to notify child component to reset the form, thus boolean value itself doesn't represent its state
   const [resetFlag, setResetFlag] = useState(false);
+  const router = useRouter();
 
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newGroupBy: GanttGroupBy) => {
     setGroupBy(newGroupBy);
@@ -94,15 +98,12 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   const handleGanttItemClick = async (task: Task) => {
     if (task.project) {
       if (task.type === RecordType.Group && groupBy === 'instructor') {
+        toast.info(TOAST.info.ganttInstructorClicked);
         return;
       }
+      const id = task.project.split('-')[0];
+      router.push(`/schedules?cohortId=${id}`);
 
-      const clickedCohort = cohorts.find((cohortItem) => cohortItem.name === task.project);
-      if (clickedCohort) {
-        const { id } = clickedCohort;
-        const { data: fetchedCohort } = await getCohortById(id.toString());
-        setSelectedCohort(fetchedCohort);
-      }
       setIsDrawerOpen(true);
     }
   };
@@ -149,7 +150,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       ) : (
         <Typography sx={{ textAlign: 'center', padding: '10rem' }}>No results found.</Typography>
       )}
-      {selectedCohort && (
+      {cohort && (
         <Drawer
           open={isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
@@ -169,7 +170,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
           <div className="container mx-auto my-4 h-[calc(100%_-_2rem)] overflow-y-scroll custom-scroll-bar">
             <Box>
               <CohortSchedule
-                cohort={selectedCohort}
+                cohort={cohort}
                 cohorts={cohorts}
                 instructors={instructors}
                 courses={courses}
