@@ -7,7 +7,7 @@ import { getInstructors } from '@/actions/instructors/getInstructors';
 import { getIntakes } from '@/actions/intakes/getIntakes';
 import { getPrograms } from '@/actions/programs/getPrograms';
 import { CohortInfoForm } from '@/components/pages/cohorts/CohortInfoForm';
-import CohortSchedule from '@/components/pages/cohorts/CohortSchedule';
+import ScheduleSection from '@/components/pages/cohorts/ScheduleSection';
 import Headline from '@/components/partials/Headline';
 import { Box } from '@mui/material';
 
@@ -43,7 +43,7 @@ const page = async ({ params }: PageProps) => {
         <Headline name="Cohorts" />
       </Box>
       <CohortInfoForm cohort={cohort} intakes={intakes} programs={programs} />
-      <CohortSchedule
+      <ScheduleSection
         cohort={cohort}
         courses={courses}
         instructors={instructors}

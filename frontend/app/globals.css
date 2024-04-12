@@ -27,6 +27,17 @@
   text-overflow: ellipsis;
 }
 
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.custom-scroll-bar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #eee;
+  border-radius: 0.25rem;
+}
+
 @layer base {
   img {
     /* necessary to prevent UI collapse issue with html2canvas. reference: https://github.com/niklasvh/html2canvas/issues/2775#issuecomment-1204988157 */
