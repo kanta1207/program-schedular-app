@@ -13,7 +13,7 @@ import theme from '@/app/theme';
 import Headline from '@/components/partials/Headline';
 import GanttToolTip from '@/components/partials/gantt/GanttToolTip';
 
-import { useScreenshot } from '@/hooks/useTakeScreenShot';
+import { useScreenshot } from '@/hooks/useScreenShot';
 import { toast } from 'react-toastify';
 
 interface InstructorScheduleProps {
