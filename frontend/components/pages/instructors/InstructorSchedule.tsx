@@ -34,7 +34,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
     setViewType(newViewType);
   };
 
-  const handleTakeScreenshot = () => {
+  const handleScreenshot = () => {
     try {
       ref.current && screenshot(ref.current, fileName);
     } catch (error) {
@@ -49,7 +49,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
           <Headline name={`${instructor.name}'s Schedule`} />
           {viewType === 'list' && (
             <Tooltip title="Download schedule">
-              <IconButton onClick={handleTakeScreenshot} sx={{ marginBottom: '0.35em' }}>
+              <IconButton onClick={handleScreenshot} sx={{ marginBottom: '0.35em' }}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
