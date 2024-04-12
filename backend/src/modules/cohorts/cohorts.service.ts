@@ -92,6 +92,7 @@ export class CohortsService {
       order: {
         classes: { startAt: 'ASC', endAt: 'ASC', weekdaysRange: { id: 'ASC' } },
       },
+      withDeleted: true,
       relations: {
         intake: true,
         program: true,

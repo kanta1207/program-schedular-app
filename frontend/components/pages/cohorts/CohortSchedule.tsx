@@ -498,7 +498,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                                     }}
                                   >
                                     {courses
-                                      .filter((course) => course.program.id === cohort.program.id)
+                                      .filter((course) => course.program.id === cohort.program.id && !course.deletedAt)
                                       .map((course) => {
                                         return (
                                           <MenuItem key={course.id} value={course.id}>
@@ -641,7 +641,12 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         <TableRow key={scheduleItem.id}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
-                          <TableCell>{scheduleItem.course.name}</TableCell>
+                          <TableCell>
+                            {/* If course is deleted, add "(deleted)" to the name. */}
+                            {scheduleItem.course.deletedAt
+                              ? `${scheduleItem.course.name} (deleted)`
+                              : scheduleItem.course.name}
+                          </TableCell>
                           <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
                             {scheduleItem.weekdaysRange.messages.length > 0 && (
