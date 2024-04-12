@@ -26,10 +26,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
   const [viewType, setViewType] = useState<ViewType>('list');
   const ref = useRef(null);
 
-  const { takeScreenShot } = useScreenshot({
-    type: 'image/jpeg',
-    quality: 1.0,
-  });
+  const { screenshot } = useScreenshot();
 
   const fileName = `${instructor.name.replace(/\s/g, '_')}_${dayjs().format('YYYY-MM-DD')}`;
 
@@ -39,7 +36,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   const handleTakeScreenshot = () => {
     try {
-      ref.current && takeScreenShot(ref.current, fileName);
+      ref.current && screenshot(ref.current, fileName);
     } catch (error) {
       toast.error(TOAST.error.screenshot);
     }
