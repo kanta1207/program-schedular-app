@@ -12,11 +12,13 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
   const startDate = dayjs(classData.startAt).format(dateFormat);
   const endDate = dayjs(classData.endAt).format(dateFormat);
 
+  const courseName = classData.course.deletedAt ? `${classData.course.name} (deleted)` : classData.course.name;
+
   return (
     <>
       <TableCell>{startDate}</TableCell>
       <TableCell>{endDate}</TableCell>
-      <TableCell>{classData.course.name}</TableCell>
+      <TableCell>{courseName}</TableCell>
       <TableCell>{classData.cohort.name}</TableCell>
       <TableCell>
         <DaysOfTheWeekChip daysOfTheWeek={classData.weekdaysRange} />

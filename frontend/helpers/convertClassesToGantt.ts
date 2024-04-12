@@ -40,12 +40,14 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
   const endAt = dayjs(classData.endAt).toDate();
 
   const displayName = () => {
+    const courseName = classData.course?.deletedAt ? `${classData.course?.name} (deleted)` : classData.course?.name;
+
     if (groupName === 'cohort') {
-      return `${periodIcon} ${classData.course.name} ${classData.instructor ? `| ${classData.instructor.name}` : ''} @${
+      return `${periodIcon} ${courseName} ${classData.instructor ? `| ${classData.instructor.name}` : ''} @${
         classData.classroom.name
       }`;
     } else if (groupName === 'instructor') {
-      return `${periodIcon} ${classData.course.name} | ${classData.cohort.name} @${classData.classroom.name}`;
+      return `${periodIcon} ${courseName} | ${classData.cohort.name} @${classData.classroom.name}`;
     } else {
       return '';
     }

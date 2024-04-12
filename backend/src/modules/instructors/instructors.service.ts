@@ -177,6 +177,7 @@ export class InstructorsService {
           endAt: 'ASC',
         },
       },
+      withDeleted: true,
     });
 
     if (!instructor) {
