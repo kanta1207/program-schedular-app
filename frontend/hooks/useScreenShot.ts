@@ -12,6 +12,7 @@ export const useScreenshot = () => {
   /**
    * convert html element to image
    * @param  element - html element to convert
+   * @param  name - name of the file
    * @param  options - options for html2canvas
    */
   const screenshot = (element: HTMLElement, name: string, options?: Partial<Options>) => {
