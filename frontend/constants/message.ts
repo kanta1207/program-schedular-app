@@ -4,6 +4,9 @@ export const TOAST = {
     updated: 'Item updated!',
     deleted: 'Item deleted!',
   },
+  error: {
+    screenshot: 'Failed to take screenshot',
+  },
 } as const;
 
 export const CONFIRM = {

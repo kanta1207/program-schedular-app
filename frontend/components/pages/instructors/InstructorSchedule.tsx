@@ -15,6 +15,7 @@ import GanttToolTip from '@/components/partials/gantt/GanttToolTip';
 
 import { useScreenshot } from '@/hooks/useScreenShot';
 import { toast } from 'react-toastify';
+import { TOAST } from '@/constants/message';
 
 interface InstructorScheduleProps {
   instructor: GetInstructorsResponse;
@@ -40,57 +41,55 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
     try {
       ref.current && takeScreenShot(ref.current, fileName);
     } catch (error) {
-      toast.error('Failed to take screenshot');
+      toast.error(TOAST.error.screenshot);
     }
   };
 
   return (
     <>
-      <Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
-          {viewType === 'list' ? (
-            <Box sx={{ display: 'flex' }}>
-              <Headline name={`${instructor.name}'s Schedule`} />
-              <Tooltip title="Download schedule">
-                <IconButton onClick={handleTakeScreenshot} sx={{ marginBottom: '0.35em' }}>
-                  <DownloadIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          ) : (
-            <Headline name={`${instructor.name}'s Schedule`} />
-          )}
-          <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
-        </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
         {viewType === 'list' ? (
-          <InstructorScheduleTable instructor={instructor} ref={ref} />
-        ) : viewType === 'gantt' ? (
-          <>
-            {ganttItems.length > 0 ? (
-              <>
-                <Box sx={{ display: 'flex', justifyContent: 'end', pb: '.5rem' }}>
-                  <GanttToolTip />
-                </Box>
-                <Box sx={{ fontSize: '12px' }}>
-                  <Gantt
-                    tasks={ganttItems}
-                    viewMode={ViewMode.Week}
-                    viewDate={dayjs().subtract(2, 'week').toDate()}
-                    columnWidth={40}
-                    projectBackgroundColor={theme.palette.gantt.project}
-                    projectProgressColor={theme.palette.gantt.project}
-                    projectProgressSelectedColor={theme.palette.gantt.project}
-                    projectBackgroundSelectedColor={theme.palette.gantt.project}
-                    fontSize="12"
-                  />
-                </Box>
-              </>
-            ) : (
-              <Typography sx={{ textAlign: 'center', padding: '10rem' }}>No Schedule</Typography>
-            )}
-          </>
-        ) : null}
+          <Box sx={{ display: 'flex' }}>
+            <Headline name={`${instructor.name}'s Schedule`} />
+            <Tooltip title="Download schedule">
+              <IconButton onClick={handleTakeScreenshot} sx={{ marginBottom: '0.35em' }}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        ) : (
+          <Headline name={`${instructor.name}'s Schedule`} />
+        )}
+        <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
       </Box>
+      {viewType === 'list' ? (
+        <InstructorScheduleTable instructor={instructor} ref={ref} />
+      ) : viewType === 'gantt' ? (
+        <>
+          {ganttItems.length > 0 ? (
+            <>
+              <Box sx={{ display: 'flex', justifyContent: 'end', pb: '.5rem' }}>
+                <GanttToolTip />
+              </Box>
+              <Box sx={{ fontSize: '12px' }}>
+                <Gantt
+                  tasks={ganttItems}
+                  viewMode={ViewMode.Week}
+                  viewDate={dayjs().subtract(2, 'week').toDate()}
+                  columnWidth={40}
+                  projectBackgroundColor={theme.palette.gantt.project}
+                  projectProgressColor={theme.palette.gantt.project}
+                  projectProgressSelectedColor={theme.palette.gantt.project}
+                  projectBackgroundSelectedColor={theme.palette.gantt.project}
+                  fontSize="12"
+                />
+              </Box>
+            </>
+          ) : (
+            <Typography sx={{ textAlign: 'center', padding: '10rem' }}>No Schedule</Typography>
+          )}
+        </>
+      ) : null}
     </>
   );
 };
