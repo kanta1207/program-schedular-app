@@ -6,6 +6,7 @@ export interface CourseBase {
   requiredHours: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 interface GetCourseResponse extends CourseBase {
