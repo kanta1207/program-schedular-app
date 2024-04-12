@@ -37,7 +37,7 @@ export class ProgramsService {
   }
 
   async remove(id: number) {
-    const deleteResult = await this.programRepository.delete(id);
+    const deleteResult = await this.programRepository.softDelete(id);
 
     if (deleteResult.affected === 0) {
       throw new NotFoundException('Program Not Found');

@@ -26,3 +26,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.custom-scroll-bar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #eee;
+  border-radius: 0.25rem;
+}
