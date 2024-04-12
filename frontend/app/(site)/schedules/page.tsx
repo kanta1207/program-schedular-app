@@ -25,14 +25,7 @@ const page: React.FC<Props> = async ({ searchParams: { cohortId } }) => {
     { data: courses },
     { data: breaks },
     holidays,
-  ] = await Promise.all([
-    getCohorts(),
-    getIntakes(),
-    getInstructors({ isActive: true }),
-    getCourses(),
-    getBreaks(),
-    getHolidays(),
-  ]);
+  ] = await Promise.all([getCohorts(), getIntakes(), getInstructors({}), getCourses(), getBreaks(), getHolidays()]);
   const cohort = cohortId ? (await getCohortById(cohortId)).data : undefined;
 
   return (

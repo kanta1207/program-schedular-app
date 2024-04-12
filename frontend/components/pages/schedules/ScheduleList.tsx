@@ -86,7 +86,8 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
 
       const cohorts = groupBy === 'cohort' ? (data as GetClassesGroupByCohort[]) : undefined;
       const instructors = groupBy === 'instructor' ? (data as GetClassesGroupByInstructor[]) : undefined;
-      const ganttItems = convertClassesToGantt({ cohorts, instructors });
+      const activeInstructors = instructors?.filter(({ isActive }) => isActive);
+      const ganttItems = convertClassesToGantt({ cohorts, instructors: activeInstructors });
 
       setGanttItems(ganttItems);
     };
@@ -137,6 +138,8 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
     setIsDrawerOpen(false);
   };
 
+  const activeInstructors = instructors.filter(({ isActive }) => isActive);
+
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '.5rem' }}>
@@ -148,7 +151,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
           <FilterScheduleDialog
             dialogOpen={filterDialogOpen}
             onClose={handleFilterClose}
-            instructors={instructors}
+            instructors={activeInstructors}
             intakes={intakes}
             cohorts={cohorts}
           />
