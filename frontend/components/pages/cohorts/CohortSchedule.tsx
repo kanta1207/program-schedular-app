@@ -618,7 +618,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                 </>
               ) : (
                 <>
-                  {scheduleItems.map((scheduleItem) => {
+                  {scheduleItems.map((scheduleItem, i) => {
                     const startDate = dayjs(scheduleItem.startAt).format(dateFormat);
                     const endDate = dayjs(scheduleItem.endAt).format(dateFormat);
                     const isClass = 'cohort' in scheduleItem;
@@ -632,7 +632,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                       const requiredHours = scheduleItem.course.requiredHours;
                       const isTimeExceeded = plannedHours > requiredHours;
                       return (
-                        <TableRow key={scheduleItem.id}>
+                        <TableRow key={i}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
                           <TableCell>{scheduleItem.course.name}</TableCell>
@@ -681,7 +681,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                       );
                     } else {
                       return (
-                        <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                        <TableRow key={i} sx={{ '& td': { bgcolor: 'grey.200' } }}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
                           <TableCell>School Break</TableCell>
