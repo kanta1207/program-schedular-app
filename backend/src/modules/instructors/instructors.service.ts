@@ -202,6 +202,8 @@ export class InstructorsService {
         instructor: { id },
       },
       relations: { course: true },
+      // This "withDeleted" option is necessary to get the soft-deleted courses
+      withDeleted: true,
     });
     const courses = coursesInstructors.map((ci) => ci.course);
 
