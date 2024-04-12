@@ -5,7 +5,6 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
 } from 'typeorm';
 import { Cohort, Course } from './';
 
@@ -19,9 +18,6 @@ export class Program {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
