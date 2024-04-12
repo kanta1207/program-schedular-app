@@ -125,7 +125,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
                 <TableCell className="sticky-column" sx={{ left: '210px', minWidth: '220px' }}>
                   Availability
                 </TableCell>
-                <TableCell className="sticky-column" sx={{ left: '430px' }}>
+                <TableCell className="sticky-column" sx={{ left: '430px', textAlign: 'center', lineHeight: '1rem' }}>
                   Desired Hours
                 </TableCell>
                 {weekBlocks.length > 0 &&

@@ -64,31 +64,36 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
       <TableCell
         onClick={handleRowClick}
         className="sticky-column"
-        sx={{ left: '430px', borderRight: '1px solid rgba(224, 224, 224, 1)' }}
+        sx={{ left: '430px', borderInline: '1px solid rgba(224, 224, 224, 1)', textAlign: 'center' }}
       >
         {instructor.desiredWorkingHours ? instructor.desiredWorkingHours : '-'}
       </TableCell>
       {weekBlocks.length > 0 &&
         weekBlocks.map((week) => {
           const hours = instructor.assingedHours?.find((item: any) => item.startAt === week.weekStartDate);
-          // const getCellColor = () => {
-          //   if (hours.isOverMaximum) {
-          //     return { bgcolor: '#FFC7CE', color: '#9C0006' };
-          //   } else if (hours.isUnderMinimum) {
-          //     return { bgcolor: '#C0E6F5', color: '#215C98' };
-          //   } else if (hours.inUnderDesired) {
-          //     return { bgcolor: 'inherit', color: '#9C5700' };
-          //   } else {
-          //     return { bgcolor: 'inherit', color: 'inherit' };
-          //   }
-          // };
+
+          const getCellColor = () => {
+            if (hours) {
+              if (hours.isOverMaximum) {
+                return { bgcolor: '#FFC7CE', color: '#9C0006' };
+              } else if (hours.isUnderMinimum) {
+                return { bgcolor: '#C0E6F5', color: '#215C98' };
+              } else if (hours.inUnderDesired) {
+                return { bgcolor: 'inherit', color: '#9C5700' };
+              } else {
+                return { bgcolor: 'inherit', color: 'orange' };
+              }
+            } else {
+              return { bgcolor: 'inherit', color: 'inherit' };
+            }
+          };
           // console.log(hours);
 
           return (
             <TableCell
               key={week.id}
               sx={{
-                // ...getCellColor(),
+                ...getCellColor(),
                 zIndex: '1',
                 px: '0.5rem',
                 minWidth: '3rem',
