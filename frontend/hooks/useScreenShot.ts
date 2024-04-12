@@ -15,7 +15,7 @@ export const useScreenshot = () => {
    * @param  name - name of the file
    * @param  options - options for html2canvas
    */
-  const screenshot = (element: HTMLElement, name: string, options?: Partial<Options>) => {
+  const takeScreenshot = (element: HTMLElement, name: string, options?: Partial<Options>) => {
     return html2canvas(element, options)
       .then((canvas) => {
         const croppedCanvas = document.createElement('canvas');
@@ -45,5 +45,5 @@ export const useScreenshot = () => {
       });
   };
 
-  return { screenshot };
+  return { takeScreenshot };
 };
