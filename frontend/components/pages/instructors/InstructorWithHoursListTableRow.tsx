@@ -1,7 +1,7 @@
 'use client';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { PERIOD_OF_DAYS } from '@/constants/_index';
-import { clickableTrStyle } from '@/styles/_index';
+import { clickableTrStyle, inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
 import { GetInstructorsResponse } from '@/types/_index';
 import { Circle } from '@mui/icons-material';
 import { Box, TableCell, TableRow } from '@mui/material';
@@ -75,13 +75,13 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
           const getCellColor = () => {
             if (hours) {
               if (hours.isOverMaximum) {
-                return { bgcolor: '#FFC7CE', color: '#9C0006' };
+                return isOverMaximumColor;
               } else if (hours.isUnderMinimum) {
-                return { bgcolor: '#C0E6F5', color: '#215C98' };
+                return isUnderMinimumColor;
               } else if (hours.inUnderDesired) {
-                return { bgcolor: 'inherit', color: '#9C5700' };
+                return inUnderDesiredColor;
               } else {
-                return { bgcolor: 'inherit', color: 'orange' };
+                return { bgcolor: 'inherit', color: 'inherit' };
               }
             } else {
               return { bgcolor: 'inherit', color: 'inherit' };

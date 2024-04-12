@@ -4,7 +4,6 @@ import { inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import { GetInstructorsResponse } from '@/types/_index';
 import {
   Box,
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -46,7 +45,6 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
 
   const [weekBlocks, setWeekBlocks] = useState<WeekBlock[]>([]);
   const [instructorsWithHours, setInstructorsWithHours] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const weekBlocksData = [];
@@ -64,8 +62,6 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
       weekBlocksData.push(weekBlock);
     }
     setWeekBlocks(weekBlocksData);
-
-    setIsLoading(false);
   }, []);
 
   // TEMP
@@ -97,11 +93,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
 
   return (
     <>
-      <Box sx={{ display: isLoading ? 'flex' : 'none' }}>
-        <CircularProgress />
-      </Box>
-
-      <Box sx={{ display: isLoading ? 'none' : 'block' }}>
+      <Box>
         <Box
           sx={{
             overflowX: 'scroll',

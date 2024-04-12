@@ -6,7 +6,7 @@ interface HeadlineProps {
 
 const Headline: React.FC<HeadlineProps> = ({ name }) => {
   return (
-    <Typography variant="h4" gutterBottom color="primary.main" fontWeight={500} letterSpacing={0.25}>
+    <Typography variant="h4" color="primary.main" fontWeight={500} letterSpacing={0.25}>
       {name}
     </Typography>
   );
