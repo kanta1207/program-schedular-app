@@ -192,7 +192,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
             Close
           </Button>
           <div className="container mx-auto my-4 h-[calc(100%_-_2rem)] overflow-y-scroll custom-scroll-bar">
-            <Box>
+            <Box sx={{ px: '0.25rem' }}>
               <CohortSchedule
                 cohort={cohort}
                 cohorts={cohorts}
