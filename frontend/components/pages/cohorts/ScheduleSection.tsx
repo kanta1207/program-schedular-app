@@ -7,7 +7,7 @@ import {
   GetInstructorsResponse,
   Holiday,
 } from '@/types/_index';
-import CohortSchedule from './CohortSchedule';
+import CohortSchedule from '../../partials/cohortSchedule/CohortSchedule';
 import { useState } from 'react';
 
 interface ScheduleSectionProps {

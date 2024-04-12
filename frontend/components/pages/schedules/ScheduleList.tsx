@@ -21,7 +21,7 @@ import {
 } from '@/types/_index';
 import FilterScheduleDialog, { ScheduleFilters, filterKey } from './FilterDialog';
 import { Close, FilterAlt } from '@mui/icons-material';
-import CohortSchedule from '../cohorts/CohortSchedule';
+import CohortSchedule from '../../partials/cohortSchedule/CohortSchedule';
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
 import { toast } from 'react-toastify';

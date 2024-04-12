@@ -1,7 +1,7 @@
 'use client';
 
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
-import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
+import { CreateScheduleDialog } from '@/components/partials/cohortSchedule/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
