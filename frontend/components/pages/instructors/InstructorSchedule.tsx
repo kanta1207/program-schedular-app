@@ -30,7 +30,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
     quality: 1.0,
   });
 
-  const screenshotFileName = `${instructor.name.replace(/\s/g, '_')}_${dayjs().format('YYYY-MM-DD')}`;
+  const fileName = `${instructor.name.replace(/\s/g, '_')}_${dayjs().format('YYYY-MM-DD')}`;
 
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: ViewType) => {
     setViewType(newViewType);
@@ -38,7 +38,7 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   const handleTakeScreenshot = () => {
     try {
-      ref.current && takeScreenShot(ref.current, screenshotFileName);
+      ref.current && takeScreenShot(ref.current, fileName);
     } catch (error) {
       toast.error('Failed to take screenshot');
     }
