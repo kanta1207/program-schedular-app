@@ -1,27 +1,12 @@
 import html2canvas, { Options } from 'html2canvas';
 
-interface UseScreenShotProps {
-  type?: 'image/jpeg';
-  quality?: number;
-}
-
-/**
- * Hook to take screenshot of html element
- * @param type - Image format.
- * The standard MIME type for the image format to return.
- * If you do not specify this parameter, the default value is a PNG format image.
- * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
- * @param quality - Image quality.
- * This prop is used as a parameter for HTMLCanvasElement.toDataURL method.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL}
- */
-export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
+export const useScreenshot = () => {
   /**
    * creates name of file
    * @param  name - file name
    */
   const createFileName = (name: string) => {
-    return `${name}.jpeg`;
+    return `${name}.png`;
   };
 
   /**
@@ -45,7 +30,7 @@ export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
 
         if (croppedCanvasContext) croppedCanvasContext.drawImage(canvas, cropPositionLeft, cropPositionTop);
 
-        const base64Image = croppedCanvas.toDataURL(type, quality);
+        const base64Image = croppedCanvas.toDataURL();
 
         // create a element to attach the image as href, then click it to download the image
         const a = document.createElement('a');
