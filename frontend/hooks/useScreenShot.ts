@@ -1,7 +1,7 @@
 import html2canvas, { Options } from 'html2canvas';
 
 interface UseScreenShotProps {
-  type?: string;
+  type?: 'image/jpeg';
   quality?: number;
 }
 
@@ -21,7 +21,7 @@ export const useScreenshot = ({ type, quality }: UseScreenShotProps) => {
    * @param  name - file name
    */
   const createFileName = (name: string) => {
-    return `${name}.png`;
+    return `${name}.jpeg`;
   };
 
   /**
