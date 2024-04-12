@@ -159,16 +159,11 @@ export class InstructorsService {
   }
 
   async findWithAssignedHours(year?: number) {
-    if (year !== undefined) {
-      if (!Number.isInteger(year) || year < 0) {
-        throw new BadRequestException();
-      }
-    }
-    if (!year) year = new Date().getFullYear();
+    const targetYear = year || new Date().getFullYear();
 
     // start and end of the given year
-    const startDate = new Date(year, 0, 1);
-    const endDate = new Date(year, 11, 31, 23, 59, 59);
+    const startDate = new Date(targetYear, 0, 1);
+    const endDate = new Date(targetYear, 11, 31, 23, 59, 59);
 
     // all weeks in 1 year
     const allWeeks = [];
