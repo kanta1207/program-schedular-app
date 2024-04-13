@@ -164,6 +164,7 @@ export class InstructorsService {
     // start and end of the given year
     const startDate = new Date(targetYear, 0, 1);
     const endDate = new Date(targetYear, 11, 31, 23, 59, 59);
+    // const endDate = new Date(year + 1, 0, 1);
 
     // all weeks in 1 year
     const allWeeks = [];
@@ -173,8 +174,10 @@ export class InstructorsService {
       endOfWeek.setDate(currentWeekStart.getDate() + 4); // calculate date of weekend (friday)
 
       allWeeks.push({
-        startAt: currentWeekStart.toISOString().split('T')[0],
-        endAt: endOfWeek.toISOString().split('T')[0],
+        // startAt: currentWeekStart.toISOString().split('T')[0],
+        // endAt: endOfWeek.toISOString().split('T')[0],
+        startAt: currentWeekStart,
+        endAt: endOfWeek,
       });
 
       currentWeekStart = new Date(endOfWeek);
@@ -225,27 +228,30 @@ export class InstructorsService {
 
     const instructorsAssignedHours = instructors.map((instructor) => {
       const assignedHoursForInstructor = allWeeks.map((week) => {
-        const weekStart = new Date(week.startAt);
-        const weekEnd = new Date(week.endAt);
+        // const weekStart = new Date(week.startAt);
+        // const weekEnd = new Date(week.endAt);
+        // const weekStart = week.startAt;
+        // const weekEnd = week.endAt;
         const hours = instructor.classes
-          .filter((cls) => {
-            const clsStartDate = new Date(cls.startAt);
-            return clsStartDate >= weekStart && clsStartDate <= weekEnd;
+          .filter((clazz) => {
+            // const clsStartDate = new Date(clazz.startAt);
+            // return clsStartDate >= week.startAt && clsStartDate <= week.endAt;
+            return week.startAt <= clazz.endAt && week.endAt >= clazz.startAt;
           })
           .reduce(
-            (totalHours, cls) =>
-              updateAssignedHours(totalHours, cls.weekdaysRange.id),
+            (totalHours, clazz) =>
+              updateAssignedHours(totalHours, clazz.weekdaysRange.id),
             0,
           );
 
         let isOverMaximum = false;
-        let isUnderMaximum = false;
+        let isUnderMinimum = false;
         let isUnderDesired = false;
         if (instructor.desiredWorkingHours !== null) {
           isUnderDesired = hours < instructor.desiredWorkingHours;
         } else {
           isOverMaximum = instructor.contractType.maxHours < hours;
-          isUnderMaximum = hours < instructor.contractType.maxHours;
+          isUnderMinimum = hours < instructor.contractType.minHours;
         }
 
         return {
@@ -253,7 +259,7 @@ export class InstructorsService {
           endAt: week.endAt,
           hours,
           isOverMaximum,
-          isUnderMaximum,
+          isUnderMinimum,
           isUnderDesired,
         };
       });
