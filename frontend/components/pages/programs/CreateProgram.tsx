@@ -4,7 +4,7 @@ import ErrorMessages from '@/components/partials/ErrorMessages';
 import { TOAST } from '@/constants/_index';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';

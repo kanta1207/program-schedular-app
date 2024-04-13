@@ -24,7 +24,7 @@ import { Close, FilterAlt } from '@mui/icons-material';
 import CohortSchedule from '../../partials/cohortSchedule/CohortSchedule';
 import { toast } from 'react-toastify';
 import { CONFIRM, TOAST } from '@/constants/_index';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import useHeightResize from '@/hooks/useHeightResize';
 
 interface ScheduleListProps {
