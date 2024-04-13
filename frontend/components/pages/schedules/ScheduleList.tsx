@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
 import theme from '@/app/theme';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
 import { GanttGroupBy, RecordType, convertClassesToGantt } from '@/helpers/convertClassesToGantt';
 import { getClasses, getClassesProps } from '@/actions/classes/getClasses';
 import GanttToolTip from '@/components/partials/gantt/GanttToolTip';
@@ -22,11 +22,10 @@ import {
 import FilterScheduleDialog, { ScheduleFilters, filterKey } from './FilterDialog';
 import { Close, FilterAlt } from '@mui/icons-material';
 import CohortSchedule from '../../partials/cohortSchedule/CohortSchedule';
-import Drawer from 'react-modern-drawer';
-import 'react-modern-drawer/dist/index.css';
 import { toast } from 'react-toastify';
 import { CONFIRM, TOAST } from '@/constants/_index';
 import { useRouter } from 'next/navigation';
+import useHeightResize from '@/hooks/useHeightResize';
 
 interface ScheduleListProps {
   cohort?: GetCohortResponse;
@@ -58,6 +57,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   // This flag is used like a switch to notify child component to reset the form, thus boolean value itself doesn't represent its state
   const [resetFlag, setResetFlag] = useState(false);
   const router = useRouter();
+  const { height, enableResize } = useHeightResize({ minHeight: 100 });
 
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newGroupBy: GanttGroupBy) => {
     setGroupBy(newGroupBy);
@@ -161,7 +161,6 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       {ganttItems.length > 0 ? (
         <Box sx={{ fontSize: '12px' }}>
           <Gantt
-            ganttHeight={600}
             tasks={ganttItems}
             viewMode={ViewMode.Week}
             viewDate={dayjs().subtract(2, 'week').toDate()}
@@ -179,22 +178,33 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       )}
       {cohort && (
         <Drawer
+          sx={{
+            height: height,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              height: height,
+              boxSizing: 'border-box',
+            },
+          }}
           open={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-          direction="bottom"
-          enableOverlay={false}
-          size={400}
+          variant="persistent"
+          anchor="bottom"
         >
-          <Button
-            sx={{ position: 'absolute', right: '0', bottom: '100%', bgcolor: 'grey.200' }}
-            startIcon={<Close />}
-            type="button"
-            onClick={handleDrawerCloseClick}
-            variant="outlined"
-          >
-            Close
-          </Button>
-          <div className="container mx-auto my-4 h-[calc(100%_-_2rem)] overflow-y-scroll custom-scroll-bar">
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              height: '4px',
+              width: '100%',
+              backgroundColor: 'grey.200',
+              cursor: 'row-resize',
+            }}
+            onMouseDown={enableResize}
+          />
+          <IconButton onClick={handleDrawerCloseClick} sx={{ position: 'absolute', top: '8px', right: '8px' }}>
+            <Close />
+          </IconButton>
+          <div className="mx-16 my-4 h-[calc(100%_-_2rem)] overflow-y-scroll custom-scroll-bar">
             <Box sx={{ px: '0.25rem' }}>
               <CohortSchedule
                 cohort={cohort}
