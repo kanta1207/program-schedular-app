@@ -25,6 +25,7 @@ import CohortSchedule from '../../partials/cohortSchedule/CohortSchedule';
 import { toast } from 'react-toastify';
 import { CONFIRM, TOAST } from '@/constants/_index';
 import { useRouter } from 'next/navigation';
+import useHeightResize from '@/hooks/useHeightResize';
 
 interface ScheduleListProps {
   cohort?: GetCohortResponse;
@@ -56,6 +57,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
   // This flag is used like a switch to notify child component to reset the form, thus boolean value itself doesn't represent its state
   const [resetFlag, setResetFlag] = useState(false);
   const router = useRouter();
+  const { height, enableResize } = useHeightResize({ minHeight: 100 });
 
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newGroupBy: GanttGroupBy) => {
     setGroupBy(newGroupBy);
@@ -138,8 +140,6 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
 
   const activeInstructors = instructors.filter(({ isActive }) => isActive);
 
-  const drawerHeight = 400;
-
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '.5rem' }}>
@@ -179,10 +179,10 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       {cohort && (
         <Drawer
           sx={{
-            height: drawerHeight,
+            height: height,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              height: drawerHeight,
+              height: height,
               boxSizing: 'border-box',
             },
           }}
@@ -190,6 +190,17 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
           variant="persistent"
           anchor="bottom"
         >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              height: '4px',
+              width: '100%',
+              backgroundColor: 'grey.200',
+              cursor: 'row-resize',
+            }}
+            onMouseDown={enableResize}
+          />
           <IconButton onClick={handleDrawerCloseClick} sx={{ position: 'absolute', top: '8px', right: '8px' }}>
             <Close />
           </IconButton>
