@@ -69,7 +69,6 @@ export class ClassesService {
           classes: classRelation,
         },
         where: {
-          isActive: true,
           classes: {
             cohort: cohortIds && { id: In(cohortIds) },
             instructor: instructorIds && { id: In(instructorIds) },
