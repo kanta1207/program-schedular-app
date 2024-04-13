@@ -675,7 +675,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           </TableCell>
                           <TableCell sx={{ alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              {scheduleItem.instructor.data?.name}
+                              {`${scheduleItem.instructor.data?.name} ${
+                                scheduleItem.instructor.data?.deletedAt && '(deleted)'
+                              }`}
                               {scheduleItem.instructor.messages.length > 0 && (
                                 <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
                                   <WarningIcon
