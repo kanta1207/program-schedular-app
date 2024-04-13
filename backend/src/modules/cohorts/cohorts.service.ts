@@ -92,7 +92,6 @@ export class CohortsService {
       order: {
         classes: { startAt: 'ASC', endAt: 'ASC', weekdaysRange: { id: 'ASC' } },
       },
-      withDeleted: true,
       relations: {
         intake: true,
         program: true,
@@ -127,6 +126,8 @@ export class CohortsService {
           },
         },
       },
+      // This "withDeleted" option is necessary to get the soft-deleted courses
+      withDeleted: true,
     });
     if (!cohort) {
       throw new NotFoundException('Cohort Not Found');
