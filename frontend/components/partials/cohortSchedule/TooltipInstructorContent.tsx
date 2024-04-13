@@ -20,22 +20,18 @@ const TooltipInstructorContent: React.FC<TooltipInstructorContentProps> = ({ ins
 
   return (
     <div>
-      {/* Availability */}
       <p>
         Availability: {instructor.weekdaysRange.name} ({weekdaysRange})
       </p>
-      {/* Contract Type */}
       <p>
-        Contract: {instructor.contractType.name} {contractInfo}{' '}
+        Contract: {instructor.contractType.name} {contractInfo}
       </p>
-      {/* Courses */}
       <p>Courses:</p>
       <ul>
         {instructor.courses.map((course) => (
           <li key={course.id}>&bull; {course.name}</li>
         ))}
       </ul>
-      {/* Note */}
       {instructor.note && (
         <div>
           <br />
