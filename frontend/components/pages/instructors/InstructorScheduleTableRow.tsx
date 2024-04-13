@@ -1,7 +1,7 @@
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { dateFormat } from '@/styles/_index';
 import { GetClassResponse } from '@/types/_index';
-import { TableCell, Typography } from '@mui/material';
+import { TableCell } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
