@@ -20,6 +20,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
+import Link from 'next/link';
 import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -197,7 +198,15 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                         <TableCell>{dayjs(intake.endAt).format(dateFormat)}</TableCell>
                         {intake.periodOfDays.map((period) => (
                           <TableCell key={period.id}>
-                            {period.cohorts.map((cohort) => cohort.name).join(', ')}
+                            <ul className="flex gap-2 items-center">
+                              {period.cohorts.map((cohort) => (
+                                <li key={cohort.id}>
+                                  <Link href={`/cohorts/${cohort.id}`} className="underline">
+                                    {cohort.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
                           </TableCell>
                         ))}
                         <TableCell>
