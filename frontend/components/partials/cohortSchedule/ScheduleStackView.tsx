@@ -84,7 +84,7 @@ export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: `2fr repeat(${intakeTotalWeeks}, 1fr)`,
+        gridTemplateColumns: `100px repeat(${intakeTotalWeeks}, minmax(45px,1fr))`,
         gridTemplateRows: 'repeat(3, 1fr)',
         width: '100%',
         minWidth: '1024px',
@@ -103,15 +103,48 @@ export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
       }}
     >
       {/* Cohort name */}
-      <Box className="schedule-grid-child" sx={{ gridColumn: '1', gridRowStart: '1' }}>
+      <Box
+        className="schedule-grid-child"
+        sx={{
+          gridColumn: '1',
+          gridRowStart: '1',
+          position: 'sticky',
+          left: '0',
+          bgcolor: '#FFF',
+          borderInline: '1px solid #33333315',
+          ml: '-1px',
+        }}
+      >
         <Typography variant="h6">{classStacks.length > 0 && classStacks[0].name}</Typography>
       </Box>
 
       {/* Column Header (Days of the week)*/}
-      <Box className="schedule-grid-child" sx={{ gridColumn: '1', gridRowStart: '2' }}>
+      <Box
+        className="schedule-grid-child"
+        sx={{
+          gridColumn: '1',
+          gridRowStart: '2',
+          position: 'sticky',
+          left: '0',
+          bgcolor: '#FFF',
+          borderInline: '1px solid #33333315',
+          ml: '-1px',
+        }}
+      >
         <Typography>Mon - Wed</Typography>
       </Box>
-      <Box className="schedule-grid-child" sx={{ gridColumn: '1', gridRowStart: '3' }}>
+      <Box
+        className="schedule-grid-child"
+        sx={{
+          gridColumn: '1',
+          gridRowStart: '3',
+          position: 'sticky',
+          left: '0',
+          bgcolor: '#FFF',
+          borderInline: '1px solid #33333315',
+          ml: '-1px',
+        }}
+      >
         <Typography>Wed - Fri</Typography>
       </Box>
 
