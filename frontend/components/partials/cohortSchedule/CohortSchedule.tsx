@@ -49,6 +49,7 @@ import isBreak from '@/helpers/isBreak';
 import isHoliday from '@/helpers/isHoliday';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TooltipInstructorContent from './TooltipInstructorContent';
+import TooltipMessageContent from './TooltipMessageContent';
 
 export type CreateType = 'new' | 'copy';
 
@@ -261,16 +262,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
   };
 
   const isDateDisable = (date: Dayjs) => isBreak(date.toDate(), breaks) || isHoliday(date.toDate(), holidays);
-
-  const tooltipTitle = (messages: string[]) => {
-    return (
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>&bull; {message}</li>
-        ))}
-      </ul>
-    );
-  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -652,7 +643,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                           <TableCell>
                             <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
                             {scheduleItem.weekdaysRange.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
+                              <Tooltip title={<TooltipMessageContent messages={scheduleItem.weekdaysRange.messages} />}>
                                 <WarningIcon
                                   fontSize="small"
                                   color="warning"
@@ -669,7 +660,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                               {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
                               {scheduleItem.classroom.messages.length > 0 && (
-                                <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
+                                <Tooltip title={<TooltipMessageContent messages={scheduleItem.classroom.messages} />}>
                                   <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
                                 </Tooltip>
                               )}
@@ -679,7 +670,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                               {scheduleItem.instructor.data?.name}
                               {scheduleItem.instructor.messages.length > 0 && (
-                                <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
+                                <Tooltip title={<TooltipMessageContent messages={scheduleItem.instructor.messages} />}>
                                   <WarningIcon
                                     fontSize="small"
                                     color="warning"
