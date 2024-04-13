@@ -40,7 +40,7 @@ const getClassRecord = (groupName: GanttGroupBy, classData: GetClassResponse): T
   const endAt = dayjs(classData.endAt).toDate();
 
   const displayName = () => {
-    const courseName = classData.course?.deletedAt ? `${classData.course?.name} (deleted)` : classData.course?.name;
+    const courseName = classData.course.deletedAt ? `${classData.course.name} (deleted)` : classData.course.name;
 
     if (groupName === 'cohort') {
       return `${periodIcon} ${courseName} ${classData.instructor ? `| ${classData.instructor.name}` : ''} @${
