@@ -669,10 +669,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                           </TableCell>
                           <TableCell sx={{ alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              <Link
-                                href={`/instructors/${scheduleItem.instructor.data?.id}`}
-                                className="hover:underline"
-                              >
+                              <Link href={`/instructors/${scheduleItem.instructor.data?.id}`} className="underline">
                                 {scheduleItem.instructor.data?.name}
                               </Link>
                               {scheduleItem.instructor.messages.length > 0 && (

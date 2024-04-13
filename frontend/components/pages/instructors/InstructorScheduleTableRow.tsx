@@ -19,7 +19,7 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
       <TableCell>{endDate}</TableCell>
       <TableCell>{classData.course.name}</TableCell>
       <TableCell>
-        <Link href={`/cohorts/${classData.cohort.id}`} className="hover:underline">
+        <Link href={`/cohorts/${classData.cohort.id}`} className="underline">
           {classData.cohort.name}
         </Link>
       </TableCell>
