@@ -123,7 +123,7 @@ const ScheduleList: React.FC<ScheduleListProps> = ({
       }
 
       const id = task.project.split('-')[0];
-      router.push(`/schedules?cohortId=${id}`);
+      router.replace(`/schedules?cohortId=${id}`);
     }
   };
 
