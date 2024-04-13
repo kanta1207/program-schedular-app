@@ -47,6 +47,8 @@ import getPlannedHours from '@/helpers/getPlannedHours';
 import getRequiredHours from '@/helpers/getRequiredHours';
 import isBreak from '@/helpers/isBreak';
 import isHoliday from '@/helpers/isHoliday';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import TooltipInstructorContent from './TooltipInstructorContent';
 
 export type CreateType = 'new' | 'copy';
 
@@ -592,7 +594,18 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                                         value={instructor.id}
                                         disabled={!instructor.isActive}
                                       >
-                                        {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '.25rem' }}>
+                                          <Tooltip title={<TooltipInstructorContent instructor={instructor} />}>
+                                            <InfoOutlinedIcon
+                                              fontSize="small"
+                                              color="primary"
+                                              sx={{ cursor: 'pointer' }}
+                                            />
+                                          </Tooltip>
+                                          <p>
+                                            {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                          </p>
+                                        </Box>
                                       </MenuItem>
                                     ))}
                                   </Select>

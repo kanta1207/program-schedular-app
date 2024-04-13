@@ -25,6 +25,8 @@ export type TimeName = '8:30 - 12:30' | '1:00 - 5:00' | '5:30 - 9:30';
 export interface ContractType {
   id: number;
   name: ContractName;
+  maxHours: number | null;
+  minHours: number | null;
 }
 
 export type ContractName = 'Full time' | 'Part time' | 'Contract';
