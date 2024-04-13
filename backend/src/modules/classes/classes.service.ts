@@ -60,7 +60,7 @@ export class ClassesService {
             endAt: 'ASC',
           },
         },
-        // This "withDeleted" option is necessary to get the soft-deleted courses
+        // This "withDeleted" option is necessary to get the soft-deleted courses and instructors
         withDeleted: true,
       });
     } else if (groupBy === 'instructor') {
