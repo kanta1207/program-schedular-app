@@ -50,6 +50,7 @@ import isHoliday from '@/helpers/isHoliday';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TooltipInstructorContent from './TooltipInstructorContent';
 import TooltipMessageContent from './TooltipMessageContent';
+import Link from 'next/link';
 
 export type CreateType = 'new' | 'copy';
 
@@ -668,7 +669,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                           </TableCell>
                           <TableCell sx={{ alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              {scheduleItem.instructor.data?.name}
+                              <Link href={`/instructors/${scheduleItem.instructor.data?.id}`} className="underline">
+                                {scheduleItem.instructor.data?.name}
+                              </Link>
                               {scheduleItem.instructor.messages.length > 0 && (
                                 <Tooltip title={<TooltipMessageContent messages={scheduleItem.instructor.messages} />}>
                                   <WarningIcon
