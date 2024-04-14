@@ -223,11 +223,18 @@ export class InstructorsService {
       }
     };
 
+    const toUTC = (date: Date) => {
+      return date.getTime() + date.getTimezoneOffset() * 60000;
+    };
+
     const instructorsAssignedHours = instructors.map((instructor) => {
       const assignedHoursForInstructor = allWeeks.map((week) => {
         const hours = instructor.classes
           .filter((clazz) => {
-            return week.startAt <= clazz.endAt && week.endAt >= clazz.startAt;
+            return (
+              week.startAt <= toUTC(clazz.endAt) &&
+              week.endAt >= toUTC(clazz.startAt)
+            );
           })
           .reduce(
             (totalHours, clazz) =>
