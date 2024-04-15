@@ -369,7 +369,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                   name="courseIds"
                   control={control}
                   render={({ field }) => (
-                    <FormGroup row>
+                    <FormGroup sx={{ flexDirection: 'column' }} row>
                       {programs.map((program) => (
                         <Box key={program.id}>
                           <Typography variant="subtitle1">{program.name}</Typography>
