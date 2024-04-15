@@ -240,10 +240,12 @@ export class CohortsService {
           messages: [],
         },
         classroom: {
-          data: clazz.classroom,
-          messages: classroomMessages,
+          // Omitting the "classes" property to remove unnecessary data from the response
+          data: { ...clazz.classroom, classes: undefined },
+          messages: [],
         },
         instructor: {
+          // Omitting the "classes", "contractType", "periodOfDays", "courses", and "weekdaysRange" properties to remove unnecessary data from the response
           data: {
             ...instructor,
             classes: undefined,
