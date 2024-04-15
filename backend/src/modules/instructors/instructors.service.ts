@@ -9,6 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 
+import { toUTC } from '../../common/utils';
+
 import {
   Instructor,
   CoursesInstructors,
@@ -163,12 +165,12 @@ export class InstructorsService {
 
     // start and end of the given year
     const startDate = new Date(targetYear, 0, 1);
-    const endDate = new Date(targetYear, 11, 31, 23, 59, 59);
+    const endDate = new Date(year + 1, 0, 1);
 
     // all weeks in 1 year
     const allWeeks = [];
     let currentWeekStart = new Date(startDate);
-    while (currentWeekStart <= endDate) {
+    while (currentWeekStart < endDate) {
       const endOfWeek = new Date(currentWeekStart);
       endOfWeek.setDate(currentWeekStart.getDate() + 4); // calculate date of weekend (friday)
 
@@ -186,12 +188,7 @@ export class InstructorsService {
       .leftJoinAndSelect('instructor.contractType', 'contractType')
       .leftJoinAndSelect('instructor.weekdaysRange', 'instructorWeekdaysRange')
       .leftJoinAndSelect('instructor.periodOfDays', 'periodOfDays')
-      .leftJoinAndSelect(
-        'instructor.classes',
-        'classes',
-        'classes.startAt BETWEEN :startDate AND :endDate',
-        { startDate, endDate },
-      )
+      .leftJoinAndSelect('instructor.classes', 'classes')
       .leftJoinAndSelect('classes.weekdaysRange', 'weekdaysRange')
       .select([
         'instructor',
@@ -221,10 +218,6 @@ export class InstructorsService {
         default:
           return assignedHours;
       }
-    };
-
-    const toUTC = (date: Date) => {
-      return date.getTime() + date.getTimezoneOffset() * 60000;
     };
 
     const instructorsAssignedHours = instructors.map((instructor) => {
