@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { Program } from 'src/entity';
+import { Program } from '../../entity';
 
 import { CreateProgramDto } from './dto/create-program.dto';
 import { UpdateProgramDto } from './dto/update-program.dto';
@@ -37,7 +37,7 @@ export class ProgramsService {
   }
 
   async remove(id: number) {
-    const deleteResult = await this.programRepository.delete(id);
+    const deleteResult = await this.programRepository.softDelete(id);
 
     if (deleteResult.affected === 0) {
       throw new NotFoundException('Program Not Found');

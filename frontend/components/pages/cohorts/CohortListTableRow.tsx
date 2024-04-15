@@ -3,7 +3,7 @@ import { PERIOD_OF_DAYS } from '@/constants/_index';
 import { clickableTrStyle } from '@/styles/_index';
 import { GetCohortsResponse } from '@/types/_index';
 import { TableCell, TableRow } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 
 interface CohortListTableRowProps {
   cohort: GetCohortsResponse;

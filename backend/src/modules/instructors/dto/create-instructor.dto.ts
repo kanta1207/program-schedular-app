@@ -1,4 +1,5 @@
 import {
+  ArrayMinSize,
   IsArray,
   IsBoolean,
   IsNotEmpty,
@@ -38,10 +39,12 @@ export class CreateInstructorDto {
   @IsArray()
   @IsNumber({}, { each: true })
   @IsNotEmpty()
+  @ArrayMinSize(1)
   courseIds: number[];
 
   @IsArray()
   @IsNumber({}, { each: true })
   @IsNotEmpty()
+  @ArrayMinSize(1)
   periodOfDayIds: number[];
 }

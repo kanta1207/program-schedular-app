@@ -19,7 +19,7 @@ import {
   MasterPeriodOfDay,
   InstructorsPeriodOfDays,
   Course,
-} from 'src/entity';
+} from '../../entity';
 
 import {
   CONTRACTOR_CONTRACT_TYPE_ID,
@@ -137,6 +137,9 @@ export class InstructorsService {
       relations: {
         contractType: true,
         weekdaysRange: true,
+        courses: {
+          course: true,
+        },
       },
       order: { isActive: 'DESC', id: 'DESC' },
     });
@@ -151,10 +154,13 @@ export class InstructorsService {
 
     // Add period of days to the result object
     const result = instructors.map((instructor) => {
+      const courses = instructor.courses.map((instructorCourse) => ({
+        ...instructorCourse.course,
+      }));
       const periodOfDays = instructorPeriodOfDays
         .filter((ipod) => ipod.instructor.id === instructor.id)
         .map((ipod) => ipod.periodOfDay);
-      return { ...instructor, periodOfDays };
+      return { ...instructor, courses, periodOfDays };
     });
 
     return result;

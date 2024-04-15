@@ -1,12 +1,12 @@
 'use client';
 
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
-import { CreateScheduleDialog } from '@/components/pages/cohorts/CreateScheduleDialog';
+import { CreateScheduleDialog } from '@/components/partials/cohortSchedule/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
-import getWeeklyHours from '@/helpers/getWeeklyHours';
 import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import {
   GetBreaksResponse,
@@ -21,7 +21,8 @@ import { ExpandMore } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
+import WarningIcon from '@mui/icons-material/Warning';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -35,21 +36,29 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import WarningIcon from '@mui/icons-material/Warning';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { Tooltip } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { SchedulePreview } from './SchedulePreview';
+import { ClassItem, ScheduleStackView } from './ScheduleStackView';
+import getPlannedHours from '@/helpers/getPlannedHours';
+import getRequiredHours from '@/helpers/getRequiredHours';
+import isBreak from '@/helpers/isBreak';
+import isHoliday from '@/helpers/isHoliday';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import TooltipInstructorContent from './TooltipInstructorContent';
+import TooltipMessageContent from './TooltipMessageContent';
+import Link from 'next/link';
+
 export type CreateType = 'new' | 'copy';
 
 type FormValues = {
   schedule: {
-    startAt: Dayjs;
-    endAt: Dayjs;
+    startAt: Date;
+    endAt: Date;
     cohortId: number;
     weekdaysRangeId: number;
     courseId: number;
@@ -75,16 +84,83 @@ interface CohortScheduleProps {
   cohorts: GetCohortsResponse[];
   breaks: GetBreaksResponse[];
   holidays: Holiday[] | undefined;
+  isScheduleEditable: boolean;
+  setIsScheduleEditable: Dispatch<SetStateAction<boolean>>;
+  resetFlag?: boolean;
 }
 
-const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instructors, cohorts, breaks, holidays }) => {
-  const [isScheduleEditable, setIsScheduleEditable] = useState(false);
+const CohortSchedule: React.FC<CohortScheduleProps> = ({
+  cohort,
+  courses,
+  instructors,
+  cohorts,
+  breaks,
+  holidays,
+  isScheduleEditable,
+  setIsScheduleEditable,
+  resetFlag,
+}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [filteredCohorts, setFilteredCohorts] = useState<GetCohortsResponse[]>(cohorts);
+  const [copyableCohorts, setCopyableCohorts] = useState<GetCohortsResponse[]>(cohorts);
   const [accordionOpen, setAccordionOpen] = useState(false);
-
+  const [cohortsInSameIntake, setCohortsInSameIntake] = useState<GetCohortsResponse[]>();
   const router = useRouter();
+  const pathname = usePathname();
+
   const now = dayjs();
+
+  const cohortIntakeStartAt =
+    dayjs(cohort.intake.startAt).day() === 2
+      ? dayjs(cohort.intake.startAt).subtract(1, 'day')
+      : dayjs(cohort.intake.startAt);
+
+  const initCopyableCohorts = () => {
+    const copyableCohorts = cohorts.filter(
+      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
+    );
+    setCopyableCohorts(copyableCohorts);
+  };
+
+  const initCohortsInSameIntake = () => {
+    const filteredCohorts = cohorts.filter(
+      (cohortItem) => cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id,
+    );
+    setCohortsInSameIntake(filteredCohorts);
+  };
+
+  const getInitialCohortClasses = () => {
+    return cohort.classes.map((classData) => ({
+      startAt: classData.startAt,
+      endAt: classData.endAt,
+      cohortId: cohort.id,
+      weekdaysRangeId: classData.weekdaysRange.data.id,
+      courseId: classData.course.id,
+      classroomId: classData.classroom.data.id,
+      instructorId: classData.instructor.data?.id,
+    }));
+  };
+
+  useEffect(() => {
+    // Enable users to create schedule without clicking on "Edit schedule" manually
+    if (pathname.split('/')[1] === 'cohorts' && cohort.classes.length === 0) {
+      setDialogOpen(true);
+    }
+
+    initCopyableCohorts();
+  }, []);
+
+  // When given cohort has changed, other cohorts within the same intake and its form data should be initiated
+  useEffect(() => {
+    initCohortsInSameIntake();
+    initCopyableCohorts();
+    // Reset form to update watch data
+    reset({ schedule: getInitialCohortClasses() });
+  }, [cohort]);
+
+  useEffect(() => {
+    setIsScheduleEditable(false);
+    reset({ schedule: getInitialCohortClasses() });
+  }, [resetFlag]);
 
   const scheduleItems: Array<GetCohortClass | GetBreaksResponse> = [
     ...cohort.classes,
@@ -97,44 +173,18 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
   });
 
   const { control, handleSubmit, reset, watch } = useForm<FormValues>({
-    defaultValues: {
-      schedule: [
-        {
-          startAt: now,
-          endAt: now,
-          cohortId: 0,
-          weekdaysRangeId: 0,
-          courseId: 0,
-          classroomId: 0,
-          instructorId: 0,
-        },
-      ],
-    },
+    defaultValues: { schedule: getInitialCohortClasses() },
   });
 
   const watchSchedule = watch('schedule');
 
   const { fields, append, remove } = useFieldArray<FormValues>({ control, name: 'schedule' });
 
-  useEffect(() => {
-    reset({
-      schedule: cohort.classes.map((classData) => ({
-        startAt: dayjs(classData.startAt),
-        endAt: dayjs(classData.endAt),
-        cohortId: cohort.id,
-        courseId: classData.course.id,
-        weekdaysRangeId: classData.weekdaysRange.data.id,
-        classroomId: classData.classroom.data.id,
-        instructorId: classData.instructor.data?.id,
-      })),
-    });
-  }, []);
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const payload = data.schedule.map((classData) => ({
-        startAt: classData.startAt,
-        endAt: classData.endAt,
+        startAt: dayjs(classData.startAt),
+        endAt: dayjs(classData.endAt),
         cohortId: cohort.id,
         weekdaysRangeId: classData.weekdaysRangeId,
         courseId: classData.courseId,
@@ -145,8 +195,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
       setIsScheduleEditable(false);
       reset({
         schedule: classes.map((classData) => ({
-          startAt: dayjs(classData.startAt),
-          endAt: dayjs(classData.endAt),
+          startAt: classData.startAt,
+          endAt: classData.endAt,
           cohortId: cohort.id,
           weekdaysRangeId: classData.weekdaysRange.id,
           courseId: classData.course.id,
@@ -161,96 +211,26 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     }
   };
 
-  const handleCancelClick = () => {
+  const handleCancel = () => {
     if (confirm(CONFIRM.cancel)) {
       setIsScheduleEditable(false);
       remove();
       if (cohort.classes.length > 0) {
-        reset({
-          schedule: cohort.classes.map((classData) => ({
-            startAt: dayjs(classData.startAt),
-            endAt: dayjs(classData.endAt),
-            cohortId: cohort.id,
-            weekdaysRangeId: classData.weekdaysRange.data.id,
-            courseId: classData.course.id,
-            classroomId: classData.classroom.data.id,
-            instructorId: classData.instructor.data?.id,
-          })),
-        });
+        reset({ schedule: getInitialCohortClasses() });
       }
     }
   };
 
-  const getPlannedHours = (startAt: Date, endAt: Date, weekdaysRangeId: number): number => {
-    const startDate = dayjs(startAt);
-    const endDate = dayjs(endAt);
-
-    const totalBreakWeeks = breaks.reduce((accumulator, breakItem) => {
-      const { startAt, endAt } = breakItem;
-      const breakStartDate = dayjs(startAt);
-      const breakEndDate = dayjs(endAt);
-
-      if (startDate <= breakStartDate && breakEndDate <= endDate) {
-        const daysDiff = breakEndDate.diff(breakStartDate, 'day');
-        const breakWeeks = Math.ceil(daysDiff / 7);
-        return accumulator + breakWeeks;
-      }
-
-      return accumulator;
-    }, 0);
-
-    const daysDiff = endDate.diff(startDate, 'day');
-    const totalWeeks = Math.ceil(daysDiff / 7);
-
-    const weeklyHours = getWeeklyHours(weekdaysRangeId);
-
-    return (totalWeeks - totalBreakWeeks) * weeklyHours;
-  };
-
-  const getRequiredHours = (courseId: number): number => {
-    return courses.find((course) => course.id === courseId)?.requiredHours ?? 0;
-  };
-
-  const tooltipTitle = (messages: string[]) => {
-    return (
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>&bull; {message}</li>
-        ))}
-      </ul>
-    );
-  };
-
-  // dialog
-  useEffect(() => {
-    if (dialogOpen) {
-      const filteredCohorts = cohorts.filter(
-        (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
-      );
-      setFilteredCohorts(filteredCohorts);
-    }
-  }, [dialogOpen]);
-
-  useEffect(() => {
-    cohort.classes.length === 0 && setDialogOpen(true);
-
-    // Filter cohorts by the same program ID but excluding their own cohort ID.
-    const filteredCohorts = cohorts.filter(
-      (cohortItem) => cohortItem.program.id === cohort.program.id && cohortItem.id !== cohort.id,
-    );
-    setFilteredCohorts(filteredCohorts);
-  }, []);
-
-  const handleOpen = () => {
+  const handleDialogOpen = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
+  const handleDialogClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
     if (createType === 'new') {
       remove();
       append({
-        startAt: now.startOf('day'),
-        endAt: now.startOf('day'),
+        startAt: cohortIntakeStartAt.toDate(),
+        endAt: cohortIntakeStartAt.add(25, 'day').toDate(), // 4 weeks
         cohortId: cohort.id,
         weekdaysRangeId: 1,
         courseId: 0,
@@ -268,8 +248,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           const endDaysDiffFromIntakeStart = dayjs(copiedClass.endAt).diff(copiedCohortIntakeStartAt, 'day');
           return {
             // Adjust startAt and endAt to appropriate periods for the intake of the cohort under editing.
-            startAt: cohortIntakeStartAt.add(startDaysDiffFromIntakeStart, 'day'),
-            endAt: cohortIntakeStartAt.add(endDaysDiffFromIntakeStart, 'day'),
+            startAt: cohortIntakeStartAt.add(startDaysDiffFromIntakeStart, 'day').toDate(),
+            endAt: cohortIntakeStartAt.add(endDaysDiffFromIntakeStart, 'day').toDate(),
             cohortId: selectedCohort.id,
             weekdaysRangeId: copiedClass.weekdaysRange.id,
             courseId: copiedClass.course.id,
@@ -283,31 +263,23 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
     setDialogOpen(false);
   };
 
-  // DatePicker Break/Holiday disabled
-  const isBreak = (date: Dayjs) =>
-    breaks.some(
-      (breakItem) =>
-        dayjs(breakItem.startAt).subtract(1, 'day').isBefore(date, 'day') &&
-        dayjs(breakItem.endAt).add(1, 'day').isAfter(date, 'day'),
-    );
-  const isHoliday = (date: Dayjs) => !!holidays && holidays.some((holiday) => dayjs(holiday.date).isSame(date));
-  const isDateDisable = (date: Dayjs) => isBreak(date) || isHoliday(date);
+  const isDateDisable = (date: Dayjs) => isBreak(date.toDate(), breaks) || isHoliday(date.toDate(), holidays);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleClose} cohorts={filteredCohorts} />
+        <CreateScheduleDialog dialogOpen={dialogOpen} onClose={handleDialogClose} cohorts={copyableCohorts} />
         {/* Schedule Edit Actions */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
           <Headline name={`Schedule: ${cohort?.name}`} />
           <Box>
             {isScheduleEditable ? (
               <Box sx={{ display: 'flex', gap: '1rem', width: 'fit-content' }}>
-                <Button startIcon={<RefreshIcon />} variant="outlined" onClick={handleOpen}>
+                <Button startIcon={<RefreshIcon />} variant="outlined" onClick={handleDialogOpen}>
                   Reset
                 </Button>
                 <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: 'primary.main' }} />
-                <Button variant="outlined" type="button" onClick={handleCancelClick}>
+                <Button variant="outlined" type="button" onClick={handleCancel}>
                   Cancel
                 </Button>
                 <Button variant="contained" type="submit">
@@ -322,36 +294,49 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           </Box>
         </Box>
 
-        {/* Schedule Preview Accordion */}
-        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen(!accordionOpen)}>
+        {/* Other schedules within the same intake */}
+        <Accordion sx={{ mb: '1rem' }} onChange={() => setAccordionOpen((isOpen) => !isOpen)}>
           <AccordionSummary
             sx={{ bgcolor: 'grey.50', flexDirection: 'row-reverse', gap: '0.5rem' }}
             expandIcon={<ExpandMore />}
           >
-            <Typography>Schedules of cohorts from same intake</Typography>
+            <Typography>Other schedule within the same intake</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: 'grey.50', '& > div:last-child': { mb: 'unset' } }}>
-            {cohorts
-              .filter((cohortItem) => {
-                return cohortItem.intake.id === cohort.intake.id && cohortItem.id !== cohort.id;
-              })
-              .map((cohortInSameIntake) => {
-                return (
-                  <Box key={cohortInSameIntake.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
-                    <SchedulePreview
-                      cohort={cohortInSameIntake}
-                      courses={courses}
-                      schedule={cohortInSameIntake.classes}
-                      breaks={breaks}
-                      instructors={instructors}
-                    />
-                  </Box>
-                );
-              })}
+            {cohortsInSameIntake && cohortsInSameIntake.length > 0 ? (
+              <>
+                {cohortsInSameIntake.map((cohort) => {
+                  const classItems: ClassItem[] = cohort.classes.map((classItem) => ({
+                    cohortId: classItem.cohort.id,
+                    courseId: classItem.course.id,
+                    weekdaysRangeId: classItem.weekdaysRange.id,
+                    instructorId: classItem.instructor?.id,
+                    classroomId: classItem.classroom.id,
+                    startAt: classItem.startAt,
+                    endAt: classItem.endAt,
+                  }));
+                  return (
+                    <Box key={cohort.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
+                      <ScheduleStackView
+                        cohorts={cohorts}
+                        courses={courses}
+                        instructors={instructors}
+                        classItems={classItems}
+                        breaks={breaks}
+                        intakeStartDate={cohortIntakeStartAt.toDate()}
+                        intakeEndDate={cohort.intake.endAt}
+                      />
+                    </Box>
+                  );
+                })}
+              </>
+            ) : (
+              <Typography sx={{ pl: '2rem' }}>No cohort found</Typography>
+            )}
           </AccordionDetails>
         </Accordion>
 
-        {/* Current Page Cohort Schedule Preview */}
+        {/* Realtime Preview */}
         <Box
           sx={{
             mb: '1rem',
@@ -361,12 +346,14 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
             ...inBoxScrollBar,
           }}
         >
-          <SchedulePreview
-            cohort={cohort}
+          <ScheduleStackView
+            cohorts={cohorts}
             courses={courses}
-            watchSchedule={watchSchedule}
-            breaks={breaks}
             instructors={instructors}
+            classItems={watchSchedule}
+            breaks={breaks}
+            intakeStartDate={cohortIntakeStartAt.toDate()}
+            intakeEndDate={cohort.intake.endAt}
           />
         </Box>
 
@@ -381,12 +368,27 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
           >
             <TableHead>
               <TableRow sx={thRowStyle}>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>Course</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Start Date
+                  {isScheduleEditable && <RequiredMark />}
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  End Date
+                  {isScheduleEditable && <RequiredMark />}
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 2.5/12)' }}>
+                  Course
+                  {isScheduleEditable && <RequiredMark />}
+                </TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Days of the Week
+                  {isScheduleEditable && <RequiredMark />}
+                </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Hours / Required</TableCell>
-                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Classroom</TableCell>
+                <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>
+                  Classroom
+                  {isScheduleEditable && <RequiredMark />}
+                </TableCell>
                 <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Instructor</TableCell>
                 <TableCell sx={{ width: 'calc(100% * 0.5/12)' }}></TableCell>
               </TableRow>
@@ -399,8 +401,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       dayjs(watchSchedule[index].startAt).toDate(),
                       dayjs(watchSchedule[index].endAt).toDate(),
                       watchSchedule[index].weekdaysRangeId,
+                      breaks,
                     );
-                    const requiredHours = getRequiredHours(watchSchedule[index].courseId as number);
+                    const requiredHours = getRequiredHours(watchSchedule[index].courseId, courses);
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
                       <TableRow key={field.id}>
@@ -584,7 +587,18 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                                         value={instructor.id}
                                         disabled={!instructor.isActive}
                                       >
-                                        {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '.25rem' }}>
+                                          <Tooltip title={<TooltipInstructorContent instructor={instructor} />}>
+                                            <InfoOutlinedIcon
+                                              fontSize="small"
+                                              color="primary"
+                                              sx={{ cursor: 'pointer' }}
+                                            />
+                                          </Tooltip>
+                                          <p>
+                                            {instructor.name} {!instructor.isActive && '(Inactive)'}
+                                          </p>
+                                        </Box>
                                       </MenuItem>
                                     ))}
                                   </Select>
@@ -610,7 +624,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 </>
               ) : (
                 <>
-                  {scheduleItems.map((scheduleItem) => {
+                  {scheduleItems.map((scheduleItem, i) => {
                     const startDate = dayjs(scheduleItem.startAt).format(dateFormat);
                     const endDate = dayjs(scheduleItem.endAt).format(dateFormat);
                     const isClass = 'cohort' in scheduleItem;
@@ -619,18 +633,19 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                         scheduleItem.startAt,
                         scheduleItem.endAt,
                         scheduleItem.weekdaysRange.data.id,
+                        breaks,
                       );
                       const requiredHours = scheduleItem.course.requiredHours;
                       const isTimeExceeded = plannedHours > requiredHours;
                       return (
-                        <TableRow key={scheduleItem.id}>
+                        <TableRow key={i}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
                           <TableCell>{scheduleItem.course.name}</TableCell>
-                          <TableCell sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <TableCell>
                             <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
                             {scheduleItem.weekdaysRange.messages.length > 0 && (
-                              <Tooltip title={tooltipTitle(scheduleItem.weekdaysRange.messages)}>
+                              <Tooltip title={<TooltipMessageContent messages={scheduleItem.weekdaysRange.messages} />}>
                                 <WarningIcon
                                   fontSize="small"
                                   color="warning"
@@ -647,7 +662,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                               {scheduleItem.classroom.data.name} ({scheduleItem.classroom.data.floor} floor)
                               {scheduleItem.classroom.messages.length > 0 && (
-                                <Tooltip title={tooltipTitle(scheduleItem.classroom.messages)}>
+                                <Tooltip title={<TooltipMessageContent messages={scheduleItem.classroom.messages} />}>
                                   <WarningIcon fontSize="small" color="warning" sx={{ cursor: 'pointer' }} />
                                 </Tooltip>
                               )}
@@ -655,9 +670,11 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                           </TableCell>
                           <TableCell sx={{ alignItems: 'center' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              {scheduleItem.instructor.data?.name}
+                              <Link href={`/instructors/${scheduleItem.instructor.data?.id}`} className="underline">
+                                {scheduleItem.instructor.data?.name}
+                              </Link>
                               {scheduleItem.instructor.messages.length > 0 && (
-                                <Tooltip title={tooltipTitle(scheduleItem.instructor.messages)}>
+                                <Tooltip title={<TooltipMessageContent messages={scheduleItem.instructor.messages} />}>
                                   <WarningIcon
                                     fontSize="small"
                                     color="warning"
@@ -672,7 +689,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                       );
                     } else {
                       return (
-                        <TableRow key={scheduleItem.id} sx={{ '& td': { bgcolor: 'grey.200' } }}>
+                        <TableRow key={i} sx={{ '& td': { bgcolor: 'grey.200' } }}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
                           <TableCell>School Break</TableCell>
@@ -694,8 +711,8 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({ cohort, courses, instru
                 variant="contained"
                 onClick={() =>
                   append({
-                    startAt: now.startOf('day'),
-                    endAt: now.startOf('day'),
+                    startAt: now.startOf('day').toDate(),
+                    endAt: now.startOf('day').add(25, 'day').toDate(),
                     cohortId: cohort.id,
                     weekdaysRangeId: 1,
                     courseId: 0,

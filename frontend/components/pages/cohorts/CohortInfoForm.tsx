@@ -3,10 +3,11 @@ import { createCohort } from '@/actions/cohorts/createCohort';
 import { deleteCohort } from '@/actions/cohorts/deleteCohort';
 import { updateCohort } from '@/actions/cohorts/updateCohort';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import { CONFIRM, PERIOD_OF_DAYS, TOAST } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React, { useEffect } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -18,19 +19,18 @@ interface CohortInfoFormProps {
 }
 
 export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes, programs }) => {
-  const [isEditable, setIsEditable] = React.useState(false);
+  const [isEditable, setIsEditable] = React.useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (cohort) {
+      setIsEditable(false);
       reset({
         name: cohort.name,
         intakeId: cohort.intake.id,
         periodOfDayId: cohort.periodOfDay.id,
         programId: cohort.program.id,
       });
-    } else {
-      setIsEditable(true);
     }
   }, []);
 
@@ -66,9 +66,9 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: '',
-      intakeId: 0,
-      periodOfDayId: 1,
-      programId: 0,
+      intakeId: '' as number | string,
+      programId: '' as number | string,
+      periodOfDayId: '' as number | string,
     },
   });
 
@@ -104,9 +104,21 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
 
   return (
     <form className="w-fit mb-32">
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Name:</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+          '& > div': { display: 'flex', flexDirection: 'row', alignItems: 'center' },
+          '& > div > p': { width: '6rem' },
+        }}
+      >
+        <Box>
+          <Typography>
+            Name
+            {isEditable && <RequiredMark />}
+          </Typography>
           <Controller
             control={control}
             name="name"
@@ -125,8 +137,11 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Intake:</Typography>
+        <Box>
+          <Typography>
+            Intake
+            {isEditable && <RequiredMark />}
+          </Typography>
           <Controller
             control={control}
             name="intakeId"
@@ -155,8 +170,11 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Program:</Typography>
+        <Box>
+          <Typography>
+            Program
+            {isEditable && <RequiredMark />}
+          </Typography>
           <Controller
             control={control}
             name="programId"
@@ -185,8 +203,11 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
             }}
           />
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <Typography sx={{ width: '5rem' }}>Period:</Typography>
+        <Box>
+          <Typography>
+            Period
+            {isEditable && <RequiredMark />}
+          </Typography>
           <Controller
             control={control}
             name="periodOfDayId"

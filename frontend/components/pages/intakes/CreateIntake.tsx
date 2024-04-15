@@ -8,7 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -24,7 +24,7 @@ const CreateIntake = () => {
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      name: null,
+      name: '' as string,
       startAt: null as Dayjs | null,
       endAt: null as Dayjs | null,
     },

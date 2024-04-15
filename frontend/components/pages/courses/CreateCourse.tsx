@@ -5,7 +5,7 @@ import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/mater
 import Select from '@mui/material/Select';
 import { GetProgramsResponse } from '@/types/_index';
 import { createCourse } from '@/actions/courses/createCourse';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { TOAST } from '@/constants/_index';

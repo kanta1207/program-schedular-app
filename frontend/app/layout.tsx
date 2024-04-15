@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import theme from './theme';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
+import ProgressBarProvider from '@/components/providers/ProgressBarProvider';
 
 export const metadata: Metadata = {
   title: 'Scheduler App',
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className="overflow-x-hidden">
         <AppRouterCacheProvider>
           <ToastContainer position="top-right" autoClose={5000} />
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <ProgressBarProvider>{children}</ProgressBarProvider>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

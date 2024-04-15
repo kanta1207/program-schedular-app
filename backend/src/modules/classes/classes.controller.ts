@@ -11,7 +11,7 @@ import {
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
-import { ApiResponse } from 'src/common/api-response';
+import { ApiResponse } from '../../common/api-response';
 
 @Controller('classes')
 export class ClassesController {

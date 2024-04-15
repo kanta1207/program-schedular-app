@@ -2,6 +2,7 @@
 import { deleteProgram } from '@/actions/programs/deleteProgram';
 import { updateProgram } from '@/actions/programs/updateProgram';
 import ErrorMessages from '@/components/partials/ErrorMessages';
+import { RequiredMark } from '@/components/partials/RequiredMark';
 import TableMenu from '@/components/partials/TableMenu';
 import { TOAST } from '@/constants/_index';
 import { usePagination } from '@/hooks/usePagination';
@@ -15,7 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useState } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -92,7 +93,10 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
       <Table sx={tableStyle}>
         <TableHead>
           <TableRow sx={thRowStyle}>
-            <TableCell sx={{ width: 'calc(100% * 10/12)' }}>Name</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 10/12)' }}>
+              Name
+              {editProgramId && <RequiredMark />}
+            </TableCell>
             {/* Empty head for edit and delete */}
             <TableCell sx={{ width: 'calc(100% * 2/12)' }} />
           </TableRow>
