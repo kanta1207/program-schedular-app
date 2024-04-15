@@ -372,7 +372,9 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
                     <FormGroup sx={{ flexDirection: 'column' }} row>
                       {programs.map((program) => (
                         <Box key={program.id}>
-                          <Typography variant="subtitle1">{program.name}</Typography>
+                          <Typography sx={{ lineHeight: 'inherit' }} variant="subtitle1">
+                            {program.name}
+                          </Typography>
                           {courses
                             .filter((course) => course.program.id === program.id)
                             .map((filteredCourse) => (
