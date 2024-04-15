@@ -4,6 +4,9 @@ export const TOAST = {
     updated: 'Item updated!',
     deleted: 'Item deleted!',
   },
+  error: {
+    screenshot: 'Failed to take screenshot',
+  },
   info: {
     ganttInstructorClicked: 'Only class item can be edited',
   },

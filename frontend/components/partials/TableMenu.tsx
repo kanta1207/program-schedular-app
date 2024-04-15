@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { alpha, styled } from '@mui/material/styles';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 const StyledMenu = styled((props: MenuProps) => (
