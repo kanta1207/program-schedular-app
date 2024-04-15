@@ -39,7 +39,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
     emptyRows,
   } = usePagination({
     count: instructors.length,
-    rowsPerPage: 10, // used to be 25
+    rowsPerPage: 25,
     page: 0,
   });
 

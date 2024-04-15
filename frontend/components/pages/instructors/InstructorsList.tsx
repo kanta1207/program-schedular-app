@@ -2,7 +2,7 @@
 import Headline from '@/components/partials/Headline';
 import { inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
 import { GetInstructorsResponse } from '@/types/_index';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import React, { useState } from 'react';
 import { InstructorListTable } from './InstructorListTable';
 import { InstructorWithHoursListTable } from './InstructorWithHoursListTable';
@@ -14,8 +14,13 @@ interface InstructorsListProps {
 
 export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
+  const [selectedYear, setSelectedYear] = useState('2024');
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: TableViewType) => {
     setTableViewType(newViewType);
+  };
+
+  const handleYearChange = (event: SelectChangeEvent) => {
+    setSelectedYear(event.target.value);
   };
 
   return (
@@ -24,38 +29,56 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors })
         <Headline name="Instructors" />
         <TableViewSwitcher tableViewType={tableViewType} handleToggleClick={handleToggleClick} />
         {tableViewType === 'hours' && (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '0.5rem',
-              alignItems: 'center',
-              '& > div': {
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', ml: '2rem' }}>
+            <FormControl sx={{ minWidth: '7rem', height: '2.5rem', '& .MuiSelect-select': { py: '9px' } }}>
+              <InputLabel id="select-year-label">Select Year</InputLabel>
+              <Select
+                labelId="select-year-label"
+                id="select-year"
+                value={selectedYear}
+                label="Select Year"
+                onChange={handleYearChange}
+              >
+                <MenuItem value={2023}>2023</MenuItem>
+                <MenuItem value={2024}>2024</MenuItem>
+              </Select>
+            </FormControl>
+            <Box
+              sx={{
                 display: 'flex',
+                gap: '0.5rem',
                 alignItems: 'center',
-                border: '1px solid rgba(224, 224, 224, 1)',
-              },
-              '& > div > div': {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '2.5rem',
-                aspectRatio: '1/1',
-                borderRight: '1px solid rgba(224, 224, 224, 1)',
-              },
-              '& > div > p': { px: '0.25rem' },
-            }}
-          >
-            <Box>
-              <Box sx={isOverMaximumColor}>00</Box>
-              <Typography>Over Maximum hours</Typography>
-            </Box>
-            <Box>
-              <Box sx={isUnderMinimumColor}>00</Box>
-              <Typography>Under Minimum hours</Typography>
-            </Box>
-            <Box>
-              <Box sx={inUnderDesiredColor}>00</Box>
-              <Typography>Under Desired hours</Typography>
+                '& *': { fontSize: '0.85rem' },
+                '& > div': {
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid rgba(224, 224, 224, 1)',
+                },
+                '& > div > div:first-child': {
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '2.5rem',
+                  aspectRatio: '1/1',
+                  borderRight: '1px solid rgba(224, 224, 224, 1)',
+                },
+                '& > div > div:last-child': {
+                  px: '0.25rem',
+                },
+              }}
+            >
+              <Box>
+                <Box sx={isOverMaximumColor}>00</Box>
+                <Box>Over Maximum hours</Box>
+              </Box>
+              <Box>
+                <Box sx={isUnderMinimumColor}>00</Box>
+                <Box>Under Minimum hours</Box>
+              </Box>
+              <Box>
+                <Box sx={inUnderDesiredColor}>00</Box>
+                <Box>Under Desired hours</Box>
+              </Box>
             </Box>
           </Box>
         )}

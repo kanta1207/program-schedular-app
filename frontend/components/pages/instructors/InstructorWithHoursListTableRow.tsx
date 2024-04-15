@@ -42,7 +42,7 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
         sx={{ left: '0', minWidth: '120px' }}
       >
         <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          {<Circle sx={{ fontSize: '0.75rem', color: instructor.isActive ? '#00FA32' : 'grey.200' }} />}
+          {<Circle sx={{ fontSize: '0.75rem', color: instructor.isActive ? '#07d02f' : 'grey.200' }} />}
           {instructor.name}
         </Box>
       </TableCell>
