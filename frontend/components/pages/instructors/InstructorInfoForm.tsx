@@ -363,7 +363,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Course */}
             <TableRow>
-              <TableCell>Course{isEditable && <RequiredMark />}</TableCell>
+              <TableCell sx={{ verticalAlign: 'top' }}>Course{isEditable && <RequiredMark />}</TableCell>
               <TableCell>
                 <Controller
                   name="courseIds"
@@ -406,7 +406,7 @@ const InstructorInfoForm: React.FC<InstructorInfoFormProps> = ({ instructor, cou
             </TableRow>
             {/* Note */}
             <TableRow>
-              <TableCell>Note</TableCell>
+              <TableCell sx={{ verticalAlign: 'top' }}>Note</TableCell>
               <TableCell>
                 <Controller
                   control={control}
