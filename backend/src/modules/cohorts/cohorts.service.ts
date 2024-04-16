@@ -16,6 +16,8 @@ import {
   MasterPeriodOfDay,
   Program,
   Class,
+  MasterClassroom,
+  Instructor,
 } from '../../entity';
 import { FormattedClass } from './types';
 
@@ -43,6 +45,10 @@ export class CohortsService {
     private readonly programRepository: Repository<Program>,
     @InjectRepository(Class)
     private readonly classRepository: Repository<Class>,
+    @InjectRepository(MasterClassroom)
+    private readonly classroomRepository: Repository<MasterClassroom>,
+    @InjectRepository(Instructor)
+    private readonly instructorRepository: Repository<Instructor>,
   ) {}
 
   async create(createCohortDto: CreateCohortDto) {
@@ -102,28 +108,8 @@ export class CohortsService {
           },
           weekdaysRange: true,
           course: true,
-          classroom: {
-            classes: {
-              cohort: {
-                periodOfDay: true,
-              },
-              classroom: true,
-              weekdaysRange: true,
-            },
-          },
-          instructor: {
-            contractType: true,
-            classes: {
-              cohort: {
-                periodOfDay: true,
-              },
-              weekdaysRange: true,
-              course: true,
-            },
-            courses: { course: true },
-            periodOfDays: { periodOfDay: true },
-            weekdaysRange: true,
-          },
+          classroom: true,
+          instructor: true,
         },
       },
     });
@@ -131,8 +117,42 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
+    const classrooms = await this.classroomRepository.find({
+      where: { classes: { cohort: { id } } },
+      relations: {
+        classes: {
+          cohort: {
+            periodOfDay: true,
+          },
+          classroom: true,
+          weekdaysRange: true,
+        },
+      },
+    });
+
+    const instructors = await this.instructorRepository.find({
+      where: { classes: { cohort: { id } } },
+      relations: {
+        contractType: true,
+        classes: {
+          cohort: {
+            periodOfDay: true,
+          },
+          weekdaysRange: true,
+          course: true,
+        },
+        courses: { course: true },
+        periodOfDays: { periodOfDay: true },
+        weekdaysRange: true,
+      },
+    });
+
     let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
-      const { instructor } = clazz;
+      const { id } = clazz;
+      // Find the instructor who teaches the class
+      const instructor = instructors.find((instructor) =>
+        instructor.classes.some((instructorClass) => instructorClass.id === id),
+      );
       const instructorMessages: string[] = [];
 
       if (instructor) {
@@ -207,8 +227,13 @@ export class CohortsService {
         }
       }
 
+      // Find the classroom where the class is held
+      const classroom = classrooms.find((classroom) =>
+        classroom.classes.some((classroomClass) => classroomClass.id === id),
+      );
+
       const classroomMessages: string[] = [];
-      const classroomClasses = clazz.classroom.classes;
+      const classroomClasses = classroom.classes;
       for (const classroomClass of classroomClasses) {
         if (classroomMessages.length) break;
         const msgIsClassroomOccupied = checkClassroomDuplication(
