@@ -3,6 +3,7 @@ import { GetInstructorsResponse } from '@/types/_index';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 import { InstructorScheduleTableRow } from './InstructorScheduleTableRow';
+import dayjs from 'dayjs';
 
 interface InstructorScheduleTableProps {
   instructor: GetInstructorsResponse;
@@ -14,10 +15,10 @@ const InstructorScheduleTableBase = (
   ref: React.ForwardedRef<HTMLElement>,
 ) => {
   const isDisplayable = (intakeEndDate: Date): boolean => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = dayjs();
+    const today = now.startOf('day');
 
-    return isIncludeEndedIntake || intakeEndDate > today;
+    return isIncludeEndedIntake || dayjs(intakeEndDate) > today;
   };
 
   return (
@@ -36,13 +37,15 @@ const InstructorScheduleTableBase = (
           </TableRow>
         </TableHead>
         <TableBody>
-          {instructor.classes.map((classData) => {
-            return isDisplayable(new Date(classData.cohort.intake.endAt)) ? (
-              <TableRow key={classData.id}>
-                <InstructorScheduleTableRow classData={classData} />
-              </TableRow>
-            ) : null;
-          })}
+          {instructor.classes.map((classData) => (
+            <>
+              {isDisplayable(new Date(classData.cohort.intake.endAt)) && (
+                <TableRow key={classData.id}>
+                  <InstructorScheduleTableRow classData={classData} />
+                </TableRow>
+              )}
+            </>
+          ))}
         </TableBody>
       </Table>
     </Box>

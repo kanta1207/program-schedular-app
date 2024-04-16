@@ -33,7 +33,8 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
   useEffect(() => {
     if (!isIncludeEndedIntake) {
       const now = dayjs();
-      const ongoingCohortIds = cohorts.filter((cohort) => dayjs(cohort.intake.endAt) > now).map(({ id }) => id);
+      const today = now.startOf('day');
+      const ongoingCohortIds = cohorts.filter((cohort) => dayjs(cohort.intake.endAt) > today).map(({ id }) => id);
       const filteredItems = ganttItems.filter((ganttItem) => {
         const cohortId = ganttItem.project?.split('-')[0];
         if (cohortId) {
