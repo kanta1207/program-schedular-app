@@ -1,2 +1,2 @@
-export const dateFormat = 'MMM DD, YYYY (ddd)';
-export const datePickerFormat = 'MMM DD, YYYY';
+export const dateFormat = 'MM DD, YYYY (ddd)';
+export const datePickerFormat = 'MM DD, YYYY';
