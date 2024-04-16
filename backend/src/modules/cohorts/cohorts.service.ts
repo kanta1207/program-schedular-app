@@ -103,13 +103,8 @@ export class CohortsService {
         program: true,
         periodOfDay: true,
         classes: {
-          cohort: {
-            periodOfDay: true,
-          },
           weekdaysRange: true,
           course: true,
-          classroom: true,
-          instructor: true,
         },
       },
     });
@@ -238,11 +233,11 @@ export class CohortsService {
         if (classroomMessages.length) break;
         const msgIsClassroomOccupied = checkClassroomDuplication(
           clazz.id,
-          clazz.classroom.id,
+          classroom.id,
           clazz.startAt,
           clazz.endAt,
           clazz.weekdaysRange.id,
-          clazz.cohort.periodOfDay.id,
+          cohort.periodOfDay.id,
           classroomClass.id,
           classroomClass.classroom.id,
           classroomClass.startAt,
