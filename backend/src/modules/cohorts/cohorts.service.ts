@@ -112,6 +112,7 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
+    // Find all classrooms that are related to the cohort
     const classrooms = await this.classroomRepository.find({
       where: { classes: { cohort: { id } } },
       relations: {
@@ -125,6 +126,7 @@ export class CohortsService {
       },
     });
 
+    // Find all instructors that are related to the cohort
     const instructors = await this.instructorRepository.find({
       where: { classes: { cohort: { id } } },
       relations: {
