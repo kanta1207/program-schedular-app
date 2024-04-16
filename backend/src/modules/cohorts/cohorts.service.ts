@@ -103,6 +103,9 @@ export class CohortsService {
         program: true,
         periodOfDay: true,
         classes: {
+          cohort: {
+            periodOfDay: true,
+          },
           weekdaysRange: true,
           course: true,
         },
@@ -112,7 +115,7 @@ export class CohortsService {
       throw new NotFoundException('Cohort Not Found');
     }
 
-    // Find all classrooms that are related to the cohort
+    // Find all classrooms that are used by the classes in the cohort
     const classrooms = await this.classroomRepository.find({
       where: { classes: { cohort: { id } } },
       relations: {
@@ -126,7 +129,7 @@ export class CohortsService {
       },
     });
 
-    // Find all instructors that are related to the cohort
+    // Find all instructors that are assigned to the classes in the cohort
     const instructors = await this.instructorRepository.find({
       where: { classes: { cohort: { id } } },
       relations: {
