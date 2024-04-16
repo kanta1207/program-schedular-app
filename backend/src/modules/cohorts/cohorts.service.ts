@@ -266,7 +266,7 @@ export class CohortsService {
         },
         classroom: {
           // Omitting the "classes" property to remove unnecessary data from the response
-          data: { ...clazz.classroom, classes: undefined },
+          data: { ...classroom, classes: undefined },
           messages: [],
         },
         instructor: {
