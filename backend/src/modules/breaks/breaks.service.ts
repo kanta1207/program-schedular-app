@@ -68,9 +68,7 @@ export class BreaksService {
       existingEndAt: existingBreak.endAt,
     });
     if (!isValidDateOrder) {
-      throw new BadRequestException(
-        'The end date must be after the start date',
-      );
+      throw new BadRequestException('End date must be after start date');
     }
 
     const query = this.breakRepository

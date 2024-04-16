@@ -60,7 +60,7 @@ export class InstructorsService {
     // Validate contractor's desired working hours, making it sure it's not empty
     if (contractTypeId === CONTRACTOR_CONTRACT_TYPE_ID && !desiredWorkingHours)
       throw new BadRequestException(
-        'Desired working hours are required for contract instructors',
+        'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
@@ -374,7 +374,7 @@ export class InstructorsService {
     // Validate contractor's desired working hours, making it sure it's not empty
     if (contractTypeId === CONTRACTOR_CONTRACT_TYPE_ID && !desiredWorkingHours)
       throw new BadRequestException(
-        'Desired working hours are required for contract instructors',
+        'Desired working hours is required for contract instructors',
       );
 
     // Validate full-time or part-time instructor's desired working hours, making it sure it's empty
