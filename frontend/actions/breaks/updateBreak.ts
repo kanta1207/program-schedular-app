@@ -13,7 +13,7 @@ export const updateBreak = async (
   const { startAt, endAt } = payload;
   try {
     if (!startAt && !endAt) {
-      throw new Error('Either startAt or endAt is required');
+      throw new Error('Either start date or end date is required');
     }
 
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/breaks/${id}`;
