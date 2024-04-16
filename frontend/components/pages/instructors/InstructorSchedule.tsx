@@ -6,7 +6,7 @@ import { InstructorScheduleTable } from './InstructorScheduleTable';
 
 import { GetInstructorsResponse } from '@/types/instructor';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Checkbox, IconButton, Tooltip, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import dayjs from 'dayjs';
 import theme from '@/app/theme';
@@ -24,6 +24,7 @@ interface InstructorScheduleProps {
 
 const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, ganttItems }) => {
   const [viewType, setViewType] = useState<ViewType>('list');
+  const [isIncludeEndedIntake, setIsIncludeEndedIntake] = useState<boolean>(false);
   const ref = useRef(null);
 
   const { takeScreenshot } = useScreenshot();
@@ -54,11 +55,18 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
               </IconButton>
             </Tooltip>
           )}
+          {/* toggle show/hide ended intake classes  */}
+          <Checkbox
+            sx={{ marginBottom: '0.35em' }}
+            value={1}
+            checked={isIncludeEndedIntake}
+            onChange={() => setIsIncludeEndedIntake(!isIncludeEndedIntake)}
+          />
         </Box>
         <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
       </Box>
       {viewType === 'list' ? (
-        <InstructorScheduleTable instructor={instructor} ref={ref} />
+        <InstructorScheduleTable instructor={instructor} isIncludeEndedIntake={isIncludeEndedIntake} ref={ref} />
       ) : viewType === 'gantt' ? (
         <>
           {ganttItems.length > 0 ? (

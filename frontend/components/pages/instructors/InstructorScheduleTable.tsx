@@ -6,12 +6,20 @@ import { InstructorScheduleTableRow } from './InstructorScheduleTableRow';
 
 interface InstructorScheduleTableProps {
   instructor: GetInstructorsResponse;
+  isIncludeEndedIntake: boolean;
 }
 
 const InstructorScheduleTableBase = (
-  { instructor }: InstructorScheduleTableProps,
+  { instructor, isIncludeEndedIntake }: InstructorScheduleTableProps,
   ref: React.ForwardedRef<HTMLElement>,
 ) => {
+  const isDisplayable = (intakeEndDate: Date): boolean => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return isIncludeEndedIntake || intakeEndDate > today;
+  };
+
   return (
     <Box sx={{ overflowX: 'scroll', ...inBoxScrollBar }} ref={ref}>
       <Table sx={{ minWidth: 650, ...tableStyle }}>
@@ -28,11 +36,13 @@ const InstructorScheduleTableBase = (
           </TableRow>
         </TableHead>
         <TableBody>
-          {instructor.classes.map((classData) => (
-            <TableRow key={classData.id}>
-              <InstructorScheduleTableRow classData={classData} />
-            </TableRow>
-          ))}
+          {instructor.classes.map((classData) => {
+            return isDisplayable(new Date(classData.cohort.intake.endAt)) ? (
+              <TableRow key={classData.id}>
+                <InstructorScheduleTableRow classData={classData} />
+              </TableRow>
+            ) : null;
+          })}
         </TableBody>
       </Table>
     </Box>
