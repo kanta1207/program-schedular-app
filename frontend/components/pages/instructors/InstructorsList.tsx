@@ -1,9 +1,11 @@
 'use client';
+import { getInstructorsWithHours } from '@/actions/instructors/getInstructorsWithHours';
 import Headline from '@/components/partials/Headline';
 import { inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
-import { GetInstructorsResponse } from '@/types/_index';
+import { GetInstructorsResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import React, { useState } from 'react';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import { InstructorListTable } from './InstructorListTable';
 import { InstructorWithHoursListTable } from './InstructorWithHoursListTable';
 import TableViewSwitcher, { TableViewType } from './TableViewSwitcher';
@@ -14,7 +16,42 @@ interface InstructorsListProps {
 
 export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
-  const [selectedYear, setSelectedYear] = useState('2024');
+  const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
+  const [yearsArray, setYearsArray] = useState<number[]>([]);
+  const [instructorsWithHours, setInstructorsWithHours] = useState<GetInstructorsWithHoursResponse[]>([]);
+
+  useEffect(() => {
+    const currentYear = dayjs().year();
+    const targetYear = 2023;
+    const tempArray = [];
+    for (let year = currentYear; year >= targetYear; year--) {
+      tempArray.push(year);
+    }
+    setYearsArray(tempArray);
+  }, []);
+
+  useEffect(() => {
+    if (tableViewType === 'hours') {
+      const selectedYearNumber = parseInt(selectedYear);
+      const fetchData = async () => {
+        const { data } = await getInstructorsWithHours({ year: selectedYearNumber });
+        setInstructorsWithHours(data);
+      };
+      fetchData();
+    }
+  }, [tableViewType]);
+
+  useEffect(() => {
+    if (tableViewType === 'hours') {
+      const selectedYearNumber = parseInt(selectedYear);
+      const fetchData = async () => {
+        const { data } = await getInstructorsWithHours({ year: selectedYearNumber });
+        setInstructorsWithHours(data);
+      };
+      fetchData();
+    }
+  }, [selectedYear]);
+
   const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: TableViewType) => {
     setTableViewType(newViewType);
   };
@@ -39,8 +76,12 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors })
                 label="Select Year"
                 onChange={handleYearChange}
               >
-                <MenuItem value={2023}>2023</MenuItem>
-                <MenuItem value={2024}>2024</MenuItem>
+                {yearsArray &&
+                  yearsArray.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
             <Box
@@ -91,7 +132,7 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors })
       {tableViewType === 'info' ? (
         <InstructorListTable instructors={instructors} />
       ) : (
-        <InstructorWithHoursListTable instructors={instructors} />
+        <InstructorWithHoursListTable instructors={instructorsWithHours} year={parseInt(selectedYear)} />
       )}
     </>
   );

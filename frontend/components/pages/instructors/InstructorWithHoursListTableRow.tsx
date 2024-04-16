@@ -2,14 +2,14 @@
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import { PERIOD_OF_DAYS } from '@/constants/_index';
 import { clickableTrStyle, inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
-import { GetInstructorsResponse } from '@/types/_index';
+import { GetInstructorWithHoursResponse } from '@/types/_index';
 import { Circle } from '@mui/icons-material';
 import { Box, TableCell, TableRow } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { WeekBlock } from './InstructorWithHoursListTable';
 
 interface InstructorListTableRowProps {
-  instructor: GetInstructorsResponse | any;
+  instructor: GetInstructorWithHoursResponse;
   weekBlocks: WeekBlock[];
 }
 
@@ -18,6 +18,7 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
   const handleRowClick = () => {
     router.push(`/instructors/${instructor.id}`);
   };
+
   const isAvailable = (periodId: number) => {
     return instructor.periodOfDays?.some((period) => period.id === periodId);
   };
@@ -30,8 +31,6 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
       </li>
     );
   });
-
-  console.log(instructor.assingedHours);
 
   return (
     <TableRow sx={clickableTrStyle}>
@@ -68,17 +67,15 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
       >
         {instructor.desiredWorkingHours ? instructor.desiredWorkingHours : '-'}
       </TableCell>
-      {weekBlocks.length > 0 &&
-        weekBlocks.map((week) => {
-          const hours = instructor.assingedHours?.find((item: any) => item.startAt === week.weekStartDate);
-
+      {instructor.assignedHours.length > 0 &&
+        instructor.assignedHours.map((hours, i) => {
           const getCellColor = () => {
             if (hours) {
               if (hours.isOverMaximum) {
                 return isOverMaximumColor;
               } else if (hours.isUnderMinimum) {
                 return isUnderMinimumColor;
-              } else if (hours.inUnderDesired) {
+              } else if (hours.isUnderDesired) {
                 return inUnderDesiredColor;
               } else {
                 return { bgcolor: 'inherit', color: 'inherit' };
@@ -87,11 +84,10 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
               return { bgcolor: 'inherit', color: 'inherit' };
             }
           };
-          // console.log(hours);
 
           return (
             <TableCell
-              key={week.id}
+              key={i}
               sx={{
                 ...getCellColor(),
                 zIndex: '1',

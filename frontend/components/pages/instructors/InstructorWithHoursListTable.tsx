@@ -1,7 +1,7 @@
 'use client';
 import { usePagination } from '@/hooks/usePagination';
 import { inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
-import { GetInstructorsResponse } from '@/types/_index';
+import { GetInstructorsWithHoursResponse } from '@/types/_index';
 import {
   Box,
   Table,
@@ -18,7 +18,8 @@ import { useEffect, useState } from 'react';
 import { InstructorWithHoursListTableRow } from './InstructorWithHoursListTableRow';
 
 interface InstructorListTableProps {
-  instructors: GetInstructorsResponse[];
+  instructors: GetInstructorsWithHoursResponse[];
+  year: number;
 }
 
 export interface WeekBlock {
@@ -27,7 +28,7 @@ export interface WeekBlock {
   weekEndDate: string;
 }
 
-export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors }) => {
+export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year }) => {
   const {
     rowsPerPageOptions,
     count,
@@ -44,13 +45,11 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
   });
 
   const [weekBlocks, setWeekBlocks] = useState<WeekBlock[]>([]);
-  const [instructorsWithHours, setInstructorsWithHours] = useState<any[]>([]);
 
   useEffect(() => {
     const weekBlocksData = [];
-    const today = dayjs();
-    const startDate = today.startOf('week').add(1, 'day');
-    for (let i = 0; i < 52; i++) {
+    const startDate = dayjs(`${year}-01-01`).startOf('week').add(1, 'day');
+    for (let i = 0; i < 53; i++) {
       const weekStartDate = startDate.add(i * 7, 'day').format('MM-DD');
       const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
 
@@ -62,34 +61,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
       weekBlocksData.push(weekBlock);
     }
     setWeekBlocks(weekBlocksData);
-  }, []);
-
-  // TEMP
-  useEffect(() => {
-    const temp = instructors.map((instructor) => {
-      const assingedHours: any = [];
-
-      if (weekBlocks) {
-        weekBlocks.map((weekItem) => {
-          const assingedHoursItem = {
-            startAt: weekItem.weekStartDate,
-            endAt: weekItem.weekEndDate,
-            hours: Math.floor(Math.random() * 5) * 10,
-            isOverMaximum: Math.floor(Math.random() * 2),
-            isUnderMinimum: Math.floor(Math.random() * 2),
-            inUnderDesired: Math.floor(Math.random() * 2),
-          };
-          assingedHours.push(assingedHoursItem);
-        });
-      }
-      return {
-        ...instructor,
-        assingedHours,
-      };
-    });
-
-    setInstructorsWithHours(temp);
-  }, [weekBlocks]);
+  }, [year]);
 
   return (
     <>
@@ -134,14 +106,10 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                ? instructorsWithHours.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                : instructorsWithHours
-              ).map((instructorWithAssignedHours) => (
-                <InstructorWithHoursListTableRow
-                  key={instructorWithAssignedHours.id}
-                  instructor={instructorWithAssignedHours}
-                  weekBlocks={weekBlocks}
-                />
+                ? instructors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : instructors
+              ).map((instructor) => (
+                <InstructorWithHoursListTableRow key={instructor.id} instructor={instructor} weekBlocks={weekBlocks} />
               ))}
               {emptyRows > 0 && <TableRow style={{ height: 52 * emptyRows }} />}
             </TableBody>

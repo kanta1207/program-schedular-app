@@ -18,8 +18,23 @@ export interface GetInstructorResponse extends InstructorBase {
   courses: CourseBase[];
 }
 
+interface AssinedHours {
+  startAt: Date;
+  endAt: Date;
+  hours: number;
+  isOverMaximum: boolean;
+  isUnderMinimum: boolean;
+  isUnderDesired: boolean;
+}
+
+export interface GetInstructorWithHoursResponse extends GetInstructorResponse {
+  assignedHours: AssinedHours[];
+}
+
 export interface GetInstructorsResponse extends GetInstructorResponse {}
 
 export interface CreateInstructorResponse extends GetInstructorResponse {}
 
 export interface UpdateInstructorResponse extends GetInstructorResponse {}
+
+export interface GetInstructorsWithHoursResponse extends GetInstructorWithHoursResponse {}

@@ -1,22 +1,18 @@
-import { ApiResponse, GetInstructorsResponse } from '@/types/_index';
+import { ApiResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
 import qs from 'qs';
 
-interface getInstructorsProps {
-  courseId?: number;
-  rangeId?: number;
-  isActive?: boolean;
+interface getInstructorsWithHoursProps {
+  year?: number;
 }
 
 export const getInstructorsWithHours = async ({
-  courseId,
-  rangeId,
-  isActive,
-}: getInstructorsProps): Promise<ApiResponse<GetInstructorsResponse[]>> => {
+  year,
+}: getInstructorsWithHoursProps): Promise<ApiResponse<GetInstructorsWithHoursResponse[]>> => {
   try {
-    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/instructors/assigned-hours`;
     let url = baseUrl;
 
-    const queryParams = qs.stringify({ courseId, rangeId, isActive });
+    const queryParams = qs.stringify({ year });
 
     if (queryParams) {
       url += `?${queryParams}`;
