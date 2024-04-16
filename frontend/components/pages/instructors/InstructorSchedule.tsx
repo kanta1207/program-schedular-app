@@ -6,7 +6,7 @@ import { InstructorScheduleTable } from './InstructorScheduleTable';
 
 import { GetInstructorsResponse } from '@/types/instructor';
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
-import { Box, Checkbox, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup, IconButton, Tooltip, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import dayjs from 'dayjs';
 import theme from '@/app/theme';
@@ -45,25 +45,34 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1rem' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
         <Box sx={{ display: 'flex', gap: '.5rem' }}>
           <Headline name={`${instructor.name}'s Schedule`} />
           {viewType === 'list' && (
             <Tooltip title="Download schedule">
-              <IconButton onClick={handleTakeScreenshot} sx={{ marginBottom: '0.35em' }}>
+              <IconButton onClick={handleTakeScreenshot}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
           )}
-          {/* toggle show/hide ended intake classes  */}
-          <Checkbox
-            sx={{ marginBottom: '0.35em' }}
-            value={1}
-            checked={isIncludeEndedIntake}
-            onChange={() => setIsIncludeEndedIntake(!isIncludeEndedIntake)}
-          />
         </Box>
         <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
+      </Box>
+      {/* toggle show/hide ended intake classes  */}
+      <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={1}
+                sx={{ color: 'primary.main' }}
+                checked={isIncludeEndedIntake}
+                onChange={() => setIsIncludeEndedIntake(!isIncludeEndedIntake)}
+              />
+            }
+            label="Include ended intake"
+          />
+        </FormGroup>
       </Box>
       {viewType === 'list' ? (
         <InstructorScheduleTable instructor={instructor} isIncludeEndedIntake={isIncludeEndedIntake} ref={ref} />
