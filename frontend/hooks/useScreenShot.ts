@@ -35,7 +35,7 @@ export const useScreenshot = () => {
 
         // create a element to attach the image as href, then click it to download the image
         const a = document.createElement('a');
-        if (!base64Image) throw new Error('Image is not available.');
+        if (!base64Image) throw new Error('Image is not available');
         a.href = base64Image;
         a.download = createFileName(name);
         a.click();

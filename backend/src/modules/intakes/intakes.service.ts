@@ -95,7 +95,7 @@ export class IntakesService {
       existingEndAt: existingIntake.endAt,
     });
     if (!isValidDateOrder) {
-      throw new BadRequestException('End date must be after start date.');
+      throw new BadRequestException('End date must be after start date');
     }
 
     const updateResult = await this.intakeRepository.update(
