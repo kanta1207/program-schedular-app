@@ -293,6 +293,7 @@ export class InstructorsService {
           cohort: {
             program: true,
             periodOfDay: true,
+            intake: true,
           },
           weekdaysRange: true,
           classroom: true,

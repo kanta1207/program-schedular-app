@@ -20,6 +20,7 @@ export interface ClassBase {
 interface GetClassResponseCohort extends CohortBase {
   program: ProgramBase;
   periodOfDay: PeriodOfDay;
+  intake: IntakeBase;
 }
 
 export interface GetClassResponse extends ClassBase {
