@@ -29,7 +29,7 @@ export const InstructorScheduleTableRow: React.FC<InstructorScheduleTableRowProp
       <TableCell>{classData.cohort.periodOfDay.time}</TableCell>
       <TableCell>{classData.cohort.program.name}</TableCell>
       <TableCell>
-        {classData.classroom.name}, {classData.classroom.floor} floor
+        {classData.classroom.name} ({classData.classroom.floor} floor)
       </TableCell>
     </>
   );
