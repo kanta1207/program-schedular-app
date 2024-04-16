@@ -7,7 +7,7 @@ import { RequiredMark } from '@/components/partials/RequiredMark';
 import { CONFIRM, PERIOD_OF_DAYS, TOAST } from '@/constants/_index';
 import { GetCohortResponse, GetIntakesResponse, GetProgramsResponse } from '@/types/_index';
 import { Box, Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React, { useEffect } from 'react';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';

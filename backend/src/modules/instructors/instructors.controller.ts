@@ -13,6 +13,7 @@ import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { StatusCodes } from '../../common/status-code';
 import { ApiResponse } from '../../common/api-response';
+import { GetAssignedHoursDto } from './dto/get-assignd-hours.dto';
 
 @Controller('instructors')
 export class InstructorsController {
@@ -46,6 +47,14 @@ export class InstructorsController {
       StatusCodes.STATUS_OK.code,
       StatusCodes.STATUS_OK.message,
     );
+  }
+
+  @Get('/assigned-hours')
+  async getAssignedHours(@Query() params: GetAssignedHoursDto) {
+    const instructorsWithAssignedHours =
+      await this.instructorsService.findWithAssignedHours(params.year);
+
+    return ApiResponse.new(instructorsWithAssignedHours);
   }
 
   @Get(':id')

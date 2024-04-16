@@ -9,6 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 
+import { toUTC } from '../../common/utils';
+
 import {
   Instructor,
   CoursesInstructors,
@@ -19,7 +21,12 @@ import {
   Course,
 } from '../../entity';
 
-import { CONTRACTOR_CONTRACT_TYPE_ID } from '../../common/constants/master.constant';
+import {
+  CONTRACTOR_CONTRACT_TYPE_ID,
+  MON_FRI_WEEKDAYS_RANGE_ID,
+  MON_WED_WEEKDAYS_RANGE_ID,
+  WED_FRI_WEEKDAYS_RANGE_ID,
+} from '../../common/constants/master.constant';
 
 @Injectable()
 export class InstructorsService {
@@ -157,6 +164,120 @@ export class InstructorsService {
     });
 
     return result;
+  }
+
+  async findWithAssignedHours(year?: number) {
+    const targetYear = year || new Date().getFullYear();
+
+    // start and end of the given year
+    const startDate = new Date(targetYear, 0, 1);
+    const endDate = new Date(year + 1, 0, 1);
+
+    // all weeks in 1 year
+    const allWeeks = [];
+    let currentWeekStart = new Date(startDate);
+    while (currentWeekStart < endDate) {
+      const endOfWeek = new Date(currentWeekStart);
+      endOfWeek.setDate(currentWeekStart.getDate() + 4); // calculate date of weekend (friday)
+
+      allWeeks.push({
+        startAt: currentWeekStart,
+        endAt: endOfWeek,
+      });
+
+      currentWeekStart = new Date(endOfWeek);
+      currentWeekStart.setDate(currentWeekStart.getDate() + 3); // set start date of the next week (skip Saturday and Sunday)
+    }
+
+    const instructors = await this.instructorRepository
+      .createQueryBuilder('instructor')
+      .leftJoinAndSelect('instructor.contractType', 'contractType')
+      .leftJoinAndSelect('instructor.weekdaysRange', 'instructorWeekdaysRange')
+      .leftJoinAndSelect('instructor.periodOfDays', 'periodOfDays')
+      .leftJoinAndSelect('instructor.classes', 'classes')
+      .leftJoinAndSelect('classes.weekdaysRange', 'weekdaysRange')
+      .select([
+        'instructor',
+        'contractType',
+        'instructorWeekdaysRange',
+        'periodOfDays',
+        'classes.id',
+        'classes.startAt',
+        'classes.endAt',
+        'weekdaysRange.id',
+      ])
+      .orderBy('instructor.isActive', 'DESC')
+      .addOrderBy('classes.startAt', 'ASC')
+      .getMany();
+
+    const updateAssignedHours = (
+      assignedHours: number,
+      weekdaysRangeId: number,
+    ): number => {
+      switch (weekdaysRangeId) {
+        case MON_FRI_WEEKDAYS_RANGE_ID:
+          return assignedHours + 20;
+        case MON_WED_WEEKDAYS_RANGE_ID:
+          return assignedHours + 10;
+        case WED_FRI_WEEKDAYS_RANGE_ID:
+          return assignedHours + 10;
+        default:
+          return assignedHours;
+      }
+    };
+
+    const instructorsAssignedHours = instructors.map((instructor) => {
+      const assignedHoursForInstructor = allWeeks.map((week) => {
+        const hours = instructor.classes
+          .filter((clazz) => {
+            return (
+              week.startAt <= toUTC(clazz.endAt) &&
+              week.endAt >= toUTC(clazz.startAt)
+            );
+          })
+          .reduce(
+            (totalHours, clazz) =>
+              updateAssignedHours(totalHours, clazz.weekdaysRange.id),
+            0,
+          );
+
+        let isOverMaximum = false;
+        let isUnderMinimum = false;
+        let isUnderDesired = false;
+        if (instructor.desiredWorkingHours !== null) {
+          isUnderDesired = hours < instructor.desiredWorkingHours;
+        } else {
+          isOverMaximum = instructor.contractType.maxHours < hours;
+          isUnderMinimum = hours < instructor.contractType.minHours;
+        }
+
+        return {
+          startAt: week.startAt,
+          endAt: week.endAt,
+          hours,
+          isOverMaximum,
+          isUnderMinimum,
+          isUnderDesired,
+        };
+      });
+
+      return {
+        id: instructor.id,
+        createdAt: instructor.createdAt,
+        updatedAt: instructor.updatedAt,
+        deletedAt: instructor.deletedAt,
+        name: instructor.name,
+        isActive: instructor.isActive,
+        note: instructor.note,
+        desiredWorkingHours: instructor.desiredWorkingHours,
+        contractType: instructor.contractType,
+        weekdaysRange: instructor.weekdaysRange,
+        periodOfDays: instructor.periodOfDays,
+        assignedHours: assignedHoursForInstructor,
+      };
+    });
+
+    return instructorsAssignedHours;
   }
 
   async findOne(id: number) {

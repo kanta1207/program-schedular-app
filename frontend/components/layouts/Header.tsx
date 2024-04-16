@@ -3,7 +3,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -106,7 +105,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ width: '100vw', '& a': { '&:hover': { bgcolor: '#FFFFFF30' } } }}>
+    <AppBar position="sticky" sx={{ width: '100vw', '& a': { '&:hover': { bgcolor: '#FFFFFF30' } }, zIndex: 1000 }}>
       <div className="container mx-auto">
         <Toolbar disableGutters>
           <Link href="/schedules">
