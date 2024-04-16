@@ -55,7 +55,7 @@ export class ProgramsService {
 
     if (program.courses.length > 0) {
       throw new BadRequestException(
-        'Cannot delete program that contains courses. ',
+        'Cannot delete program that contains courses.',
       );
     }
 
