@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ViewSwitcher, { ViewType } from './ViewSwitcher';
 import { InstructorScheduleTable } from './InstructorScheduleTable';
 
@@ -16,16 +16,35 @@ import GanttToolTip from '@/components/partials/gantt/GanttToolTip';
 import { useScreenshot } from '@/hooks/useScreenShot';
 import { toast } from 'react-toastify';
 import { TOAST } from '@/constants/message';
+import { GetCohortsResponse } from '@/types/cohort';
 
 interface InstructorScheduleProps {
   instructor: GetInstructorsResponse;
+  cohorts: GetCohortsResponse[];
   ganttItems: Task[];
 }
 
-const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, ganttItems }) => {
+const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, ganttItems, cohorts }) => {
   const [viewType, setViewType] = useState<ViewType>('list');
   const [isIncludeEndedIntake, setIsIncludeEndedIntake] = useState<boolean>(false);
+  const [filteredGanttItems, setFilteredGanttItems] = useState<Task[]>(ganttItems);
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (!isIncludeEndedIntake) {
+      const now = dayjs();
+      const ongoingCohortIds = cohorts.filter((cohort) => dayjs(cohort.intake.endAt) > now).map(({ id }) => id);
+      const filteredItems = ganttItems.filter((ganttItem) => {
+        const cohortId = ganttItem.project?.split('-')[0];
+        if (cohortId) {
+          return ongoingCohortIds.includes(Number(cohortId));
+        }
+      });
+      setFilteredGanttItems(filteredItems);
+    } else {
+      setFilteredGanttItems(ganttItems);
+    }
+  }, [isIncludeEndedIntake]);
 
   const { takeScreenshot } = useScreenshot();
 
@@ -45,47 +64,45 @@ const InstructorSchedule: React.FC<InstructorScheduleProps> = ({ instructor, gan
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: '0.35rem' }}>
         <Box sx={{ display: 'flex', gap: '.5rem' }}>
+          <Tooltip title="Download schedule">
+            <IconButton onClick={handleTakeScreenshot} disabled={viewType === 'gantt'}>
+              <DownloadIcon />
+            </IconButton>
+          </Tooltip>
           <Headline name={`${instructor.name}'s Schedule`} />
-          {viewType === 'list' && (
-            <Tooltip title="Download schedule">
-              <IconButton onClick={handleTakeScreenshot}>
-                <DownloadIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          {/* toggle show/hide ended intake classes  */}
+          <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main', ml: '.5rem' }}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={1}
+                    sx={{ color: 'primary.main' }}
+                    checked={isIncludeEndedIntake}
+                    onChange={() => setIsIncludeEndedIntake(!isIncludeEndedIntake)}
+                  />
+                }
+                label="Include ended intake"
+              />
+            </FormGroup>
+          </Box>
         </Box>
         <ViewSwitcher viewType={viewType} handleToggleClick={handleToggleClick} />
-      </Box>
-      {/* toggle show/hide ended intake classes  */}
-      <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                value={1}
-                sx={{ color: 'primary.main' }}
-                checked={isIncludeEndedIntake}
-                onChange={() => setIsIncludeEndedIntake(!isIncludeEndedIntake)}
-              />
-            }
-            label="Include ended intake"
-          />
-        </FormGroup>
       </Box>
       {viewType === 'list' ? (
         <InstructorScheduleTable instructor={instructor} isIncludeEndedIntake={isIncludeEndedIntake} ref={ref} />
       ) : viewType === 'gantt' ? (
         <>
-          {ganttItems.length > 0 ? (
+          {filteredGanttItems.length > 0 ? (
             <>
               <Box sx={{ display: 'flex', justifyContent: 'end', pb: '.5rem' }}>
                 <GanttToolTip />
               </Box>
               <Box sx={{ fontSize: '12px' }}>
                 <Gantt
-                  tasks={ganttItems}
+                  tasks={filteredGanttItems}
                   viewMode={ViewMode.Week}
                   viewDate={dayjs().subtract(2, 'week').toDate()}
                   columnWidth={40}
