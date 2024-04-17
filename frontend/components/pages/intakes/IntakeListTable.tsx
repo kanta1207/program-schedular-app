@@ -157,6 +157,9 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                                 <DatePicker
                                   value={field.value}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => field.onChange(date)}
                                 />
                               );
@@ -173,6 +176,9 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                                 <DatePicker
                                   value={field.value}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => field.onChange(date)}
                                 />
                               );
