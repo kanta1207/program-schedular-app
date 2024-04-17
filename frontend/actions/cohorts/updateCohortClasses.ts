@@ -23,7 +23,7 @@ export const updateCohortClasses = async (
       }
 
       if (startAt > endAt) {
-        throw new Error('endAt must be after startAt');
+        throw new Error('End date must be after start date');
       }
     });
 

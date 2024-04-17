@@ -8,6 +8,7 @@ import InstructorSchedule from '@/components/pages/instructors/InstructorSchedul
 import { getClasses } from '@/actions/classes/getClasses';
 import { GetClassesGroupByCohort } from '@/types/_index';
 import { convertClassesToGantt } from '@/helpers/convertClassesToGantt';
+import { getCohorts } from '@/actions/cohorts/getCohorts';
 
 interface PageProps {
   params: { id: string };
@@ -15,12 +16,14 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
   const { id } = params;
-  const [{ data: instructor }, { data: courses }, { data: programs }, { data }] = await Promise.all([
-    getInstructorById(id),
-    getCourses(),
-    getPrograms(),
-    getClasses({ groupBy: 'cohort', instructorId: [Number(id)] }),
-  ]);
+  const [{ data: instructor }, { data: courses }, { data: programs }, { data }, { data: fetchedCohorts }] =
+    await Promise.all([
+      getInstructorById(id),
+      getCourses(),
+      getPrograms(),
+      getClasses({ groupBy: 'cohort', instructorId: [Number(id)] }),
+      getCohorts(),
+    ]);
   const cohorts = data as GetClassesGroupByCohort[];
   const ganttItems = convertClassesToGantt({ cohorts });
 
@@ -31,7 +34,7 @@ const page = async ({ params }: PageProps) => {
       </Box>
       <InstructorInfoForm instructor={instructor} courses={courses} programs={programs} />
       <Box sx={{ height: '4rem' }} />
-      <InstructorSchedule instructor={instructor} ganttItems={ganttItems} />
+      <InstructorSchedule instructor={instructor} ganttItems={ganttItems} cohorts={fetchedCohorts} />
     </>
   );
 };
