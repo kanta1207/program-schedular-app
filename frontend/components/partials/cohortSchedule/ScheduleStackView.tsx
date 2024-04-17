@@ -191,7 +191,7 @@ export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
               gridColumn: `${gridColumnStart(classStack.startWeek)} / span ${classStack.totalWeeks}`,
               gridRow:
                 classStack.weekdaysRange?.id === 1 ? '2 / span 2' : classStack.weekdaysRange?.id === 2 ? '2' : '3',
-              bgcolor: `${classStack.weekdaysRange?.color.primary}80`,
+              bgcolor: `${classStack.weekdaysRange?.color.tertiary}`,
               border: '1px solid #FFF',
               color: '#FFF',
             }}
