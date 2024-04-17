@@ -70,7 +70,9 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
       {instructor.assignedHours.length > 0 &&
         instructor.assignedHours.map((hours, i) => {
           const getCellColor = () => {
-            if (hours) {
+            if (!instructor.isActive || !hours) {
+              return { bgcolor: 'inherit', color: 'inherit' };
+            } else {
               if (hours.isOverMaximum) {
                 return isOverMaximumColor;
               } else if (hours.isUnderMinimum) {
@@ -80,8 +82,6 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
               } else {
                 return { bgcolor: 'inherit', color: 'inherit' };
               }
-            } else {
-              return { bgcolor: 'inherit', color: 'inherit' };
             }
           };
 

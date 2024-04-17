@@ -1,7 +1,7 @@
 'use client';
 import { usePagination } from '@/hooks/usePagination';
 import { inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
-import { GetInstructorsWithHoursResponse } from '@/types/_index';
+import { GetBreaksResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
 import {
   Box,
   Table,
@@ -14,12 +14,14 @@ import {
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
+
 import { useEffect, useState } from 'react';
 import { InstructorWithHoursListTableRow } from './InstructorWithHoursListTableRow';
 
 interface InstructorListTableProps {
   instructors: GetInstructorsWithHoursResponse[];
   year: number;
+  breaks: GetBreaksResponse[];
 }
 
 export interface WeekBlock {
@@ -28,7 +30,7 @@ export interface WeekBlock {
   weekEndDate: string;
 }
 
-export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year }) => {
+export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year, breaks }) => {
   const {
     rowsPerPageOptions,
     count,
@@ -45,6 +47,8 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
   });
 
   const [weekBlocks, setWeekBlocks] = useState<WeekBlock[]>([]);
+  const [bks, setBks] = useState<WeekBlock[]>([]);
+  const [selectedYearBreaks, setSelectedYearBreaks] = useState<GetBreaksResponse[]>([]);
 
   useEffect(() => {
     const weekBlocksData = [];
@@ -61,6 +65,26 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
       weekBlocksData.push(weekBlock);
     }
     setWeekBlocks(weekBlocksData);
+
+    // filter breaks within the selected year
+    const filteredSelectedYearBreaks = breaks
+      .filter((breakItem) => dayjs(breakItem.startAt).isAfter(dayjs(`${year}-01-01`)))
+      .filter((breakItem) => dayjs(breakItem.endAt).isBefore(dayjs(`${year}-12-31`)));
+    setSelectedYearBreaks(filteredSelectedYearBreaks);
+
+    console.log(instructors[0].assignedHours);
+
+    const wkbks = instructors[0].assignedHours.map((obj, i) => {
+      return {
+        id: i,
+
+        weekStarDate: dayjs(obj.startAt).add(8, 'hour').format('MM-DD'),
+        weekEndData: dayjs(obj.endAt).add(8, 'hour').format('MM-DD'),
+      };
+    });
+    setBks([...bks]);
+
+    console.log(wkbks);
   }, [year]);
 
   return (

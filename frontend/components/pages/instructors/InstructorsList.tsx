@@ -2,7 +2,7 @@
 import { getInstructorsWithHours } from '@/actions/instructors/getInstructorsWithHours';
 import Headline from '@/components/partials/Headline';
 import { inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
-import { GetInstructorsResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
+import { GetBreaksResponse, GetInstructorsResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -12,13 +12,16 @@ import TableViewSwitcher, { TableViewType } from './TableViewSwitcher';
 
 interface InstructorsListProps {
   instructors: GetInstructorsResponse[];
+  breaks: GetBreaksResponse[];
+  instructorsWithHours: GetInstructorsWithHoursResponse[];
 }
 
-export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors }) => {
+export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, breaks, instructorsWithHours }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
   const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
   const [yearsArray, setYearsArray] = useState<number[]>([]);
-  const [instructorsWithHours, setInstructorsWithHours] = useState<GetInstructorsWithHoursResponse[]>([]);
+  const [instructorsWithHours_, setInstructorsWithHours] =
+    useState<GetInstructorsWithHoursResponse[]>(instructorsWithHours);
 
   useEffect(() => {
     const currentYear = dayjs().year();
@@ -29,17 +32,6 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors })
     }
     setYearsArray(tempArray);
   }, []);
-
-  useEffect(() => {
-    if (tableViewType === 'hours') {
-      const selectedYearNumber = parseInt(selectedYear);
-      const fetchData = async () => {
-        const { data } = await getInstructorsWithHours({ year: selectedYearNumber });
-        setInstructorsWithHours(data);
-      };
-      fetchData();
-    }
-  }, [tableViewType]);
 
   useEffect(() => {
     if (tableViewType === 'hours') {
@@ -132,7 +124,11 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors })
       {tableViewType === 'info' ? (
         <InstructorListTable instructors={instructors} />
       ) : (
-        <InstructorWithHoursListTable instructors={instructorsWithHours} year={parseInt(selectedYear)} />
+        <InstructorWithHoursListTable
+          instructors={instructorsWithHours_}
+          year={parseInt(selectedYear)}
+          breaks={breaks}
+        />
       )}
     </>
   );
