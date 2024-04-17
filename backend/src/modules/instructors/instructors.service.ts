@@ -169,40 +169,51 @@ export class InstructorsService {
   async findWithAssignedHours(year?: number) {
     const targetYear = year || new Date().getFullYear();
 
-    // start and end of the given year
-    const startDate = new Date(targetYear, 0, 1);
-    const endDate = new Date(year + 1, 0, 1);
+    const firstDayOfYear = new Date(targetYear, 0, 1);
+    const dayOfWeek = firstDayOfYear.getDay(); // Get the day of the week for 1/1 (0 = Sunday, 1 = Monday...)
+    // Adjust firstDayOfYear to Monday
+    firstDayOfYear.setDate(
+      firstDayOfYear.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1),
+    );
+    // Check if the adjusted start date is in the previous year
+    if (firstDayOfYear.getFullYear() < targetYear) {
+      firstDayOfYear.setDate(firstDayOfYear.getDate() + 7); // to the next week's Monday
+    }
+
+    const endDate = new Date(targetYear + 1, 0, 1);
 
     // all weeks in 1 year
     const allWeeks = [];
-    let currentWeekStart = new Date(startDate);
+    const currentWeekStart = new Date(firstDayOfYear);
     while (currentWeekStart < endDate) {
       const endOfWeek = new Date(currentWeekStart);
-      endOfWeek.setDate(currentWeekStart.getDate() + 4); // calculate date of weekend (friday)
+      endOfWeek.setDate(currentWeekStart.getDate() + 4); // Set to Friday of the current week
 
       allWeeks.push({
-        startAt: currentWeekStart,
-        endAt: endOfWeek,
+        startAt: new Date(currentWeekStart), // Make sure to copy the date
+        endAt: new Date(endOfWeek),
       });
 
-      currentWeekStart = new Date(endOfWeek);
-      currentWeekStart.setDate(currentWeekStart.getDate() + 3); // set start date of the next week (skip Saturday and Sunday)
+      currentWeekStart.setDate(currentWeekStart.getDate() + 7); // Move to the next week's Monday
     }
 
     const instructorsRaw = await this.instructorRepository.find({
       relations: {
         contractType: true,
         weekdaysRange: true,
+        courses: {
+          course: true,
+        },
         classes: {
           weekdaysRange: true,
         },
       },
       order: {
         isActive: 'DESC',
+        id: 'DESC',
         classes: {
           startAt: 'ASC',
         },
-        id: 'DESC',
       },
     });
 
@@ -215,10 +226,13 @@ export class InstructorsService {
       });
 
     const instructors = instructorsRaw.map((instructor) => {
+      const courses = instructor.courses.map((instructorCourse) => ({
+        ...instructorCourse.course,
+      }));
       const periodOfDays = instructorPeriodOfDays
         .filter((ipod) => ipod.instructor.id === instructor.id)
         .map((ipod) => ipod.periodOfDay);
-      return { ...instructor, periodOfDays };
+      return { ...instructor, courses, periodOfDays };
     });
 
     const updateAssignedHours = (
@@ -284,6 +298,7 @@ export class InstructorsService {
         contractType: instructor.contractType,
         weekdaysRange: instructor.weekdaysRange,
         periodOfDays: instructor.periodOfDays,
+        courses: instructor.courses,
         assignedHours: assignedHoursForInstructor,
       };
     });
