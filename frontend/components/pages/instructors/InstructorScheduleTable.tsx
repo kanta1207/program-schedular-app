@@ -29,9 +29,9 @@ const InstructorScheduleTableBase = (
             <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Start Date</TableCell>
             <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>End Date</TableCell>
             <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Course</TableCell>
-            <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Cohort</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 1/12)' }}>Cohort</TableCell>
             <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Days of the Week</TableCell>
-            <TableCell sx={{ width: 'calc(100% * 1.5/12)' }}>Time</TableCell>
+            <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Time</TableCell>
             <TableCell sx={{ width: 'calc(100% * 1/12)' }}>Program</TableCell>
             <TableCell sx={{ width: 'calc(100% * 2/12)' }}>Classroom</TableCell>
           </TableRow>
