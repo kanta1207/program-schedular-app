@@ -90,6 +90,9 @@ const CreateIntake = () => {
                     label="Start Date"
                     value={field.value}
                     format={datePickerFormat}
+                    localeText={{
+                      fieldMonthPlaceholder: () => 'MMM',
+                    }}
                     onChange={(date) => field.onChange(date)}
                   />
                 );
@@ -106,6 +109,9 @@ const CreateIntake = () => {
                     label="End Date"
                     value={field.value}
                     format={datePickerFormat}
+                    localeText={{
+                      fieldMonthPlaceholder: () => 'MMM',
+                    }}
                     onChange={(date) => field.onChange(date)}
                   />
                 );
