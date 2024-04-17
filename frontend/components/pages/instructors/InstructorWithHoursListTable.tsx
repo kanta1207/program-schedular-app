@@ -1,7 +1,7 @@
 'use client';
 import { usePagination } from '@/hooks/usePagination';
 import { inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
-import { GetBreaksResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
+import { GetInstructorsWithHoursResponse } from '@/types/_index';
 import {
   Box,
   Table,
@@ -21,7 +21,6 @@ import { InstructorWithHoursListTableRow } from './InstructorWithHoursListTableR
 interface InstructorListTableProps {
   instructors: GetInstructorsWithHoursResponse[];
   year: number;
-  breaks: GetBreaksResponse[];
 }
 
 export interface WeekBlock {
@@ -30,7 +29,7 @@ export interface WeekBlock {
   weekEndDate: string;
 }
 
-export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year, breaks }) => {
+export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year }) => {
   const {
     rowsPerPageOptions,
     count,
@@ -45,15 +44,12 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
     rowsPerPage: 25,
     page: 0,
   });
-
   const [weekBlocks, setWeekBlocks] = useState<WeekBlock[]>([]);
-  const [bks, setBks] = useState<WeekBlock[]>([]);
-  const [selectedYearBreaks, setSelectedYearBreaks] = useState<GetBreaksResponse[]>([]);
 
   useEffect(() => {
     const weekBlocksData = [];
     const startDate = dayjs(`${year}-01-01`).startOf('week').add(1, 'day');
-    for (let i = 0; i < 53; i++) {
+    for (let i = 0; i < instructors[0].assignedHours.length; i++) {
       const weekStartDate = startDate.add(i * 7, 'day').format('MM-DD');
       const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
 
@@ -65,26 +61,6 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
       weekBlocksData.push(weekBlock);
     }
     setWeekBlocks(weekBlocksData);
-
-    // filter breaks within the selected year
-    const filteredSelectedYearBreaks = breaks
-      .filter((breakItem) => dayjs(breakItem.startAt).isAfter(dayjs(`${year}-01-01`)))
-      .filter((breakItem) => dayjs(breakItem.endAt).isBefore(dayjs(`${year}-12-31`)));
-    setSelectedYearBreaks(filteredSelectedYearBreaks);
-
-    console.log(instructors[0].assignedHours);
-
-    const wkbks = instructors[0].assignedHours.map((obj, i) => {
-      return {
-        id: i,
-
-        weekStarDate: dayjs(obj.startAt).add(8, 'hour').format('MM-DD'),
-        weekEndData: dayjs(obj.endAt).add(8, 'hour').format('MM-DD'),
-      };
-    });
-    setBks([...bks]);
-
-    console.log(wkbks);
   }, [year]);
 
   return (

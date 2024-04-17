@@ -68,16 +68,16 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
         {instructor.desiredWorkingHours ? instructor.desiredWorkingHours : '-'}
       </TableCell>
       {instructor.assignedHours.length > 0 &&
-        instructor.assignedHours.map((hours, i) => {
+        instructor.assignedHours.map((singleWeekHours, i) => {
           const getCellColor = () => {
-            if (!instructor.isActive || !hours) {
+            if (!instructor.isActive || !singleWeekHours) {
               return { bgcolor: 'inherit', color: 'inherit' };
             } else {
-              if (hours.isOverMaximum) {
+              if (singleWeekHours.isOverMaximum) {
                 return isOverMaximumColor;
-              } else if (hours.isUnderMinimum) {
+              } else if (singleWeekHours.isUnderMinimum) {
                 return isUnderMinimumColor;
-              } else if (hours.isUnderDesired) {
+              } else if (singleWeekHours.isUnderDesired) {
                 return inUnderDesiredColor;
               } else {
                 return { bgcolor: 'inherit', color: 'inherit' };
@@ -90,14 +90,11 @@ export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowPro
               key={i}
               sx={{
                 ...getCellColor(),
-                zIndex: '1',
-                px: '0.5rem',
-                minWidth: '3rem',
                 textAlign: 'center',
                 cursor: 'auto',
               }}
             >
-              {hours && hours.hours}
+              {singleWeekHours && singleWeekHours.hours}
             </TableCell>
           );
         })}
