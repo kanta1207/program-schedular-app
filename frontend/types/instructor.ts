@@ -8,7 +8,6 @@ export interface InstructorBase {
   note: string | null;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt: Date | null;
 }
 
 export interface GetInstructorResponse extends InstructorBase {
