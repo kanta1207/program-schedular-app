@@ -641,9 +641,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                         <TableRow key={i}>
                           <TableCell>{startDate}</TableCell>
                           <TableCell>{endDate}</TableCell>
-                          <TableCell>
-                            {scheduleItem.course.name} {scheduleItem.course.deletedAt && ' (deleted)'}
-                          </TableCell>
+                          <TableCell>{scheduleItem.course.name}</TableCell>
                           <TableCell>
                             <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
                             {scheduleItem.weekdaysRange.messages.length > 0 && (
@@ -674,7 +672,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                               <Link href={`/instructors/${scheduleItem.instructor.data?.id}`} className="underline">
                                 {scheduleItem.instructor.data?.name}
-                                {scheduleItem.instructor.data?.deletedAt && ' (deleted)'}
                               </Link>
 
                               {scheduleItem.instructor.messages.length > 0 && (
