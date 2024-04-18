@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
 
-import { toUTC } from '../../common/utils';
+import { addHours } from '../../common/utils';
 
 import {
   Instructor,
@@ -169,18 +169,22 @@ export class InstructorsService {
   async findWithAssignedHours(year?: number) {
     const targetYear = year || new Date().getFullYear();
 
-    const firstDayOfYear = new Date(targetYear, 0, 1);
+    let firstDayOfYear = new Date(targetYear, 0, 1);
     const dayOfWeek = firstDayOfYear.getDay(); // Get the day of the week for 1/1 (0 = Sunday, 1 = Monday...)
     // Adjust firstDayOfYear to Monday
-    firstDayOfYear.setDate(
-      firstDayOfYear.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1),
-    );
+    if (dayOfWeek !== 1) {
+      firstDayOfYear.setDate(
+        firstDayOfYear.getDate() + (dayOfWeek === 0 ? 1 : 8 - dayOfWeek),
+      );
+    }
+    firstDayOfYear = addHours(firstDayOfYear);
 
     // Check if the week includes days from the target year
     const firstWeekEndDate = new Date(firstDayOfYear);
     firstWeekEndDate.setDate(firstDayOfYear.getDate() + 4); // Friday of the first week
 
-    const endDate = new Date(targetYear + 1, 0, 1);
+    // const endDate = new Date(targetYear + 1, 0, 1);
+    const endDate = addHours(new Date(targetYear + 1, 0, 1));
 
     const allWeeks = []; // all weeks in 1 year
     const currentWeekStart = new Date(firstDayOfYear);
@@ -265,10 +269,7 @@ export class InstructorsService {
       const assignedHoursForInstructor = allWeeks.map((week) => {
         const hours = instructor.classes
           .filter((clazz) => {
-            return (
-              week.startAt <= toUTC(clazz.endAt) &&
-              week.endAt >= toUTC(clazz.startAt)
-            );
+            return week.startAt <= clazz.endAt && week.endAt >= clazz.startAt;
           })
           .reduce(
             (totalHours, clazz) =>
