@@ -133,7 +133,7 @@ export class CoursesService {
 
     if (course.classes.length > 0) {
       throw new BadRequestException(
-        'Cannot delete course that are selected in the schedule',
+        'Cannot delete course that is selected in the schedule',
       );
     }
 
