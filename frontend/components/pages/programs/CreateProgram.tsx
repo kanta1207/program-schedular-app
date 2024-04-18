@@ -65,6 +65,7 @@ const CreateProgram = () => {
                   sx={{ width: '20rem' }}
                   value={field.value}
                   onChange={(name) => field.onChange(name)}
+                  required
                 />
               );
             }}

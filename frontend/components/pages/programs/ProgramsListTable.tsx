@@ -120,6 +120,7 @@ const ProgramListTable: React.FC<ProgramListTableProps> = ({ programs }) => {
                               sx={{ width: '50%' }}
                               value={field.value}
                               onChange={(name) => field.onChange(name)}
+                              required
                             />
                           );
                         }}
