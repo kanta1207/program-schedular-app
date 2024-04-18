@@ -265,7 +265,6 @@ export class InstructorsService {
         id: instructor.id,
         createdAt: instructor.createdAt,
         updatedAt: instructor.updatedAt,
-        deletedAt: instructor.deletedAt,
         name: instructor.name,
         isActive: instructor.isActive,
         note: instructor.note,
@@ -456,10 +455,24 @@ export class InstructorsService {
   }
 
   async remove(id: number) {
-    const deleteResult = await this.instructorRepository.softDelete(id);
-
-    if (deleteResult.affected === 0) {
-      throw new NotFoundException('Instructor Not Found');
+    const instructor = await this.instructorRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        classes: true,
+      },
+    });
+    if (!instructor) {
+      throw new NotFoundException('Instructor not found');
     }
+
+    if (instructor.classes.length > 0) {
+      throw new BadRequestException(
+        'Cannot delete instructor that are assigned',
+      );
+    }
+
+    await this.instructorRepository.delete(id);
   }
 }
