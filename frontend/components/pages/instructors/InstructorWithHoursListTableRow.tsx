@@ -5,7 +5,7 @@ import { clickableTrStyle, inUnderDesiredColor, isOverMaximumColor, isUnderMinim
 import { GetInstructorsWithHoursResponse } from '@/types/_index';
 import { Circle } from '@mui/icons-material';
 import { Box, TableCell, TableRow, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { WeekBlock } from './InstructorWithHoursListTable';
 
 interface InstructorListTableRowProps {

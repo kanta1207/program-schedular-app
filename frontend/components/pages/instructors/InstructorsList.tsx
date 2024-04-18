@@ -2,7 +2,7 @@
 import { getInstructorsWithHours } from '@/actions/instructors/getInstructorsWithHours';
 import Headline from '@/components/partials/Headline';
 import { inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
-import { GetInstructorsResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
+import { GetInstructorsWithHoursResponse } from '@/types/_index';
 import { Box, Button, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,11 +14,10 @@ import { InstructorWithHoursListTable } from './InstructorWithHoursListTable';
 import TableViewSwitcher, { TableViewType } from './TableViewSwitcher';
 
 interface InstructorsListProps {
-  instructors: GetInstructorsResponse[];
   instructorsWithHours: GetInstructorsWithHoursResponse[];
 }
 
-export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, instructorsWithHours }) => {
+export const InstructorsList: React.FC<InstructorsListProps> = ({ instructorsWithHours }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
   const [selectedYear, setSelectedYear] = useState<Dayjs | null>(dayjs());
   const [selectedYearInstructorsWithHours, setSelectedYearInstructorsWithHours] =
@@ -28,7 +27,7 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
     setTableViewType(newViewType);
   };
 
-  const handeYearPickerChange = (value: Dayjs | null) => {
+  const handleYearPickerChange = (value: Dayjs | null) => {
     setSelectedYear(value);
   };
 
@@ -53,7 +52,7 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
               label="Select year"
               value={selectedYear}
               views={['year']}
-              onChange={handeYearPickerChange}
+              onChange={handleYearPickerChange}
             />
             <Box
               sx={{
@@ -113,7 +112,7 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
         </Button>
       </div>
       {tableViewType === 'info' ? (
-        <InstructorListTable instructors={instructors} />
+        <InstructorListTable instructors={instructorsWithHours} />
       ) : (
         <InstructorWithHoursListTable
           instructors={selectedYearInstructorsWithHours}
