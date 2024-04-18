@@ -6,14 +6,12 @@ import { GetInstructorsWithHoursResponse } from '@/types/_index';
 import { Circle } from '@mui/icons-material';
 import { Box, TableCell, TableRow, Typography } from '@mui/material';
 import { useRouter } from 'next-nprogress-bar';
-import { WeekBlock } from './InstructorWithHoursListTable';
 
 interface InstructorListTableRowProps {
   instructor: GetInstructorsWithHoursResponse;
-  weekBlocks: WeekBlock[];
 }
 
-export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowProps> = ({ instructor, weekBlocks }) => {
+export const InstructorWithHoursListTableRow: React.FC<InstructorListTableRowProps> = ({ instructor }) => {
   const router = useRouter();
   const handleRowClick = () => {
     router.push(`/instructors/${instructor.id}`);

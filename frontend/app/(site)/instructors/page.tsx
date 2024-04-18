@@ -3,8 +3,8 @@ import { InstructorsList } from '@/components/pages/instructors/InstructorsList'
 import dayjs from 'dayjs';
 
 const page = async () => {
-  const { data: instructorsWithHours } = await getInstructorsWithHours({ year: parseInt(dayjs().format('YYYY')) });
-  return <InstructorsList instructorsWithHours={instructorsWithHours} />;
+  const { data: instructos } = await getInstructorsWithHours({ year: parseInt(dayjs().format('YYYY')) });
+  return <InstructorsList instructors={instructos} />;
 };
 
 export default page;

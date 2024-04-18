@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { useEffect, useState } from 'react';
 import { InstructorWithHoursListTableRow } from './InstructorWithHoursListTableRow';
 
 interface InstructorListTableProps {
@@ -29,7 +28,7 @@ export interface WeekBlock {
   weekEndDate: string;
 }
 
-export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors, year }) => {
+export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = ({ instructors }) => {
   const {
     rowsPerPageOptions,
     count,
@@ -44,24 +43,6 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
     rowsPerPage: 25,
     page: 0,
   });
-  const [weekBlocks, setWeekBlocks] = useState<WeekBlock[]>([]);
-
-  useEffect(() => {
-    const weekBlocksData = [];
-    const startDate = dayjs(`${year}-01-01`).startOf('week').add(1, 'day');
-    for (let i = 0; i < instructors[0].assignedHours.length; i++) {
-      const weekStartDate = startDate.add(i * 7, 'day').format('MM-DD');
-      const weekEndDate = dayjs(weekStartDate).add(4, 'day').format('MM-DD');
-
-      const weekBlock = {
-        id: i,
-        weekStartDate: weekStartDate,
-        weekEndDate: weekEndDate,
-      };
-      weekBlocksData.push(weekBlock);
-    }
-    setWeekBlocks(weekBlocksData);
-  }, [year]);
 
   return (
     <>
@@ -92,16 +73,15 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
                 <TableCell className="sticky-column" sx={{ left: '430px', textAlign: 'center', lineHeight: '1rem' }}>
                   Desired Hours
                 </TableCell>
-                {weekBlocks.length > 0 &&
-                  weekBlocks.map((week) => (
-                    <TableCell key={week.id} sx={{ zIndex: '1', px: '0.5rem', minWidth: '3rem' }}>
-                      <Typography sx={{ fontSize: '0.75rem' }}>
-                        {week.weekStartDate}
-                        <br />
-                        {week.weekEndDate}
-                      </Typography>
-                    </TableCell>
-                  ))}
+                {instructors[0].assignedHours.map((weekObj, i) => (
+                  <TableCell key={i} sx={{ zIndex: '1', px: '0.5rem', minWidth: '3rem' }}>
+                    <Typography sx={{ fontSize: '0.75rem' }}>
+                      {dayjs(weekObj.startAt).add(8, 'hour').format('MM-DD')}
+                      <br />
+                      {dayjs(weekObj.endAt).add(8, 'hour').format('MM-DD')}
+                    </Typography>
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -109,7 +89,7 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
                 ? instructors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 : instructors
               ).map((instructor) => (
-                <InstructorWithHoursListTableRow key={instructor.id} instructor={instructor} weekBlocks={weekBlocks} />
+                <InstructorWithHoursListTableRow key={instructor.id} instructor={instructor} />
               ))}
               {emptyRows > 0 && <TableRow style={{ height: 52 * emptyRows }} />}
             </TableBody>

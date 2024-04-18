@@ -14,10 +14,10 @@ import { InstructorWithHoursListTable } from './InstructorWithHoursListTable';
 import TableViewSwitcher, { TableViewType } from './TableViewSwitcher';
 
 interface InstructorsListProps {
-  instructorsWithHours: GetInstructorsWithHoursResponse[];
+  instructors: GetInstructorsWithHoursResponse[];
 }
 
-export const InstructorsList: React.FC<InstructorsListProps> = ({ instructorsWithHours }) => {
+export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors: instructorsWithHours }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
   const [selectedYear, setSelectedYear] = useState<Dayjs | null>(dayjs());
   const [selectedYearInstructorsWithHours, setSelectedYearInstructorsWithHours] =
