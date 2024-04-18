@@ -25,9 +25,7 @@ export class IsAfterDateConstraint implements ValidatorConstraintInterface {
     return Date.parse(value) > Date.parse(propertyValue);
   }
 
-  defaultMessage(args?: ValidationArguments): string {
-    const [propertyNameToCompare] = args?.constraints || [];
-
-    return `${args?.property} must be after ${propertyNameToCompare}`;
+  defaultMessage(): string {
+    return 'End date must be after start date';
   }
 }
