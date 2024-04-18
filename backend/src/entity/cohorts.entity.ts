@@ -26,7 +26,6 @@ export class Cohort {
 
   @ManyToOne(() => Intake, (intake) => intake.cohorts, {
     nullable: false,
-    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'intake_id' })
   intake: Intake;

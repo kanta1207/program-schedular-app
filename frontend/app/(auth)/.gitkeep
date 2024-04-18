@@ -1,0 +1,2 @@
+If you implement authentication feature instead of the current basic authentication,
+feel free to add /signup or /signin folder under this directory.

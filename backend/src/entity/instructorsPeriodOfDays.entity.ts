@@ -8,6 +8,7 @@ export class InstructorsPeriodOfDays {
 
   @ManyToOne(() => Instructor, (instructor) => instructor.periodOfDays, {
     nullable: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'instructor_id' })
   instructor: Instructor;

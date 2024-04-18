@@ -138,6 +138,9 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                                 <DatePicker
                                   value={field.value}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => field.onChange(date)}
                                 />
                               );
@@ -154,6 +157,9 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                                 <DatePicker
                                   value={field.value}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => field.onChange(date)}
                                 />
                               );

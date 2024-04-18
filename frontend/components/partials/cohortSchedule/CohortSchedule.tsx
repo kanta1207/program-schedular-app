@@ -428,6 +428,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                                   shouldDisableDate={isDateDisable}
                                   value={dayjs(field.value)}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => {
                                     field.onChange(date);
                                   }}
@@ -458,6 +461,9 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                                   shouldDisableDate={isDateDisable}
                                   value={dayjs(field.value)}
                                   format={datePickerFormat}
+                                  localeText={{
+                                    fieldMonthPlaceholder: () => 'MMM',
+                                  }}
                                   onChange={(date) => {
                                     field.onChange(date);
                                   }}
