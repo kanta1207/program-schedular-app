@@ -175,26 +175,36 @@ export class InstructorsService {
     firstDayOfYear.setDate(
       firstDayOfYear.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1),
     );
-    // Check if the adjusted start date is in the previous year
-    if (firstDayOfYear.getFullYear() < targetYear) {
-      firstDayOfYear.setDate(firstDayOfYear.getDate() + 7); // to the next week's Monday
-    }
+
+    // Check if the week includes days from the target year
+    const firstWeekEndDate = new Date(firstDayOfYear);
+    firstWeekEndDate.setDate(firstDayOfYear.getDate() + 4); // Friday of the first week
 
     const endDate = new Date(targetYear + 1, 0, 1);
 
-    // all weeks in 1 year
-    const allWeeks = [];
+    const allWeeks = []; // all weeks in 1 year
     const currentWeekStart = new Date(firstDayOfYear);
+    const dayBeforeNewYear = new Date(targetYear, 0, 0); // 12/31
+
+    // Week starts from the previous year and ends in the target year
+    if (dayBeforeNewYear < firstWeekEndDate) {
+      allWeeks.push({
+        startAt: new Date(currentWeekStart),
+        endAt: new Date(firstWeekEndDate),
+      });
+    }
+    currentWeekStart.setDate(currentWeekStart.getDate() + 7); // Move to the next week's Monday
+
     while (currentWeekStart < endDate) {
       const endOfWeek = new Date(currentWeekStart);
       endOfWeek.setDate(currentWeekStart.getDate() + 4); // Set to Friday of the current week
 
       allWeeks.push({
-        startAt: new Date(currentWeekStart), // Make sure to copy the date
+        startAt: new Date(currentWeekStart),
         endAt: new Date(endOfWeek),
       });
 
-      currentWeekStart.setDate(currentWeekStart.getDate() + 7); // Move to the next week's Monday
+      currentWeekStart.setDate(currentWeekStart.getDate() + 7);
     }
 
     const instructorsRaw = await this.instructorRepository.find({
