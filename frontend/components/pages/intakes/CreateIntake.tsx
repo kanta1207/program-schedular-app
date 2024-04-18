@@ -75,6 +75,7 @@ const CreateIntake = () => {
                     sx={{ width: '20rem' }}
                     value={field.value}
                     onChange={(name) => field.onChange(name)}
+                    required
                   />
                 );
               }}
@@ -94,6 +95,11 @@ const CreateIntake = () => {
                       fieldMonthPlaceholder: () => 'MMM',
                     }}
                     onChange={(date) => field.onChange(date)}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                   />
                 );
               }}
@@ -113,6 +119,11 @@ const CreateIntake = () => {
                       fieldMonthPlaceholder: () => 'MMM',
                     }}
                     onChange={(date) => field.onChange(date)}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                   />
                 );
               }}
