@@ -477,7 +477,9 @@ export class InstructorsService {
     }
 
     if (instructor.classes.length > 0) {
-      throw new BadRequestException('Cannot delete instructor who is assigned');
+      throw new BadRequestException(
+        'Cannot delete instructor who is assigned to classes',
+      );
     }
 
     await this.instructorRepository.delete(id);
