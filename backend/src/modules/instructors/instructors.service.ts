@@ -1,10 +1,10 @@
-import { In, Repository } from 'typeorm';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
 
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
@@ -12,13 +12,13 @@ import { UpdateInstructorDto } from './dto/update-instructor.dto';
 import { addHours } from '../../common/utils';
 
 import {
-  Instructor,
-  CoursesInstructors,
-  MasterContractType,
-  MasterWeekdaysRange,
-  MasterPeriodOfDay,
-  InstructorsPeriodOfDays,
   Course,
+  CoursesInstructors,
+  Instructor,
+  InstructorsPeriodOfDays,
+  MasterContractType,
+  MasterPeriodOfDay,
+  MasterWeekdaysRange,
 } from '../../entity';
 
 import {
