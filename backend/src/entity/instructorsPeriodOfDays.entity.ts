@@ -15,7 +15,7 @@ export class InstructorsPeriodOfDays {
   @ManyToOne(
     () => MasterPeriodOfDay,
     (periodOfDay) => periodOfDay.availableInstructors,
-    { nullable: false },
+    { nullable: false, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'period_of_day_id' })
   periodOfDay: MasterPeriodOfDay;
