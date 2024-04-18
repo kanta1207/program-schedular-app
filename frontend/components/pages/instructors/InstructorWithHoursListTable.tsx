@@ -73,12 +73,15 @@ export const InstructorWithHoursListTable: React.FC<InstructorListTableProps> = 
                 <TableCell className="sticky-column" sx={{ left: '430px', textAlign: 'center', lineHeight: '1rem' }}>
                   Desired Hours
                 </TableCell>
-                {instructors[0].assignedHours.map((weekObj, i) => (
-                  <TableCell key={i} sx={{ zIndex: '1', px: '0.5rem', minWidth: '3rem' }}>
+                {instructors[0].assignedHours.map((weekObj) => (
+                  <TableCell
+                    key={dayjs(weekObj.startAt).format('YYYYMMDD')}
+                    sx={{ zIndex: '1', px: '0.5rem', minWidth: '3rem' }}
+                  >
                     <Typography sx={{ fontSize: '0.75rem' }}>
-                      {dayjs(weekObj.startAt).add(8, 'hour').format('MM-DD')}
+                      {dayjs(weekObj.startAt).format('MM-DD')}
                       <br />
-                      {dayjs(weekObj.endAt).add(8, 'hour').format('MM-DD')}
+                      {dayjs(weekObj.endAt).format('MM-DD')}
                     </Typography>
                   </TableCell>
                 ))}
