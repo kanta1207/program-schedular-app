@@ -75,6 +75,11 @@ const CreateBreak = () => {
                       fieldMonthPlaceholder: () => 'MMM',
                     }}
                     onChange={(date) => field.onChange(date)}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                   />
                 );
               }}
@@ -94,6 +99,11 @@ const CreateBreak = () => {
                       fieldMonthPlaceholder: () => 'MMM',
                     }}
                     onChange={(date) => field.onChange(date)}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                   />
                 );
               }}

@@ -142,6 +142,7 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                                   sx={{ width: '100%' }}
                                   value={field.value}
                                   onChange={(name) => field.onChange(name)}
+                                  required
                                 />
                               );
                             }}
@@ -161,6 +162,11 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                                     fieldMonthPlaceholder: () => 'MMM',
                                   }}
                                   onChange={(date) => field.onChange(date)}
+                                  slotProps={{
+                                    textField: {
+                                      required: true,
+                                    },
+                                  }}
                                 />
                               );
                             }}
@@ -180,6 +186,11 @@ const IntakeListTable: React.FC<IntakeListTableProps> = ({ intakes }) => {
                                     fieldMonthPlaceholder: () => 'MMM',
                                   }}
                                   onChange={(date) => field.onChange(date)}
+                                  slotProps={{
+                                    textField: {
+                                      required: true,
+                                    },
+                                  }}
                                 />
                               );
                             }}

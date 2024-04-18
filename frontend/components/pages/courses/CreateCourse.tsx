@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, TextField, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Button, TextField, MenuItem, FormControl, InputLabel, Box } from '@mui/material';
 import Select from '@mui/material/Select';
 import { GetProgramsResponse } from '@/types/_index';
 import { createCourse } from '@/actions/courses/createCourse';
@@ -17,7 +17,7 @@ interface CreateCourseProps {
 
 interface CourseFormValues {
   name: string;
-  programId: number;
+  programId: string;
   requiredHours: string;
 }
 
@@ -33,7 +33,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
   const { control, handleSubmit, reset } = useForm<CourseFormValues>({
     defaultValues: {
       name: '',
-      programId: 0,
+      programId: '',
       requiredHours: '',
     },
   });
@@ -42,6 +42,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
     try {
       const payload = {
         ...data,
+        programId: Number(data.programId),
         requiredHours: Number(data.requiredHours),
       };
 
@@ -108,7 +109,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ programs }) => {
                     {...field}
                   >
                     {programs?.map((program) => (
-                      <MenuItem key={program.id} value={program.id}>
+                      <MenuItem key={program.id} value={String(program.id)}>
                         {program.name}
                       </MenuItem>
                     ))}

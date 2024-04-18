@@ -142,6 +142,11 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                                     fieldMonthPlaceholder: () => 'MMM',
                                   }}
                                   onChange={(date) => field.onChange(date)}
+                                  slotProps={{
+                                    textField: {
+                                      required: true,
+                                    },
+                                  }}
                                 />
                               );
                             }}
@@ -161,6 +166,11 @@ const BreakListTable: React.FC<BreakListTableProps> = ({ breaks }) => {
                                     fieldMonthPlaceholder: () => 'MMM',
                                   }}
                                   onChange={(date) => field.onChange(date)}
+                                  slotProps={{
+                                    textField: {
+                                      required: true,
+                                    },
+                                  }}
                                 />
                               );
                             }}

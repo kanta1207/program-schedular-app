@@ -60,10 +60,10 @@ type FormValues = {
     startAt: Date;
     endAt: Date;
     cohortId: number;
-    weekdaysRangeId: number;
-    courseId: number;
-    classroomId: number;
-    instructorId: number;
+    weekdaysRangeId: string;
+    courseId: string;
+    classroomId: string;
+    instructorId: string;
   }[];
 };
 
@@ -133,10 +133,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
       startAt: classData.startAt,
       endAt: classData.endAt,
       cohortId: cohort.id,
-      weekdaysRangeId: classData.weekdaysRange.data.id,
-      courseId: classData.course.id,
-      classroomId: classData.classroom.data.id,
-      instructorId: classData.instructor.data?.id,
+      weekdaysRangeId: String(classData.weekdaysRange.data.id),
+      courseId: String(classData.course.id),
+      classroomId: String(classData.classroom.data.id),
+      instructorId: String(classData.instructor.data?.id) ?? '',
     }));
   };
 
@@ -186,10 +186,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
         startAt: dayjs(classData.startAt),
         endAt: dayjs(classData.endAt),
         cohortId: cohort.id,
-        weekdaysRangeId: classData.weekdaysRangeId,
-        courseId: classData.courseId,
-        classroomId: classData.classroomId,
-        instructorId: classData.instructorId || undefined,
+        weekdaysRangeId: Number(classData.weekdaysRangeId),
+        courseId: Number(classData.courseId),
+        classroomId: Number(classData.classroomId),
+        instructorId: Number(classData.instructorId) || undefined,
       }));
       const { data: classes } = await updateCohortClasses(cohort.id, payload);
       setIsScheduleEditable(false);
@@ -198,10 +198,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
           startAt: classData.startAt,
           endAt: classData.endAt,
           cohortId: cohort.id,
-          weekdaysRangeId: classData.weekdaysRange.id,
-          courseId: classData.course.id,
-          classroomId: classData.classroom.id,
-          instructorId: classData.instructor?.id,
+          weekdaysRangeId: String(classData.weekdaysRange.id),
+          courseId: String(classData.course.id),
+          classroomId: String(classData.classroom.id),
+          instructorId: String(classData.instructor?.id) ?? '',
         })),
       });
       toast.success(TOAST.success.updated);
@@ -232,10 +232,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
         startAt: cohortIntakeStartAt.toDate(),
         endAt: cohortIntakeStartAt.add(25, 'day').toDate(), // 4 weeks
         cohortId: cohort.id,
-        weekdaysRangeId: 1,
-        courseId: 0,
-        classroomId: 0,
-        instructorId: 0,
+        weekdaysRangeId: '1',
+        courseId: '',
+        classroomId: '',
+        instructorId: '',
       });
       setIsScheduleEditable(true);
     } else if (createType === 'copy' && selectedCohort) {
@@ -251,10 +251,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
             startAt: cohortIntakeStartAt.add(startDaysDiffFromIntakeStart, 'day').toDate(),
             endAt: cohortIntakeStartAt.add(endDaysDiffFromIntakeStart, 'day').toDate(),
             cohortId: selectedCohort.id,
-            weekdaysRangeId: copiedClass.weekdaysRange.id,
-            courseId: copiedClass.course.id,
-            classroomId: copiedClass.classroom.id,
-            instructorId: copiedClass.instructor?.id,
+            weekdaysRangeId: String(copiedClass.weekdaysRange.id),
+            courseId: String(copiedClass.course.id),
+            classroomId: String(copiedClass.classroom.id),
+            instructorId: String(copiedClass.instructor?.id) ?? '',
           };
         }),
       });
@@ -308,10 +308,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                 {cohortsInSameIntake.map((cohort) => {
                   const classItems: ClassItem[] = cohort.classes.map((classItem) => ({
                     cohortId: classItem.cohort.id,
-                    courseId: classItem.course.id,
-                    weekdaysRangeId: classItem.weekdaysRange.id,
-                    instructorId: classItem.instructor?.id,
-                    classroomId: classItem.classroom.id,
+                    courseId: String(classItem.course.id),
+                    weekdaysRangeId: String(classItem.weekdaysRange.id),
+                    instructorId: String(classItem.instructor?.id),
+                    classroomId: String(classItem.classroom.id),
                     startAt: classItem.startAt,
                     endAt: classItem.endAt,
                   }));
@@ -400,10 +400,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                     const plannedHours = getPlannedHours(
                       dayjs(watchSchedule[index].startAt).toDate(),
                       dayjs(watchSchedule[index].endAt).toDate(),
-                      watchSchedule[index].weekdaysRangeId,
+                      Number(watchSchedule[index].weekdaysRangeId),
                       breaks,
                     );
-                    const requiredHours = getRequiredHours(watchSchedule[index].courseId, courses);
+                    const requiredHours = getRequiredHours(Number(watchSchedule[index].courseId), courses);
                     const isTimeExceeded = plannedHours > requiredHours;
                     return (
                       <TableRow key={field.id}>
@@ -417,7 +417,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                               return (
                                 <DatePicker
                                   slotProps={{
-                                    textField: { size: 'small' },
+                                    textField: { size: 'small', required: true },
                                     day: (ownerState) => {
                                       if (isDateDisable(ownerState.day)) {
                                         return { sx: { bgcolor: 'grey.200' } };
@@ -450,7 +450,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                               return (
                                 <DatePicker
                                   slotProps={{
-                                    textField: { size: 'small' },
+                                    textField: { size: 'small', required: true },
                                     day: (ownerState) => {
                                       if (isDateDisable(ownerState.day)) {
                                         return { sx: { bgcolor: 'grey.200' } };
@@ -586,7 +586,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                             render={({ field }: any) => {
                               return (
                                 <FormControl fullWidth>
-                                  <Select size="small" value={field.value} {...field}>
+                                  <Select size="small" value={field.value ?? ''} {...field}>
                                     {instructors.map((instructor) => (
                                       <MenuItem
                                         key={instructor.id}
@@ -720,10 +720,10 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                     startAt: now.startOf('day').toDate(),
                     endAt: now.startOf('day').add(25, 'day').toDate(),
                     cohortId: cohort.id,
-                    weekdaysRangeId: 1,
-                    courseId: 0,
-                    classroomId: 0,
-                    instructorId: 0,
+                    weekdaysRangeId: '1',
+                    courseId: '',
+                    classroomId: '',
+                    instructorId: '',
                   })
                 }
               >

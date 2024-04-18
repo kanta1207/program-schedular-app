@@ -17,10 +17,10 @@ interface SchedulePreviewProps {
 
 export interface ClassItem {
   cohortId: number;
-  courseId: number;
-  weekdaysRangeId: number;
-  instructorId: number | undefined;
-  classroomId: number;
+  courseId: string;
+  weekdaysRangeId: string;
+  instructorId: string | undefined;
+  classroomId: string;
   startAt: Date;
   endAt: Date;
 }
@@ -56,9 +56,9 @@ export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
       name: cohorts.find(({ id }) => id === classItem.cohortId)?.name,
       startWeek: getStartWeek(classItem.startAt, intakeStartDate),
       totalWeeks: calculateWeeksBetweenDates(classItem.startAt, classItem.endAt),
-      course: courses.find((course) => course.id === classItem.courseId),
-      weekdaysRange: WEEKDAYS_RANGES.find((range) => range.id === classItem.weekdaysRangeId),
-      instructor: instructors.find((instructor) => instructor.id === classItem.instructorId),
+      course: courses.find((course) => course.id === Number(classItem.courseId)),
+      weekdaysRange: WEEKDAYS_RANGES.find((range) => range.id === Number(classItem.weekdaysRangeId)),
+      instructor: instructors.find((instructor) => instructor.id === Number(classItem.instructorId)),
     }));
   };
 
