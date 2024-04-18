@@ -673,7 +673,6 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                               <Link href={`/instructors/${scheduleItem.instructor.data?.id}`} className="underline">
                                 {scheduleItem.instructor.data?.name}
                               </Link>
-
                               {scheduleItem.instructor.messages.length > 0 && (
                                 <Tooltip title={<TooltipMessageContent messages={scheduleItem.instructor.messages} />}>
                                   <WarningIcon
