@@ -132,6 +132,7 @@ const CourseListTable: React.FC<CourseListTableProps> = ({ courses, programs }) 
                                 onChange={(name) => field.onChange(name)}
                                 variant="outlined"
                                 sx={{ width: '100%' }}
+                                required
                               />
                             );
                           }}
