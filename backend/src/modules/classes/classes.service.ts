@@ -60,8 +60,6 @@ export class ClassesService {
             endAt: 'ASC',
           },
         },
-        // This "withDeleted" option is necessary to get the soft-deleted courses and instructors
-        withDeleted: true,
       });
     } else if (groupBy === 'instructor') {
       return await this.instructorRepository.find({
@@ -81,8 +79,6 @@ export class ClassesService {
             endAt: 'ASC',
           },
         },
-        // This "withDeleted" option is necessary to get the soft-deleted courses
-        withDeleted: true,
       });
     } else {
       throw new BadRequestException('Unexpected groupBy value');

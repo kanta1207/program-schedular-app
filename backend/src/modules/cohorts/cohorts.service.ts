@@ -126,8 +126,6 @@ export class CohortsService {
           },
         },
       },
-      // This "withDeleted" option is necessary to get the soft-deleted courses
-      withDeleted: true,
     });
     if (!cohort) {
       throw new NotFoundException('Cohort Not Found');
