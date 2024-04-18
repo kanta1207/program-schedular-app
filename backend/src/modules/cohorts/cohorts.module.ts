@@ -10,6 +10,7 @@ import {
   Program,
   Class,
   Instructor,
+  MasterClassroom,
 } from '../../entity';
 
 @Module({
@@ -18,6 +19,7 @@ import {
       Cohort,
       Intake,
       MasterPeriodOfDay,
+      MasterClassroom,
       Program,
       Class,
       Instructor,

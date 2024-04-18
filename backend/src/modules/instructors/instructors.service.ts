@@ -189,26 +189,37 @@ export class InstructorsService {
       currentWeekStart.setDate(currentWeekStart.getDate() + 3); // set start date of the next week (skip Saturday and Sunday)
     }
 
-    const instructors = await this.instructorRepository
-      .createQueryBuilder('instructor')
-      .leftJoinAndSelect('instructor.contractType', 'contractType')
-      .leftJoinAndSelect('instructor.weekdaysRange', 'instructorWeekdaysRange')
-      .leftJoinAndSelect('instructor.periodOfDays', 'periodOfDays')
-      .leftJoinAndSelect('instructor.classes', 'classes')
-      .leftJoinAndSelect('classes.weekdaysRange', 'weekdaysRange')
-      .select([
-        'instructor',
-        'contractType',
-        'instructorWeekdaysRange',
-        'periodOfDays',
-        'classes.id',
-        'classes.startAt',
-        'classes.endAt',
-        'weekdaysRange.id',
-      ])
-      .orderBy('instructor.isActive', 'DESC')
-      .addOrderBy('classes.startAt', 'ASC')
-      .getMany();
+    const instructorsRaw = await this.instructorRepository.find({
+      relations: {
+        contractType: true,
+        weekdaysRange: true,
+        classes: {
+          weekdaysRange: true,
+        },
+      },
+      order: {
+        isActive: 'DESC',
+        classes: {
+          startAt: 'ASC',
+        },
+        id: 'DESC',
+      },
+    });
+
+    const instructorPeriodOfDays =
+      await this.instructorsPeriodOfDaysRepository.find({
+        where: {
+          instructor: In(instructorsRaw.map((i) => i.id)),
+        },
+        relations: { periodOfDay: true, instructor: true },
+      });
+
+    const instructors = instructorsRaw.map((instructor) => {
+      const periodOfDays = instructorPeriodOfDays
+        .filter((ipod) => ipod.instructor.id === instructor.id)
+        .map((ipod) => ipod.periodOfDay);
+      return { ...instructor, periodOfDays };
+    });
 
     const updateAssignedHours = (
       assignedHours: number,
@@ -292,6 +303,7 @@ export class InstructorsService {
           cohort: {
             program: true,
             periodOfDay: true,
+            intake: true,
           },
           weekdaysRange: true,
           classroom: true,
