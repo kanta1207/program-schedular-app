@@ -40,7 +40,7 @@ const CreateIntake = () => {
 
       await createIntake(payload);
 
-      toast.success(TOAST.success.updated);
+      toast.success(TOAST.success.created);
       setIsCreating(false);
       reset();
       router.refresh();
