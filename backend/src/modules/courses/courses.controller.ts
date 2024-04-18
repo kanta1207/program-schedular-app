@@ -44,7 +44,7 @@ export class CoursesController {
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    this.coursesService.remove(id);
+    await this.coursesService.remove(id);
     return ApiResponse.new(
       null,
       StatusCodes.STATUS_NO_CONTENT.code,

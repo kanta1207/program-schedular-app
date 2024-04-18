@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -22,9 +21,6 @@ export class Course {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
-
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
@@ -41,6 +37,7 @@ export class Course {
   @OneToMany(
     () => CoursesInstructors,
     (coursesInstructors) => coursesInstructors.instructor,
+    { onDelete: 'CASCADE' },
   )
   availableInstructors: CoursesInstructors[];
 }

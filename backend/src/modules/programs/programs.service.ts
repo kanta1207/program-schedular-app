@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -37,10 +41,30 @@ export class ProgramsService {
   }
 
   async remove(id: number) {
-    const deleteResult = await this.programRepository.softDelete(id);
+    const program = await this.programRepository.findOne({
+      where: { id },
+      relations: {
+        courses: true,
+        cohorts: true,
+      },
+    });
 
-    if (deleteResult.affected === 0) {
+    if (!program) {
       throw new NotFoundException('Program Not Found');
     }
+
+    if (program.courses.length > 0) {
+      throw new BadRequestException(
+        'Cannot delete program that contains courses',
+      );
+    }
+
+    if (program.cohorts.length > 0) {
+      throw new BadRequestException(
+        'Cannot delete program that contains cohorts',
+      );
+    }
+
+    await this.programRepository.delete(id);
   }
 }
