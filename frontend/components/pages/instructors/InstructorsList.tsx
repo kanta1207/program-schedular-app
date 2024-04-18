@@ -3,8 +3,11 @@ import { getInstructorsWithHours } from '@/actions/instructors/getInstructorsWit
 import Headline from '@/components/partials/Headline';
 import { inUnderDesiredColor, isOverMaximumColor, isUnderMinimumColor } from '@/styles/_index';
 import { GetInstructorsResponse, GetInstructorsWithHoursResponse } from '@/types/_index';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import dayjs from 'dayjs';
+import { Box, Button, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { InstructorListTable } from './InstructorListTable';
 import { InstructorWithHoursListTable } from './InstructorWithHoursListTable';
@@ -17,23 +20,20 @@ interface InstructorsListProps {
 
 export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, instructorsWithHours }) => {
   const [tableViewType, setTableViewType] = useState<TableViewType>('info');
-  const [selectedYear, setSelectedYear] = useState(dayjs().format('YYYY'));
-  const [yearsArray, setYearsArray] = useState<number[]>([]);
+  const [selectedYear, setSelectedYear] = useState<Dayjs | null>(dayjs());
   const [selectedYearInstructorsWithHours, setSelectedYearInstructorsWithHours] =
     useState<GetInstructorsWithHoursResponse[]>(instructorsWithHours);
 
-  useEffect(() => {
-    const currentYear = dayjs().year();
-    const targetYear = 2023;
-    const tempArray = [];
-    for (let year = currentYear; year >= targetYear; year--) {
-      tempArray.push(year);
-    }
-    setYearsArray(tempArray);
-  }, []);
+  const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: TableViewType) => {
+    setTableViewType(newViewType);
+  };
+
+  const handeYearPickerChange = (value: Dayjs | null) => {
+    setSelectedYear(value);
+  };
 
   useEffect(() => {
-    const selectedYearNumber = parseInt(selectedYear);
+    const selectedYearNumber = parseInt(dayjs(selectedYear).format('YYYY'));
     const fetchData = async () => {
       const { data } = await getInstructorsWithHours({ year: selectedYearNumber });
       setSelectedYearInstructorsWithHours(data);
@@ -41,44 +41,26 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
     fetchData();
   }, [selectedYear]);
 
-  const handleToggleClick = (event: React.MouseEvent<HTMLElement>, newViewType: TableViewType) => {
-    setTableViewType(newViewType);
-  };
-
-  const handleYearChange = (event: SelectChangeEvent) => {
-    setSelectedYear(event.target.value);
-  };
-
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <Headline name="Instructors" />
         <TableViewSwitcher tableViewType={tableViewType} handleToggleClick={handleToggleClick} />
         {tableViewType === 'hours' && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', ml: '2rem' }}>
-            <FormControl sx={{ minWidth: '7rem', height: '2.5rem', '& .MuiSelect-select': { py: '9px' } }}>
-              <InputLabel id="select-year-label">Select Year</InputLabel>
-              <Select
-                labelId="select-year-label"
-                id="select-year"
-                value={selectedYear}
-                label="Select Year"
-                onChange={handleYearChange}
-              >
-                {yearsArray &&
-                  yearsArray.map((year) => (
-                    <MenuItem key={year} value={year}>
-                      {year}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
+            <DatePicker
+              sx={{ width: '8rem', '& input': { py: '10px' } }}
+              label="Select year"
+              value={selectedYear}
+              views={['year']}
+              onChange={handeYearPickerChange}
+            />
             <Box
               sx={{
                 display: 'flex',
                 gap: '0.5rem',
                 alignItems: 'center',
-                '& *': { fontSize: '0.85rem' },
+                '& .mui-1crmugn-MuiTypography-root': { fontSize: '14px' },
                 '& > div': {
                   display: 'flex',
                   alignItems: 'center',
@@ -98,16 +80,28 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
               }}
             >
               <Box>
-                <Box sx={isOverMaximumColor}>00</Box>
-                <Box>Over Maximum hours</Box>
+                <Box sx={isOverMaximumColor}>
+                  <Typography>00</Typography>
+                </Box>
+                <Box>
+                  <Typography>Over maximum hours</Typography>
+                </Box>
               </Box>
               <Box>
-                <Box sx={isUnderMinimumColor}>00</Box>
-                <Box>Under Minimum hours</Box>
+                <Box sx={isUnderMinimumColor}>
+                  <Typography>00</Typography>
+                </Box>
+                <Box>
+                  <Typography>Under minimum hours</Typography>
+                </Box>
               </Box>
               <Box>
-                <Box sx={inUnderDesiredColor}>00</Box>
-                <Box>Under Desired hours</Box>
+                <Box sx={inUnderDesiredColor}>
+                  <Typography>00</Typography>
+                </Box>
+                <Box>
+                  <Typography>Under desired hours</Typography>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -121,8 +115,11 @@ export const InstructorsList: React.FC<InstructorsListProps> = ({ instructors, i
       {tableViewType === 'info' ? (
         <InstructorListTable instructors={instructors} />
       ) : (
-        <InstructorWithHoursListTable instructors={selectedYearInstructorsWithHours} year={parseInt(selectedYear)} />
+        <InstructorWithHoursListTable
+          instructors={selectedYearInstructorsWithHours}
+          year={parseInt(dayjs(selectedYear).format('YYYY'))}
+        />
       )}
-    </>
+    </LocalizationProvider>
   );
 };

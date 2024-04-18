@@ -18,7 +18,7 @@ export interface GetInstructorResponse extends InstructorBase {
   courses: CourseBase[];
 }
 
-interface AssinedHours {
+interface AssignedHours {
   startAt: Date;
   endAt: Date;
   hours: number;
@@ -27,8 +27,8 @@ interface AssinedHours {
   isUnderDesired: boolean;
 }
 
-export interface GetInstructorWithHoursResponse extends GetInstructorResponse {
-  assignedHours: AssinedHours[];
+export interface GetInstructorsWithHoursResponse extends GetInstructorsResponse {
+  assignedHours: AssignedHours[];
 }
 
 export interface GetInstructorsResponse extends GetInstructorResponse {}
@@ -36,5 +36,3 @@ export interface GetInstructorsResponse extends GetInstructorResponse {}
 export interface CreateInstructorResponse extends GetInstructorResponse {}
 
 export interface UpdateInstructorResponse extends GetInstructorResponse {}
-
-export interface GetInstructorsWithHoursResponse extends GetInstructorWithHoursResponse {}
