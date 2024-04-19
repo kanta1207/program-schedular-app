@@ -116,36 +116,48 @@ export class CohortsService {
     }
 
     // Find all classrooms that are used by the classes in the cohort
-    const classrooms = await this.classroomRepository.find({
-      where: { classes: { cohort: { id } } },
-      relations: {
-        classes: {
-          cohort: {
-            periodOfDay: true,
+    const classrooms = await this.classroomRepository
+      .find({
+        relations: {
+          classes: {
+            cohort: {
+              periodOfDay: true,
+            },
+            classroom: true,
+            weekdaysRange: true,
           },
-          classroom: true,
-          weekdaysRange: true,
         },
-      },
-    });
+      })
+      // Filter out classrooms that are not used by the classes in the cohort
+      .then((classrooms) =>
+        classrooms.filter((classroom) =>
+          classroom.classes.some((clazz) => clazz.cohort.id === id),
+        ),
+      );
 
     // Find all instructors that are assigned to the classes in the cohort
-    const instructors = await this.instructorRepository.find({
-      where: { classes: { cohort: { id } } },
-      relations: {
-        contractType: true,
-        classes: {
-          cohort: {
-            periodOfDay: true,
+    const instructors = await this.instructorRepository
+      .find({
+        relations: {
+          contractType: true,
+          classes: {
+            cohort: {
+              periodOfDay: true,
+            },
+            weekdaysRange: true,
+            course: true,
           },
+          courses: { course: true },
+          periodOfDays: { periodOfDay: true },
           weekdaysRange: true,
-          course: true,
         },
-        courses: { course: true },
-        periodOfDays: { periodOfDay: true },
-        weekdaysRange: true,
-      },
-    });
+      })
+      // Filter out instructors that are not assigned to the classes in the cohort
+      .then((instructors) =>
+        instructors.filter((instructor) =>
+          instructor.classes.some((clazz) => clazz.cohort.id === id),
+        ),
+      );
 
     let formattedClasses: FormattedClass[] = cohort.classes.map((clazz) => {
       const { id } = clazz;
@@ -234,6 +246,7 @@ export class CohortsService {
 
       const classroomMessages: string[] = [];
       const classroomClasses = classroom.classes;
+
       for (const classroomClass of classroomClasses) {
         if (classroomMessages.length) break;
         const msgIsClassroomOccupied = checkClassroomDuplication(
@@ -267,7 +280,7 @@ export class CohortsService {
         classroom: {
           // Omitting the "classes" property to remove unnecessary data from the response
           data: { ...classroom, classes: undefined },
-          messages: [],
+          messages: classroomMessages,
         },
         instructor: {
           // Omitting the "classes", "contractType", "periodOfDays", "courses", and "weekdaysRange" properties to remove unnecessary data from the response
