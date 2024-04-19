@@ -92,6 +92,7 @@ export const CohortInfoForm: React.FC<CohortInfoFormProps> = ({ cohort, intakes,
         });
         setIsEditable(false);
         toast.success(TOAST.success.updated);
+        router.refresh();
       } else {
         const { data: newCohort } = await createCohort(payload);
         router.push(`/cohorts/${newCohort.id}`);
