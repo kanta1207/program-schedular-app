@@ -9,8 +9,8 @@ import './globals.css';
 import ProgressBarProvider from '@/components/providers/ProgressBarProvider';
 
 export const metadata: Metadata = {
-  title: 'Scheduler App',
-  description: 'Scheduler application for digital marketing program manager',
+  title: 'Program365',
+  description: 'Scheduler application for program managers',
 };
 
 export default function RootLayout({
