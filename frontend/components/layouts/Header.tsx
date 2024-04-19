@@ -105,22 +105,23 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ width: '100vw', '& a': { '&:hover': { bgcolor: '#FFFFFF30' } }, zIndex: 1000 }}>
+    <AppBar position="sticky" sx={{ width: '100vw', zIndex: 1000 }}>
       <div className="container mx-auto">
         <Toolbar disableGutters>
           <Link href="/schedules">
-            <div className="relative h-12 w-12">
-              <Image
-                src="/images/logo-transparent.png"
-                sizes="100%"
-                fill
-                alt="college logo"
-                className="object-contain"
-              />
-            </div>
+            <Image src="/images/logo-white.png" width={100} height={31.25} alt="service logo" />
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '3rem' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              marginLeft: '3rem',
+              '& a': { '&:hover': { bgcolor: '#FFFFFF30' } },
+            }}
+          >
             {nonNestedMenu.map(({ path, name }) => (
               <NavButton key={path} path={path} name={name} />
             ))}
