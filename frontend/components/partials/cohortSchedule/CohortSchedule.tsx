@@ -1,12 +1,16 @@
 'use client';
 
 import { updateCohortClasses } from '@/actions/cohorts/updateCohortClasses';
-import { CreateScheduleDialog } from '@/components/partials/cohortSchedule/CreateScheduleDialog';
 import { DaysOfTheWeekChip } from '@/components/partials/DaysOfTheWeekChip';
 import ErrorMessages from '@/components/partials/ErrorMessages';
 import Headline from '@/components/partials/Headline';
 import { RequiredMark } from '@/components/partials/RequiredMark';
+import { CreateScheduleDialog } from '@/components/partials/cohortSchedule/CreateScheduleDialog';
 import { CLASSROOMS, CONFIRM, TOAST, WEEKDAYS_RANGES } from '@/constants/_index';
+import getPlannedHours from '@/helpers/getPlannedHours';
+import getRequiredHours from '@/helpers/getRequiredHours';
+import isBreak from '@/helpers/isBreak';
+import isHoliday from '@/helpers/isHoliday';
 import { dateFormat, datePickerFormat, inBoxScrollBar, tableStyle, thRowStyle } from '@/styles/_index';
 import {
   GetBreaksResponse,
@@ -20,6 +24,7 @@ import {
 import { ExpandMore } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Accordion, AccordionDetails, AccordionSummary, Divider, Tooltip, Typography } from '@mui/material';
@@ -38,20 +43,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ClassItem, ScheduleStackView } from './ScheduleStackView';
-import getPlannedHours from '@/helpers/getPlannedHours';
-import getRequiredHours from '@/helpers/getRequiredHours';
-import isBreak from '@/helpers/isBreak';
-import isHoliday from '@/helpers/isHoliday';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TooltipInstructorContent from './TooltipInstructorContent';
 import TooltipMessageContent from './TooltipMessageContent';
-import Link from 'next/link';
 
 export type CreateType = 'new' | 'copy';
 
@@ -225,6 +225,12 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
     setDialogOpen(true);
   };
 
+  const getMondayDate = (date: Date) => {
+    // if the day of week of startAt is Tuesday, subtract 1 day to set startAt as Monday
+    const mondayDate = dayjs(date).day() === 2 ? dayjs(date).subtract(1, 'day') : dayjs(date);
+    return mondayDate;
+  };
+
   const handleDialogClose = (createType?: string, selectedCohort?: GetCohortsResponse) => {
     if (createType === 'new') {
       remove();
@@ -240,12 +246,15 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
       setIsScheduleEditable(true);
     } else if (createType === 'copy' && selectedCohort) {
       const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
-      const copiedCohortIntakeStartAt = dayjs(selectedCohort.intake.startAt);
+      const copiedCohortIntakeStartAt = getMondayDate(selectedCohort.intake.startAt);
       // Reset form with copied cohort schedule
       reset({
         schedule: selectedCohort.classes.map((copiedClass) => {
-          const startDaysDiffFromIntakeStart = dayjs(copiedClass.startAt).diff(copiedCohortIntakeStartAt, 'day');
-          const endDaysDiffFromIntakeStart = dayjs(copiedClass.endAt).diff(copiedCohortIntakeStartAt, 'day');
+          const startDaysDiffFromIntakeStart = getMondayDate(copiedClass.startAt).diff(
+            copiedCohortIntakeStartAt,
+            'day',
+          );
+          const endDaysDiffFromIntakeStart = getMondayDate(copiedClass.endAt).diff(copiedCohortIntakeStartAt, 'day');
           return {
             // Adjust startAt and endAt to appropriate periods for the intake of the cohort under editing.
             startAt: cohortIntakeStartAt.add(startDaysDiffFromIntakeStart, 'day').toDate(),
