@@ -661,11 +661,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                             <DaysOfTheWeekChip daysOfTheWeek={scheduleItem.weekdaysRange.data} />
                             {scheduleItem.weekdaysRange.messages.length > 0 && (
                               <Tooltip title={<TooltipMessageContent messages={scheduleItem.weekdaysRange.messages} />}>
-                                <WarningIcon
-                                  fontSize="small"
-                                  color="warning"
-                                  sx={{ marginRight: '4px', cursor: 'pointer' }}
-                                />
+                                <WarningIcon fontSize="small" color="warning" sx={{ ml: '4px', cursor: 'pointer' }} />
                               </Tooltip>
                             )}
                           </TableCell>
