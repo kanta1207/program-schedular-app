@@ -28,6 +28,16 @@ const intakes = [
     startAt: new Date('2024-02-26T08:00:00.000Z'),
     endAt: new Date('2024-08-23T08:00:00.000Z'),
   },
+  {
+    name: '2024 April DMS',
+    startAt: new Date('2024-04-02T08:00:00.000Z'),
+    endAt: new Date('2024-09-27T08:00:00.000Z'),
+  },
+  {
+    name: '2024 June DMA',
+    startAt: new Date('2024-05-27T08:00:00.000Z'),
+    endAt: new Date('2024-11-22T08:00:00.000Z'),
+  },
 ].map((intake, i) => {
   return { id: i + 1, ...intake };
 });
