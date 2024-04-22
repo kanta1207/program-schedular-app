@@ -1,6 +1,6 @@
 # How to deploy the project
 
-This guide provides instructions on how to deploy the project for free, using [Vercel](https://vercel.com/) for frontend, [render](https://render.com/) for backend API, and [Supabase](https://supabase.com/) for database.
+This guide provides instructions on how to deploy the project for free, using [Vercel](https://vercel.com/) for frontend, [Render](https://render.com/) for backend API, and [Supabase](https://supabase.com/) for database.
 
 ## Database
 
@@ -16,13 +16,13 @@ With Supabase, all you need to do in this project is just to create a project an
 ## Backend API
 
 After setting up the database, the next step is to deploy the backend API.
-We will use [render](https://render.com/) for it, considering the pricing. It'd be free as of Apr 9. 2024 ([Reference](https://render.com/pricing))
+We will use [Render](https://render.com/) for it, considering the pricing. It'd be free as of Apr 9. 2024 ([Reference](https://render.com/pricing))
 
 There is one thing you need to be careful on your deployment.
 
 #### Make sure you execute seeding only in first deploy
 
-Since render doesn't allow us to manually execute commands in server, we decided to do migration & seeding on build.
+Since Render doesn't allow us to manually execute commands in server, we decided to do migration & seeding on build.
 
 But we want to avoid seeding the database in every deployment, because it will initialize all of the tables.
 
@@ -39,7 +39,7 @@ So we decided to have 2 types of build commands.
 
 #### Steps
 
-1. Login to [render](https://render.com/).
+1. Login to [Render](https://render.com/).
 2. Click "New" button in the dashboard, and select "Create a new Web Service".
 3. Select "Build and deploy from a Git repository", and select the repository. You can deploy the project there.
    - Select `backend` as rood directory.
@@ -62,5 +62,6 @@ To deploy the project on Vercel, We're recommending to somehow transfer this pro
 2. Create private repository in your personal github, and upload all of the files you just downloaded. **You need to make this repository private because this project contains CICCC's actual instructor's names pr other credentials in seeding files.**
 3. Login to [Vercel](https://vercel.com/)
 4. Deploy the project by importing the repository from your Github.
+   - Set `BASIC_AUTH_USER` and `BASIC_AUTH_PASSWORD` in environmental variables, which will be used for basic authentication.
    - Choose `frontend` as root directory if you upload all of this project into your personal Github account.
-   - Make it sure add the backend API url from render to `NEXT_PUBLIC_API_URL` as environment variable.
+   - Make it sure add the backend API url from Render to `NEXT_PUBLIC_API_URL` as environment variable.
