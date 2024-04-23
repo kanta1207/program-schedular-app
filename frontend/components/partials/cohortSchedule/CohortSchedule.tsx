@@ -245,7 +245,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
       });
       setIsScheduleEditable(true);
     } else if (createType === 'copy' && selectedCohort) {
-      const cohortIntakeStartAt = dayjs(cohort.intake.startAt);
+      const cohortIntakeStartAt = getMondayDate(cohort.intake.startAt);
       const copiedCohortIntakeStartAt = getMondayDate(selectedCohort.intake.startAt);
       // Reset form with copied cohort schedule
       reset({
