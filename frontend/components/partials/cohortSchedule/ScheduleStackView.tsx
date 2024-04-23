@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 interface SchedulePreviewProps {
+  cohortName: string;
   cohorts: GetCohortsResponse[];
   courses: GetCoursesResponse[];
   instructors: GetInstructorsResponse[];
@@ -26,6 +27,7 @@ export interface ClassItem {
 }
 
 export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
+  cohortName,
   cohorts,
   courses,
   instructors,
@@ -115,7 +117,7 @@ export const ScheduleStackView: React.FC<SchedulePreviewProps> = ({
           ml: '-1px',
         }}
       >
-        <Typography variant="h6">{classStacks.length > 0 && classStacks[0].name}</Typography>
+        <Typography variant="h6">{cohortName}</Typography>
       </Box>
 
       {/* Column Header (Days of the week)*/}
