@@ -1,4 +1,4 @@
-# How to deploy the project
+# How to deploy the project (for 100% free)
 
 This guide provides instructions on how to deploy the project for free, using [Vercel](https://vercel.com/) for frontend, [Render](https://render.com/) for backend API, and [Supabase](https://supabase.com/) for database.
 
