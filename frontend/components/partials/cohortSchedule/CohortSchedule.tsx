@@ -327,6 +327,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
                   return (
                     <Box key={cohort.id} sx={{ mb: '1rem', overflowX: 'scroll', ...inBoxScrollBar }}>
                       <ScheduleStackView
+                        cohortName={cohort.name}
                         cohorts={cohorts}
                         courses={courses}
                         instructors={instructors}
@@ -356,6 +357,7 @@ const CohortSchedule: React.FC<CohortScheduleProps> = ({
           }}
         >
           <ScheduleStackView
+            cohortName={cohort.name}
             cohorts={cohorts}
             courses={courses}
             instructors={instructors}
