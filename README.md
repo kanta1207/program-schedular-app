@@ -14,19 +14,13 @@ This application supports user (Program Manager in a collage) to schedule the pr
 
 User can compare and arrange the schedule of each class in a single page
 
-<video width="320" height="240" controls>
-  <source src="./assets/all-in-one.mov" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+![all in one](./assets/all-in-one.png)
 
 ### Accurate validation
 
 User can ensure that arranged schedule meets all the constraints with 14 validation feedbacks and real-time preview.
 
-<video width="320" height="240" controls>
-  <source src="./assets/valdation.mov" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+![validation](./assets/validation.png)
 
 ### Instructor schedule visualization
 
