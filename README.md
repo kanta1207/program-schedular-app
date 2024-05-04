@@ -14,13 +14,19 @@ This application supports user (Program Manager in a collage) to schedule the pr
 
 User can compare and arrange the schedule of each class in a single page
 
-<iframe width="560" height="315" src="./assets/all-in-one.mov" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<video width="320" height="240" controls>
+  <source src="./assets/all-in-one.mov" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ### Accurate validation
 
 User can ensure that arranged schedule meets all the constraints with 14 validation feedbacks and real-time preview.
 
-<iframe width="560" height="315" src="./assets/valdation.mov" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<video width="320" height="240" controls>
+  <source src="./assets/valdation.mov" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ### Instructor schedule visualization
 
